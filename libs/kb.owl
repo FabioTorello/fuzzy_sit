@@ -1,0 +1,455 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY myOntologies "http://www.semanticweb.org/ontologies/myOntologies.owl#" >
+    <!ENTITY toOWL "file:/home/bubx/Desktop/fuzzyTest/FuzzyDLTest-implementation/libs/libs/libs/toOWL#" >
+]>
+
+
+<rdf:RDF xmlns="libs/toOWL#"
+     xml:base="libs/toOWL"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:myOntologies="http://www.semanticweb.org/ontologies/myOntologies.owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:toOWL="file:/home/bubx/Desktop/fuzzyTest/FuzzyDLTest-implementation/libs/libs/libs/toOWL#">
+    <owl:Ontology rdf:about="file:/home/bubx/Desktop/fuzzyTest/FuzzyDLTest-implementation/libs/libs/libs/toOWL">
+        <myOntologies:fuzzyLabel>&lt;fuzzyOwl2 fuzzyType=&quot;ontology&quot;&gt;
+&lt;FuzzyLogic logic=&quot;zadeh&quot; /&gt;
+&lt;/fuzzyOwl2&gt;</myOntologies:fuzzyLabel>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- file:/home/bubx/Desktop/fuzzyTest/FuzzyDLTest-implementation/libs/libs/libs/toOWL#fuzzyLabel -->
+
+    <owl:AnnotationProperty rdf:about="&toOWL;fuzzyLabel"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/myOntologies.owl#fuzzyLabel -->
+
+    <owl:AnnotationProperty rdf:about="&myOntologies;fuzzyLabel"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- file:/home/bubx/Desktop/fuzzyTest/FuzzyDLTest-implementation/libs/libs/libs/toOWL#ttt2 -->
+
+    <rdfs:Datatype rdf:about="&toOWL;ttt2">
+        <owl:equivalentClass>
+            <rdfs:Datatype>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdfs:Datatype>
+                        <owl:onDatatype rdf:resource="&xsd;double"/>
+                        <owl:withRestrictions rdf:parseType="Collection">
+                            <rdf:Description>
+                                <xsd:minInclusive rdf:datatype="&xsd;double">1.0</xsd:minInclusive>
+                            </rdf:Description>
+                        </owl:withRestrictions>
+                    </rdfs:Datatype>
+                    <rdfs:Datatype>
+                        <owl:onDatatype rdf:resource="&xsd;double"/>
+                        <owl:withRestrictions rdf:parseType="Collection">
+                            <rdf:Description>
+                                <xsd:maxInclusive rdf:datatype="&xsd;double">2.0</xsd:maxInclusive>
+                            </rdf:Description>
+                        </owl:withRestrictions>
+                    </rdfs:Datatype>
+                </owl:intersectionOf>
+            </rdfs:Datatype>
+        </owl:equivalentClass>
+        <toOWL:fuzzyLabel>&lt;fuzzyOwl2 fuzzyType=&quot;datatype&quot;&gt;
+&lt;Datatype type=&quot;rightshoulder&quot; a=&quot;1.0&quot; b=&quot;2.0&quot; /&gt;
+&lt;/fuzzyOwl2&gt;</toOWL:fuzzyLabel>
+    </rdfs:Datatype>
+    
+
+
+    <!-- file:/home/bubx/Desktop/fuzzyTest/FuzzyDLTest-implementation/libs/libs/libs/toOWL#ttt3 -->
+
+    <rdfs:Datatype rdf:about="&toOWL;ttt3">
+        <owl:equivalentClass>
+            <rdfs:Datatype>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdfs:Datatype>
+                        <owl:onDatatype rdf:resource="&xsd;double"/>
+                        <owl:withRestrictions rdf:parseType="Collection">
+                            <rdf:Description>
+                                <xsd:minInclusive rdf:datatype="&xsd;double">1.5</xsd:minInclusive>
+                            </rdf:Description>
+                        </owl:withRestrictions>
+                    </rdfs:Datatype>
+                    <rdfs:Datatype>
+                        <owl:onDatatype rdf:resource="&xsd;double"/>
+                        <owl:withRestrictions rdf:parseType="Collection">
+                            <rdf:Description>
+                                <xsd:maxInclusive rdf:datatype="&xsd;double">3.0</xsd:maxInclusive>
+                            </rdf:Description>
+                        </owl:withRestrictions>
+                    </rdfs:Datatype>
+                </owl:intersectionOf>
+            </rdfs:Datatype>
+        </owl:equivalentClass>
+        <toOWL:fuzzyLabel>&lt;fuzzyOwl2 fuzzyType=&quot;datatype&quot;&gt;
+&lt;Datatype type=&quot;rightshoulder&quot; a=&quot;1.5&quot; b=&quot;3.0&quot; /&gt;
+&lt;/fuzzyOwl2&gt;</toOWL:fuzzyLabel>
+    </rdfs:Datatype>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/myOntologies.owl#atLeast2 -->
+
+    <rdfs:Datatype rdf:about="&myOntologies;atLeast2">
+        <owl:equivalentClass>
+            <rdfs:Datatype>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdfs:Datatype>
+                        <owl:onDatatype rdf:resource="&xsd;double"/>
+                        <owl:withRestrictions rdf:parseType="Collection">
+                            <rdf:Description>
+                                <xsd:minInclusive rdf:datatype="&xsd;double">1.0</xsd:minInclusive>
+                            </rdf:Description>
+                        </owl:withRestrictions>
+                    </rdfs:Datatype>
+                    <rdfs:Datatype>
+                        <owl:onDatatype rdf:resource="&xsd;double"/>
+                        <owl:withRestrictions rdf:parseType="Collection">
+                            <rdf:Description>
+                                <xsd:maxInclusive rdf:datatype="&xsd;double">2.0</xsd:maxInclusive>
+                            </rdf:Description>
+                        </owl:withRestrictions>
+                    </rdfs:Datatype>
+                </owl:intersectionOf>
+            </rdfs:Datatype>
+        </owl:equivalentClass>
+        <myOntologies:fuzzyLabel>&lt;fuzzyOwl2 fuzzyType=&quot;datatype&quot;&gt;
+&lt;Datatype type=&quot;rightshoulder&quot; a=&quot;1.0&quot; b=&quot;2.0&quot; /&gt;
+&lt;/fuzzyOwl2&gt;</myOntologies:fuzzyLabel>
+    </rdfs:Datatype>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/myOntologies.owl#atLeast3 -->
+
+    <rdfs:Datatype rdf:about="&myOntologies;atLeast3">
+        <owl:equivalentClass>
+            <rdfs:Datatype>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdfs:Datatype>
+                        <owl:onDatatype rdf:resource="&xsd;double"/>
+                        <owl:withRestrictions rdf:parseType="Collection">
+                            <rdf:Description>
+                                <xsd:minInclusive rdf:datatype="&xsd;double">1.0</xsd:minInclusive>
+                            </rdf:Description>
+                        </owl:withRestrictions>
+                    </rdfs:Datatype>
+                    <rdfs:Datatype>
+                        <owl:onDatatype rdf:resource="&xsd;double"/>
+                        <owl:withRestrictions rdf:parseType="Collection">
+                            <rdf:Description>
+                                <xsd:maxInclusive rdf:datatype="&xsd;double">3.0</xsd:maxInclusive>
+                            </rdf:Description>
+                        </owl:withRestrictions>
+                    </rdfs:Datatype>
+                </owl:intersectionOf>
+            </rdfs:Datatype>
+        </owl:equivalentClass>
+        <myOntologies:fuzzyLabel>&lt;fuzzyOwl2 fuzzyType=&quot;datatype&quot;&gt;
+&lt;Datatype type=&quot;rightshoulder&quot; a=&quot;1.5&quot; b=&quot;3.0&quot; /&gt;
+&lt;/fuzzyOwl2&gt;</myOntologies:fuzzyLabel>
+    </rdfs:Datatype>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/myOntologies.owl#hasLeft -->
+
+    <owl:ObjectProperty rdf:about="&myOntologies;hasLeft"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/myOntologies.owl#hasRight -->
+
+    <owl:ObjectProperty rdf:about="&myOntologies;hasRight">
+        <rdfs:range rdf:resource="&myOntologies;Object"/>
+        <rdfs:domain rdf:resource="&myOntologies;Object"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/myOntologies.owl#right -->
+
+    <owl:ObjectProperty rdf:about="&myOntologies;right">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/myOntologies.owl#right -->
+
+    <owl:DatatypeProperty rdf:about="&myOntologies;right">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/myOntologies.owl#Book -->
+
+    <owl:Class rdf:about="&myOntologies;Book">
+        <rdfs:subClassOf rdf:resource="&myOntologies;Object"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/myOntologies.owl#Cup -->
+
+    <owl:Class rdf:about="&myOntologies;Cup">
+        <rdfs:subClassOf rdf:resource="&myOntologies;Object"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/myOntologies.owl#Mouse -->
+
+    <owl:Class rdf:about="&myOntologies;Mouse">
+        <rdfs:subClassOf rdf:resource="&myOntologies;Object"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/myOntologies.owl#Object -->
+
+    <owl:Class rdf:about="&myOntologies;Object">
+        <owl:disjointWith rdf:resource="&myOntologies;Scene"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/myOntologies.owl#Scene -->
+
+    <owl:Class rdf:about="&myOntologies;Scene"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/myOntologies.owl#Scene2 -->
+
+    <owl:Class rdf:about="&myOntologies;Scene2">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&myOntologies;right"/>
+                <owl:someValuesFrom rdf:resource="&toOWL;ttt2"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="&myOntologies;Scene"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/myOntologies.owl#Scene3 -->
+
+    <owl:Class rdf:about="&myOntologies;Scene3">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&myOntologies;right"/>
+                <owl:someValuesFrom rdf:resource="&toOWL;ttt3"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="&myOntologies;Scene"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/myOntologies.owl#SpatialObject -->
+
+    <owl:Class rdf:about="&myOntologies;SpatialObject">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&myOntologies;Book"/>
+                            <rdf:Description rdf:about="&myOntologies;Cup"/>
+                            <rdf:Description rdf:about="&myOntologies;Mouse"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="&myOntologies;hasLeft"/>
+                                <owl:someValuesFrom rdf:resource="&myOntologies;Object"/>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="&myOntologies;hasRight"/>
+                                <owl:someValuesFrom rdf:resource="&myOntologies;Object"/>
+                            </owl:Restriction>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/myOntologies.owl#book -->
+
+    <owl:NamedIndividual rdf:about="&myOntologies;book">
+        <rdf:type rdf:resource="&myOntologies;Book"/>
+        <myOntologies:hasRight rdf:resource="&myOntologies;cup"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <myOntologies:fuzzyLabel>&lt;fuzzyOwl2 fuzzyType=&quot;axiom&quot;&gt;
+&lt;Degree value=&quot;0.65&quot; /&gt;
+&lt;/fuzzyOwl2&gt;</myOntologies:fuzzyLabel>
+        <owl:annotatedTarget rdf:resource="&myOntologies;Book"/>
+        <owl:annotatedSource rdf:resource="&myOntologies;book"/>
+        <owl:annotatedProperty rdf:resource="&rdf;type"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <myOntologies:fuzzyLabel>&lt;fuzzyOwl2 fuzzyType=&quot;axiom&quot;&gt;
+&lt;Degree value=&quot;0.7&quot; /&gt;
+&lt;/fuzzyOwl2&gt;</myOntologies:fuzzyLabel>
+        <owl:annotatedSource rdf:resource="&myOntologies;book"/>
+        <owl:annotatedTarget rdf:resource="&myOntologies;cup"/>
+        <owl:annotatedProperty rdf:resource="&myOntologies;hasRight"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/myOntologies.owl#cup -->
+
+    <owl:NamedIndividual rdf:about="&myOntologies;cup">
+        <rdf:type rdf:resource="&myOntologies;Cup"/>
+        <myOntologies:hasLeft rdf:resource="&myOntologies;book"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <myOntologies:fuzzyLabel>&lt;fuzzyOwl2 fuzzyType=&quot;axiom&quot;&gt;
+&lt;Degree value=&quot;0.55&quot; /&gt;
+&lt;/fuzzyOwl2&gt;</myOntologies:fuzzyLabel>
+        <owl:annotatedTarget rdf:resource="&myOntologies;book"/>
+        <owl:annotatedSource rdf:resource="&myOntologies;cup"/>
+        <owl:annotatedProperty rdf:resource="&myOntologies;hasLeft"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <myOntologies:fuzzyLabel>&lt;fuzzyOwl2 fuzzyType=&quot;axiom&quot;&gt;
+&lt;Degree value=&quot;0.8&quot; /&gt;
+&lt;/fuzzyOwl2&gt;</myOntologies:fuzzyLabel>
+        <owl:annotatedTarget rdf:resource="&myOntologies;Cup"/>
+        <owl:annotatedSource rdf:resource="&myOntologies;cup"/>
+        <owl:annotatedProperty rdf:resource="&rdf;type"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/myOntologies.owl#mouse -->
+
+    <owl:NamedIndividual rdf:about="&myOntologies;mouse">
+        <rdf:type rdf:resource="&myOntologies;Mouse"/>
+        <myOntologies:hasRight rdf:resource="&myOntologies;book"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <myOntologies:fuzzyLabel>&lt;fuzzyOwl2 fuzzyType=&quot;axiom&quot;&gt;
+&lt;Degree value=&quot;0.9&quot; /&gt;
+&lt;/fuzzyOwl2&gt;</myOntologies:fuzzyLabel>
+        <owl:annotatedTarget rdf:resource="&myOntologies;Mouse"/>
+        <owl:annotatedSource rdf:resource="&myOntologies;mouse"/>
+        <owl:annotatedProperty rdf:resource="&rdf;type"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <myOntologies:fuzzyLabel>&lt;fuzzyOwl2 fuzzyType=&quot;axiom&quot;&gt;
+&lt;Degree value=&quot;0.75&quot; /&gt;
+&lt;/fuzzyOwl2&gt;</myOntologies:fuzzyLabel>
+        <owl:annotatedTarget rdf:resource="&myOntologies;book"/>
+        <owl:annotatedProperty rdf:resource="&myOntologies;hasRight"/>
+        <owl:annotatedSource rdf:resource="&myOntologies;mouse"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/myOntologies.owl#s1 -->
+
+    <owl:NamedIndividual rdf:about="&myOntologies;s1">
+        <rdf:type>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&myOntologies;right"/>
+                <owl:hasValue rdf:datatype="&xsd;double">1.95</owl:hasValue>
+            </owl:Restriction>
+        </rdf:type>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.4.2) http://owlapi.sourceforge.net -->
+

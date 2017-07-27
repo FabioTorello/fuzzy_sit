@@ -1,0 +1,5 @@
+#T-box file: src/test/resources/partiallyComposedTableSetup2.fuzzydl
+#To generate: FixedPlacer --> FK = Σ → [	Knife:{Left(0.1), Behind(0.07), Right(0.7), Front(0.07)}	Fork:{Right(0.1), Front(0.07), Behind(0.07), Left(0.7)}	Glass:{Front(0.07), Right(0.1), Behind(0.07), Left(0.1)}	Plate:{Right(0.1), Front(0.07), Left(0.1), Behind(0.07)} ]
+#Hierarchy: ([FK, PG, FGK, FPGK2, FPG], [1.0=(FGK,FK), 1.0=(FPGK2,FK), 0.1071=(FPG,FK), 0.1071=(FGK,PG), 1.0=(FPGK2,PG), 1.0=(FPG,PG), 1.0=(FPGK2,FGK), 0.0476=(FPG,FGK), 0.0476=(FGK,FPG), 0.5758=(FPGK2,FPG)])
+#Starting time:1497089489684
+

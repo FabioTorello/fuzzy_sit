@@ -1,0 +1,430 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY fuzz-sit "http://www.emarolab.it/luca-buoncompagni/fuzz-sit#" >
+]>
+
+
+<rdf:RDF xmlns="http://www.emarolab.it/luca-buoncompagni/fuzz-sit#"
+     xml:base="http://www.emarolab.it/luca-buoncompagni/fuzz-sit"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:fuzz-sit="http://www.emarolab.it/luca-buoncompagni/fuzz-sit#">
+    <owl:Ontology rdf:about="http://www.emarolab.it/luca-buoncompagni/fuzz-sit">
+        <fuzzyLabel>&lt;fuzzyOwl2 fuzzyType=&quot;ontology&quot;&gt;
+&lt;FuzzyLogic logic=&quot;lukasiewicz&quot; /&gt;
+&lt;/fuzzyOwl2&gt;</fuzzyLabel>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#fuzzyLabel -->
+
+    <owl:AnnotationProperty rdf:about="&fuzz-sit;fuzzyLabel"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#atLeast08 -->
+
+    <rdfs:Datatype rdf:about="&fuzz-sit;atLeast08">
+        <owl:equivalentClass>
+            <rdfs:Datatype>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdfs:Datatype>
+                        <owl:onDatatype rdf:resource="&xsd;double"/>
+                        <owl:withRestrictions rdf:parseType="Collection">
+                            <rdf:Description>
+                                <xsd:minInclusive rdf:datatype="&xsd;double">0.0</xsd:minInclusive>
+                            </rdf:Description>
+                        </owl:withRestrictions>
+                    </rdfs:Datatype>
+                    <rdfs:Datatype>
+                        <owl:onDatatype rdf:resource="&xsd;double"/>
+                        <owl:withRestrictions rdf:parseType="Collection">
+                            <rdf:Description>
+                                <xsd:maxInclusive rdf:datatype="&xsd;double">10.0</xsd:maxInclusive>
+                            </rdf:Description>
+                        </owl:withRestrictions>
+                    </rdfs:Datatype>
+                </owl:intersectionOf>
+            </rdfs:Datatype>
+        </owl:equivalentClass>
+        <fuzzyLabel>&lt;fuzzyOwl2 fuzzyType=&quot;datatype&quot;&gt;
+&lt;Datatype type=&quot;leftshoulder&quot; a=&quot;0.0&quot; b=&quot;0.8&quot; /&gt;
+&lt;/fuzzyOwl2&gt;</fuzzyLabel>
+    </rdfs:Datatype>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#atLeast09 -->
+
+    <rdfs:Datatype rdf:about="&fuzz-sit;atLeast09">
+        <owl:equivalentClass>
+            <rdfs:Datatype>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdfs:Datatype>
+                        <owl:onDatatype rdf:resource="&xsd;double"/>
+                        <owl:withRestrictions rdf:parseType="Collection">
+                            <rdf:Description>
+                                <xsd:minInclusive rdf:datatype="&xsd;double">0.0</xsd:minInclusive>
+                            </rdf:Description>
+                        </owl:withRestrictions>
+                    </rdfs:Datatype>
+                    <rdfs:Datatype>
+                        <owl:onDatatype rdf:resource="&xsd;double"/>
+                        <owl:withRestrictions rdf:parseType="Collection">
+                            <rdf:Description>
+                                <xsd:maxInclusive rdf:datatype="&xsd;double">10.0</xsd:maxInclusive>
+                            </rdf:Description>
+                        </owl:withRestrictions>
+                    </rdfs:Datatype>
+                </owl:intersectionOf>
+            </rdfs:Datatype>
+        </owl:equivalentClass>
+        <fuzzyLabel>&lt;fuzzyOwl2 fuzzyType=&quot;datatype&quot;&gt;
+&lt;Datatype type=&quot;leftshoulder&quot; a=&quot;0.0&quot; b=&quot;0.9&quot; /&gt;
+&lt;/fuzzyOwl2&gt;</fuzzyLabel>
+    </rdfs:Datatype>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#isBehindOf -->
+
+    <owl:ObjectProperty rdf:about="&fuzz-sit;isBehindOf">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:range rdf:resource="&fuzz-sit;Object"/>
+        <rdfs:domain rdf:resource="&fuzz-sit;Object"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#isFrontOf -->
+
+    <owl:ObjectProperty rdf:about="&fuzz-sit;isFrontOf">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:range rdf:resource="&fuzz-sit;Object"/>
+        <rdfs:domain rdf:resource="&fuzz-sit;Object"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#isLeftOf -->
+
+    <owl:ObjectProperty rdf:about="&fuzz-sit;isLeftOf">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:domain rdf:resource="&fuzz-sit;Object"/>
+        <rdfs:range rdf:resource="&fuzz-sit;Object"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#isRightOf -->
+
+    <owl:ObjectProperty rdf:about="&fuzz-sit;isRightOf">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:range rdf:resource="&fuzz-sit;Object"/>
+        <rdfs:domain rdf:resource="&fuzz-sit;Object"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#behindBook -->
+
+    <owl:DatatypeProperty rdf:about="&fuzz-sit;behindBook">
+        <rdfs:domain rdf:resource="&fuzz-sit;Scene"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#behindCup -->
+
+    <owl:DatatypeProperty rdf:about="&fuzz-sit;behindCup">
+        <rdfs:domain rdf:resource="&fuzz-sit;Scene"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#behindMouse -->
+
+    <owl:DatatypeProperty rdf:about="&fuzz-sit;behindMouse">
+        <rdfs:domain rdf:resource="&fuzz-sit;Scene"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#frontBook -->
+
+    <owl:DatatypeProperty rdf:about="&fuzz-sit;frontBook">
+        <rdfs:domain rdf:resource="&fuzz-sit;Scene"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#frontCup -->
+
+    <owl:DatatypeProperty rdf:about="&fuzz-sit;frontCup">
+        <rdfs:domain rdf:resource="&fuzz-sit;Scene"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#frontMouse -->
+
+    <owl:DatatypeProperty rdf:about="&fuzz-sit;frontMouse">
+        <rdfs:domain rdf:resource="&fuzz-sit;Scene"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#leftBook -->
+
+    <owl:DatatypeProperty rdf:about="&fuzz-sit;leftBook">
+        <rdfs:domain rdf:resource="&fuzz-sit;Scene"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#leftCup -->
+
+    <owl:DatatypeProperty rdf:about="&fuzz-sit;leftCup">
+        <rdfs:domain rdf:resource="&fuzz-sit;Scene"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#leftMouse -->
+
+    <owl:DatatypeProperty rdf:about="&fuzz-sit;leftMouse">
+        <rdfs:domain rdf:resource="&fuzz-sit;Scene"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#rightBook -->
+
+    <owl:DatatypeProperty rdf:about="&fuzz-sit;rightBook">
+        <rdfs:domain rdf:resource="&fuzz-sit;Scene"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#rightCup -->
+
+    <owl:DatatypeProperty rdf:about="&fuzz-sit;rightCup">
+        <rdfs:domain rdf:resource="&fuzz-sit;Scene"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#rightMouse -->
+
+    <owl:DatatypeProperty rdf:about="&fuzz-sit;rightMouse">
+        <rdfs:domain rdf:resource="&fuzz-sit;Scene"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#Book -->
+
+    <owl:Class rdf:about="&fuzz-sit;Book">
+        <rdfs:subClassOf rdf:resource="&fuzz-sit;Object"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#Cup -->
+
+    <owl:Class rdf:about="&fuzz-sit;Cup">
+        <rdfs:subClassOf rdf:resource="&fuzz-sit;Object"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#Mouse -->
+
+    <owl:Class rdf:about="&fuzz-sit;Mouse">
+        <rdfs:subClassOf rdf:resource="&fuzz-sit;Object"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#Object -->
+
+    <owl:Class rdf:about="&fuzz-sit;Object">
+        <owl:disjointWith rdf:resource="&fuzz-sit;Scene"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#Scene -->
+
+    <owl:Class rdf:about="&fuzz-sit;Scene"/>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#Scene1 -->
+
+    <owl:Class rdf:about="&fuzz-sit;Scene1">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="&fuzz-sit;behindBook"/>
+                        <owl:someValuesFrom rdf:resource="&fuzz-sit;atLeast08"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="&fuzz-sit;frontCup"/>
+                        <owl:someValuesFrom rdf:resource="&fuzz-sit;atLeast09"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="&fuzz-sit;rightMouse"/>
+                        <owl:someValuesFrom rdf:resource="&fuzz-sit;atLeast08"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="&fuzz-sit;Scene"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#Scene2 -->
+
+    <owl:Class rdf:about="&fuzz-sit;Scene2">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&fuzz-sit;rightCup"/>
+                <owl:someValuesFrom rdf:resource="&fuzz-sit;atLeast08"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="&fuzz-sit;Scene"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#Scene3 -->
+
+    <owl:Class rdf:about="&fuzz-sit;Scene3">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="&fuzz-sit;behindBook"/>
+                        <owl:someValuesFrom rdf:resource="&fuzz-sit;atLeast08"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="&fuzz-sit;frontCup"/>
+                        <owl:someValuesFrom rdf:resource="&fuzz-sit;atLeast09"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="&fuzz-sit;Scene"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.emarolab.it/luca-buoncompagni/fuzz-sit#s -->
+
+    <owl:NamedIndividual rdf:about="&fuzz-sit;s">
+        <behindBook rdf:datatype="&xsd;double">0.6</behindBook>
+        <behindMouse rdf:datatype="&xsd;double">0.9</behindMouse>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="&fuzz-sit;Book"/>
+            <rdf:Description rdf:about="&fuzz-sit;Cup"/>
+            <rdf:Description rdf:about="&fuzz-sit;Mouse"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.4.2) http://owlapi.sourceforge.net -->
+

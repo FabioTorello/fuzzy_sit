@@ -1,0 +1,74 @@
+##############################################################
+##  define logics: lukasiewicz, zadeh, classical
+##############################################################
+(define-fuzzy-logic lukasiewicz)
+
+
+##############################################################
+##  define concepts (i.e. class) (those are always defined through a relation)
+##############################################################
+(define-primitive-concept Object *top*)
+(define-primitive-concept Scene *top*)
+
+## DA AUTOMATIZZARE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# (define-primitive-concept Scene1 (at-lest 2 hasRight Object)) $%£"%£%£"&/
+
+# define disjointed concept
+(disjoint Object Scene)
+
+
+##############################################################
+##  define instances with a given membership value (i.e. individual)
+##############################################################
+(instance Sphere Object 0.86)
+(instance Plane Object 0.88)
+(instance S Scene 1)
+
+
+##############################################################
+##  define relations (i.e. object property)
+##############################################################
+(related Sphere Plane rightOf 0.8)
+(related Sphere Plane behindOf 0.3)
+
+## DA AUTOMATIZZARE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+(related S Sphere hasRight 0.8)
+(related S Plane hasRight 0.8)
+(related S Sphere hasBehind 0.3)
+(related S Plane hasBehind 0.3)
+
+##  define relations property
+(inverse rightOf leftOf)
+(inverse behindOf frontOf)
+(transitive rightOf)
+(transitive behindOf)
+(range rightOf Object)
+(domain behindOf Object)
+
+(range hasRight Object)
+(domain hasRight Scene)
+(range hasBehind Object)
+(domain hasBehind Scene)
+
+
+##############################################################
+##  define queries
+##############################################################
+(min-instance? Sphere Object)
+(min-instance? Plane Object)
+(min-related? Plane Sphere leftOf)
+(min-related? Plane Sphere frontOf)
+
+(min-instance? S Scene)
+(min-related? S Sphere hasRight)
+(min-related? S Plane hasRight)
+(min-related? S Sphere hasBehind)
+(min-related? S Plane hasBehind)
+
+
+##############################################################
+##  define debugging logs ????????????????????????????????????
+##############################################################
+#(show-abstract-fillers rightOf)
+#(show-abstract-fillers Object)
+#(show-concepts Object)
