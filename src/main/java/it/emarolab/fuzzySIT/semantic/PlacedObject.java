@@ -191,6 +191,7 @@ public class PlacedObject
         double px = Math.abs( getX() - p.getX()); // px with respect to <this>
         double py = Math.abs( getY() - p.getY()); // py with respect to <this>
 
+        // todo: check possible bag
         return 1 - (2 / Math.PI) * Math.atan( py / px);
     }
 
