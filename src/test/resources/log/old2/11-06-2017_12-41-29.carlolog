@@ -1,5 +1,0 @@
-#T-box file: src/test/resources/easyTableSetup.fuzzydl
-#To generate: ListenerImpl --> TableSetUp = Σ → [	Knife:{Left(0.31), Behind(0.35), Right(0.9), Front(0.9)}	Fork:{Right(0.31), Front(0.88), Behind(0.35), Left(0.9)}	Glass:{Front(0.31), Right(0.53), Behind(0.9), Left(0.51)}	Plate:{Right(0.9), Front(0.9), Left(0.9), Behind(0.31)} ]
-#Hierarchy: ([TableSetUp], [])
-#Starting time:1497177689241
-

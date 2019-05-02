@@ -1,5 +1,0 @@
-#T-box file: src/test/resources/composedTableSetup.fuzzydl
-#To generate: CsvGuidedCarloListener --> FPGK = Σ → [	Knife:{Left(0.4), Behind(0.7), Right(0.9), Front(0.9)}	Fork:{Right(0.4), Front(0.7), Behind(0.7), Left(0.9)}	Glass:{Front(0.4), Right(0.8), Behind(0.9), Left(0.4)}	Plate:{Right(0.8), Front(0.9), Left(0.9), Behind(0.4)} ]
-#Hierarchy: ([FK, FGK, FPGK], [1.0=(FGK,FK), 1.0=(FPGK,FK), 1.0=(FPGK,FGK)])
-#Starting thread 5 at time:1497302129822
-
