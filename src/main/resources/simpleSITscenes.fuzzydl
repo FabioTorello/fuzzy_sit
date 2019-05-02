@@ -12,10 +12,10 @@
 (disjoint Object Scene)
 (disjoint SpatialObject Scene)
 
-(implies Plate Object)
-(implies Glass Object)
-(implies Fork  Object)
-(implies Knife Object)
+(implies Sphere Object)
+(implies Cone Object)
+(implies Cylinder  Object)
+(implies Plane Object)
 
 
 #############################################################################################
@@ -77,25 +77,25 @@
 ## contained in the related spatial relation (ζ).
 #############################################################################################
 
-(define-concept PlateRight  (and Plate (some isRightOf  SpatialObject)))
-(define-concept PlateLeft   (and Plate (some isLeftOf   SpatialObject)))
-(define-concept PlateFront  (and Plate (some isFrontOf  SpatialObject)))
-(define-concept PlateBehind (and Plate (some isBehindOf SpatialObject)))
+(define-concept SphereRight  (and Sphere (some isRightOf  SpatialObject)))
+(define-concept SphereLeft   (and Sphere (some isLeftOf   SpatialObject)))
+(define-concept SphereFront  (and Sphere (some isFrontOf  SpatialObject)))
+(define-concept SphereBehind (and Sphere (some isBehindOf SpatialObject)))
 
-(define-concept GlassRight  (and Glass (some isRightOf  SpatialObject)))
-(define-concept GlassLeft   (and Glass (some isLeftOf   SpatialObject)))
-(define-concept GlassFront  (and Glass (some isFrontOf  SpatialObject)))
-(define-concept GlassBehind (and Glass (some isBehindOf SpatialObject)))
+(define-concept ConeRight  (and Cone (some isRightOf  SpatialObject)))
+(define-concept ConeLeft   (and Cone (some isLeftOf   SpatialObject)))
+(define-concept ConeFront  (and Cone (some isFrontOf  SpatialObject)))
+(define-concept ConeBehind (and Cone (some isBehindOf SpatialObject)))
 
-(define-concept ForkRight  (and Fork (some isRightOf  SpatialObject)))
-(define-concept ForkLeft   (and Fork (some isLeftOf   SpatialObject)))
-(define-concept ForkFront  (and Fork (some isFrontOf  SpatialObject)))
-(define-concept ForkBehind (and Fork (some isBehindOf SpatialObject)))
+(define-concept CylinderRight  (and Cylinder (some isRightOf  SpatialObject)))
+(define-concept CylinderLeft   (and Cylinder (some isLeftOf   SpatialObject)))
+(define-concept CylinderFront  (and Cylinder (some isFrontOf  SpatialObject)))
+(define-concept CylinderBehind (and Cylinder (some isBehindOf SpatialObject)))
 
-(define-concept KnifeRight  (and Knife (some isRightOf  SpatialObject)))
-(define-concept KnifeLeft   (and Knife (some isLeftOf   SpatialObject)))
-(define-concept KnifeFront  (and Knife (some isFrontOf  SpatialObject)))
-(define-concept KnifeBehind (and Knife (some isBehindOf SpatialObject)))
+(define-concept PlaneRight  (and Plane (some isRightOf  SpatialObject)))
+(define-concept PlaneLeft   (and Plane (some isLeftOf   SpatialObject)))
+(define-concept PlaneFront  (and Plane (some isFrontOf  SpatialObject)))
+(define-concept PlaneBehind (and Plane (some isBehindOf SpatialObject)))
 
 #############################################################################################
 ##    Learning

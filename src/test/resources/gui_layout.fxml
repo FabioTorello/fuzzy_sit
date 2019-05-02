@@ -41,7 +41,7 @@
                                  <content>
                                     <VBox prefWidth="303.0" style="-fx-background-color: #ddff99;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <Canvas fx:id="table" height="200.0" width="350.0" />
+                                          <Canvas fx:id="table" height="350.0" width="350.0" />
                                           <VBox fx:id="objectTypeLayout" prefWidth="303.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children></VBox>
                                  </content></ScrollPane>

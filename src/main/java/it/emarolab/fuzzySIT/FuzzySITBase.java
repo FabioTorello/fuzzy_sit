@@ -38,8 +38,8 @@ public interface FuzzySITBase {
     String FILE_FUZZYDL_CONFIG = PATH_BASE + "fuzzyDL_CONFIG";
     String FILE_ONTOLOGY_LOAD = PATH_BASE + "example_SIT_kb.fuzzydl";
 
-    boolean FLAG_LOG_SHOW = true;
-    boolean FLAG_LOG_VERBOSE = true;
+    boolean FLAG_LOG_SHOW = false;
+    boolean FLAG_LOG_VERBOSE = false;
 
     String INDIVIDUAL_SCENE = "s";
 
@@ -67,7 +67,7 @@ public interface FuzzySITBase {
     double ROLE_SHOULDER_MIN = 0;
     double ROLE_SHOULDER_MAX = 20;
     double ROLE_SHOULDER_BOTTOM_PERCENT = 50;// - x%
-    String ROLE_SHOULDER_RESOLUTION = "#.#"; // todo adjust
+    String ROLE_SHOULDER_RESOLUTION = "#.######"; // todo adjust
 
     int LOG_TIME_LENGTH = 20;
 
