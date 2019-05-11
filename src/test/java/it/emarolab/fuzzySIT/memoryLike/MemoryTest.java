@@ -12,6 +12,7 @@ public class MemoryTest {
         // instanciate a T-Box with the default T-Box ontology and reasoner configuration file
         SITTBox h = new SITTBox(FuzzySITBase.PATH_BASE + "table_assembling_memory_example.fuzzydl");
 
+        
         ConnectObjectScene scene = new ConnectObjectScene();
         scene.addLeg(.01,50, .977); // L0
         scene.addPen(.0, 50, .977); // P0
@@ -19,37 +20,41 @@ public class MemoryTest {
         scene.addScrewDriver(2.29, 50, .8); // S0
         scene.addLeg(2.0, 50, .8); // L1
         System.out.println( scene);
-
         SITABox r = new SITABox(h, scene.getObjects(), scene.getRelations());
-
-        System.out.println( "$$$$ " + r.getDefinition());
+        System.out.println( "$$$$ 1" + r.getDefinition());
         h.learn( "Scene1", r);
+        r = new SITABox(h, scene.getObjects(), scene.getRelations());
+        System.out.println( "$$$$ 2" + r.getRecognitions());
 
 
-        /*
-        format();
-        r = new SITABox(h, objects, relations);
-        h.learn( "Scene1", r);
-
-        System.out.println("-------------------------  S1   ------------------------");
-        // create S1 and recognise it
-        format();
-        r = new SITABox(h, objects, relations);
-        System.out.println("------------------------- learn ------------------------");
-        // learn S1
-        h.learn( "Scene1", r);
-        System.out.println("---------------------- recognition ---------------------");
-        // recognise again S1 (hp: full recognition since learned)
-        new SITABox(h, objects, relations);
-        System.out.println("--------------------------------------------------------");
+        scene = new ConnectObjectScene();
+        scene.addTable(.01,50, .977); // L0
+        scene.addPen(.0, 50, .977); // P0
+        scene.addLeg(20, 50, .8); // T0
+        scene.addScrewDriver(2.29, 50, .8); // S0
+        scene.addLeg(2.0, 50, .8); // L1
+        System.out.println( scene);
+        r = new SITABox(h, scene.getObjects(), scene.getRelations());
+        System.out.println( "$$$$ 3" + r.getDefinition());
+        h.learn( "Scene2", r);
+        r = new SITABox(h, scene.getObjects(), scene.getRelations());
+        System.out.println( "$$$$ 2" + r.getRecognitions());
 
 
+        scene = new ConnectObjectScene();
+        scene.addTable(.01,50, .977); // L0
+        scene.addPen(.0, 50, .977); // P0
+        System.out.println( scene);
+        r = new SITABox(h, scene.getObjects(), scene.getRelations());
+        System.out.println( "$$$$ 4" + r.getDefinition());
+        h.learn( "Scene3", r);
+        r = new SITABox(h, scene.getObjects(), scene.getRelations());
+        System.out.println( "$$$$ 5" + r.getRecognitions());
 
         System.out.println("-------------------------  show ------------------------");
         // shows the inferred and learned SIT scene hierarchy
         h.show();
         // saved the augmented ontology
-        h.saveTbox("src/test/resources/learnedTest.fuzzydl");
-        */
+        //h.saveTbox("src/test/resources/learnedTest.fuzzydl");
     }
 }
