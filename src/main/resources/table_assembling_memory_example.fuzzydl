@@ -8,8 +8,10 @@
 #############################################################################################
 
 (define-primitive-concept Object *top*)
+(define-primitive-concept SpatialObject Object)
 (define-primitive-concept Scene  *top*)
 (disjoint Object Scene)
+(disjoint SpatialObject Scene)
 
 (implies Leg         Object)
 (implies Table       Object)
@@ -24,9 +26,10 @@
 ## this implies to adjust the below Δ specifications
 #############################################################################################
 
-(range  isConnectedTo Object)
-(domain isConnectedTo Object)
+(range  isConnectedTo SpatialObject)
+(domain isConnectedTo SpatialObject)
 
+#(reflexive isConnectedTo)
 #(inverse isConnectedTo isConnectedTo)
 #(transitive isConnectedTo)
 
@@ -61,10 +64,10 @@
 #############################################################################################
 
 
-(define-concept LegConnected         (and Leg         (some isConnectedTo  Object)))
-(define-concept TableConnected       (and Table       (some isConnectedTo  Object)))
-(define-concept ScrewdriverConnected (and Screwdriver (some isConnectedTo  Object)))
-(define-concept PenConnected         (and Pen         (some isConnectedTo  Object)))
+(define-concept LegConnected         (and Leg         (some isConnectedTo  SpatialObject)))
+(define-concept TableConnected       (and Table       (some isConnectedTo  SpatialObject)))
+(define-concept ScrewdriverConnected (and Screwdriver (some isConnectedTo  SpatialObject)))
+(define-concept PenConnected         (and Pen         (some isConnectedTo  SpatialObject)))
 
 
 #############################################################################################

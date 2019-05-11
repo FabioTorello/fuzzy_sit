@@ -44,7 +44,7 @@ public interface FuzzySITBase {
     String INDIVIDUAL_SCENE = "s";
 
     String CONCEPT_SCENE_TOP = "Scene";
-    String CONCEPT_SPATIAL_TOP = "Object";
+    String CONCEPT_SPATIAL_TOP = "SpatialObject";
 
     Double LIMIT_LOW = 0.0;
     Double LIMIT_HIGH = 100.0;
@@ -67,7 +67,7 @@ public interface FuzzySITBase {
     double ROLE_SHOULDER_MIN = 0;
     double ROLE_SHOULDER_MAX = 20;
     double ROLE_SHOULDER_BOTTOM_PERCENT = 50;// - x%
-    String ROLE_SHOULDER_RESOLUTION = "#.######"; // todo adjust
+    String ROLE_SHOULDER_RESOLUTION = "#.###"; // todo adjust
 
     int LOG_TIME_LENGTH = 20;
 

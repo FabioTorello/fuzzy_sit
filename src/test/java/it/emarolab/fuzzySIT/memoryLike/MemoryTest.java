@@ -15,9 +15,9 @@ public class MemoryTest {
         ConnectObjectScene scene = new ConnectObjectScene();
         scene.addLeg(.01,50, .977); // L0
         scene.addPen(.0, 50, .977); // P0
-        //scene.addTable(20, 50, .8); // T0
-        //scene.addScrewDriver(2.29, 50, .8); // S0
-        //scene.addLeg(2.0, 50, .8); // L1
+        scene.addTable(20, 50, .8); // T0
+        scene.addScrewDriver(2.29, 50, .8); // S0
+        scene.addLeg(2.0, 50, .8); // L1
         System.out.println( scene);
 
         SITABox r = new SITABox(h, scene.getObjects(), scene.getRelations());
