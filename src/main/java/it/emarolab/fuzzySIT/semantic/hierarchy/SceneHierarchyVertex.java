@@ -50,6 +50,15 @@ public class SceneHierarchyVertex
     private Set<String> objectType; // todo remove????
     private Collection<Map<String, Double>> objectDistribution; //<Type,Degree> for all objects todo make a class and check comments
 
+    // TODO work around of a bad definition
+    private double memoryScore;
+    public double getMemoryScore() {
+        return memoryScore;
+    }
+    public void setMemoryScore(double memoryScore) {
+        this.memoryScore = memoryScore;
+    }
+
     /**
      * Instanciate a new scene hierarchy vertex by specifying all its members.
      * @param scene the unique identifying name of {@code this} scene.
@@ -115,7 +124,7 @@ public class SceneHierarchyVertex
 
     @Override
     public String toString() {
-        return String.valueOf(getScene());
+        return getScene() + "(score:" + memoryScore + ")";
     }
 
     // todo equal ?????

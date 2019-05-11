@@ -12,7 +12,7 @@ public class MemoryTest {
         // instanciate a T-Box with the default T-Box ontology and reasoner configuration file
         SITTBox h = new SITTBox(FuzzySITBase.PATH_BASE + "table_assembling_memory_example.fuzzydl");
 
-        
+
         ConnectObjectScene scene = new ConnectObjectScene();
         scene.addLeg(.01,50, .977); // L0
         scene.addPen(.0, 50, .977); // P0
@@ -46,6 +46,8 @@ public class MemoryTest {
         scene.addPen(.0, 50, .977); // P0
         System.out.println( scene);
         r = new SITABox(h, scene.getObjects(), scene.getRelations());
+
+
         System.out.println( "$$$$ 4" + r.getDefinition());
         h.learn( "Scene3", r);
         r = new SITABox(h, scene.getObjects(), scene.getRelations());
