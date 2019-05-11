@@ -1,30 +1,29 @@
 package it.emarolab.fuzzySIT.memoryLike;
 
+import it.emarolab.fuzzySIT.FuzzySITBase;
 import it.emarolab.fuzzySIT.perception.simple2D.ConnectObjectScene;
+import it.emarolab.fuzzySIT.semantic.SITABox;
+import it.emarolab.fuzzySIT.semantic.SITTBox;
 
 public class MemoryTest {
 
     public static void main(String[] args) {
 
         // instanciate a T-Box with the default T-Box ontology and reasoner configuration file
- /*       SITABox r;
-        SITTBox h = new SITTBox();
-
-*/
-
+        SITTBox h = new SITTBox(FuzzySITBase.PATH_BASE + "table_assembling_memory_example.fuzzydl");
 
         ConnectObjectScene scene = new ConnectObjectScene();
-        scene.addLeg(.01,50,.8); // L0
-        scene.addPen(.0, 50, .8); // P0
-
-        System.out.println( scene);
-        scene.addTable(20, 50, .8); // T0
-
-        scene.addScrewDriver(2.29, 50, .8); // S0
-        System.out.println( scene);
-        scene.addLeg(2.0, 50, .8); // L1
+        scene.addLeg(.01,50, .977); // L0
+        scene.addPen(.0, 50, .977); // P0
+        //scene.addTable(20, 50, .8); // T0
+        //scene.addScrewDriver(2.29, 50, .8); // S0
+        //scene.addLeg(2.0, 50, .8); // L1
         System.out.println( scene);
 
+        SITABox r = new SITABox(h, scene.getObjects(), scene.getRelations());
+
+        System.out.println( "$$$$ " + r.getDefinition());
+        h.learn( "Scene1", r);
 
 
         /*

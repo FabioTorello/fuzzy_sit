@@ -25,7 +25,7 @@ public class FeaturedSpatialObject<F> extends SpatialObject {
 
     @Override
     public String toString() {
-        return super.toString() + "⟨Feature:" + feature + "⟩";
+        return super.toString() + "⟨" + feature + "⟩";
     }
 
     @Override

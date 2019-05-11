@@ -38,13 +38,13 @@ public interface FuzzySITBase {
     String FILE_FUZZYDL_CONFIG = PATH_BASE + "fuzzyDL_CONFIG";
     String FILE_ONTOLOGY_LOAD = PATH_BASE + "example_SIT_kb.fuzzydl";
 
-    boolean FLAG_LOG_SHOW = false;
-    boolean FLAG_LOG_VERBOSE = false;
+    boolean FLAG_LOG_SHOW = true;
+    boolean FLAG_LOG_VERBOSE = true;
 
     String INDIVIDUAL_SCENE = "s";
 
     String CONCEPT_SCENE_TOP = "Scene";
-    String CONCEPT_SPATIAL_TOP = "SpatialObject";
+    String CONCEPT_SPATIAL_TOP = "Object";
 
     Double LIMIT_LOW = 0.0;
     Double LIMIT_HIGH = 100.0;

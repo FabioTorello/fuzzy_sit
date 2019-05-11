@@ -158,8 +158,7 @@ public class SITABox
                         try {
                             MinInstanceQuery q = new MinInstanceQuery(abox.getConcept(s), o.getFuzzyObject(abox));
                             double sol = q.solve(abox).getSolution();
-                            log(FLAG_LOG_VERBOSE, q.getTotalTime(), "\t?? " + o.getObject() + " ∈ " + s + " ("
-                                    + sol + ")");
+                            log(FLAG_LOG_VERBOSE, q.getTotalTime(), "\t?? " + o.getObject() + " ∈ " + s + " (" + sol + ")");
                             if (sol > 0) // comment this for exhaustive sigma count (no open-world assumption)
                                 sigma.add(tbox.getSpatial().get(s), sol);
                             valuatedObjectName.add(o.getObject());

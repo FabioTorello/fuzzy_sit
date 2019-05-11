@@ -13,6 +13,7 @@ public class ConnectObjectScene extends PerceptionBase<Point2> {
     public static final String PEN = "Pen";
     // the name of the spatial relations used in this example (ζ)
     public static final String CONNECTED = "isConnectedTo";
+    public static final String NOT_CONNECTED = "isNotConnectedTo";
 
     private static final double CONNECTED_THRESHOLD = 0.3; // meters (positive number)
 
@@ -40,21 +41,15 @@ public class ConnectObjectScene extends PerceptionBase<Point2> {
     protected SpatialRelation computeRelation(FeaturedSpatialObject<Point2> anObject, FeaturedSpatialObject<Point2> newObject) {
         Point2 aFeature = anObject.getFeature();
         Point2 newFeature = newObject.getFeature();
-        double connection = connectedDegree( aFeature, newFeature);
+        double connection = aFeature.distance( newFeature);
         if ( connection <= CONNECTED_THRESHOLD) {
             double degree = 1 - (Math.abs( connection) / CONNECTED_THRESHOLD);
             if ( degree >= 0 & degree <= 1)
                 return new SpatialRelation(anObject.getObject(), CONNECTED, newObject.getObject(), degree);
-            else System.err.println("Error on computing fuzzy degree: 1-" +
-                    + connection + "/" + CONNECTED_THRESHOLD + "=" + degree);
+            else System.err.println("Error on computing fuzzy degree: 1-" + connection + "/" + CONNECTED_THRESHOLD + "=" + degree);
         }
         return null;
     }
-    private double connectedDegree( Point2 p1, Point2 p2){
-        return p1.distance( p2) ;
-    }
-
-
 
     public void addLeg( double xPose, double yPose, double degree){
         Point2 feature = new Point2(xPose,yPose);
