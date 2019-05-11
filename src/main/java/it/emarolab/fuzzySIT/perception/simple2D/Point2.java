@@ -1,4 +1,4 @@
-package it.emarolab.fuzzySIT.perception;
+package it.emarolab.fuzzySIT.perception.simple2D;
 
 public class Point2 {
 

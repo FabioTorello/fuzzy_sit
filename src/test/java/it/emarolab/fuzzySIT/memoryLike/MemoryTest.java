@@ -1,15 +1,6 @@
 package it.emarolab.fuzzySIT.memoryLike;
 
-import it.emarolab.fuzzySIT.perception.ConnectObjectScene;
-import it.emarolab.fuzzySIT.perception.Point2;
-import it.emarolab.fuzzySIT.semantic.SITABox;
-import it.emarolab.fuzzySIT.semantic.SITTBox;
-import it.emarolab.fuzzySIT.semantic.axioms.SpatialObject;
-import it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
-import javafx.scene.Scene;
-
-import java.util.HashSet;
-import java.util.Set;
+import it.emarolab.fuzzySIT.perception.simple2D.ConnectObjectScene;
 
 public class MemoryTest {
 
@@ -34,7 +25,7 @@ public class MemoryTest {
         scene.addLeg(2.0, 50, .8); // L1
         System.out.println( scene);
 
-        
+
 
         /*
         format();

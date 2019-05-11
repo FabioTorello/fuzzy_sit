@@ -1,8 +1,10 @@
-package it.emarolab.fuzzySIT.perception;
+package it.emarolab.fuzzySIT.perception.simple2D;
 
+import it.emarolab.fuzzySIT.perception.FeaturedSpatialObject;
+import it.emarolab.fuzzySIT.perception.PerceptionBase;
 import it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
 
-public class ConnectObjectScene extends PerceptionBase<Point2>{
+public class ConnectObjectScene extends PerceptionBase<Point2> {
 
     // the name of the types of objects in this example (π)
     public static final String LEG = "Leg";
