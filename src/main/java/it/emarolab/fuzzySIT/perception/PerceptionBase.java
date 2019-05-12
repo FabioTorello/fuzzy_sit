@@ -43,7 +43,7 @@ public abstract class PerceptionBase<F> {
     }
 
     public String toString(){
-        return "<<" + objects + ", " + relations + ">>";
+        return  sceneName + "<<" + objects + ", " + relations + ">>";
     }
 
 

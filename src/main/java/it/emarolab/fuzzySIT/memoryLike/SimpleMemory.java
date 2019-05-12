@@ -1,19 +1,24 @@
 package it.emarolab.fuzzySIT.memoryLike;
 
+import it.emarolab.fuzzySIT.FuzzySITBase;
+import it.emarolab.fuzzySIT.perception.simple2D.ConnectObjectScene;
 import it.emarolab.fuzzySIT.semantic.SITABox;
 import it.emarolab.fuzzySIT.semantic.SITTBox;
 import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyEdge;
 import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
 import org.jgrapht.ListenableGraph;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class SimpleMemory extends MemoryInterface{
 
     private static String SCENE_PREFIX = "Scene";
     private static final double LEARNED_SCORE = .5;
     private static final double ENCODE_TH = .5; // threshold above which it consolidates
-    private static final double LEARN_TH = .8; // threshold under which it learns
+    private static final double LEARN_TH = 1; // threshold under which it learns
     private static final double SCORE_WEAK = 1;
 
     private static int sceneCnt = 0;
@@ -37,11 +42,10 @@ public class SimpleMemory extends MemoryInterface{
         // if encoded scene can be recognized, update score
         boolean shouldLearn = true;
         for ( SceneHierarchyVertex recognisedScene : rec.keySet()){
-            double recognizedValue = rec.get( recognisedScene);
-            if( recognizedValue >= ENCODE_TH) // update score
+            double recognisedValue = rec.get( recognisedScene);
+            if( recognisedValue >= ENCODE_TH) // update score
                 updateScoreStoring(recognisedScene);
-            System.out.println("$$$$$$$$$$$$$$$$$$$ " + similarityValue(recognisedScene));
-            if( similarityValue(recognisedScene) >= LEARN_TH)
+            if( similarityValue(recognisedScene, recognisedValue) >= LEARN_TH)
                 shouldLearn = false;
             /*if( recognizedValue >= LEARN_TH)
                 shouldLearn = false;*/
@@ -54,10 +58,15 @@ public class SimpleMemory extends MemoryInterface{
     protected void updateScoreStoring(SceneHierarchyVertex recognisedScene) {
         updateScorePolicy( recognisedScene);
     }
-    private double similarityValue(SceneHierarchyVertex recognisedScene){
-        return recognisedScene.getDefinition().getCardinality() / getAbox().getDefinition().getCardinality();
+    private double similarityValue(SceneHierarchyVertex recognisedScene, double recognisedValue){
+        //double fuzzyness = FuzzySITBase.ROLE_SHOULDER_BOTTOM_PERCENT * recognisedScene.getDefinition().getCardinality() /100;
+        double actualCardinality = getAbox().getDefinition().getCardinality();
+        double memoryCardinality = recognisedScene.getDefinition().getCardinality();
+        double out = memoryCardinality / actualCardinality;
+        if ( out > 1)
+            System.err.println("WARNING: similarity value " + out + " for: " + getAbox().getDefinition() +"="+ actualCardinality + ", and " + recognisedScene.getDefinition() +"=" + memoryCardinality);
+        return  out;
     }
-
 
     @Override
     public boolean retrieve() { // TODO very minimal retrieve support, adjust and implement it better!
@@ -104,12 +113,16 @@ public class SimpleMemory extends MemoryInterface{
     }
 
     @Override
-    public void forget(){
+    public Set<SceneHierarchyVertex> forget(){
         ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> h = getTbox().getHierarchy();
+        Set<SceneHierarchyVertex> forgotten = new HashSet<>();
         // find weak score in the memory graph
         for( SceneHierarchyVertex scene : h.vertexSet()){
-            if( scene.getMemoryScore() < SCORE_WEAK)
-                scene.setMemoryScore( -1); // score getter will be always 0
+            if( scene.getMemoryScore() < SCORE_WEAK) {
+                scene.setMemoryScore(-1); // score getter will be always 0
+                forgotten.add( scene);
+            }
         }
+        return forgotten;
     }
 }

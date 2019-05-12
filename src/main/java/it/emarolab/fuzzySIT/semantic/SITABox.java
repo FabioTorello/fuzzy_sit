@@ -266,5 +266,4 @@ public class SITABox
     public Collection<Map<String, Double>> getObjectDistribution() {
         return objectDistribution;
     }
-
 }

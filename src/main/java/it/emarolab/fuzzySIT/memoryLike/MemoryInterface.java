@@ -6,6 +6,7 @@ import it.emarolab.fuzzySIT.semantic.SITTBox;
 import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
 
 import java.util.Map;
+import java.util.Set;
 
 public abstract class MemoryInterface {
 
@@ -67,5 +68,5 @@ public abstract class MemoryInterface {
     // CONSOLIDATE: update score items
     protected abstract void consolidate();
     // FORGET: remove weak scored items
-    public abstract void forget();
+    public abstract Set<SceneHierarchyVertex> forget();
 }

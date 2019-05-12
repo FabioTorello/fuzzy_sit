@@ -2,6 +2,7 @@ package it.emarolab.fuzzySIT.semantic.hierarchy;
 
 import it.emarolab.fuzzySIT.semantic.SigmaCounters;
 import it.emarolab.fuzzySIT.semantic.SITABox;
+import it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -53,10 +54,8 @@ public class SceneHierarchyVertex
     // TODO work around of a bad definition
     private double memoryScore; // set memory score to a negative number to freeze it to 0
     public double getMemoryScore() {
-        if ( memoryScore < 0) {
-            System.out.println( "Experience: " + this + " SCORE FREEZE with " + memoryScore);
+        if ( memoryScore < 0)
             return 0;
-        }
         return memoryScore;
     }
     public void setMemoryScore(double score) {

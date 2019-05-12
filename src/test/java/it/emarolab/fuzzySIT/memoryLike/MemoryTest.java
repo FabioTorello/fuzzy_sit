@@ -4,6 +4,9 @@ import it.emarolab.fuzzySIT.FuzzySITBase;
 import it.emarolab.fuzzySIT.perception.PerceptionBase;
 import it.emarolab.fuzzySIT.perception.simple2D.ConnectObjectScene;
 import it.emarolab.fuzzySIT.semantic.SITTBox;
+import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
+
+import java.util.Set;
 
 
 class MemoryExample{
@@ -23,6 +26,7 @@ class MemoryExample{
     private void experience(PerceptionBase scene, boolean storeOrRetrieve){ // true: from store, false: from retrieve
         // must always be done before to store or retrieve
         memory.encode( scene);
+        System.out.println( "[ENCODE]\t experience: " + scene);
         // set store or retrieve cases
         boolean shouldConsolidate;
         String logs;
@@ -31,17 +35,21 @@ class MemoryExample{
                 shouldConsolidate = memory.store();
             else shouldConsolidate = memory.store( scene.getSceneName());
             logs = "storing";
+            if( shouldConsolidate)
+                System.out.println( "[LEARN ]\t experience: " + scene);
         } else {
             shouldConsolidate = memory.retrieve();
             logs = "retrieving";
         }
         // synchronous consolidation and forgetting
         if ( shouldConsolidate) {
-            System.out.print( " Consolidating new experience from " + logs + "(Scene:" + scene + " -> ");
             memory.consolidate();
-            memory.forget();
+            System.out.println( "[CONSOL.]\t new experience from " + logs + " " + scene.toString() + " -> ");
+            Set<SceneHierarchyVertex> forgotten = memory.forget();
+            System.out.println( "[FORGET]\t freeze nodes: " + forgotten);
         }
-        System.out.println( "Recognized: " + memory.recognize() + ")");
+        System.out.println( "[RECOGN.]\t experience: " + memory.recognize());
+        System.out.println( "----------------------------------------------");
     }
 
     public SimpleMemory accessMemory(){
@@ -69,16 +77,17 @@ public class MemoryTest {
     public static ConnectObjectScene sceneTable(){
         ConnectObjectScene scene = new ConnectObjectScene( "SceneTable");
         scene.addTable(0,0, .9);
+        scene.addPen( 0, .1, .9);
         scene.addLeg( -.5, .2, .9);
-        scene.addScrewDriver( -.5, .25, .9);
+        scene.addLeg( -.5, .21, .9);
         return scene;
     }
 
     private static ConnectObjectScene sceneLeg1(){
         ConnectObjectScene scene = new ConnectObjectScene();
         scene.addTable(0,0, .9);
-        scene.addLeg( 0, 0.03, .9);
-        scene.addLeg( -.5, .2, .9);
+        scene.addLeg( 0, .07, .9);
+        scene.addLeg( -.7, .02, .9);
         scene.setSceneName( "SceneLeg1");
         return scene;
     }
@@ -161,12 +170,12 @@ public class MemoryTest {
         //Thread shower1 = sceneShow( scene1());// TODO it can be shown only one at run
 
         // memory evolution
-        memory.storeExperience( scene0());
-        memory.storeExperience( scene0b());
+        //memory.storeExperience( scene0());
+        //memory.storeExperience( scene0b());
         memory.storeExperience( sceneTable());
         memory.storeExperience( sceneLeg1());
         memory.storeExperience( sceneLeg2());
-        memory.storeExperience( scene1());
+        /*memory.storeExperience( scene1());
         memory.storeExperience( scene2());
         memory.storeExperience( sceneTable());
         memory.storeExperience( sceneLeg1());
@@ -188,7 +197,7 @@ public class MemoryTest {
         memory.storeExperience( sceneTable());
         memory.storeExperience( sceneLeg1());
         memory.storeExperience( sceneLeg2());
-        memory.storeExperience( scene3());
+        memory.storeExperience( scene3());*/
 
         // TODO Retrieving template code implemented but not tested
         // It might learn as well (i.e., a requested scene gives information as an observed one)
