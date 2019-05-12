@@ -34,17 +34,18 @@ public abstract class MemoryInterface {
 
     //                 FUNCTIONALITY
     // LEARN: generate and STRUCTURES a new memory item from encoded data
-    protected void learn(String sceneName, double initialScore){
+    protected SceneHierarchyVertex learn(String sceneName, double initialScore){
         if (getScene().getObjects().isEmpty()){
             System.err.println( "WARNING: Scene cannot be learned with a scene having an empty object set");
-            return;
+            return null;
         }
         if( getScene().getRelations().isEmpty()){
             System.err.println( "WARNING: Scene cannot be learned with a scene having an empty relation set");
-            return;
+            return null;
         }
         SceneHierarchyVertex learnedScene = tbox.learn(sceneName, abox);
         learnedScene.setMemoryScore( initialScore);
+        return learnedScene;
     }
     // RECOGNIZE: QUERY classified memory items from encoded data
     protected Map<SceneHierarchyVertex, Double> recognize(){
@@ -62,9 +63,9 @@ public abstract class MemoryInterface {
 
     // TODO update function documentation
     // STORE: lear or update the scores (returns TRUE:learned, FALSE:recognized)
-    protected abstract boolean store(String sceneName);
+    protected abstract SceneHierarchyVertex store(String sceneName);
     // RETRIEVE: query the BEST scene and update score (returns TRUE: at least one score is updated, FALSE: no recognition)
-    public abstract boolean retrieve();
+    public abstract SceneHierarchyVertex retrieve();
     // CONSOLIDATE: update score items
     protected abstract void consolidate();
     // FORGET: remove weak scored items
