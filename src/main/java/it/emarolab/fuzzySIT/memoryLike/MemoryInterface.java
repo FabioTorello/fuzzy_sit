@@ -34,6 +34,14 @@ public abstract class MemoryInterface {
     //                 FUNCTIONALITY
     // LEARN: generate and STRUCTURES a new memory item from encoded data
     protected void learn(String sceneName, double initialScore){
+        if (getScene().getObjects().isEmpty()){
+            System.err.println( "WARNING: Scene cannot be learned with a scene having an empty object set");
+            return;
+        }
+        if( getScene().getRelations().isEmpty()){
+            System.err.println( "WARNING: Scene cannot be learned with a scene having an empty relation set");
+            return;
+        }
         SceneHierarchyVertex learnedScene = tbox.learn(sceneName, abox);
         learnedScene.setMemoryScore( initialScore);
     }

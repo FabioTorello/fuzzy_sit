@@ -29,9 +29,7 @@
 (range  isConnectedTo SpatialObject) # Object
 (domain isConnectedTo SpatialObject)
 
-#(reflexive isConnectedTo)
-#(inverse isConnectedTo isConnectedTo)
-#(transitive isConnectedTo)
+(inverse isConnectedTo isConnectedTo)
 
 
 #############################################################################################

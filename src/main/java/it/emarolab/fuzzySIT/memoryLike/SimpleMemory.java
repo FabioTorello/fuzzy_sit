@@ -1,5 +1,6 @@
 package it.emarolab.fuzzySIT.memoryLike;
 
+import it.emarolab.fuzzySIT.semantic.SITABox;
 import it.emarolab.fuzzySIT.semantic.SITTBox;
 import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyEdge;
 import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
@@ -11,8 +12,9 @@ public class SimpleMemory extends MemoryInterface{
 
     private static String SCENE_PREFIX = "Scene";
     private static final double LEARNED_SCORE = .5;
-    private static final double ENCODE_TH = .5;
-    private static final double SCORE_WEAK = .3;
+    private static final double ENCODE_TH = .5; // threshold above which it consolidates
+    private static final double LEARN_TH = .8; // threshold under which it learns
+    private static final double SCORE_WEAK = 1;
 
     private static int sceneCnt = 0;
 
@@ -36,21 +38,26 @@ public class SimpleMemory extends MemoryInterface{
         boolean shouldLearn = true;
         for ( SceneHierarchyVertex recognisedScene : rec.keySet()){
             double recognizedValue = rec.get( recognisedScene);
-            if( recognizedValue > ENCODE_TH) // update score
+            if( recognizedValue >= ENCODE_TH) // update score
                 updateScoreStoring(recognisedScene);
-            if( recognizedValue == 1)
-                shouldLearn = true;
+            System.out.println("$$$$$$$$$$$$$$$$$$$ " + similarityValue(recognisedScene));
+            if( similarityValue(recognisedScene) >= LEARN_TH)
+                shouldLearn = false;
+            /*if( recognizedValue >= LEARN_TH)
+                shouldLearn = false;*/
         }
         // if encoded scene can be recognized, learn new scene
-        if ( shouldLearn) {
+        if ( shouldLearn)
             learn(sceneName, LEARNED_SCORE);
-            return true;
-        }
-        return false;
+        return shouldLearn;
     }
     protected void updateScoreStoring(SceneHierarchyVertex recognisedScene) {
         updateScorePolicy( recognisedScene);
     }
+    private double similarityValue(SceneHierarchyVertex recognisedScene){
+        return recognisedScene.getDefinition().getCardinality() / getAbox().getDefinition().getCardinality();
+    }
+
 
     @Override
     public boolean retrieve() { // TODO very minimal retrieve support, adjust and implement it better!

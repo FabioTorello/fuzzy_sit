@@ -10,6 +10,19 @@ public abstract class PerceptionBase<F> {
     private Set<FeaturedSpatialObject<F>> objects = new HashSet<>(); // the set of objects in the SIT scene to test
     private Set<SpatialRelation> relations = new HashSet<>(); // the set of relations in the SIT scene to test
 
+    public PerceptionBase() {}
+    public PerceptionBase(String sceneName) {
+        this.sceneName = sceneName;
+    }
+
+    private String sceneName = ""; // if it is empty use sequential naming
+    public String getSceneName() {
+        return sceneName;
+    }
+    public void setSceneName(String sceneName) {
+        this.sceneName = sceneName;
+    }
+
     protected void addObject(String type, String object, double degree, F feature){
         FeaturedSpatialObject<F> newObject = new FeaturedSpatialObject<>(type, object, degree, feature);
         for ( FeaturedSpatialObject<F> obj : getObjects()) {
@@ -30,7 +43,7 @@ public abstract class PerceptionBase<F> {
     }
 
     public String toString(){
-        return "<<\t" + objects + "\n\t" + relations + ">>";
+        return "<<" + objects + ", " + relations + ">>";
     }
 
 

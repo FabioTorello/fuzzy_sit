@@ -3,6 +3,10 @@ package it.emarolab.fuzzySIT.perception.simple2D;
 import it.emarolab.fuzzySIT.perception.FeaturedSpatialObject;
 import it.emarolab.fuzzySIT.perception.PerceptionBase;
 import it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
+import javafx.scene.chart.XYChart;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class ConnectObjectScene extends PerceptionBase<Point2> {
 
@@ -13,9 +17,8 @@ public class ConnectObjectScene extends PerceptionBase<Point2> {
     public static final String PEN = "Pen";
     // the name of the spatial relations used in this example (ζ)
     public static final String CONNECTED = "isConnectedTo";
-    public static final String NOT_CONNECTED = "isNotConnectedTo";
 
-    private static final double CONNECTED_THRESHOLD = 0.3; // meters (positive number)
+    private static final double CONNECTED_THRESHOLD = 0.1; // meters (positive number)
 
     // the name of individuals indicating objects in the scene
     public static final String LEG_IND_PREFIX = "L";
@@ -37,6 +40,11 @@ public class ConnectObjectScene extends PerceptionBase<Point2> {
         return PEN_IND_PREFXI + penCnt++;
     }
 
+    public ConnectObjectScene() {}
+    public ConnectObjectScene(String sceneName) {
+        super(sceneName);
+    }
+
     @Override
     protected SpatialRelation computeRelation(FeaturedSpatialObject<Point2> anObject, FeaturedSpatialObject<Point2> newObject) {
         Point2 aFeature = anObject.getFeature();
@@ -44,9 +52,10 @@ public class ConnectObjectScene extends PerceptionBase<Point2> {
         double connection = aFeature.distance( newFeature);
         if ( connection <= CONNECTED_THRESHOLD) {
             double degree = 1 - (Math.abs( connection) / CONNECTED_THRESHOLD);
-            if ( degree >= 0 & degree <= 1)
+            // [0.000000000000001,0.999999999999999] set with resolution ROLE_SHOULDER_RESOLUTION = "#.####"; and ROLE_SHOULDER_RESOLUTION = "#.####";
+            if ( degree >= 0.000000000000001 & degree <= .999999999999999)
                 return new SpatialRelation(anObject.getObject(), CONNECTED, newObject.getObject(), degree);
-            else System.err.println("Error on computing fuzzy degree: 1-" + connection + "/" + CONNECTED_THRESHOLD + "=" + degree);
+            //else System.err.println("Error on computing fuzzy degree: 1-" + connection + "/" + CONNECTED_THRESHOLD + "=" + degree);
         }
         return null;
     }
@@ -67,4 +76,28 @@ public class ConnectObjectScene extends PerceptionBase<Point2> {
         Point2 feature = new Point2(xPose,yPose);
         this.addObject( ConnectObjectScene.PEN, ConnectObjectScene.getNewPenInd(), degree, feature);
     }
+
+
+    public Set<XYChart.Data> getLegsPosition(){
+        return getObjectPosition( LEG);
+    }
+    public Set<XYChart.Data> getTablesPosition(){
+        return getObjectPosition( TABLE);
+    }
+    public Set<XYChart.Data> getPensPosition(){
+        return getObjectPosition( PEN);
+    }
+    public Set<XYChart.Data> getScrewDrivers(){
+        return getObjectPosition( SCREWDRIVER);
+    }
+    private Set<XYChart.Data> getObjectPosition( String type){
+        Set<XYChart.Data> out = new HashSet<>();
+        for( FeaturedSpatialObject obj : getObjects())
+            if( obj.getType().equals( type)) {
+                Point2 feature = (Point2) obj.getFeature();
+                out.add( new XYChart.Data( feature.getX(),feature.getY()));
+            }
+        return out;
+    }
+
 }
