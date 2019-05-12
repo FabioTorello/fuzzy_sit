@@ -51,12 +51,16 @@ public class SceneHierarchyVertex
     private Collection<Map<String, Double>> objectDistribution; //<Type,Degree> for all objects todo make a class and check comments
 
     // TODO work around of a bad definition
-    private double memoryScore;
+    private double memoryScore; // set memory score to a negative number to freeze it to 0
     public double getMemoryScore() {
+        if ( memoryScore < 0) {
+            System.out.println( "Experience: " + this + " SCORE FREEZE with " + memoryScore);
+            return 0;
+        }
         return memoryScore;
     }
-    public void setMemoryScore(double memoryScore) {
-        this.memoryScore = memoryScore;
+    public void setMemoryScore(double score) {
+        this.memoryScore = score;
     }
 
     /**
@@ -124,7 +128,7 @@ public class SceneHierarchyVertex
 
     @Override
     public String toString() {
-        return getScene() + "(score:" + memoryScore + ")";
+        return getScene() + "[" + memoryScore + "]";
     }
 
     // todo equal ?????

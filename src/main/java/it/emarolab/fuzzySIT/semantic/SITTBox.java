@@ -375,13 +375,14 @@ public class SITTBox
      * an auxiliary syntax file.
      * @param newSceneName the unique name of the new scene to learn.
      * @param representation the scene representation to learn.
+     * @return the learned node not structured in the memory graph
      */
-    public void learn(String newSceneName, SITABox representation){
+    public SceneHierarchyVertex learn(String newSceneName, SITABox representation){
         try {
 
             if ( scenes.contains( newSceneName)){
                 System.err.println( newSceneName + " already defined !!!");
-                return;
+                return null;
             }
 
             KnowledgeBase kb = tbox.clone();
@@ -408,10 +409,11 @@ public class SITTBox
             time = log( time, newSceneName + " LEARNED");
 
             // add vertex to semantic and edges
-            hierarchy.addVertex( new SceneHierarchyVertex( newSceneName, representation));
+            SceneHierarchyVertex learnedScene = new SceneHierarchyVertex(newSceneName, representation);
+            hierarchy.addVertex( learnedScene);
 
             // overcome bug that stores learned Scene class
-            // subsuctions not working if syntax not parsed again
+            // subsumption is not working if syntax not parsed again
             if ( ! syntaxFile.contains( LEARNER_FILE_AUXILIARY_PATH))
                 this.syntaxLearnedFile = syntaxFile + LEARNER_FILE_AUXILIARY_PATH;
             saveTbox( syntaxLearnedFile, newSceneName, representation.getObjectDistribution());
@@ -423,10 +425,11 @@ public class SITTBox
             updateEdges( kb);
             log( time, "Hierarchy computed: " + hierarchy);
 
-        } catch ( InconsistentOntologyException |
-                FuzzyOntologyException  e){
+            return learnedScene;
+        } catch ( InconsistentOntologyException | FuzzyOntologyException  e){
             e.printStackTrace(); // todo throw exception (for gui)
         }
+        return null;
     }
 
     // used during learn it creates the left shoulder description given a sigma counter

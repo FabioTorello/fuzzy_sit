@@ -7,38 +7,57 @@ import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
 
 import java.util.Map;
 
-public abstract class MemoryInterface<P> {
+public abstract class MemoryInterface {
 
-    //                 INTERFACE
-    // ENCODE: find the BEST recognition
-    //         to be called before than learn or recognize
-    public Map<SceneHierarchyVertex, Double> encode(PerceptionBase<P> scene) {
-        abox = new SITABox( tbox, scene.getObjects(), scene.getRelations());
-        return abox.getRecognitions();
-    }
-    public abstract void store(String sceneName);          // STORE: lear or update the scores
-    public abstract void forget();         // FORGET: remove weak scored items
-    // public abstract void retrieve();    // RETRIEVE: query the BEST scene and update score // TODO to implement
-    public abstract void consolidate();    // CONSOLIDATE: update score items
-
-    //                 FIELDS AND CONSTRUCTION
+    //                 FIELDS
     private SITTBox tbox;
+    // internal variables set though encode()
     private SITABox abox;
+    private PerceptionBase<?> scene;
+
+    //                 CONSTRUCTION
     public MemoryInterface(SITTBox tbox){
         this.tbox = tbox;
     }
+
+    //                 GETTERS
     public SITTBox getTbox(){
         return tbox;
     }
-
+    protected SITABox getAbox(){
+        return abox;
+    }
+    protected PerceptionBase<?> getScene(){
+        return scene;
+    }
 
     //                 FUNCTIONALITY
-    // LEARN: add and STRUCTURES a new memory item
-    public void learn(String sceneName){
-        tbox.learn( sceneName, abox);
+    // LEARN: generate and STRUCTURES a new memory item from encoded data
+    protected void learn(String sceneName, double initialScore){
+        SceneHierarchyVertex learnedScene = tbox.learn(sceneName, abox);
+        learnedScene.setMemoryScore( initialScore);
     }
-    // RECOGNIZE: QUERY sub-graph of memory items
-    public Map<SceneHierarchyVertex, Double> recognize(){
+    // RECOGNIZE: QUERY classified memory items from encoded data
+    protected Map<SceneHierarchyVertex, Double> recognize(){
         return abox.getRecognitions();
     }
+
+
+    //                 INTERFACE
+    // ENCODE: recognize, to be called before than learn or recognize
+    public Map<SceneHierarchyVertex, Double> encode(PerceptionBase<?> scene) {
+        this.scene = scene;
+        abox = new SITABox( tbox, scene.getObjects(), scene.getRelations());
+        return abox.getRecognitions();
+    }
+
+    // TODO update function documentation
+    // STORE: lear or update the scores (returns TRUE:learned, FALSE:recognized)
+    protected abstract boolean store(String sceneName);
+    // RETRIEVE: query the BEST scene and update score (returns TRUE: at least one score is updated, FALSE: no recognition)
+    public abstract boolean retrieve();
+    // CONSOLIDATE: update score items
+    protected abstract void consolidate();
+    // FORGET: remove weak scored items
+    public abstract void forget();
 }
