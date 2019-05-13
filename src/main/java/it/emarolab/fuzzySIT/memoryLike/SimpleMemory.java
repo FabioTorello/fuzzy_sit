@@ -15,7 +15,7 @@ public class SimpleMemory extends MemoryInterface{
     private static final double LEARNED_SCORE = .5;
     private static final double ENCODE_TH = .5; // threshold above which it consolidates
     private static final double LEARN_TH = 1; // threshold under which it learns
-    private static final double SCORE_WEAK = .2; // threshold under which it forgets (0,inf] (after consolidation (0,1])
+    private static final double SCORE_WEAK = .1; // threshold under which it forgets (0,inf] (after consolidation (0,1])
 
     private static final double EXPERIENCE_REINFORCE = 1.5; // reinforce factor for re-stored or re-retrieved experience
     private static final double EXPERIENCE_STRUCTURE = 1; // reinforce factor for min edge fuzzy degree

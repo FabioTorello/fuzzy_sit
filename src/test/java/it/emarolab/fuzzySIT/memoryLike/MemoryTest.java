@@ -308,6 +308,7 @@ public class MemoryTest {
         //Thread shower1 = sceneShow( scene1());// TODO it can be shown only one at run
 
         // memory evolution
+        // scenes set random... many of them subsume sceneTable(), sceneLeg1() or sceneLeg2()
         memory.storeExperience( scene0());
         memory.storeExperience( scene0b());
         memory.storeExperience( sceneTable());
@@ -315,20 +316,11 @@ public class MemoryTest {
         memory.storeExperience( sceneLeg2());
         memory.storeExperience( scene1());
         memory.storeExperience( scene2());
-        memory.storeExperience( sceneTable());
-        memory.storeExperience( sceneLeg1());
-        memory.storeExperience( sceneLeg2());
         memory.storeExperience( scene3());
         memory.storeExperience( scene4());
-        memory.storeExperience( sceneTable());
-        memory.storeExperience( sceneLeg1());
-        memory.storeExperience( sceneLeg2());
         memory.storeExperience( scene5());
         memory.storeExperience( scene4());
         memory.storeExperience( scene2());
-        memory.storeExperience( sceneTable());
-        memory.storeExperience( sceneLeg1());
-        memory.storeExperience( sceneLeg2());
         memory.storeExperience( scene1());
         memory.storeExperience( scene4());
         memory.storeExperience( scene5());
@@ -336,6 +328,18 @@ public class MemoryTest {
         memory.storeExperience( sceneLeg1());
         memory.storeExperience( sceneLeg2());
         memory.storeExperience( scene3());
+        memory.storeExperience( scene1());
+        memory.storeExperience( scene5());
+        memory.storeExperience( scene0());
+        memory.storeExperience( scene0b());
+        // uncomment to see changes in the experience graph
+        // recurrent (sub)scenes are remembered and weaker experiences are removed
+        /*memory.storeExperience( sceneTable());
+        memory.storeExperience( sceneLeg1());
+        memory.storeExperience( sceneLeg2());*/
+        /*memory.storeExperience( sceneTable());
+        memory.storeExperience( sceneLeg1());
+        memory.storeExperience( sceneLeg2());*/
 
         memory.consolidateAndForget();
         System.out.println( "----------------------------------------------");
