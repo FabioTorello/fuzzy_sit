@@ -336,10 +336,11 @@ public class MemoryTest {
         memory.storeExperience( sceneLeg1());
         memory.storeExperience( sceneLeg2());
         memory.storeExperience( scene3());
+
         memory.consolidateAndForget();
+        System.out.println( "----------------------------------------------");
 
         System.out.println( memory.getTimings());
-
 
         // TODO Retrieving template code implemented but not tested
         // It might learn as well (i.e., a requested scene gives information as an observed one)
