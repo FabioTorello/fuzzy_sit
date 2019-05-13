@@ -44,6 +44,7 @@ public class SITABox
     private Individual scene; // the fuzzy individual describing the scene (ρ)
     private Map<SceneHierarchyVertex, Double> recognitions; // the fuzzy sets classifying the scene individual ρ (recognition).
     private Collection<Map<String, Double>> objectDistribution = new ArrayList<>(); // Ψ: Map<ObjectName, Map< ObjectType, Membership>
+    private Set<SpatialRelation> objservedRelations = new HashSet<>(); // given during learnig
 
     /**
      * Initialise a recogniser by specifying the objects of the scene and its spatial relations.
@@ -122,6 +123,7 @@ public class SITABox
 
         // Map< ObjectsName, Map< ObjectType, Degree>
         Map<String, Map<String,Double>> objectDistributionMap = new HashMap<>();
+        objservedRelations.addAll(relations);
 
         // add individuals belonging to fuzzy class (e.g.: book ∈ Book(.65))
         long time = System.currentTimeMillis();
@@ -265,5 +267,9 @@ public class SITABox
      */
     public Collection<Map<String, Double>> getObjectDistribution() {
         return objectDistribution;
+    }
+
+    public Set<SpatialRelation> getObservedRelations() {
+        return objservedRelations;
     }
 }

@@ -432,6 +432,46 @@ public class SITTBox
         return null;
     }
 
+    // TODO solve issue: it does not remove axioms for fuzzydl file (store deleted scenes)
+    // TODO assure new name when reopening file
+    public Concept removeScene(SceneHierarchyVertex toRemove){
+        try {
+            String sceneNameToRemove = toRemove.getScene();
+            if ( ! scenes.contains( sceneNameToRemove)){
+                System.err.println( sceneNameToRemove + " not defined !!!");
+                return null;
+            }
+
+            KnowledgeBase kb = tbox.clone();
+            // remove scene
+            long time = System.currentTimeMillis();
+            scenes.remove( sceneNameToRemove);
+            Concept toRemoveConcept = tbox.getConcept(sceneNameToRemove);
+            hierarchy.removeVertex( toRemove);
+            kb.atomicConcepts.remove( sceneNameToRemove);
+            tbox.atomicConcepts.remove( sceneNameToRemove);
+            objectDistribution.remove( sceneNameToRemove);
+
+            // overcome bug that stores learned Scene class
+            // subsumption is not working if syntax not parsed again
+            if ( ! syntaxFile.contains( LEARNER_FILE_AUXILIARY_PATH))
+                this.syntaxLearnedFile = syntaxFile + LEARNER_FILE_AUXILIARY_PATH;
+            toWrite = toWrite.replaceAll( ANNOTATION_PREFIX + sceneNameToRemove + ANNOTATION_CARDINALITY_SEPARATOR + getObjectDistributionForFile( toRemove.getObjectDistribution()) + NEW_LINE, "");
+            saveTbox( syntaxLearnedFile);
+            kb = tbox.clone();
+            kb.solveKB();
+            time = log( time, "Hierarchy updated from auxiliary file: " + hierarchy);
+
+            updateEdges( kb);
+            log( time, "Hierarchy computed: " + hierarchy);
+
+            return toRemoveConcept;
+        } catch ( InconsistentOntologyException | FuzzyOntologyException  e){
+            e.printStackTrace(); // todo throw exception (for gui)
+        }
+        return null;
+    }
+
     // used during learn it creates the left shoulder description given a sigma counter
     private Concept getRestriction(KnowledgeBase kb, SigmaCounters.Sigma sigmaCnt)
             throws FuzzyOntologyException {

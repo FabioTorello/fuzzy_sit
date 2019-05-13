@@ -147,10 +147,14 @@ public class SimpleMemory extends MemoryInterface{
         // find weak score in the memory graph
         for( SceneHierarchyVertex scene : h.vertexSet()){
             if( scene.getMemoryScore() < SCORE_WEAK) {
-                scene.setMemoryScore(-1); // score getter will be always 0
+                //scene.setMemoryScore(-1); // score getter will be always 0 and is not consider on consolidation
                 forgotten.add( scene);
             }
         }
+
+        for( SceneHierarchyVertex scene : forgotten)
+            getTbox().removeScene( scene);
+
         return forgotten;
     }
 }
