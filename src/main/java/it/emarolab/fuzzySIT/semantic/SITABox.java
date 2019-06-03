@@ -162,7 +162,7 @@ public class SITABox
                             double sol = q.solve(abox).getSolution();
                             log(FLAG_LOG_VERBOSE, q.getTotalTime(), "\t?? " + o.getObject() + " ∈ " + s + " (" + sol + ")");
                             if (sol > 0) // comment this for exhaustive sigma count (no open-world assumption)
-                                sigma.add(tbox.getSpatial().get(s), sol);
+                                sigma.add(tbox.getSpatial().get(s),sol);
                             valuatedObjectName.add(o.getObject());
                         } catch (NullPointerException e){
                             System.err.println( "\t?? " + o.getObject() + " ∈ " + s + " (" + abox + ")");

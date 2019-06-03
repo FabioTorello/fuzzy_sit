@@ -238,7 +238,7 @@ public class SceneHierarchyTest {
         r = new SITABox(h, objects, relations);
         h.learn( "Scene1", r);
 
-        /*
+
         System.out.println("-------------------------  S1   ------------------------");
         // create S1 and recognise it
         formatS1();
@@ -251,7 +251,7 @@ public class SceneHierarchyTest {
         new SITABox(h, objects, relations);
         System.out.println("--------------------------------------------------------");
 
-
+/*
 
         System.out.println("-------------------------  S2   ------------------------");
         // create S2 and recognise it
@@ -265,7 +265,7 @@ public class SceneHierarchyTest {
         new SITABox(h, objects, relations);
         System.out.println("--------------------------------------------------------");
 
-
+/*
 
         System.out.println("-------------------------  S3   ------------------------");
         // create S3 and recognise it

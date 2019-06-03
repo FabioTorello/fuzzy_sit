@@ -481,7 +481,8 @@ public class SigmaCounters
 
         @Override
         public String toString() {
-            return property + " " + count;
+            //return property + " " + count;
+            return Double.toString(count);
         }
     }
 }

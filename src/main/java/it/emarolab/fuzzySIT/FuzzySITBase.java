@@ -2,6 +2,7 @@ package it.emarolab.fuzzySIT;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 
 /**
  * The base class containing common constant and vocabulary.
@@ -126,7 +127,16 @@ public interface FuzzySITBase {
          * @return the formatted number, with the rounded given number of digits
          */
         public static double roundDegree(double degree) {
-            return Double.parseDouble( df.format(degree));
+
+            double ll;
+            try {
+                 ll=df.getNumberInstance().parse(df.format(degree)).doubleValue();
+            }
+            catch (ParseException e) {
+                e.printStackTrace();
+                ll = 0;
+            }
+            return ll;
         }
         /**
          * Format a double number with two digits.
