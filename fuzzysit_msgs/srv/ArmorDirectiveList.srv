@@ -1,0 +1,5 @@
+ArmorDirectiveReq[] armor_requests
+---
+bool success
+bool is_consistent
+ArmorDirectiveRes[] armor_responses
