@@ -78,7 +78,6 @@
 ##           '#!# SceneName <- 3'
 ## to indicate, for each scene (by name), the number of objects contained in it.
 ##
-## Finally, the learning procedure need the creation of right shoulder sets
 ## to classify the Σ value. Those have the name:
 ##           'atLeastφ'
 ## where φ is a double number (e.g.: 3.8) that indicates the point in which the
