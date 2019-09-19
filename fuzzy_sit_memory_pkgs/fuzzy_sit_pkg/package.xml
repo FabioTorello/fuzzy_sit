@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package>
+    <name>fuzzy_sit_pkg</name>
+    <version>2.2.0</version>
+    <description>The fuzzy_sit_pkg package</description>
+
+    <maintainer email="fabio.torello@virgilio.it">Torello Fabio</maintainer>
+    <author email="fabio.torello@vigilio.it">Torello Fabio</author>
+    <url type="website">https://github.com/EmaroLab</url>
+    <license>GPLv2</license>
+
+    <buildtool_depend>catkin</buildtool_depend>
+    <build_depend>rosjava_build_tools</build_depend>
+
+
+    <!-- The export tag contains other, unspecified, tags -->
+    <export>
+        <!-- Other tools can request additional information be placed here -->
+
+    </export>
+</package>
