@@ -1,12 +1,12 @@
-package it.emarolab.armor;
+package memory_pkg;
 
-import armor_msgs.ArmorDirectiveReq;
-import armor_msgs.ArmorDirectiveRes;
+import fuzzy_sit_memory_msgs.ArmorDirectiveReq;
+import fuzzy_sit_memory_msgs.ArmorDirectiveRes;
 import it.emarolab.amor.owlDebugger.Logger;
 import it.emarolab.amor.owlInterface.*;
 import org.ros.node.ConnectedNode;
 import java.util.*;
-import static it.emarolab.armor.ARMORCommandsUtils.setResponse;
+import static memory_pkg.ARMORCommandsUtils.setResponse;
 
 /**
  * Project: a ROS Multi Ontology Reference - aRMOR <br>

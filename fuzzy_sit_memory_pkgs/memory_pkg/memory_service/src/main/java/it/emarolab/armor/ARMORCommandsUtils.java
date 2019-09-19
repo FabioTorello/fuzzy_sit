@@ -1,6 +1,6 @@
-package it.emarolab.armor;
-import armor_msgs.ArmorDirectiveRes;
-import armor_msgs.QueryItem;
+package memory_pkg;
+import fuzzy_sit_memory_msgs.ArmorDirectiveRes;
+import fuzzy_sit_memory_msgs.QueryItem;
 import it.emarolab.amor.owlInterface.OWLReferences;
 import it.emarolab.amor.owlInterface.OWLReferencesInterface;
 import java.util.ArrayList;

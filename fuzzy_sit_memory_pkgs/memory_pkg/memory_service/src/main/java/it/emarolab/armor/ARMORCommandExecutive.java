@@ -1,9 +1,9 @@
-package it.emarolab.armor;
+package memory_pkg;
 
 import org.ros.node.ConnectedNode;
-import armor_msgs.*;
+import fuzzy_sit_memory_msgs.*;
 import java.util.*;
-import static it.emarolab.armor.ARMORCommandsUtils.setResponse;
+import static memory_pkg.ARMORCommandsUtils.setResponse;
 
 /**
  * Project: a ROS Multi Ontology Reference - aRMOR <br>

@@ -1,7 +1,7 @@
-package it.emarolab.armor;
+package memory_pkg;
 
 import it.emarolab.amor.owlDebugger.OFGUI.GuiRunner;
-import armor_msgs.*;
+import fuzzy_sit_memory_msgs.*;
 import com.google.common.collect.Lists;
 import org.ros.internal.loader.CommandLineLoader;
 import org.ros.message.MessageFactory;

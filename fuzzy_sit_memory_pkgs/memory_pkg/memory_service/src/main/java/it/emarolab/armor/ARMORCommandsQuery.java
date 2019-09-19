@@ -1,14 +1,14 @@
-package it.emarolab.armor;
+package memory_pkg;
 
-import armor_msgs.ArmorDirectiveReq;
-import armor_msgs.ArmorDirectiveRes;
-import armor_msgs.QueryItem;
+import fuzzy_sit_memory_msgs.ArmorDirectiveReq;
+import fuzzy_sit_memory_msgs.ArmorDirectiveRes;
+import fuzzy_sit_memory_msgs.QueryItem;
 import it.emarolab.amor.owlInterface.*;
 import org.apache.jena.query.QueryCancelledException;
 import org.ros.node.ConnectedNode;
 import org.semanticweb.owlapi.model.*;
 import java.util.*;
-import static it.emarolab.armor.ARMORCommandsUtils.*;
+import static memory_pkg.ARMORCommandsUtils.*;
 
 /**
  * Project: a ROS Multi Ontology Reference - aRMOR <br>
