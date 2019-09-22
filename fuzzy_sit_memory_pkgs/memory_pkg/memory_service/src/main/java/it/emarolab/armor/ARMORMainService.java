@@ -10,7 +10,6 @@ import org.ros.node.*;
 import org.ros.node.parameter.ParameterTree;
 import org.ros.node.service.ServiceResponseBuilder;
 import org.ros.node.service.ServiceServer;
-
 import java.util.ArrayList;
 import java.util.List;
 
