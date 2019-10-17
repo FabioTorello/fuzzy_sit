@@ -1,8 +1,8 @@
-package fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.axioms;
+package it.emarolab.fuzzySIT.semantic.axioms;
 
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.FuzzySITBase;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.SITTBox;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.SigmaCounters;
+import it.emarolab.fuzzySIT.FuzzySITBase;
+import it.emarolab.fuzzySIT.semantic.SITTBox;
+import it.emarolab.fuzzySIT.semantic.SigmaCounters;
 
 import java.io.Serializable;
 

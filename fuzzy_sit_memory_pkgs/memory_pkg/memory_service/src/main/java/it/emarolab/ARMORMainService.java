@@ -1,6 +1,6 @@
 package memory_pkg;
 
-import it.emarolab.amor.owlDebugger.OFGUI.GuiRunner;
+//import it.emarolab.amor.owlDebugger.OFGUI.GuiRunner;
 import fuzzy_sit_memory_msgs.*;
 import com.google.common.collect.Lists;
 import org.ros.internal.loader.CommandLineLoader;
@@ -12,7 +12,7 @@ import org.ros.node.service.ServiceResponseBuilder;
 import org.ros.node.service.ServiceServer;
 import java.util.ArrayList;
 import java.util.List;
-
+import it.emarolab.fuzzySIT.semantic.SITTBox;
 
 public class ARMORMainService extends AbstractNodeMain {
 
@@ -29,21 +29,21 @@ public class ARMORMainService extends AbstractNodeMain {
 
         ParameterTree params = connectedNode.getParameterTree();
 
-        final Boolean SHOW_GUI = params.getBoolean("/armor/settings/show_gui", DEFAULT_SHOW_GUI);
-        final Boolean FULL_ENTITY_IDENTIFIER =
-                params.getBoolean("/armor/settings/full_entity_iri", DEFAULT_FULL_ENTITY_IDENTIFIER);
+        //final Boolean SHOW_GUI = params.getBoolean("/armor/settings/show_gui", DEFAULT_SHOW_GUI);
+        //final Boolean FULL_ENTITY_IDENTIFIER =
+               // params.getBoolean("/armor/settings/full_entity_iri", DEFAULT_FULL_ENTITY_IDENTIFIER);
 
-        if (SHOW_GUI){
+        /*if (SHOW_GUI){
             connectedNode.getLog().info("Staring GUI.");
             new Thread(new GuiRunner()).start();
             connectedNode.getLog().info("GUI started.");
-        }
+        }*/
 
-        ARMORResourceManager.setLogging(connectedNode);
+        //ARMORResourceManager.setLogging(connectedNode);
 
         // Callback for ArmorDirective.srv calls (single operation)
 
-        ServiceServer<ArmorDirectiveRequest, ArmorDirectiveResponse> armorCallback =
+        /*ServiceServer<ArmorDirectiveRequest, ArmorDirectiveResponse> armorCallback =
                 connectedNode.newServiceServer("armor_interface_srv", ArmorDirective._TYPE,
                         (request, response) -> {
                             ARMORCommandExecutive command = new ARMORCommandExecutive(
@@ -54,11 +54,11 @@ public class ARMORMainService extends AbstractNodeMain {
                             }else{
                                 response.setArmorResponse(command.getServiceResponse());   // catch invalid command
                             }
-                        });
+                        });*/
 
         // Callback for ArmorDirectiveList.srv (multiple operations)
 
-        ServiceServer<ArmorDirectiveListRequest, ArmorDirectiveListResponse> armorCallbackSerial =
+        /*ServiceServer<ArmorDirectiveListRequest, ArmorDirectiveListResponse> armorCallbackSerial =
                 connectedNode.newServiceServer("armor_interface_serialized_srv", ArmorDirectiveList._TYPE,
                         (request, response) -> {
                             Boolean success = true;
@@ -86,7 +86,7 @@ public class ARMORMainService extends AbstractNodeMain {
                             response.setArmorResponses(results);
                             response.setIsConsistent(isConsistent);
                             response.setSuccess(success);
-                        });
+                        });*/
     }
 
 //     For testing and debugging purposes only
@@ -94,12 +94,12 @@ public class ARMORMainService extends AbstractNodeMain {
 
     public static void main(String argv[]) throws java.io.IOException {
 
-        String[] args = { "it.emarolab.armor.ARMORMainService" };
-        CommandLineLoader loader = new CommandLineLoader(Lists.newArrayList(args));
-        NodeConfiguration nodeConfiguration = loader.build();
-        ARMORMainService service = new ARMORMainService();
+        String[] args = { "it.emarolab.ARMORMainService" };
+        //CommandLineLoader loader = new CommandLineLoader(Lists.newArrayList(args));
+       // NodeConfiguration nodeConfiguration = loader.build();
+        //ARMORMainService service = new ARMORMainService();
 
-        NodeMainExecutor nodeMainExecutor = DefaultNodeMainExecutor.newDefault();
-        nodeMainExecutor.execute(service, nodeConfiguration);
+        //NodeMainExecutor nodeMainExecutor = DefaultNodeMainExecutor.newDefault();
+        //nodeMainExecutor.execute(service, nodeConfiguration);
     }
 }

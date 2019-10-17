@@ -1,8 +1,8 @@
-package fuzzy_sit_pkg.it.emarolab.fuzzySIT.memoryLike;
+package it.emarolab.fuzzySIT.memoryLike;
 
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.SITTBox;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyEdge;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
+import it.emarolab.fuzzySIT.semantic.SITTBox;
+import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyEdge;
+import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
 import org.jgrapht.ListenableGraph;
 
 import java.util.HashSet;

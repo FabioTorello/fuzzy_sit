@@ -1,8 +1,8 @@
-package fuzzy_sit_pkg.it.emarolab.fuzzySIT.perception.simple2D;
+package it.emarolab.fuzzySIT.perception.simple2D;
 
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.perception.FeaturedSpatialObject;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.perception.PerceptionBase;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
+import it.emarolab.fuzzySIT.perception.FeaturedSpatialObject;
+import it.emarolab.fuzzySIT.perception.PerceptionBase;
+import it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
 import javafx.scene.chart.XYChart;
 
 import java.util.HashSet;

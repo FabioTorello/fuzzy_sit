@@ -1,8 +1,8 @@
-package fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic;
+package it.emarolab.fuzzySIT.semantic;
 
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.FuzzySITBase;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.axioms.SpatialObject;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
+import it.emarolab.fuzzySIT.FuzzySITBase;
+import it.emarolab.fuzzySIT.semantic.axioms.SpatialObject;
+import it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
 
 import java.util.HashSet;
 import java.util.Set;

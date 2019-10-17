@@ -1,6 +1,6 @@
-package fuzzy_sit_pkg.it.emarolab.fuzzySIT.perception;
+package it.emarolab.fuzzySIT.perception;
 
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
+import it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
 
 import java.util.HashSet;
 import java.util.Set;

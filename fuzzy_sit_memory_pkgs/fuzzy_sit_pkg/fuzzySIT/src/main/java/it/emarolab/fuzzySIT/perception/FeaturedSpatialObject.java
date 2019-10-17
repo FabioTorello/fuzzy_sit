@@ -1,6 +1,6 @@
-package fuzzy_sit_pkg.it.emarolab.fuzzySIT.perception;
+package it.emarolab.fuzzySIT.perception;
 
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.axioms.SpatialObject;
+import it.emarolab.fuzzySIT.semantic.axioms.SpatialObject;
 
 public class FeaturedSpatialObject<F> extends SpatialObject {
 

@@ -1,13 +1,14 @@
-package fuzzy_sit_pkg.it.emarolab.fuzzySIT.monteCarlo;
+package it.emarolab.fuzzySIT.monteCarlo;
 
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.PlacedObject;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.SITTBox;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
+import it.emarolab.fuzzySIT.semantic.PlacedObject;
+import it.emarolab.fuzzySIT.semantic.SITTBox;
+import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+
 
 public class GuidedCarlo
         extends CarloInterface{

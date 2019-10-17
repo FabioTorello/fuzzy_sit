@@ -1,8 +1,8 @@
-package fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.hierarchy;
+package it.emarolab.fuzzySIT.semantic.hierarchy;
 
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.SigmaCounters;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.SITABox;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
+import it.emarolab.fuzzySIT.semantic.SigmaCounters;
+import it.emarolab.fuzzySIT.semantic.SITABox;
+import it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
 
 import java.io.Serializable;
 import java.util.Collection;

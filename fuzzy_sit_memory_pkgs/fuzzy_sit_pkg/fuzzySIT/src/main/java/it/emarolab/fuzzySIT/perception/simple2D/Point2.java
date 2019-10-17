@@ -1,4 +1,5 @@
-package fuzzy_sit_pkg.it.emarolab.fuzzySIT.perception.simple2D;
+package it.emarolab.fuzzySIT.perception.simple2D;
+
 
 public class Point2 {
 

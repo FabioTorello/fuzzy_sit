@@ -101,6 +101,8 @@ public class MemoryTest {
 
     public static void main(String[] args) {
 
+
+
         MemoryExample memory = new MemoryExample(FuzzySITBase.PATH_BASE + "table_assembling_memory_example.fuzzydl");
 
         //Thread shower1 = sceneShow( scene1());// TODO it can be shown only one at run

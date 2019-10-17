@@ -1,4 +1,4 @@
-package fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic;
+package it.emarolab.fuzzySIT.semantic;
 
 import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
 import com.mxgraph.layout.mxIGraphLayout;
@@ -10,10 +10,10 @@ import fuzzydl.exception.InconsistentOntologyException;
 import fuzzydl.milp.Solution;
 import fuzzydl.parser.ParseException;
 import fuzzydl.parser.Parser;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.FuzzySITBase;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.axioms.SpatialProperty;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyEdge;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
+import it.emarolab.fuzzySIT.FuzzySITBase;
+import it.emarolab.fuzzySIT.semantic.axioms.SpatialProperty;
+import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyEdge;
+import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
 import org.jgrapht.ListenableGraph;
 import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.ListenableDirectedWeightedGraph;

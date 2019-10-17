@@ -1,14 +1,15 @@
-package fuzzy_sit_pkg.it.emarolab.fuzzySIT.monteCarlo;
+package it.emarolab.fuzzySIT.monteCarlo;
 
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.FuzzySITBase;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.SITABox;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.SITTBox;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.PlacedObject;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.axioms.SpatialObject;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
+import it.emarolab.fuzzySIT.FuzzySITBase;
+import it.emarolab.fuzzySIT.semantic.SITABox;
+import it.emarolab.fuzzySIT.semantic.SITTBox;
+import it.emarolab.fuzzySIT.semantic.PlacedObject;
+import it.emarolab.fuzzySIT.semantic.axioms.SpatialObject;
+import it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
+import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
 
 import java.util.*;
+
 
 /**
  * The Monte Carlo particle representation for a fuzzy SIT scene.

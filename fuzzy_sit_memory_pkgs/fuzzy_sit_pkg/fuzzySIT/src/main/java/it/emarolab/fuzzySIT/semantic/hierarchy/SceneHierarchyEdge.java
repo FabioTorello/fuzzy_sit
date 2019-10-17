@@ -1,4 +1,4 @@
-package fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.hierarchy;
+package it.emarolab.fuzzySIT.semantic.hierarchy;
 
 import org.jgrapht.graph.DefaultWeightedEdge;
 

@@ -1,8 +1,9 @@
-package fuzzy_sit_pkg.it.emarolab.fuzzySIT;
+package it.emarolab.fuzzySIT;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+
 
 /**
  * The base class containing common constant and vocabulary.
@@ -34,8 +35,8 @@ public interface FuzzySITBase {
     String NEW_LINE = System.getProperty( "line.separator"); // todo manage also path separator
     String ANNOTATION_PREFIX = "#!# ";
     String ANNOTATION_CARDINALITY_SEPARATOR = " <- ";
-
-    String PATH_BASE = "src/main/resources/";
+    //String PATH_BASE = "fuzzySIT/src/main/resources/";
+    String PATH_BASE = "memory_service/src/main/resources/";
     String FILE_FUZZYDL_CONFIG = PATH_BASE + "fuzzyDL_CONFIG";
     String FILE_ONTOLOGY_LOAD = PATH_BASE + "example_SIT_kb.fuzzydl";
 

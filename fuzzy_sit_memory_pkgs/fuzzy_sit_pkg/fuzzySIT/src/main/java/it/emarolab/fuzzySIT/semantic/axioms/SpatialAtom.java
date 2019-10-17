@@ -1,4 +1,4 @@
-package fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.axioms;
+package it.emarolab.fuzzySIT.semantic.axioms;
 
 import fuzzydl.Degree;
 import fuzzydl.Individual;

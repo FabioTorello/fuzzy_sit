@@ -1,8 +1,8 @@
-package fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.axioms;
+package it.emarolab.fuzzySIT.semantic.axioms;
 
 import fuzzydl.Concept;
 import fuzzydl.KnowledgeBase;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.SITABox;
+import it.emarolab.fuzzySIT.semantic.SITABox;
 
 /**
  * The container of a fuzzy logic axiom for individual classification.

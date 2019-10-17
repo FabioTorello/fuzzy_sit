@@ -1,9 +1,9 @@
-package fuzzy_sit_pkg.it.emarolab.fuzzySIT.memoryLike;
+package it.emarolab.fuzzySIT.memoryLike;
 
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.perception.PerceptionBase;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.SITABox;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.SITTBox;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
+import it.emarolab.fuzzySIT.perception.PerceptionBase;
+import it.emarolab.fuzzySIT.semantic.SITABox;
+import it.emarolab.fuzzySIT.semantic.SITTBox;
+import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
 
 import java.util.Map;
 import java.util.Set;
@@ -48,7 +48,7 @@ public abstract class MemoryInterface {
         return learnedScene;
     }
     // RECOGNIZE: QUERY classified memory items from encoded data
-    protected Map<SceneHierarchyVertex, Double> recognize(){
+    public Map<SceneHierarchyVertex, Double> recognize(){
         return abox.getRecognitions();
     }
 

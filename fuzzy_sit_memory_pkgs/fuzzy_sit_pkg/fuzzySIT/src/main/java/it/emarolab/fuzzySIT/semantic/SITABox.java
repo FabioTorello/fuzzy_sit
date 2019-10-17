@@ -1,13 +1,13 @@
-package fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic;
+package it.emarolab.fuzzySIT.semantic;
 
 import fuzzydl.*;
 import fuzzydl.exception.FuzzyOntologyException;
 import fuzzydl.exception.InconsistentOntologyException;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.FuzzySITBase;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.axioms.SpatialObject;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.monteCarlo.SceneParticle;
-import fuzzy_sit_pkg.it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
+import it.emarolab.fuzzySIT.FuzzySITBase;
+import it.emarolab.fuzzySIT.semantic.axioms.SpatialObject;
+import it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
+import it.emarolab.fuzzySIT.monteCarlo.SceneParticle;
+import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
 
 import java.util.*;
 
