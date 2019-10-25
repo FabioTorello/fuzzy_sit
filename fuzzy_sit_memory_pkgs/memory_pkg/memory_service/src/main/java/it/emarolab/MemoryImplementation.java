@@ -1,14 +1,14 @@
 package it.emarolab;
 
 import it.emarolab.fuzzySIT.memoryLike.MemoryInterface;
+import it.emarolab.fuzzySIT.perception.PerceptionBase;
 import it.emarolab.fuzzySIT.semantic.SITTBox;
 import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyEdge;
 import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
 import org.jgrapht.ListenableGraph;
-
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.io.PrintWriter;
+import java.io.FileNotFoundException;
+import java.util.*;
 
 public class MemoryImplementation extends MemoryInterface {
 
@@ -26,7 +26,7 @@ public class MemoryImplementation extends MemoryInterface {
     private static final double EXPERIENCE_REINFORCE = 1.5;
     //reinforce factor for bonus/malus from planner actions
     //TODO this value should be added to the final score of the scene used by planner (action's results correct-->bonus, otherwise -->malus) and it should not be added to the score updating during the retrieving or storing phases but in consolidating phase
-    private double bonus_malus_reinforce=0;//TODO it is not "final" because the planner actions determine this value which has to be decided
+    private double bonus_malus_reinforce=0.5;//TODO it is not "final" because the planner actions determine this value which has to be decided
     //TODO it is not "static" because when this value is modified every instance of this class would see the same value due to the fact it is shared among all the instances of the class
 
     // reinforce factor for min edge fuzzy degree
@@ -36,11 +36,24 @@ public class MemoryImplementation extends MemoryInterface {
     private boolean evaluation_factor=false;
     //coefficient considers if an action from planner happened //TODO Should be set from a signal
     private boolean hasHappenedAction=false;
+    //Scene Counter
+    private static int sceneCnt = 0;
+    //The Finite State Machine will decide the syncronitation of the consolidating and forgetting operations
+    private boolean synchConsolidateForget=false;
 
+    //Path of the file where write the information about the memory
+    String PATHFILE="fuzzy_sit_memory_pkgs/memory_pkg/memory_service/files";
 
-    public MemoryImplementation(SITTBox tbox) {
-        super(tbox);
+    //Define variables to take into account the time consumption
+    //private List<Timing> timings = new ArrayList<>();
+    //private Timing timing;
+
+    //Constructor
+    public MemoryImplementation(String tboxPath) {
+        super(new SITTBox(tboxPath));
     }
+
+    private void MemoryFile(boolean storeForgetHappened, SceneHierarchyVertex graph )
 
     @Override
     public SceneHierarchyVertex store(String sceneName){
@@ -66,6 +79,9 @@ public class MemoryImplementation extends MemoryInterface {
             return learn(sceneName, LEARNED_SCORE);
         return null;
     }
+    public SceneHierarchyVertex store() {
+        return store( SCENE_PREFIX + sceneCnt++);
+    }
     private double similarityValue(SceneHierarchyVertex recognisedScene){
         //double fuzzyness = FuzzySITBase.ROLE_SHOULDER_BOTTOM_PERCENT * recognisedScene.getDefinition().getCardinality() /100;
         //getDefinition: return the SIT scene individual definition formalised as SigmaCounters
@@ -90,10 +106,67 @@ public class MemoryImplementation extends MemoryInterface {
         } // else score freeze (i.e., experience to remove)
         recognisedScene.setMemoryScore( score);
     }
+    public void experience(PerceptionBase scene, boolean storeOrRetrieve, boolean synchConsolidateForget){ // true: from store, false: from retrieve
+
+        //timing = new Timing();
+
+        // must always be done before to store or retrieve
+        long initialTime = System.nanoTime();
+        encode( scene);
+        //timing.encodingTime = System.nanoTime() - initialTime;
+        System.out.println( "[ ENCODE ]\texperience: " + scene);
+        // set store or retrieve cases
+
+        String logs;
+        SceneHierarchyVertex learnedOrRetrievedScene;
+        //initialTime = System.nanoTime();
+        if ( storeOrRetrieve) {
+            if ( scene.getSceneName().isEmpty())
+                learnedOrRetrievedScene = store();
+            else learnedOrRetrievedScene = store( scene.getSceneName());
+            //timing.storingTime = System.nanoTime() - initialTime;
+            logs = "storing";
+            //If the returned graph is not empty (thus there is only the root node)
+            if( learnedOrRetrievedScene != null)
+                System.out.println( "[  LEARN ]\texperience: " + learnedOrRetrievedScene);
+        } else {
+            learnedOrRetrievedScene = retrieve();
+            //timing.retrievingTime = System.nanoTime() - initialTime;
+            logs = "retrieving";
+            System.out.println( "[RETRIEVE]\texperience: " + learnedOrRetrievedScene);
+        }
+        // synchronous consolidation and forgetting
+        if ( learnedOrRetrievedScene != null & synchConsolidateForget) {
+            consolidateAndForget(scene, logs);
+        }
+        System.out.println( "[ RECOGN.]\texperience: " + recognize());
+        //System.out.println( "     Time spent " + timing);
+        //timings.add( timing);
+        System.out.println( "----------------------------------------------");
+    }
+
+    public void consolidateAndForget(){
+        consolidateAndForget( null);
+    }
+    public void consolidateAndForget( PerceptionBase scene){
+        consolidateAndForget( scene, "external call");
+    }
+    private void consolidateAndForget( PerceptionBase scene, String logs){
+        //long initialTime = System.nanoTime();
+        consolidate();
+        //timing.consolidateTime = System.nanoTime() - initialTime;
+        System.out.println( "[ CONSOL.]\tnew experience from " + logs + " " + scene + " -> ");
+
+        //initialTime = System.nanoTime();
+        Set<SceneHierarchyVertex> forgotten = forget();
+        //timing.forgetTime = System.nanoTime() - initialTime;
+        System.out.println( "[ FORGET ]\tfreeze nodes: " + forgotten);
+    }
 
 
     @Override
     public SceneHierarchyVertex retrieve() {// TODO very minimal retrieve support, adjust and implement it better!
+        //query of classifications of a scene --> it's a graph
         Map<SceneHierarchyVertex, Double> rec = recognize();
         SceneHierarchyVertex out = null;
         double bestOut = 0;
@@ -160,6 +233,7 @@ public class MemoryImplementation extends MemoryInterface {
     public double evaluationAction (boolean hasHappenedAction){
         //if an action happened, it is evaluated otherwise there is not any bonus or malus
         if (hasHappenedAction) {
+            //TODO here there is the evaluation of the action, thus the setting of the bonus_malus factor by basing on that
             if (evaluation_factor) {
                 bonus_malus_reinforce = 1;
             }
@@ -187,5 +261,6 @@ public class MemoryImplementation extends MemoryInterface {
 
         return forgotten;
     }
+
 
 }

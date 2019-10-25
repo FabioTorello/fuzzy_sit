@@ -3,6 +3,7 @@ package it.emarolab;
 //import it.emarolab.amor.owlDebugger.OFGUI.GuiRunner;
 import fuzzy_sit_memory_msgs.*;
 import com.google.common.collect.Lists;
+import it.emarolab.fuzzySIT.FuzzySITBase;
 import it.emarolab.fuzzySIT.perception.simple2D.ConnectObjectScene;
 import org.ros.internal.loader.CommandLineLoader;
 import org.ros.message.MessageFactory;
@@ -34,21 +35,8 @@ public class MemoryService extends AbstractNodeMain {
         ParameterTree params = connectedNode.getParameterTree();
 
         //Create an object representing the memory
-        MemoryImplementation memoryCreation = new MemoryImplementation("memory_service/src/main/resources/table_assembling_memory_example.fuzzydl");
+        MemoryImplementation memoryCreation = new MemoryImplementation(FuzzySITBase.PATH_BASE + "table_assembling_memory_example.fuzzydl");
 
-        //Accessing Parameters: The ParameterTree API allows you to set and query lists, maps, and single objects of integers, strings and 			floats
-        //final Boolean SHOW_GUI = params.getBoolean("/armor/settings/show_gui", DEFAULT_SHOW_GUI);
-        //final Boolean FULL_ENTITY_IDENTIFIER =
-        // params.getBoolean("/armor/settings/full_entity_iri", DEFAULT_FULL_ENTITY_IDENTIFIER);
-
-        /*if (SHOW_GUI){
-            connectedNode.getLog().info("Staring GUI.");
-            new Thread(new GuiRunner()).start();
-            connectedNode.getLog().info("GUI started.");
-        }*/
-
-
-        //ARMORResourceManager.setLogging(connectedNode);
 
 
         //Callback for TestServiceDirective.srv calls
@@ -58,7 +46,6 @@ public class MemoryService extends AbstractNodeMain {
                         (request, response) -> {
                     if(request.getTestRequest().getRequest().equals("encode")){
                            response.getTestResponse().setResponse("Server: encoding function");
-                            memoryCreation.storeExperience(scene0());
                     }
                         else if(request.getTestRequest().getRequest().equals("store")){
                             response.getTestResponse().setResponse("Server: storing function");
@@ -73,18 +60,6 @@ public class MemoryService extends AbstractNodeMain {
                                             response.getTestResponse().setResponse("Server response");
                                     }
 
-                /*new ServiceResponseBuilder<TestServiceDirective, TestServiceDirective>() {
-                    @Override
-                    public void
-                    build(TestMessageReq request, TestMessageRes response) {
-                        //Scanner myObj = new Scanner(System.in);
-                        //System.out.println("Request:");
-                        //String userName = myObj.nextLine();  // Read user input
-                        //request.setRequest(userName);
-                        //System.out.println("The request is:" + request.getRequest());
-                        //response.setResponse("Service responds correctly!")
-
-                    }*/
                 });
 
 
@@ -104,37 +79,7 @@ public class MemoryService extends AbstractNodeMain {
                             }
                         });*/
 
-        // Callback for ArmorDirectiveList.srv (multiple operations)
 
-        /*ServiceServer<ArmorDirectiveListRequest, ArmorDirectiveListResponse> armorCallbackSerial =
-                connectedNode.newServiceServer("armor_interface_serialized_srv", ArmorDirectiveList._TYPE,
-                        (request, response) -> {
-                            Boolean success = true;
-                            Boolean isConsistent = true;
-                            List<ArmorDirectiveRes> results = new ArrayList<ArmorDirectiveRes>();
-
-                            // create empty response to be filled by ARMORCommandExecutive
-                            NodeConfiguration nodeConf = NodeConfiguration.newPrivate();
-                            MessageFactory msgFactory = nodeConf.getTopicMessageFactory();
-                            ArmorDirectiveRes result = msgFactory.newFromType(ArmorDirectiveRes._TYPE);
-
-                            for (int i = 0; i < request.getArmorRequests().size(); i++) {
-                                ARMORCommandExecutive command = new ARMORCommandExecutive(
-                                        request.getArmorRequests().get(i),
-                                        result,
-                                        FULL_ENTITY_IDENTIFIER, connectedNode);
-                                if (!command.getServiceResponse().getSuccess()) {
-                                    results.add(command.executeCommand());
-                                } else {
-                                    results.add(command.getServiceResponse());  // catch invalid command
-                                }
-                                isConsistent = command.getServiceResponse().getIsConsistent();
-                                if (!command.getServiceResponse().getIsConsistent() && success) success = false;
-                            }
-                            response.setArmorResponses(results);
-                            response.setIsConsistent(isConsistent);
-                            response.setSuccess(success);
-                        });*/
 
     }
     //Scene definitions
