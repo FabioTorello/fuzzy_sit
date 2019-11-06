@@ -79,27 +79,27 @@ public class MemoryImplementationTest {
         MemoryImplementation memory = new MemoryImplementation(FuzzySITBase.PATH_BASE + "table_assembling_memory_example.fuzzydl");
 
         //I want to store the scene1 and I want the consolidating function compute the score
-            memory.experience(scene1(),true,true);
+            //memory.experience(scene1(),true,true);
 
         //I want to store the scene0 and I want the consolidating function compute the score
-            memory.experience( scene0(),true,true);
+            //memory.experience( scene0(),true,true);
 
         //I want to store the scene0b and I want the consolidating function compute the score
-            memory.experience( scene0b(),true,true);
+            //memory.experience( scene0b(),true,true);
 
         //I want to store the sceneLeg1 and I want the consolidating function compute the score
-            memory.experience( sceneLeg1(),true,true);
+            //memory.experience( sceneLeg1(),true,true);
 
-        //I want to retrieve the scene0 and I want the consolidating function compute the score
+       /* //I want to retrieve the scene0 and I want the consolidating function compute the score
             memory.experience( scene0(),false,true);
 
         //I want to retrieve the scene1 and I want the consolidating function compute the score
-            memory.experience(scene1(),false,true);
+            memory.experience(scene1(),false,true);*/
 
         //I want to store the sceneTable and I want the consolidating function compute the score
             memory.experience( sceneTable(),true,true);
 
-        //I want to retrieve the sceneTable and I want the consolidating function compute the score
+        /*//I want to retrieve the sceneTable and I want the consolidating function compute the score
             memory.experience( sceneTable(),false,true);
 
         //I want to retrieve the scene0b and I want the consolidating function compute the score
@@ -107,20 +107,19 @@ public class MemoryImplementationTest {
             //TODO here the scene0b is not in the graph so the retrieve experience is null because it cannot be found it
             //TODO but if the request happens many times that scene has to be store because maybe it is important!
         //I want to retrieve the sceneLeg1 and I want the consolidating function compute the score
-            memory.experience( sceneLeg1(),false,true);
+            memory.experience( sceneLeg1(),false,true);*/
 
         //I want to store the sceneLeg2 and I want the consolidating function compute the score
-            memory.experience( sceneLeg2(),true,true);
+            //memory.experience( sceneLeg2(),true,true);
 
-        //I want to retrieve the sceneLeg2 and I want the consolidating function compute the score
+       /* //I want to retrieve the sceneLeg2 and I want the consolidating function compute the score
             memory.experience( sceneLeg2(),false,true);
 
         //I want to retrieve the scene1 and I want the consolidating function compute the score
             memory.experience(scene1(),false,true);
             //TODO here scene1 is no more in the graph but if I try to retrieve it the software told me it is equal
-            // to SceneLeg1 but it is not true because scene1 has more objects in its definition
-            // maybe the retrieving has to take into account also the number of the objects besides the types of them
-
+            //to SceneLeg1 but it is not true because scene1 has more objects in its definition
+            //maybe the retrieving has to take into account also the number of the objects besides the types of them*/
 
 
 

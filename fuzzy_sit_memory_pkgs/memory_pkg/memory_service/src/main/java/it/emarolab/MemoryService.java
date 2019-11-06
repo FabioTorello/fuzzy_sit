@@ -4,6 +4,7 @@ package it.emarolab;
 import fuzzy_sit_memory_msgs.*;
 import com.google.common.collect.Lists;
 import it.emarolab.fuzzySIT.FuzzySITBase;
+import it.emarolab.fuzzySIT.perception.PerceptionBase;
 import it.emarolab.fuzzySIT.perception.simple2D.ConnectObjectScene;
 import org.ros.internal.loader.CommandLineLoader;
 import org.ros.message.MessageFactory;
@@ -35,7 +36,7 @@ public class MemoryService extends AbstractNodeMain {
         ParameterTree params = connectedNode.getParameterTree();
 
         //Create an object representing the memory
-        MemoryImplementation memoryCreation = new MemoryImplementation(FuzzySITBase.PATH_BASE + "table_assembling_memory_example.fuzzydl");
+        MemoryImplementation memoryCreation = new MemoryImplementation("memory_service/src/main/resources/table_assembling_memory_example.fuzzydl");
 
 
 
@@ -44,7 +45,20 @@ public class MemoryService extends AbstractNodeMain {
         ServiceServer<TestServiceDirectiveRequest, TestServiceDirectiveResponse> MemoryTestCallback =
                 connectedNode.newServiceServer("memory_service", TestServiceDirective._TYPE,
                         (request, response) -> {
-                    if(request.getTestRequest().getRequest().equals("encode")){
+
+
+                                memoryCreation.experience( scene(request.getTestRequest().getSceneName(), request.getTestRequest().getObjects(), request.getTestRequest().getX(), request.getTestRequest().getY(), request.getTestRequest().getDegree()),true,true);
+                                response.getTestResponse().setResponse("The scene " + request.getTestRequest().getSceneName() + " has been loaded" );
+
+                            /*if(request.getTestRequest().getRequest().equals("scene")){
+                                memoryCreation.experience( scene0(),true,true);
+                                response.getTestResponse().setResponse("There is scene to load");
+                            }
+                            else {
+                                response.getTestResponse().setResponse("There is no scene to load");
+                            }*/
+
+                    /*if(request.getTestRequest().getRequest().equals("encode")){
                            response.getTestResponse().setResponse("Server: encoding function");
                     }
                         else if(request.getTestRequest().getRequest().equals("store")){
@@ -58,7 +72,7 @@ public class MemoryService extends AbstractNodeMain {
                                 }
                                     else{
                                             response.getTestResponse().setResponse("Server response");
-                                    }
+                                    }*/
 
                 });
 
@@ -82,11 +96,37 @@ public class MemoryService extends AbstractNodeMain {
 
 
     }
-    //Scene definitions
+    /*//Scene definitions
     public static ConnectObjectScene scene0(){
         ConnectObjectScene scene = new ConnectObjectScene();
         scene.addTable(0,0, .9);
         scene.addScrewDriver( 0, .02, .9);
+        return scene;
+    }*/
+
+    public static ConnectObjectScene scene(String sceneName, List<String> objects, double[] x, double[] y,  double[] degree){
+        ConnectObjectScene scene = new ConnectObjectScene();
+        scene.setSceneName( sceneName);
+        int i=0;
+        for (String object : objects){
+            if (object.equals("Table") || object.equals("table")){
+                scene.addTable(x[i],y[i], degree[i]);
+
+            }
+            else if (object.equals("Leg") || object.equals("leg")){
+                scene.addLeg( x[i], y[i], degree[i]);
+            }
+            else if (object.equals("Screwdriver") || object.equals("screwdriver") || object.equals("ScrewDriver")){
+                scene.addScrewDriver( x[i], y[i], degree[i]);
+
+            }
+            else if (object.equals("Pen") || object.equals("pen")){
+                scene.addPen( x[i], y[i], degree[i]);
+
+            }
+            i++;
+        }
+
         return scene;
     }
 //     For testing and debugging purposes only

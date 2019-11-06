@@ -6,11 +6,13 @@ import it.emarolab.fuzzySIT.semantic.SITTBox;
 import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyEdge;
 import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
 import org.jgrapht.ListenableGraph;
-import java.io.PrintWriter;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.*;
 
+
 public class MemoryImplementation extends MemoryInterface {
+
+
 
     //Static variables and coefficients related to the memory functionalities
     private static String SCENE_PREFIX = "Scene";
@@ -26,7 +28,7 @@ public class MemoryImplementation extends MemoryInterface {
     private static final double EXPERIENCE_REINFORCE = 1.5;
     //reinforce factor for bonus/malus from planner actions
     //TODO this value should be added to the final score of the scene used by planner (action's results correct-->bonus, otherwise -->malus) and it should not be added to the score updating during the retrieving or storing phases but in consolidating phase
-    private double bonus_malus_reinforce=0.5;//TODO it is not "final" because the planner actions determine this value which has to be decided
+    private double bonus_malus_reinforce=0.5; //TODO it is not "final" because the planner actions determine this value which has to be decided
     //TODO it is not "static" because when this value is modified every instance of this class would see the same value due to the fact it is shared among all the instances of the class
 
     // reinforce factor for min edge fuzzy degree
@@ -40,10 +42,10 @@ public class MemoryImplementation extends MemoryInterface {
     private static int sceneCnt = 0;
     //The Finite State Machine will decide the syncronitation of the consolidating and forgetting operations
     private boolean synchConsolidateForget=false;
-
-    //Path of the file where write the information about the memory
-    String PATHFILE="fuzzy_sit_memory_pkgs/memory_pkg/memory_service/files";
-
+    //File containing the graph information
+    private File fileName= new File("memory_service/files/GraphInformation.txt");
+    //Time instant
+    private static long time_instant = 0;
     //Define variables to take into account the time consumption
     //private List<Timing> timings = new ArrayList<>();
     //private Timing timing;
@@ -53,7 +55,6 @@ public class MemoryImplementation extends MemoryInterface {
         super(new SITTBox(tboxPath));
     }
 
-    private void MemoryFile(boolean storeForgetHappened, SceneHierarchyVertex graph )
 
     @Override
     public SceneHierarchyVertex store(String sceneName){
@@ -102,7 +103,7 @@ public class MemoryImplementation extends MemoryInterface {
         if ( recognisedScene.getMemoryScore() > 0) { // not froze node
             // reinforce for re-stored or re-retrieved experiences
             bonus_malus_reinforce=evaluationAction(hasHappenedAction);
-            score += EXPERIENCE_REINFORCE * recognisedValue+bonus_malus_reinforce;
+            score += EXPERIENCE_REINFORCE * recognisedValue + bonus_malus_reinforce;
         } // else score freeze (i.e., experience to remove)
         recognisedScene.setMemoryScore( score);
     }
@@ -111,7 +112,7 @@ public class MemoryImplementation extends MemoryInterface {
         //timing = new Timing();
 
         // must always be done before to store or retrieve
-        long initialTime = System.nanoTime();
+        //long initialTime = System.nanoTime();
         encode( scene);
         //timing.encodingTime = System.nanoTime() - initialTime;
         System.out.println( "[ ENCODE ]\texperience: " + scene);
@@ -159,8 +160,12 @@ public class MemoryImplementation extends MemoryInterface {
 
         //initialTime = System.nanoTime();
         Set<SceneHierarchyVertex> forgotten = forget();
+
         //timing.forgetTime = System.nanoTime() - initialTime;
         System.out.println( "[ FORGET ]\tfreeze nodes: " + forgotten);
+
+        //Print the information about the graph in a text file
+        MemoryFile();
     }
 
 
@@ -257,9 +262,88 @@ public class MemoryImplementation extends MemoryInterface {
         }
 
         for( SceneHierarchyVertex scene : forgotten)
-            getTbox().removeScene( scene);
+            getTbox().removeScene(scene);
+
 
         return forgotten;
+    }
+
+    //Function used to print the memory graph information in a text file
+    private void MemoryFile(){
+        ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> GraphAfterForgettingOperation = getTbox().getHierarchy();
+        time_instant++;
+        //Open the file
+        PrintWriter outpustream = null;
+        try{
+            if (!fileName.exists()){
+                //Create the file
+                try {
+                    fileName.createNewFile();
+                }catch (IOException e) {
+                        e.printStackTrace();
+                    }
+            }
+            //Clear the content of the text file //TODO only for testing in the end you have to remove this line
+            //new PrintWriter(fileName).close();
+            //Now you can write on it
+            outpustream = new PrintWriter(new FileOutputStream(fileName,true));
+            //Write on the text file
+
+        } catch (FileNotFoundException e){
+            System.err.println("Error opening the file" + "GraphInformation.txt");
+            System.exit(0);
+        }
+        outpustream.println("\n" + "/////////////////////// " + "Time Instant: " + time_instant + " /////////////////////// ");
+        //outpustream.println("\n");
+        outpustream.println("\n" + "NODES IN THE MEMORY: " + GraphAfterForgettingOperation.vertexSet());
+        //Loop on all the vertices in the graph
+        for( SceneHierarchyVertex sourceVertices : GraphAfterForgettingOperation.vertexSet()){
+            //Loop on all the edges touching the specified vertex
+            for (SceneHierarchyEdge edges: GraphAfterForgettingOperation.edgesOf(sourceVertices)) {
+                if (sourceVertices != GraphAfterForgettingOperation.getEdgeTarget(edges)) {
+                    //SOURCE VERTEX INFORMATION
+                    outpustream.println("\n" + "---------------------------------------------------------------");
+                    //Write on the text file (PRINT CORRECTLY IN THE FILE)
+                    outpustream.println(sourceVertices.getScene() + " LINKED TO " +
+                            GraphAfterForgettingOperation.getEdgeTarget(edges).getScene() +
+                            " With FUZZY DEGREE " + GraphAfterForgettingOperation.getEdgeWeight(edges));
+                    //Source vertex Information
+                    outpustream.println(" " + sourceVertices.getScene() + " Information:");
+                    outpustream.println("   " + "N° OBJECTS: " + sourceVertices.getObjectNumber());
+                    outpustream.println("   " + "OBJECT TYPES WITH FUZZY DEGREE: " + sourceVertices.getObjectDistribution());
+                    outpustream.println("   " + "SCENE DESCRIPTION: " + sourceVertices.getDefinition());
+
+
+                    //TARGET VERTEX INFORMATION
+                    outpustream.println("\n" + " " + GraphAfterForgettingOperation.getEdgeTarget(edges).getScene() + " Information:");
+                    outpustream.println("   " + "N° OBJECTS: " + GraphAfterForgettingOperation.getEdgeTarget(edges).getObjectNumber());
+                    outpustream.println("   " + "OBJECT TYPES WITH FUZZY DEGREE: " + GraphAfterForgettingOperation.getEdgeTarget(edges).getObjectDistribution());
+                    outpustream.println("   " + "SCENE DESCRIPTION: " + GraphAfterForgettingOperation.getEdgeTarget(edges).getDefinition());
+            }/*
+
+                //Weight assigned to a given edge
+                GraphAfterForgettingOperation.getEdgeWeight(edges);
+                //TODO I have to extract also the Region relate to the scene
+
+                //Number of the objects in the scene category
+                int numberObjectsSource = sourceVertices.getObjectNumber();
+                //the object types distribution maps (Ψ)
+                Collection<Map<String, Double>>pippo=sourceVertices.getObjectDistribution();
+                sceneName + "<<" + sceneToPrint.getObjects() + ", " + sceneToPrint.getRelations() + ">>";
+                // Target vertex of an edge
+                SceneHierarchyVertex targetVertex = GraphAfterForgettingOperation.getEdgeTarget(edges);
+                //TARGET VERTEX INFORMATION
+                //Number of the objects in the scene category
+                int numberObjectsTarget = targetVertex.getObjectNumber();
+                //the object types distribution maps (Ψ)
+                Collection<Map<String, Double>>pippo2=sourceVertices.getObjectDistribution();
+                sceneName + "<<" + sceneToPrint.getObjects() + ", " + sceneToPrint.getRelations() + ">>";
+                //TODO extract the information about the relations and objects of the source vertex and target vertex
+*/            }
+
+        }
+        //Close the file
+        outpustream.close();
     }
 
 

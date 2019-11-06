@@ -1,0 +1,60 @@
+
+/////////////////////// Time Instant: 1 /////////////////////// 
+
+NODES IN THE MEMORY: [scene0[1.0]]
+
+/////////////////////// Time Instant: 2 /////////////////////// 
+
+NODES IN THE MEMORY: [scene0[1.0], scene2[0.1250206284036866]]
+
+---------------------------------------------------------------
+scene0 LINKED TO scene2 With FUZZY DEGREE 0.77778
+ scene0 Information:
+   N° OBJECTS: 2
+   OBJECT TYPES WITH FUZZY DEGREE: [{Table=0.8}, {Screwdriver=0.9}]
+   SCENE DESCRIPTION: Σ → [	Screwdriver:{Connected(0.9)}	Table:{Connected(0.8)} ]
+
+ scene2 Information:
+   N° OBJECTS: 3
+   OBJECT TYPES WITH FUZZY DEGREE: [{Pen=0.9}, {Table=0.9}, {Screwdriver=0.9}]
+   SCENE DESCRIPTION: Σ → [	Screwdriver:{Connected(0.9)}	Table:{Connected(0.9)} ]
+
+---------------------------------------------------------------
+scene2 LINKED TO scene0 With FUZZY DEGREE 1.0
+ scene2 Information:
+   N° OBJECTS: 3
+   OBJECT TYPES WITH FUZZY DEGREE: [{Pen=0.9}, {Table=0.9}, {Screwdriver=0.9}]
+   SCENE DESCRIPTION: Σ → [	Screwdriver:{Connected(0.9)}	Table:{Connected(0.9)} ]
+
+ scene0 Information:
+   N° OBJECTS: 2
+   OBJECT TYPES WITH FUZZY DEGREE: [{Table=0.8}, {Screwdriver=0.9}]
+   SCENE DESCRIPTION: Σ → [	Screwdriver:{Connected(0.9)}	Table:{Connected(0.8)} ]
+
+/////////////////////// Time Instant: 3 /////////////////////// 
+
+NODES IN THE MEMORY: [scene0[1.0], scene2[0.1250206284036866], scene3[0.5]]
+
+---------------------------------------------------------------
+scene0 LINKED TO scene2 With FUZZY DEGREE 0.77778
+ scene0 Information:
+   N° OBJECTS: 2
+   OBJECT TYPES WITH FUZZY DEGREE: [{Table=0.8}, {Screwdriver=0.9}]
+   SCENE DESCRIPTION: Σ → [	Screwdriver:{Connected(0.9)}	Table:{Connected(0.8)} ]
+
+ scene2 Information:
+   N° OBJECTS: 3
+   OBJECT TYPES WITH FUZZY DEGREE: [{Pen=0.9}, {Table=0.9}, {Screwdriver=0.9}]
+   SCENE DESCRIPTION: Σ → [	Screwdriver:{Connected(0.9)}	Table:{Connected(0.9)} ]
+
+---------------------------------------------------------------
+scene2 LINKED TO scene0 With FUZZY DEGREE 1.0
+ scene2 Information:
+   N° OBJECTS: 3
+   OBJECT TYPES WITH FUZZY DEGREE: [{Pen=0.9}, {Table=0.9}, {Screwdriver=0.9}]
+   SCENE DESCRIPTION: Σ → [	Screwdriver:{Connected(0.9)}	Table:{Connected(0.9)} ]
+
+ scene0 Information:
+   N° OBJECTS: 2
+   OBJECT TYPES WITH FUZZY DEGREE: [{Table=0.8}, {Screwdriver=0.9}]
+   SCENE DESCRIPTION: Σ → [	Screwdriver:{Connected(0.9)}	Table:{Connected(0.8)} ]
