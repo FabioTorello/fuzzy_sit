@@ -45,9 +45,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
-  QueryItem.msg
-  ArmorDirectiveReq.msg
-  ArmorDirectiveRes.msg
+  FuzzyDegree.msg
+  Scene.msg
+  SceneItem.msg
+  SceneRelations.msg
   TestMessageReq.msg
   TestMessageRes.msg  
 )
@@ -55,8 +56,6 @@ add_message_files(
 # Generate services in the 'srv' folder
 add_service_files(
   FILES
-  ArmorDirective.srv
-  ArmorDirectiveList.srv
   TestServiceDirective.srv
 )
 

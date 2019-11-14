@@ -1,7 +1,8 @@
 package it.emarolab;
 import com.google.common.collect.Lists;
 import it.emarolab.fuzzySIT.FuzzySITBase;
-import it.emarolab.fuzzySIT.perception.simple2D.ConnectObjectScene;
+//import it.emarolab.fuzzySIT.perception.simple2D.ConnectObjectScene;
+import it.emarolab.fuzzySIT.perception.simple2D.NearObjectScene;
 import org.ros.internal.loader.CommandLineLoader;
 import org.ros.node.DefaultNodeMainExecutor;
 import org.ros.node.NodeConfiguration;
@@ -14,7 +15,7 @@ import java.util.List;
 public class MemoryImplementationTest {
 
 
-    public static ConnectObjectScene scene0(){
+    /*public static ConnectObjectScene scene0(){
         ConnectObjectScene scene = new ConnectObjectScene("Scene0");
         scene.addTable(0,0, .9);
         scene.addScrewDriver( 0, .02, .9);
@@ -53,9 +54,9 @@ public class MemoryImplementationTest {
         scene.addLeg( 0.03, 0, .9);
         scene.setSceneName( "SceneLeg2");
         return scene;
-    }
+    }*/
 
-    private static ConnectObjectScene scene1(){
+   /* private static ConnectObjectScene scene1(){
         ConnectObjectScene scene = new ConnectObjectScene("Scene1");
         scene.addTable(0,0, .9);
         scene.addLeg( 0.01, 0, .9);
@@ -64,10 +65,17 @@ public class MemoryImplementationTest {
         scene.addScrewDriver( -.5, .02, .9);
         scene.addScrewDriver( -.5, .1, .9);
         return scene;
+    }*/
+
+
+    private static NearObjectScene scene1N(){
+        NearObjectScene scene = new NearObjectScene();
+        scene.addFork(0, 0, 0.9);
+        scene.addGlass(0, .02, 0.9);
+        scene.addPlate(0.1, 0.2, 0.9);
+        scene.addKnife(0.01, 0.001, 0.9);
+        return scene;
     }
-
-
-
 
 
 
@@ -75,11 +83,11 @@ public class MemoryImplementationTest {
 
     public static void main(String[] args) {
 
-
-        MemoryImplementation memory = new MemoryImplementation(FuzzySITBase.PATH_BASE + "table_assembling_memory_example.fuzzydl");
-
+        MemoryImplementation memory = new MemoryImplementation("memory_service/src/main/resources/table_classification_memory_example.fuzzydl");
+        //MemoryImplementation memory = new MemoryImplementation(FuzzySITBase.PATH_BASE + "table_assembling_memory_example.fuzzydl");
+         memory.experience( scene1N(),true,true);
         //I want to store the scene1 and I want the consolidating function compute the score
-            //memory.experience(scene1(),true,true);
+           // memory.experience(scene1(),true,true);
 
         //I want to store the scene0 and I want the consolidating function compute the score
             //memory.experience( scene0(),true,true);
@@ -97,7 +105,7 @@ public class MemoryImplementationTest {
             memory.experience(scene1(),false,true);*/
 
         //I want to store the sceneTable and I want the consolidating function compute the score
-            memory.experience( sceneTable(),true,true);
+            //memory.experience( sceneTable(),true,true);
 
         /*//I want to retrieve the sceneTable and I want the consolidating function compute the score
             memory.experience( sceneTable(),false,true);

@@ -1,13 +1,13 @@
 package it.emarolab.fuzzySIT.memoryLike;
 
 import it.emarolab.fuzzySIT.FuzzySITBase;
-import it.emarolab.fuzzySIT.perception.simple2D.ConnectObjectScene;
+//import it.emarolab.fuzzySIT.perception.simple2D.ConnectObjectScene;
 
 // TODO reset ids when overflow
 
 public class MemoryTest {
 
-    public static ConnectObjectScene scene0(){
+   /* public static ConnectObjectScene scene0(){
         ConnectObjectScene scene = new ConnectObjectScene();
         scene.addTable(0,0, .9);
         scene.addScrewDriver( 0, .02, .9);
@@ -97,13 +97,13 @@ public class MemoryTest {
         scene.addPen(2.08, 0, .8);
         scene.addLeg(2.0, 0, .8);
         return scene;
-    }
+    }*/
 
     public static void main(String[] args) {
 
 
 
-        MemoryExample memory = new MemoryExample(FuzzySITBase.PATH_BASE + "table_assembling_memory_example.fuzzydl");
+        /*MemoryExample memory = new MemoryExample(FuzzySITBase.PATH_BASE + "table_assembling_memory_example.fuzzydl");
 
         //Thread shower1 = sceneShow( scene1());// TODO it can be shown only one at run
 
@@ -141,7 +141,7 @@ public class MemoryTest {
         memory.storeExperience( sceneLeg1());
         memory.storeExperience( sceneLeg2());*/
 
-        memory.consolidateAndForget();
+      /*  memory.consolidateAndForget();
         System.out.println( "----------------------------------------------");
 
         System.out.println( memory.getTimings());
@@ -156,6 +156,6 @@ public class MemoryTest {
         // saved the evolved memory // TODO check scores storing
         //memory.accessMemory().getTbox().saveTbox("src/test/resources/learnedTest.fuzzydl");
 
-        //shower1.interrupt();
+        //shower1.interrupt();*/
     }
 }

@@ -1,5 +1,5 @@
 package it.emarolab;
-
+/*
 import fuzzy_sit_memory_msgs.TestServiceDirectiveRequest;
 import fuzzy_sit_memory_msgs.TestServiceDirectiveResponse;
 import it.emarolab.fuzzySIT.memoryLike.*;
@@ -212,7 +212,7 @@ class Memory {
         }
     }*/
 
-    //Scene definitions
+    /*//Scene definitions
     public static ConnectObjectScene scene0(){
         ConnectObjectScene scene = new ConnectObjectScene();
         scene.addTable(0,0, .9);
@@ -227,5 +227,5 @@ class Memory {
         memoryTest.consolidateAndForget();
         System.out.println( "----------------------------------------------");
         memoryTest.accessMemory().getTbox().show();*/
-    }
-}
+   // }
+//}

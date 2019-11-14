@@ -5,7 +5,7 @@ import fuzzy_sit_memory_msgs.*;
 import com.google.common.collect.Lists;
 import it.emarolab.fuzzySIT.FuzzySITBase;
 import it.emarolab.fuzzySIT.perception.PerceptionBase;
-import it.emarolab.fuzzySIT.perception.simple2D.ConnectObjectScene;
+//import it.emarolab.fuzzySIT.perception.simple2D.ConnectObjectScene;
 import org.ros.internal.loader.CommandLineLoader;
 import org.ros.message.MessageFactory;
 import org.ros.namespace.GraphName;
@@ -47,8 +47,8 @@ public class MemoryService extends AbstractNodeMain {
                         (request, response) -> {
 
 
-                                memoryCreation.experience( scene(request.getTestRequest().getSceneName(), request.getTestRequest().getObjects(), request.getTestRequest().getX(), request.getTestRequest().getY(), request.getTestRequest().getDegree()),true,true);
-                                response.getTestResponse().setResponse("The scene " + request.getTestRequest().getSceneName() + " has been loaded" );
+                                //memoryCreation.experience( scene(request.getTestRequest().getSceneName(), request.getTestRequest().getObjects(), request.getTestRequest().getX(), request.getTestRequest().getY(), request.getTestRequest().getDegree()),true,true);
+                                //response.getTestResponse().setResponse("The scene " + request.getTestRequest().getSceneName() + " has been loaded" );
 
                             /*if(request.getTestRequest().getRequest().equals("scene")){
                                 memoryCreation.experience( scene0(),true,true);
@@ -58,53 +58,19 @@ public class MemoryService extends AbstractNodeMain {
                                 response.getTestResponse().setResponse("There is no scene to load");
                             }*/
 
-                    /*if(request.getTestRequest().getRequest().equals("encode")){
-                           response.getTestResponse().setResponse("Server: encoding function");
-                    }
-                        else if(request.getTestRequest().getRequest().equals("store")){
-                            response.getTestResponse().setResponse("Server: storing function");
-                        }
-                            else if(request.getTestRequest().getRequest().equals("consolidate")){
-                                response.getTestResponse().setResponse("Server: consolidating function");
-                            }
-                                else if (request.getTestRequest().getRequest().equals("forget")){
-                                    response.getTestResponse().setResponse("Server: forgetting function");
-                                }
-                                    else{
-                                            response.getTestResponse().setResponse("Server response");
-                                    }*/
 
                 });
 
 
 
-        // Callback for ArmorDirective.srv calls (single operation)
 
-        /*ServiceServer<ArmorDirectiveRequest, ArmorDirectiveResponse> armorCallback =
-                connectedNode.newServiceServer("armor_interface_srv", ArmorDirective._TYPE,
-                        (request, response) -> {
-                            ARMORCommandExecutive command = new ARMORCommandExecutive(
-                                    request.getArmorRequest(), response.getArmorResponse(),
-                                    FULL_ENTITY_IDENTIFIER, connectedNode);
-                            if (command.getServiceResponse().getSuccess()) {
-                                response.setArmorResponse(command.executeCommand());
-                            }else{
-                                response.setArmorResponse(command.getServiceResponse());   // catch invalid command
-                            }
-                        });*/
 
 
 
     }
-    /*//Scene definitions
-    public static ConnectObjectScene scene0(){
-        ConnectObjectScene scene = new ConnectObjectScene();
-        scene.addTable(0,0, .9);
-        scene.addScrewDriver( 0, .02, .9);
-        return scene;
-    }*/
 
-    public static ConnectObjectScene scene(String sceneName, List<String> objects, double[] x, double[] y,  double[] degree){
+
+   /* public static ConnectObjectScene scene(String sceneName, List<String> objects, double[] x, double[] y,  double[] degree){
         ConnectObjectScene scene = new ConnectObjectScene();
         scene.setSceneName( sceneName);
         int i=0;
@@ -128,7 +94,7 @@ public class MemoryService extends AbstractNodeMain {
         }
 
         return scene;
-    }
+    }*/
 //     For testing and debugging purposes only
 //     You can use this main as entry point in an IDE (e.g., IDEA) to run a debugger
 

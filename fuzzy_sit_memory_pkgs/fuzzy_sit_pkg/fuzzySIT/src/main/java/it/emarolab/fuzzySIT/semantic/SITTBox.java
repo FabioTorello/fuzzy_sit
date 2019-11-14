@@ -100,7 +100,8 @@ public class SITTBox
      * (that can be farther saved).
      */
     public SITTBox() {
-        initialise(FILE_ONTOLOGY_LOAD, FILE_FUZZYDL_CONFIG);
+        //initialise(FILE_ONTOLOGY_LOAD, FILE_FUZZYDL_CONFIG);
+        initialise(FILE_ONTOLOGY_LOAD, "memory_service/src/main/resources/fuzzyDL_CONFIG");
     }
     /**
      * Initialises this T-Box by using the given ontology and default
@@ -115,7 +116,8 @@ public class SITTBox
      * @param tboxPath the path to the fuzzy SIT ontology to use.
      */
     public SITTBox(String tboxPath) {
-        initialise( tboxPath, FILE_FUZZYDL_CONFIG);
+        initialise( tboxPath, "memory_service/src/main/resources/fuzzyDL_CONFIG");
+        //initialise( tboxPath, FILE_FUZZYDL_CONFIG);
     }
     /**
      * Initialises this T-Box by using the given ontology and fuzzydl configuration file.
