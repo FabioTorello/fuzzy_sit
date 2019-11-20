@@ -36,8 +36,8 @@ public class MemoryService extends AbstractNodeMain {
         ParameterTree params = connectedNode.getParameterTree();
 
         //Create an object representing the memory
-        MemoryImplementation memoryCreation = new MemoryImplementation("memory_service/src/main/resources/table_assembling_memory_example.fuzzydl");
-
+       // MemoryImplementation memoryCreation = new MemoryImplementation("memory_service/src/main/resources/table_assembling_memory_example.fuzzydl");
+        MemoryImplementation memory = new MemoryImplementation("memory_service/src/main/resources/table_assembling_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
 
 
         //Callback for TestServiceDirective.srv calls

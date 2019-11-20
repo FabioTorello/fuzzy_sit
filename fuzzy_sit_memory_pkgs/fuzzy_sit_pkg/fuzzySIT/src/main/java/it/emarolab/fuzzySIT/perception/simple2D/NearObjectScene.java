@@ -1,6 +1,6 @@
 package it.emarolab.fuzzySIT.perception.simple2D;
 
-import it.emarolab.fuzzySIT.perception.FeaturedSpatialObject;
+/*import it.emarolab.fuzzySIT.perception.FeaturedSpatialObject;
 import it.emarolab.fuzzySIT.perception.PerceptionBase;
 import it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
 import javafx.scene.chart.XYChart;
@@ -209,4 +209,4 @@ public class NearObjectScene extends PerceptionBase<Point2> {
             }
         return out;
     }
-}
+}*/

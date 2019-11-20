@@ -10,19 +10,18 @@
 (define-primitive-concept Object *top*)
 (define-primitive-concept SpatialObject Object)
 (define-primitive-concept Scene  *top*)
-(define-primitive-concept Region  *top*)
-(disjoint Object Scene Region)
-(disjoint SpatialObject Scene Region)
+(disjoint Object Scene)
+(disjoint SpatialObject Scene)
 
 (implies Plate Object)
 (implies Fork Object)
 (implies Knife Object)
 (implies Glass Object)
-(implies R1 Region)
-(implies R2 Region)
-(implies R3 Region)
-(implies R4 Region)
-(implies RC Region)
+(implies R1 Object)
+(implies R2 Object)
+(implies R3 Object)
+(implies R4 Object)
+(implies RC Object)
 
 
 #############################################################################################
@@ -35,7 +34,7 @@
 (range  isNearTo SpatialObject) # Object
 (domain isNearTo SpatialObject)
 (range  isInRegion SpatialObject) # Object
-(domain isInRegion Region)
+(domain isInRegion SpatialObject)
 
 (inverse isNearTo isNearTo)
 (inverse isInRegion isInRegion)
@@ -71,14 +70,24 @@
 #############################################################################################
 
 
-(define-concept PlateNearTo   (and Plate    (some isNearTo  SpatialObject)))
-(define-concept ForkNearTo    (and Fork     (some isNearTo  SpatialObject)))
-(define-concept KnifeNearTo   (and Knife    (some isNearTo  SpatialObject)))
-(define-concept GlassNearTo   (and Glass    (some isNearTo  SpatialObject)))
-(define-concept PlateInRegion (and Plate    (some isInRegion  Region)))
-(define-concept ForkInRegion  (and Fork     (some isInRegion  Region)))
-(define-concept KnifeInRegion (and Knife    (some isInRegion  Region)))
-(define-concept GlassInRegion (and Glass    (some isInRegion  Region)))
+(define-concept PlateNearTo     (and Plate    (some isNearTo  SpatialObject)))
+(define-concept ForkNearTo      (and Fork     (some isNearTo  SpatialObject)))
+(define-concept KnifeNearTo     (and Knife    (some isNearTo  SpatialObject)))
+(define-concept GlassNearTo     (and Glass    (some isNearTo  SpatialObject)))
+(define-concept R1NearTo        (and R1       (some isNearTo  SpatialObject)))
+(define-concept R2NearTo        (and R2       (some isNearTo  SpatialObject)))
+(define-concept R3NearTo        (and R3       (some isNearTo  SpatialObject)))
+(define-concept R4NearTo        (and R4       (some isNearTo  SpatialObject)))
+(define-concept RCNearTo        (and RC       (some isNearTo  SpatialObject)))
+(define-concept PlateInRegion   (and Plate    (some isInRegion SpatialObject)))
+(define-concept ForkInRegion    (and Fork     (some isInRegion SpatialObject)))
+(define-concept KnifeInRegion   (and Knife    (some isInRegion SpatialObject)))
+(define-concept GlassInRegion   (and Glass    (some isInRegion SpatialObject)))
+(define-concept R1InRegion      (and R1       (some isInRegion  SpatialObject)))
+(define-concept R2InRegion      (and R2       (some isInRegion  SpatialObject)))
+(define-concept R3InRegion      (and R3       (some isInRegion  SpatialObject)))
+(define-concept R4InRegion      (and R4       (some isInRegion  SpatialObject)))
+(define-concept RCInRegion      (and RC       (some isInRegion  SpatialObject)))
 
 
 #############################################################################################

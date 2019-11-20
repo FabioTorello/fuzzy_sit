@@ -51,8 +51,8 @@ public class MemoryImplementation extends MemoryInterface {
     //private Timing timing;
 
     //Constructor
-    public MemoryImplementation(String tboxPath) {
-        super(new SITTBox(tboxPath));
+    public MemoryImplementation(String tboxPath, String configPath) {
+        super(new SITTBox(tboxPath, configPath));
     }
 
 

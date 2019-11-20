@@ -22,32 +22,23 @@ public abstract class PerceptionBase<F> {
     public void setSceneName(String sceneName) {
         this.sceneName = sceneName;
     }
-    //TODO This version of addObject is for the property ConnectedObjectScene.java
-    /*protected void addObject(String type, String object, double degree, F feature){
-        FeaturedSpatialObject<F> newObject = new FeaturedSpatialObject<>(type, object, degree, feature);
+
+    protected void addObject( FeaturedSpatialObject<F> newObject){
         for ( FeaturedSpatialObject<F> obj : getObjects()) {
             SpatialRelation rel = computeRelation(obj, newObject);
             if ( rel != null)
                 relations.add(rel);
         }
         objects.add( newObject);
-    }*/
-//TODO This version of addObject is for the property NearObjectScene.java
+    }
+
     protected void addObject(String type, String object, double degree, F feature){
         FeaturedSpatialObject<F> newObject = new FeaturedSpatialObject<>(type, object, degree, feature);
-        for ( FeaturedSpatialObject<F> obj : getObjects()) {
-            Set<SpatialRelation>  rel = computeRelation(obj, newObject);
-            if ( rel != null)
-                for (SpatialRelation rels: rel)
-                relations.add(rels);
-        }
-        objects.add( newObject);
+        addObject( newObject);
     }
+
     // add to `relations` all new facts from `object` and `newObject`
-    //TODO This version of computeRelation is for the property ConnectedObjectScene.java
-      //protected abstract SpatialRelation computeRelation( FeaturedSpatialObject<F> anObject, FeaturedSpatialObject<F> newObject);
-    //TODO This version of computeRelation is for the property NearObjectScene.java
-     protected abstract Set<SpatialRelation>  computeRelation( FeaturedSpatialObject<F> anObject, FeaturedSpatialObject<F> newObject);
+    protected abstract SpatialRelation computeRelation( FeaturedSpatialObject<F> anObject, FeaturedSpatialObject<F> newObject);
 
     public Set<FeaturedSpatialObject<F>> getObjects() {
         return objects;

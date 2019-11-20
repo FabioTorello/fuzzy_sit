@@ -36,7 +36,6 @@ public interface FuzzySITBase {
     String ANNOTATION_PREFIX = "#!# ";
     String ANNOTATION_CARDINALITY_SEPARATOR = " <- ";
     String PATH_BASE = "fuzzySIT/src/main/resources/";
-    //String PATH_BASE = "memory_service/src/main/resources/";
     String FILE_FUZZYDL_CONFIG = PATH_BASE + "fuzzyDL_CONFIG";
     String FILE_ONTOLOGY_LOAD = PATH_BASE + "example_SIT_kb.fuzzydl";
 
