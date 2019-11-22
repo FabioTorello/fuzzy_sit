@@ -9,6 +9,9 @@ import it.emarolab.fuzzySIT.perception.simple2D.Point2;
 //import it.emarolab.fuzzySIT.perception.simple2D.RelatedRegionOnScene;
 //import it.emarolab.fuzzySIT.perception.simple2D.RegionOnScene;
 import it.emarolab.fuzzySIT.perception.simple2D.DefineRelationsOnScene;
+import it.emarolab.fuzzySIT.perception.simple2D.Object;
+import it.emarolab.fuzzySIT.perception.PerceptionBase;
+import it.emarolab.fuzzySIT.perception.simple2D.Region;
 import org.ros.internal.loader.CommandLineLoader;
 import org.ros.node.DefaultNodeMainExecutor;
 import org.ros.node.NodeConfiguration;
@@ -112,7 +115,10 @@ public class MemoryImplementationTest {
 
 public static DefineRelationsOnScene scene1(){
     DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene1");
-
+    Object plate = new Object("Plate","P1", .9, new Point2(0.03, 0));
+    Region region1 = new Region("R1","Region1", .9, new Point2(0.01, 0));
+    scene.addObject(plate);
+    scene.addObject(region1);
     return scene;
 }
 
@@ -121,7 +127,7 @@ public static DefineRelationsOnScene scene1(){
     public static void main(String[] args) {
 
         MemoryImplementation memory = new MemoryImplementation("memory_service/src/main/resources/table_classification_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
-         //memory.experience( scene1(),true,true);
+         memory.experience( scene1(),true,true);
         //I want to store the scene1 and I want the consolidating function compute the score
           // memory.experience(scene1(),true,true);
 

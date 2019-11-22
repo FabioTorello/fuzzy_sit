@@ -23,7 +23,7 @@ public abstract class PerceptionBase<F> {
         this.sceneName = sceneName;
     }
 
-    protected void addObject( FeaturedSpatialObject<F> newObject){
+    public void addObject( FeaturedSpatialObject<F> newObject){
         for ( FeaturedSpatialObject<F> obj : getObjects()) {
             SpatialRelation rel = computeRelation(obj, newObject);
             if ( rel != null)
