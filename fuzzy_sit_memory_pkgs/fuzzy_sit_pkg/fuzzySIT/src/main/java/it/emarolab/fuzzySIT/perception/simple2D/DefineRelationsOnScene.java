@@ -9,8 +9,8 @@ public class DefineRelationsOnScene extends ConnectObjectScene {
     public static final String NEAR = "isNearTo";
     public static final String INREGION = "isInRegion";
 
-    private static final double NEAR_THRESHOLD = 0.1; // meters (positive number)
-    private static final double INREGION_THRESHOLD = 0.1; // meters (positive number)
+    private static final double NEAR_THRESHOLD = 0.53; // meters (positive number)
+    private static final double INREGION_THRESHOLD = 0.25; // meters (positive number)
 
     //Constructor
     public DefineRelationsOnScene() {}

@@ -115,12 +115,83 @@ public class MemoryImplementationTest {
 
 public static DefineRelationsOnScene scene1(){
     DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene1");
-    Object plate = new Object("Plate","P1", .9, new Point2(0.03, 0));
-    Region region1 = new Region("R1","Region1", .9, new Point2(0.01, 0));
+    Object plate = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
+    Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
     scene.addObject(plate);
     scene.addObject(region1);
     return scene;
 }
+
+    public static DefineRelationsOnScene scene2(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene2");
+        Object plate = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
+        Object fork = new Object("Fork","F1", .9, new Point2(0.6, 0.6 ));
+        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
+        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
+        scene.addObject(plate);
+        scene.addObject(fork);
+        scene.addObject(region1);
+        scene.addObject(region2);
+        return scene;
+    }
+
+    public static DefineRelationsOnScene scene3(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene3");
+        Object plate = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
+        Object fork = new Object("Fork","F1", .9, new Point2(0.6, 0.6 ));
+        Object glass = new Object("Glass","G1", .9, new Point2(-0.1, 0.35 ));
+        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
+        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
+        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
+        scene.addObject(plate);
+        scene.addObject(fork);
+        scene.addObject(glass);
+        scene.addObject(region1);
+        scene.addObject(region2);
+        scene.addObject(region3);
+        return scene;
+    }
+
+
+    public static DefineRelationsOnScene scene4(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene4");
+        Object plate = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
+        Object fork = new Object("Fork","F1", .9, new Point2(0.6, 0.6 ));
+        Object glass = new Object("Glass","G1", .9, new Point2(-0.1, 0.35 ));
+        Object knife = new Object("Knife","K1", .9, new Point2(0.55, 0.3 ));
+        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
+        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
+        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
+        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
+        scene.addObject(plate);
+        scene.addObject(fork);
+        scene.addObject(glass);
+        scene.addObject(knife);
+        scene.addObject(region1);
+        scene.addObject(region2);
+        scene.addObject(region3);
+        scene.addObject(region4);
+        return scene;
+    }
+
+    public static DefineRelationsOnScene scene10(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene10");
+        Object knife = new Object("Knife","K1", .9, new Point2(0.55, 0.3 ));
+        Object glass2 = new Object("Glass","G2", .9, new Point2(0.3, 0.4 ));
+        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
+        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
+        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
+        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
+        Region centralRegion = new Region("RC","CentralRegion", .9, new Point2(0.25, 0.25));
+        scene.addObject(knife);
+        scene.addObject(glass2);
+        scene.addObject(region1);
+        scene.addObject(region2);
+        scene.addObject(region3);
+        scene.addObject(region4);
+        scene.addObject(centralRegion);
+        return scene;
+    }
 
 
 
@@ -128,6 +199,22 @@ public static DefineRelationsOnScene scene1(){
 
         MemoryImplementation memory = new MemoryImplementation("memory_service/src/main/resources/table_classification_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
          memory.experience( scene1(),true,true);
+         memory.experience( scene2(),true,true);
+         memory.experience( scene3(),true,true);
+         /*memory.experience( scene4(),true,true);
+         memory.experience( scene10(),true,true);*/
+
+
+
+
+
+
+
+
+        //Show the graph
+        memory.getTbox().show();
+
+         //TODO This code below is for the ConnectedObjectScene
         //I want to store the scene1 and I want the consolidating function compute the score
           // memory.experience(scene1(),true,true);
 
