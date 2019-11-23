@@ -650,3 +650,271 @@ Scene3 LINKED TO Scene2 With FUZZY DEGREE 1.0
    N° OBJECTS: 4
    OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}, {Fork=0.9}, {R2=0.9}]
    SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6), 2 In Region(0.1515)}	Fork:{In Region(0.1515)}	Plate:{In Region(0.6)} ]
+
+/////////////////////// Time Instant: 1 /////////////////////// 
+
+NODES IN THE MEMORY: [Scene5[1.0]]
+
+/////////////////////// Time Instant: 1 /////////////////////// 
+
+NODES IN THE MEMORY: [Scene5[1.0]]
+
+/////////////////////// Time Instant: 1 /////////////////////// 
+
+NODES IN THE MEMORY: [Scene1[1.0]]
+
+/////////////////////// Time Instant: 2 /////////////////////// 
+
+NODES IN THE MEMORY: [Scene1[1.0], Scene2[0.2]]
+
+---------------------------------------------------------------
+Scene2 LINKED TO Scene1 With FUZZY DEGREE 1.0
+ Scene2 Information:
+   N° OBJECTS: 4
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6), 2 In Region(0.1515)}	Fork:{In Region(0.1515)}	Plate:{In Region(0.6)} ]
+
+ Scene1 Information:
+   N° OBJECTS: 2
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6)}	Plate:{In Region(0.6)} ]
+
+/////////////////////// Time Instant: 3 /////////////////////// 
+
+NODES IN THE MEMORY: [Scene1[1.0], Scene2[0.6799999999999999], Scene3[0.2]]
+
+---------------------------------------------------------------
+Scene2 LINKED TO Scene1 With FUZZY DEGREE 1.0
+ Scene2 Information:
+   N° OBJECTS: 4
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6), 2 In Region(0.1515)}	Fork:{In Region(0.1515)}	Plate:{In Region(0.6)} ]
+
+ Scene1 Information:
+   N° OBJECTS: 2
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6)}	Plate:{In Region(0.6)} ]
+
+---------------------------------------------------------------
+Scene3 LINKED TO Scene1 With FUZZY DEGREE 1.0
+ Scene3 Information:
+   N° OBJECTS: 6
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}, {Glass=0.9}, {R3=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{3 Near To(0.0566), 3 In Region(0.2789), 1 In Region(0.6), 1 Near To(0.0566), 2 In Region(0.1515)}	Fork:{In Region(0.1515)}	Glass:{In Region(0.2789), Near To(0.2395)}	Plate:{In Region(0.6), Near To(0.2395)} ]
+
+ Scene1 Information:
+   N° OBJECTS: 2
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6)}	Plate:{In Region(0.6)} ]
+
+---------------------------------------------------------------
+Scene3 LINKED TO Scene2 With FUZZY DEGREE 1.0
+ Scene3 Information:
+   N° OBJECTS: 6
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}, {Glass=0.9}, {R3=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{3 Near To(0.0566), 3 In Region(0.2789), 1 In Region(0.6), 1 Near To(0.0566), 2 In Region(0.1515)}	Fork:{In Region(0.1515)}	Glass:{In Region(0.2789), Near To(0.2395)}	Plate:{In Region(0.6), Near To(0.2395)} ]
+
+ Scene2 Information:
+   N° OBJECTS: 4
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6), 2 In Region(0.1515)}	Fork:{In Region(0.1515)}	Plate:{In Region(0.6)} ]
+
+/////////////////////// Time Instant: 4 /////////////////////// 
+
+NODES IN THE MEMORY: [Scene1[1.0], Scene2[0.8719999999999999], Scene3[0.679604], Scene4[0.2]]
+
+---------------------------------------------------------------
+Scene2 LINKED TO Scene1 With FUZZY DEGREE 1.0
+ Scene2 Information:
+   N° OBJECTS: 4
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6), 2 In Region(0.1515)}	Fork:{In Region(0.1515)}	Plate:{In Region(0.6)} ]
+
+ Scene1 Information:
+   N° OBJECTS: 2
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6)}	Plate:{In Region(0.6)} ]
+
+---------------------------------------------------------------
+Scene3 LINKED TO Scene1 With FUZZY DEGREE 1.0
+ Scene3 Information:
+   N° OBJECTS: 6
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}, {Glass=0.9}, {R3=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{3 Near To(0.0566), 3 In Region(0.2789), 1 In Region(0.6), 1 Near To(0.0566), 2 In Region(0.1515)}	Fork:{In Region(0.1515)}	Glass:{In Region(0.2789), Near To(0.2395)}	Plate:{In Region(0.6), Near To(0.2395)} ]
+
+ Scene1 Information:
+   N° OBJECTS: 2
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6)}	Plate:{In Region(0.6)} ]
+
+---------------------------------------------------------------
+Scene3 LINKED TO Scene2 With FUZZY DEGREE 1.0
+ Scene3 Information:
+   N° OBJECTS: 6
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}, {Glass=0.9}, {R3=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{3 Near To(0.0566), 3 In Region(0.2789), 1 In Region(0.6), 1 Near To(0.0566), 2 In Region(0.1515)}	Fork:{In Region(0.1515)}	Glass:{In Region(0.2789), Near To(0.2395)}	Plate:{In Region(0.6), Near To(0.2395)} ]
+
+ Scene2 Information:
+   N° OBJECTS: 4
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6), 2 In Region(0.1515)}	Fork:{In Region(0.1515)}	Plate:{In Region(0.6)} ]
+
+---------------------------------------------------------------
+Scene4 LINKED TO Scene1 With FUZZY DEGREE 1.0
+ Scene4 Information:
+   N° OBJECTS: 8
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R4=0.9}, {Knife=0.9}, {R1=0.9}, {Glass=0.9}, {R3=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	Knife:{In Region(0.1754), Near To(0.4262)}	R:{3 Near To(0.0566), 3 In Region(0.2789), 4 In Region(0.1754), 1 In Region(0.6), 1 Near To(0.0566), 2 Near To(0.0566), 2 In Region(0.1515), 4 Near To(0.0566)}	Fork:{In Region(0.1515), Near To(0.4262)}	Glass:{In Region(0.2789), Near To(0.2395)}	Plate:{In Region(0.6), Near To(0.2395)} ]
+
+ Scene1 Information:
+   N° OBJECTS: 2
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6)}	Plate:{In Region(0.6)} ]
+
+---------------------------------------------------------------
+Scene4 LINKED TO Scene2 With FUZZY DEGREE 1.0
+ Scene4 Information:
+   N° OBJECTS: 8
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R4=0.9}, {Knife=0.9}, {R1=0.9}, {Glass=0.9}, {R3=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	Knife:{In Region(0.1754), Near To(0.4262)}	R:{3 Near To(0.0566), 3 In Region(0.2789), 4 In Region(0.1754), 1 In Region(0.6), 1 Near To(0.0566), 2 Near To(0.0566), 2 In Region(0.1515), 4 Near To(0.0566)}	Fork:{In Region(0.1515), Near To(0.4262)}	Glass:{In Region(0.2789), Near To(0.2395)}	Plate:{In Region(0.6), Near To(0.2395)} ]
+
+ Scene2 Information:
+   N° OBJECTS: 4
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6), 2 In Region(0.1515)}	Fork:{In Region(0.1515)}	Plate:{In Region(0.6)} ]
+
+---------------------------------------------------------------
+Scene4 LINKED TO Scene3 With FUZZY DEGREE 1.0
+ Scene4 Information:
+   N° OBJECTS: 8
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R4=0.9}, {Knife=0.9}, {R1=0.9}, {Glass=0.9}, {R3=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	Knife:{In Region(0.1754), Near To(0.4262)}	R:{3 Near To(0.0566), 3 In Region(0.2789), 4 In Region(0.1754), 1 In Region(0.6), 1 Near To(0.0566), 2 Near To(0.0566), 2 In Region(0.1515), 4 Near To(0.0566)}	Fork:{In Region(0.1515), Near To(0.4262)}	Glass:{In Region(0.2789), Near To(0.2395)}	Plate:{In Region(0.6), Near To(0.2395)} ]
+
+ Scene3 Information:
+   N° OBJECTS: 6
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}, {Glass=0.9}, {R3=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{3 Near To(0.0566), 3 In Region(0.2789), 1 In Region(0.6), 1 Near To(0.0566), 2 In Region(0.1515)}	Fork:{In Region(0.1515)}	Glass:{In Region(0.2789), Near To(0.2395)}	Plate:{In Region(0.6), Near To(0.2395)} ]
+
+/////////////////////// Time Instant: 5 /////////////////////// 
+
+NODES IN THE MEMORY: [Scene1[1.0], Scene2[0.9488], Scene3[0.8714456], Scene4[0.679604], Scene5[0.2]]
+
+---------------------------------------------------------------
+Scene2 LINKED TO Scene1 With FUZZY DEGREE 1.0
+ Scene2 Information:
+   N° OBJECTS: 4
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6), 2 In Region(0.1515)}	Fork:{In Region(0.1515)}	Plate:{In Region(0.6)} ]
+
+ Scene1 Information:
+   N° OBJECTS: 2
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6)}	Plate:{In Region(0.6)} ]
+
+---------------------------------------------------------------
+Scene3 LINKED TO Scene1 With FUZZY DEGREE 1.0
+ Scene3 Information:
+   N° OBJECTS: 6
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}, {Glass=0.9}, {R3=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{3 Near To(0.0566), 3 In Region(0.2789), 1 In Region(0.6), 1 Near To(0.0566), 2 In Region(0.1515)}	Fork:{In Region(0.1515)}	Glass:{In Region(0.2789), Near To(0.2395)}	Plate:{In Region(0.6), Near To(0.2395)} ]
+
+ Scene1 Information:
+   N° OBJECTS: 2
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6)}	Plate:{In Region(0.6)} ]
+
+---------------------------------------------------------------
+Scene3 LINKED TO Scene2 With FUZZY DEGREE 1.0
+ Scene3 Information:
+   N° OBJECTS: 6
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}, {Glass=0.9}, {R3=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{3 Near To(0.0566), 3 In Region(0.2789), 1 In Region(0.6), 1 Near To(0.0566), 2 In Region(0.1515)}	Fork:{In Region(0.1515)}	Glass:{In Region(0.2789), Near To(0.2395)}	Plate:{In Region(0.6), Near To(0.2395)} ]
+
+ Scene2 Information:
+   N° OBJECTS: 4
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6), 2 In Region(0.1515)}	Fork:{In Region(0.1515)}	Plate:{In Region(0.6)} ]
+
+---------------------------------------------------------------
+Scene4 LINKED TO Scene1 With FUZZY DEGREE 1.0
+ Scene4 Information:
+   N° OBJECTS: 8
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R4=0.9}, {Knife=0.9}, {R1=0.9}, {Glass=0.9}, {R3=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	Knife:{In Region(0.1754), Near To(0.4262)}	R:{3 Near To(0.0566), 3 In Region(0.2789), 4 In Region(0.1754), 1 In Region(0.6), 1 Near To(0.0566), 2 Near To(0.0566), 2 In Region(0.1515), 4 Near To(0.0566)}	Fork:{In Region(0.1515), Near To(0.4262)}	Glass:{In Region(0.2789), Near To(0.2395)}	Plate:{In Region(0.6), Near To(0.2395)} ]
+
+ Scene1 Information:
+   N° OBJECTS: 2
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6)}	Plate:{In Region(0.6)} ]
+
+---------------------------------------------------------------
+Scene4 LINKED TO Scene2 With FUZZY DEGREE 1.0
+ Scene4 Information:
+   N° OBJECTS: 8
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R4=0.9}, {Knife=0.9}, {R1=0.9}, {Glass=0.9}, {R3=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	Knife:{In Region(0.1754), Near To(0.4262)}	R:{3 Near To(0.0566), 3 In Region(0.2789), 4 In Region(0.1754), 1 In Region(0.6), 1 Near To(0.0566), 2 Near To(0.0566), 2 In Region(0.1515), 4 Near To(0.0566)}	Fork:{In Region(0.1515), Near To(0.4262)}	Glass:{In Region(0.2789), Near To(0.2395)}	Plate:{In Region(0.6), Near To(0.2395)} ]
+
+ Scene2 Information:
+   N° OBJECTS: 4
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6), 2 In Region(0.1515)}	Fork:{In Region(0.1515)}	Plate:{In Region(0.6)} ]
+
+---------------------------------------------------------------
+Scene4 LINKED TO Scene3 With FUZZY DEGREE 1.0
+ Scene4 Information:
+   N° OBJECTS: 8
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R4=0.9}, {Knife=0.9}, {R1=0.9}, {Glass=0.9}, {R3=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	Knife:{In Region(0.1754), Near To(0.4262)}	R:{3 Near To(0.0566), 3 In Region(0.2789), 4 In Region(0.1754), 1 In Region(0.6), 1 Near To(0.0566), 2 Near To(0.0566), 2 In Region(0.1515), 4 Near To(0.0566)}	Fork:{In Region(0.1515), Near To(0.4262)}	Glass:{In Region(0.2789), Near To(0.2395)}	Plate:{In Region(0.6), Near To(0.2395)} ]
+
+ Scene3 Information:
+   N° OBJECTS: 6
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}, {Glass=0.9}, {R3=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{3 Near To(0.0566), 3 In Region(0.2789), 1 In Region(0.6), 1 Near To(0.0566), 2 In Region(0.1515)}	Fork:{In Region(0.1515)}	Glass:{In Region(0.2789), Near To(0.2395)}	Plate:{In Region(0.6), Near To(0.2395)} ]
+
+---------------------------------------------------------------
+Scene5 LINKED TO Scene1 With FUZZY DEGREE 1.0
+ Scene5 Information:
+   N° OBJECTS: 12
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {Plate=0.9}, {R4=0.9}, {Knife=0.9}, {Knife=0.9}, {R1=0.9}, {R3=0.9}, {Glass=0.9}, {R2=0.9}, {Fork=0.9}, {Glass=0.9}, {RC=0.9}]
+   SCENE DESCRIPTION: Σ → [	Knife:{In Region(0.7754), Near To(1.0566)}	RC:{Near To(0.0566)}	R:{3 Near To(0.0566), 3 In Region(0.2789), 4 In Region(0.6), 1 In Region(0.6), 1 Near To(0.0566), 2 Near To(0.0566), 2 In Region(0.1515), 4 Near To(0.0566)}	Fork:{In Region(0.1515), Near To(0.4262)}	Glass:{In Region(0.6465), Near To(1.3033)}	Plate:{In Region(0.9676), Near To(1.513)} ]
+
+ Scene1 Information:
+   N° OBJECTS: 2
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6)}	Plate:{In Region(0.6)} ]
+
+---------------------------------------------------------------
+Scene5 LINKED TO Scene2 With FUZZY DEGREE 1.0
+ Scene5 Information:
+   N° OBJECTS: 12
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {Plate=0.9}, {R4=0.9}, {Knife=0.9}, {Knife=0.9}, {R1=0.9}, {R3=0.9}, {Glass=0.9}, {R2=0.9}, {Fork=0.9}, {Glass=0.9}, {RC=0.9}]
+   SCENE DESCRIPTION: Σ → [	Knife:{In Region(0.7754), Near To(1.0566)}	RC:{Near To(0.0566)}	R:{3 Near To(0.0566), 3 In Region(0.2789), 4 In Region(0.6), 1 In Region(0.6), 1 Near To(0.0566), 2 Near To(0.0566), 2 In Region(0.1515), 4 Near To(0.0566)}	Fork:{In Region(0.1515), Near To(0.4262)}	Glass:{In Region(0.6465), Near To(1.3033)}	Plate:{In Region(0.9676), Near To(1.513)} ]
+
+ Scene2 Information:
+   N° OBJECTS: 4
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{1 In Region(0.6), 2 In Region(0.1515)}	Fork:{In Region(0.1515)}	Plate:{In Region(0.6)} ]
+
+---------------------------------------------------------------
+Scene5 LINKED TO Scene3 With FUZZY DEGREE 1.0
+ Scene5 Information:
+   N° OBJECTS: 12
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {Plate=0.9}, {R4=0.9}, {Knife=0.9}, {Knife=0.9}, {R1=0.9}, {R3=0.9}, {Glass=0.9}, {R2=0.9}, {Fork=0.9}, {Glass=0.9}, {RC=0.9}]
+   SCENE DESCRIPTION: Σ → [	Knife:{In Region(0.7754), Near To(1.0566)}	RC:{Near To(0.0566)}	R:{3 Near To(0.0566), 3 In Region(0.2789), 4 In Region(0.6), 1 In Region(0.6), 1 Near To(0.0566), 2 Near To(0.0566), 2 In Region(0.1515), 4 Near To(0.0566)}	Fork:{In Region(0.1515), Near To(0.4262)}	Glass:{In Region(0.6465), Near To(1.3033)}	Plate:{In Region(0.9676), Near To(1.513)} ]
+
+ Scene3 Information:
+   N° OBJECTS: 6
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R1=0.9}, {Glass=0.9}, {R3=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	R:{3 Near To(0.0566), 3 In Region(0.2789), 1 In Region(0.6), 1 Near To(0.0566), 2 In Region(0.1515)}	Fork:{In Region(0.1515)}	Glass:{In Region(0.2789), Near To(0.2395)}	Plate:{In Region(0.6), Near To(0.2395)} ]
+
+---------------------------------------------------------------
+Scene5 LINKED TO Scene4 With FUZZY DEGREE 1.0
+ Scene5 Information:
+   N° OBJECTS: 12
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {Plate=0.9}, {R4=0.9}, {Knife=0.9}, {Knife=0.9}, {R1=0.9}, {R3=0.9}, {Glass=0.9}, {R2=0.9}, {Fork=0.9}, {Glass=0.9}, {RC=0.9}]
+   SCENE DESCRIPTION: Σ → [	Knife:{In Region(0.7754), Near To(1.0566)}	RC:{Near To(0.0566)}	R:{3 Near To(0.0566), 3 In Region(0.2789), 4 In Region(0.6), 1 In Region(0.6), 1 Near To(0.0566), 2 Near To(0.0566), 2 In Region(0.1515), 4 Near To(0.0566)}	Fork:{In Region(0.1515), Near To(0.4262)}	Glass:{In Region(0.6465), Near To(1.3033)}	Plate:{In Region(0.9676), Near To(1.513)} ]
+
+ Scene4 Information:
+   N° OBJECTS: 8
+   OBJECT TYPES WITH FUZZY DEGREE: [{Plate=0.9}, {R4=0.9}, {Knife=0.9}, {R1=0.9}, {Glass=0.9}, {R3=0.9}, {Fork=0.9}, {R2=0.9}]
+   SCENE DESCRIPTION: Σ → [	Knife:{In Region(0.1754), Near To(0.4262)}	R:{3 Near To(0.0566), 3 In Region(0.2789), 4 In Region(0.1754), 1 In Region(0.6), 1 Near To(0.0566), 2 Near To(0.0566), 2 In Region(0.1515), 4 Near To(0.0566)}	Fork:{In Region(0.1515), Near To(0.4262)}	Glass:{In Region(0.2789), Near To(0.2395)}	Plate:{In Region(0.6), Near To(0.2395)} ]
