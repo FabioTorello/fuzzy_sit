@@ -27,57 +27,6 @@ import java.util.HashSet;
 public class MemoryImplementationTest {
 
 
-    /*public static ConnectObjectScene scene0(){
-        ConnectObjectScene scene = new ConnectObjectScene("Scene0");
-        scene.addTable(0,0, .9);
-        scene.addScrewDriver( 0, .02, .9);
-        return scene;
-    }
-
-    public static ConnectObjectScene scene0b(){
-        ConnectObjectScene scene = new ConnectObjectScene( "Scene0b");
-        scene.addTable(0,0, .9);
-        scene.addPen( 0, .02, .9);
-        return scene;
-    }
-
-    public static ConnectObjectScene sceneTable(){
-        ConnectObjectScene scene = new ConnectObjectScene( "SceneTable");
-        scene.addTable(0,0, .9);
-        scene.addPen( 0, .1, .9);
-        scene.addLeg( -.5, .2, .9);
-        scene.addLeg( -.5, .21, .9);
-        return scene;
-    }
-
-    private static ConnectObjectScene sceneLeg1(){
-        ConnectObjectScene scene = new ConnectObjectScene();
-        scene.addTable(0,0, .9);
-        scene.addLeg( 0, .07, .9);
-        scene.addLeg( -.7, .02, .9);
-        scene.setSceneName( "SceneLeg1");
-        return scene;
-    }
-
-    private static ConnectObjectScene sceneLeg2(){
-        ConnectObjectScene scene = new ConnectObjectScene();
-        scene.addTable(0,0, .9);
-        scene.addLeg( 0.01, 0, .9);
-        scene.addLeg( 0.03, 0, .9);
-        scene.setSceneName( "SceneLeg2");
-        return scene;
-    }*/
-
-  /*  private static ConnectObjectScene scene1(){
-        ConnectObjectScene scene = new ConnectObjectScene("Scene1");
-        scene.addTable(0,0, .9);
-        scene.addLeg( 0.01, 0, .9);
-        scene.addLeg( 0.03, 0, .9);
-        scene.addPen( .5, .5, .9);
-        scene.addScrewDriver( -.5, .02, .9);
-        scene.addScrewDriver( -.5, .1, .9);
-        return scene;
-    } */
 
     /*  private static NearObjectScene scene1N(){
         NearObjectScene scene = new NearObjectScene();
@@ -113,8 +62,8 @@ public class MemoryImplementationTest {
        return scene;
    }*/
 
-public static DefineRelationsOnScene scene1(){
-    DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene1");
+public static DefineRelationsOnScene scene6(){
+    DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene6");
     Object plate = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
     Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
     Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
@@ -130,8 +79,8 @@ public static DefineRelationsOnScene scene1(){
     return scene;
 }
 
-    public static DefineRelationsOnScene scene2(){
-        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene2");
+    public static DefineRelationsOnScene scene7(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene7");
         Object plate = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
         Object fork = new Object("Fork","F1", .9, new Point2(0.6, 0.6 ));
         Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
@@ -149,8 +98,8 @@ public static DefineRelationsOnScene scene1(){
         return scene;
     }
 
-    public static DefineRelationsOnScene scene3(){
-        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene3");
+    public static DefineRelationsOnScene scene8(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene8");
         Object plate = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
         Object fork = new Object("Fork","F1", .9, new Point2(0.6, 0.6 ));
         Object glass = new Object("Glass","G1", .9, new Point2(-0.1, 0.35 ));
@@ -171,8 +120,8 @@ public static DefineRelationsOnScene scene1(){
     }
 
 
-    public static DefineRelationsOnScene scene4(){
-        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene4");
+    public static DefineRelationsOnScene scene9(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene9");
         Object plate = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
         Object fork = new Object("Fork","F1", .9, new Point2(0.6, 0.6 ));
         Object glass = new Object("Glass","G1", .9, new Point2(-0.1, 0.35 ));
@@ -194,8 +143,8 @@ public static DefineRelationsOnScene scene1(){
         return scene;
     }
 
-    public static DefineRelationsOnScene scene5(){
-        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene5");
+    public static DefineRelationsOnScene scene15(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene15");
         Object plate1 = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
         Object plate2 = new Object("Plate","P2", .9, new Point2(-0.3, 0.6 ));
         Object fork = new Object("Fork","F1", .9, new Point2(0.6, 0.6 ));
@@ -223,8 +172,8 @@ public static DefineRelationsOnScene scene1(){
         return scene;
     }
 
-    public static DefineRelationsOnScene scene6(){
-        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene6");
+    public static DefineRelationsOnScene scene21(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene21");
         Object plate1 = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
         Object plate2 = new Object("Plate","P2", .9, new Point2(-0.3, 0.6 ));
         Object fork1 = new Object("Fork","F1", .9, new Point2(0.6, 0.6 ));
@@ -254,8 +203,8 @@ public static DefineRelationsOnScene scene1(){
         return scene;
     }
 
-    public static DefineRelationsOnScene scene7(){
-        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene7");
+    public static DefineRelationsOnScene scene14(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene14");
         Object plate1 = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
         Object plate2 = new Object("Plate","P2", .9, new Point2(-0.3, 0.6 ));
         Object fork1 = new Object("Fork","F1", .9, new Point2(0.6, 0.6 ));
@@ -285,8 +234,8 @@ public static DefineRelationsOnScene scene1(){
         return scene;
     }
 
-    public static DefineRelationsOnScene scene14(){
-        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene14");
+    public static DefineRelationsOnScene scene1(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene1");
         Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
         Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
         Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
@@ -300,8 +249,8 @@ public static DefineRelationsOnScene scene1(){
         return scene;
     }
 
-    public static DefineRelationsOnScene scene13(){
-        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene13");
+    public static DefineRelationsOnScene scene2(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene2");
         Object knife = new Object("Knife","K1", .9, new Point2(0.25, 0.3 ));
         Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
         Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
@@ -317,8 +266,8 @@ public static DefineRelationsOnScene scene1(){
         return scene;
     }
 
-    public static DefineRelationsOnScene scene10(){
-        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene10");
+    public static DefineRelationsOnScene scene3(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene3");
         Object knife = new Object("Knife","K1", .9, new Point2(0.25, 0.3 ));
         Object glass = new Object("Glass","G1", .9, new Point2(0.3, 0.4 ));
         Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
@@ -336,8 +285,8 @@ public static DefineRelationsOnScene scene1(){
         return scene;
     }
 
-    public static DefineRelationsOnScene scene11(){
-        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene11");
+    public static DefineRelationsOnScene scene4(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene4");
         Object knife = new Object("Knife","K1", .9, new Point2(0.25, 0.3 ));
         Object glass = new Object("Glass","G1", .9, new Point2(0.3, 0.4 ));
         Object fork = new Object("Fork","F1", .9, new Point2(0.2, 0.5 ));
@@ -357,8 +306,8 @@ public static DefineRelationsOnScene scene1(){
         return scene;
     }
 
-    public static DefineRelationsOnScene scene12(){
-        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene12");
+    public static DefineRelationsOnScene scene5(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene5");
         Object knife = new Object("Knife","K1", .9, new Point2(0.25, 0.3 ));
         Object glass = new Object("Glass","G1", .9, new Point2(0.3, 0.4 ));
         Object fork = new Object("Fork","F1", .9, new Point2(0.2, 0.5 ));
@@ -380,15 +329,374 @@ public static DefineRelationsOnScene scene1(){
         return scene;
     }
 
+    public static DefineRelationsOnScene scene10(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene10");
+        Object plate1 = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
+        Object plate2 = new Object("Plate","P2", .9, new Point2(-0.3, 0.6 ));
+        Object fork1 = new Object("Fork","F1", .9, new Point2(0.6, 0.6 ));
+        Object glass1 = new Object("Glass","G1", .9, new Point2(-0.1, 0.35 ));
+        Object knife1 = new Object("Knife","K1", .9, new Point2(0.55, 0.3 ));
+        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
+        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
+        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
+        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
+        Region centralRegion = new Region("RC","CentralRegion", .9, new Point2(0.25, 0.5));
+        scene.addObject(plate1);
+        scene.addObject(plate2);
+        scene.addObject(fork1);
+        scene.addObject(glass1);
+        scene.addObject(knife1);
+        scene.addObject(region1);
+        scene.addObject(region2);
+        scene.addObject(region3);
+        scene.addObject(region4);
+        scene.addObject(centralRegion);
+        return scene;
+    }
+
+    public static DefineRelationsOnScene scene11(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene11");
+        Object plate1 = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
+        Object plate2 = new Object("Plate","P2", .9, new Point2(-0.3, 0.6 ));
+        Object fork1 = new Object("Fork","F1", .9, new Point2(0.6, 0.6 ));
+        Object glass1 = new Object("Glass","G1", .9, new Point2(-0.1, 0.35 ));
+        Object knife1 = new Object("Knife","K1", .9, new Point2(0.55, 0.3 ));
+        Object knife2 = new Object("Knife","K2", .9, new Point2(0.75, 0.15 ));
+        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
+        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
+        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
+        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
+        Region centralRegion = new Region("RC","CentralRegion", .9, new Point2(0.25, 0.5));
+        scene.addObject(plate1);
+        scene.addObject(plate2);
+        scene.addObject(fork1);
+        scene.addObject(glass1);
+        scene.addObject(knife1);
+        scene.addObject(knife2);
+        scene.addObject(region1);
+        scene.addObject(region2);
+        scene.addObject(region3);
+        scene.addObject(region4);
+        scene.addObject(centralRegion);
+        return scene;
+    }
+
+    public static DefineRelationsOnScene scene12(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene12");
+        Object plate1 = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
+        Object plate2 = new Object("Plate","P2", .9, new Point2(-0.3, 0.6 ));
+        Object fork1 = new Object("Fork","F1", .9, new Point2(0.6, 0.6 ));
+        Object fork2 = new Object("Fork","F2", .9, new Point2(-0.4, 0.4 ));
+        Object glass1 = new Object("Glass","G1", .9, new Point2(-0.1, 0.35 ));
+        Object knife1 = new Object("Knife","K1", .9, new Point2(0.55, 0.3 ));
+        Object knife2 = new Object("Knife","K2", .9, new Point2(0.75, 0.15 ));
+        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
+        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
+        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
+        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
+        Region centralRegion = new Region("RC","CentralRegion", .9, new Point2(0.25, 0.5));
+        scene.addObject(plate1);
+        scene.addObject(plate2);
+        scene.addObject(fork1);
+        scene.addObject(fork2);
+        scene.addObject(glass1);
+        scene.addObject(knife1);
+        scene.addObject(knife2);
+        scene.addObject(region1);
+        scene.addObject(region2);
+        scene.addObject(region3);
+        scene.addObject(region4);
+        scene.addObject(centralRegion);
+        return scene;
+    }
+
+    public static DefineRelationsOnScene scene13(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene13");
+        Object plate1 = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
+        Object plate2 = new Object("Plate","P2", .9, new Point2(-0.3, 0.6 ));
+        Object fork1 = new Object("Fork","F1", .9, new Point2(0.6, 0.6 ));
+        Object fork2 = new Object("Fork","F2", .9, new Point2(-0.4, 0.4 ));
+        Object glass1 = new Object("Glass","G1", .9, new Point2(-0.1, 0.35 ));
+        Object glass2 = new Object("Glass","G2", .9, new Point2(0.6, 0.8 ));
+        Object knife1 = new Object("Knife","K1", .9, new Point2(0.55, 0.3 ));
+        Object knife2 = new Object("Knife","K2", .9, new Point2(0.75, 0.15 ));
+        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
+        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
+        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
+        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
+        Region centralRegion = new Region("RC","CentralRegion", .9, new Point2(0.25, 0.5));
+        scene.addObject(plate1);
+        scene.addObject(plate2);
+        scene.addObject(fork1);
+        scene.addObject(fork2);
+        scene.addObject(glass1);
+        scene.addObject(glass2);
+        scene.addObject(knife1);
+        scene.addObject(knife2);
+        scene.addObject(region1);
+        scene.addObject(region2);
+        scene.addObject(region3);
+        scene.addObject(region4);
+        scene.addObject(centralRegion);
+        return scene;
+    }
+
+    public static DefineRelationsOnScene scene16(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene16");
+        Object plate2 = new Object("Plate","P2", .9, new Point2(-0.3, 0.6 ));
+        Object fork1 = new Object("Fork","F1", .9, new Point2(0.6, 0.6 ));
+        Object fork2 = new Object("Fork","F2", .9, new Point2(-0.15, 0.75 ));
+        Object glass1 = new Object("Glass","G1", .9, new Point2(-0.1, 0.35 ));
+        Object glass2 = new Object("Glass","G2", .9, new Point2(-0.3, 0.3 ));
+        Object knife1 = new Object("Knife","K1", .9, new Point2(0.55, 0.3 ));
+        Object knife2 = new Object("Knife","K2", .9, new Point2(0.75, 0.15 ));
+        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
+        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
+        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
+        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
+        Region centralRegion = new Region("RC","CentralRegion", .9, new Point2(0.25, 0.5));
+        scene.addObject(plate2);
+        scene.addObject(fork1);
+        scene.addObject(fork2);
+        scene.addObject(glass1);
+        scene.addObject(glass2);
+        scene.addObject(knife1);
+        scene.addObject(knife2);
+        scene.addObject(region1);
+        scene.addObject(region2);
+        scene.addObject(region3);
+        scene.addObject(region4);
+        scene.addObject(centralRegion);
+        return scene;
+    }
+
+    public static DefineRelationsOnScene scene17(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene17");
+        Object plate1 = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
+        Object plate2 = new Object("Plate","P2", .9, new Point2(-0.3, 0.6 ));
+        Object fork1 = new Object("Fork","F1", .9, new Point2(-0.4, 0.4 ));
+        Object fork2 = new Object("Fork","F2", .9, new Point2(0.75, 0.15 ));
+        Object glass1 = new Object("Glass","G1", .9, new Point2(0.6, 0.8 ));
+        Object glass2 = new Object("Glass","G2", .9, new Point2(-0.1, 0.35 ));
+        Object knife1 = new Object("Knife","K1", .9, new Point2(0.55, 0.3 ));
+        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
+        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
+        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
+        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
+        Region centralRegion = new Region("RC","CentralRegion", .9, new Point2(0.25, 0.5));
+        scene.addObject(plate1);
+        scene.addObject(plate2);
+        scene.addObject(fork1);
+        scene.addObject(fork2);
+        scene.addObject(glass1);
+        scene.addObject(glass2);
+        scene.addObject(knife1);
+        scene.addObject(region1);
+        scene.addObject(region2);
+        scene.addObject(region3);
+        scene.addObject(region4);
+        scene.addObject(centralRegion);
+        return scene;
+    }
+
+    public static DefineRelationsOnScene scene18(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene18");
+        Object plate1 = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
+        Object plate2 = new Object("Plate","P2", .9, new Point2(-0.3, 0.6 ));
+        Object fork1 = new Object("Fork","F1", .9, new Point2(-0.4, 0.4 ));
+        Object fork2 = new Object("Fork","F2", .9, new Point2(0.75, 0.15 ));
+        Object glass1 = new Object("Glass","G1", .9, new Point2(0.6, 0.8 ));
+        Object glass2 = new Object("Glass","G2", .9, new Point2(-0.1, 0.35 ));
+        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
+        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
+        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
+        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
+        Region centralRegion = new Region("RC","CentralRegion", .9, new Point2(0.25, 0.5));
+        scene.addObject(plate1);
+        scene.addObject(plate2);
+        scene.addObject(fork1);
+        scene.addObject(fork2);
+        scene.addObject(glass1);
+        scene.addObject(glass2);
+        scene.addObject(region1);
+        scene.addObject(region2);
+        scene.addObject(region3);
+        scene.addObject(region4);
+        scene.addObject(centralRegion);
+        return scene;
+    }
+
+    public static DefineRelationsOnScene scene19(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene19");
+        Object plate1 = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
+        Object fork1 = new Object("Fork","F1", .9, new Point2(-0.4, 0.4 ));
+        Object fork2 = new Object("Fork","F2", .9, new Point2(0.75, 0.15 ));
+        Object glass1 = new Object("Glass","G1", .9, new Point2(0.6, 0.8 ));
+        Object glass2 = new Object("Glass","G2", .9, new Point2(-0.1, 0.35 ));
+        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
+        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
+        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
+        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
+        Region centralRegion = new Region("RC","CentralRegion", .9, new Point2(0.25, 0.5));
+        scene.addObject(plate1);
+        scene.addObject(fork1);
+        scene.addObject(fork2);
+        scene.addObject(glass1);
+        scene.addObject(glass2);
+        scene.addObject(region1);
+        scene.addObject(region2);
+        scene.addObject(region3);
+        scene.addObject(region4);
+        scene.addObject(centralRegion);
+        return scene;
+    }
+    public static DefineRelationsOnScene scene20(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene20");
+        Object fork1 = new Object("Fork","F1", .9, new Point2(-0.4, 0.4 ));
+        Object fork2 = new Object("Fork","F2", .9, new Point2(0.75, 0.15 ));
+        Object glass1 = new Object("Glass","G1", .9, new Point2(0.6, 0.8 ));
+        Object glass2 = new Object("Glass","G2", .9, new Point2(-0.1, 0.35 ));
+        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
+        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
+        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
+        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
+        Region centralRegion = new Region("RC","CentralRegion", .9, new Point2(0.25, 0.5));
+        scene.addObject(fork1);
+        scene.addObject(fork2);
+        scene.addObject(glass1);
+        scene.addObject(glass2);
+        scene.addObject(region1);
+        scene.addObject(region2);
+        scene.addObject(region3);
+        scene.addObject(region4);
+        scene.addObject(centralRegion);
+        return scene;
+    }
+
+    public static DefineRelationsOnScene scene22(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene22");
+        Object plate1 = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
+        Object plate2 = new Object("Plate","P2", .9, new Point2(-0.3, 0.6 ));
+        Object fork1 = new Object("Fork","F1", .9, new Point2(0.6, 0.6 ));
+        Object fork2 = new Object("Fork","F2", .9, new Point2(-0.4, 0.4 ));
+        Object glass1 = new Object("Glass","G1", .9, new Point2(-0.3, 0.3 ));
+        Object glass2 = new Object("Glass","G2", .9, new Point2(-0.1, 0.35 ));
+        Object knife1 = new Object("Knife","K1", .9, new Point2(0.55, 0.3 ));
+        Object knife2 = new Object("Knife","K2", .9, new Point2(0.75, 0.15 ));
+        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
+        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
+        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
+        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
+        Region centralRegion = new Region("RC","CentralRegion", .9, new Point2(0.25, 0.5));
+        scene.addObject(plate1);
+        scene.addObject(plate2);
+        scene.addObject(fork1);
+        scene.addObject(fork2);
+        scene.addObject(glass1);
+        scene.addObject(glass2);
+        scene.addObject(knife1);
+        scene.addObject(knife2);
+        scene.addObject(region1);
+        scene.addObject(region2);
+        scene.addObject(region3);
+        scene.addObject(region4);
+        scene.addObject(centralRegion);
+        return scene;
+    }
+
+    public static DefineRelationsOnScene scene23(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene23");
+        Object plate1 = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
+        Object plate2 = new Object("Plate","P2", .9, new Point2(-0.3, 0.6 ));
+        Object fork1 = new Object("Fork","F1", .9, new Point2(0.6, 0.6 ));
+        Object fork2 = new Object("Fork","F2", .9, new Point2(0.8, 0.7 ));
+        Object glass1 = new Object("Glass","G1", .9, new Point2(-0.3, 0.3 ));
+        Object glass2 = new Object("Glass","G2", .9, new Point2(-0.1, 0.35 ));
+        Object knife1 = new Object("Knife","K1", .9, new Point2(0.55, 0.3 ));
+        Object knife2 = new Object("Knife","K2", .9, new Point2(0.9, 0.9 ));
+        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
+        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
+        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
+        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
+        Region centralRegion = new Region("RC","CentralRegion", .9, new Point2(0.25, 0.5));
+        scene.addObject(plate1);
+        scene.addObject(plate2);
+        scene.addObject(fork1);
+        scene.addObject(fork2);
+        scene.addObject(glass1);
+        scene.addObject(glass2);
+        scene.addObject(knife1);
+        scene.addObject(knife2);
+        scene.addObject(region1);
+        scene.addObject(region2);
+        scene.addObject(region3);
+        scene.addObject(region4);
+        scene.addObject(centralRegion);
+        return scene;
+    }
+
+    public static DefineRelationsOnScene scene24(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene24");
+        Object plate1 = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
+        Object plate2 = new Object("Plate","P2", .9, new Point2(-0.3, 0.6 ));
+        Object fork1 = new Object("Fork","F1", .9, new Point2(0.6, 0.6 ));
+        Object fork2 = new Object("Fork","F2", .9, new Point2(0.8, 0.7 ));
+        Object glass1 = new Object("Glass","G1", .9, new Point2(-0.3, 0.3 ));
+        Object glass2 = new Object("Glass","G2", .9, new Point2(0.75, 0.15 ));
+        Object knife1 = new Object("Knife","K1", .9, new Point2(0.55, 0.3 ));
+        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
+        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
+        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
+        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
+        Region centralRegion = new Region("RC","CentralRegion", .9, new Point2(0.25, 0.5));
+        scene.addObject(plate1);
+        scene.addObject(plate2);
+        scene.addObject(fork1);
+        scene.addObject(fork2);
+        scene.addObject(glass1);
+        scene.addObject(glass2);
+        scene.addObject(knife1);
+        scene.addObject(region1);
+        scene.addObject(region2);
+        scene.addObject(region3);
+        scene.addObject(region4);
+        scene.addObject(centralRegion);
+        return scene;
+    }
+
+    public static DefineRelationsOnScene scene25(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene25");
+        Object plate1 = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
+        Object plate2 = new Object("Plate","P2", .9, new Point2(-0.3, 0.6 ));
+        Object fork1 = new Object("Fork","F1", .9, new Point2(0.6, 0.6 ));
+        Object fork2 = new Object("Fork","F2", .9, new Point2(0.8, 0.7 ));
+        Object glass2 = new Object("Glass","G2", .9, new Point2(-0.1, 0.35 ));
+        Object knife1 = new Object("Knife","K1", .9, new Point2(0.55, 0.3 ));
+        Object knife2 = new Object("Knife","K2", .9, new Point2(0.75, 0.15 ));
+        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
+        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
+        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
+        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
+        Region centralRegion = new Region("RC","CentralRegion", .9, new Point2(0.25, 0.5));
+        scene.addObject(plate1);
+        scene.addObject(plate2);
+        scene.addObject(fork1);
+        scene.addObject(fork2);
+        scene.addObject(glass2);
+        scene.addObject(knife1);
+        scene.addObject(knife2);
+        scene.addObject(region1);
+        scene.addObject(region2);
+        scene.addObject(region3);
+        scene.addObject(region4);
+        scene.addObject(centralRegion);
+        return scene;
+    }
+
     public static void main(String[] args) {
 
         MemoryImplementation memory = new MemoryImplementation("memory_service/src/main/resources/table_classification_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
 
-         memory.experience( scene14(),true,true);
-         memory.experience( scene13(),true,true);
-         memory.experience( scene10(),true,true);
-         memory.experience( scene11(),true,true);
-         memory.experience( scene12(),true,true);
          memory.experience( scene1(),true,true);
          memory.experience( scene2(),true,true);
          memory.experience( scene3(),true,true);
@@ -396,6 +704,52 @@ public static DefineRelationsOnScene scene1(){
          memory.experience( scene5(),true,true);
          memory.experience( scene6(),true,true);
          memory.experience( scene7(),true,true);
+         memory.experience( scene8(),true,true);
+         memory.experience( scene9(),true,true);
+         memory.experience( scene10(),true,true);
+         memory.experience( scene11(),true,true);
+         memory.experience( scene12(),true,true);
+         memory.experience( scene13(),true,true);
+         memory.experience( scene14(),true,true);
+        //Retrieve a scene
+         memory.experience( scene9(),false,true);
+        //Retrieve a scene
+         memory.experience( scene11(),false,true);
+         memory.experience( scene15(),true,true);
+        //Retrieve a scene
+         memory.experience( scene14(),false,true);
+         memory.experience( scene16(),true,true);
+         memory.experience( scene17(),true,true);
+         memory.experience( scene18(),true,true);
+         memory.experience( scene19(),true,true);
+        //Retrieve a scene
+         memory.experience( scene16(),false,true);
+        //Retrieve a scene
+         memory.experience( scene14(),false,true);
+         memory.experience( scene20(),true,true);
+         memory.experience( scene21(),true,true);
+        //Retrieve a scene
+         memory.experience( scene15(),false,true);
+        //Retrieve a scene
+         memory.experience( scene14(),false,true);
+         memory.experience( scene22(),true,true);
+        //Retrieve a scene
+         memory.experience( scene21(),false,true);
+         memory.experience( scene23(),true,true);
+         memory.experience( scene24(),true,true);
+         memory.experience( scene25(),true,true);
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
