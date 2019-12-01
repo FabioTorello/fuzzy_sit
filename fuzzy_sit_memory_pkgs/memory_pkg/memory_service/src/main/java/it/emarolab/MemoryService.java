@@ -17,6 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 import it.emarolab.fuzzySIT.semantic.SITTBox;
 import java.util.Scanner;
+import it.emarolab.fuzzySIT.perception.simple2D.Point2;
+import it.emarolab.fuzzySIT.perception.simple2D.DefineRelationsOnScene;
+import it.emarolab.fuzzySIT.perception.simple2D.Object;
+import it.emarolab.fuzzySIT.perception.PerceptionBase;
+import it.emarolab.fuzzySIT.perception.simple2D.Region;
 
 public class MemoryService extends AbstractNodeMain {
 
@@ -37,7 +42,7 @@ public class MemoryService extends AbstractNodeMain {
 
         //Create an object representing the memory
        // MemoryImplementation memoryCreation = new MemoryImplementation("memory_service/src/main/resources/table_assembling_memory_example.fuzzydl");
-        MemoryImplementation memory = new MemoryImplementation("memory_service/src/main/resources/table_assembling_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
+        MemoryImplementation memory = new MemoryImplementation("memory_service/src/main/resources/table_classification_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
 
 
         //Callback for TestServiceDirective.srv calls
@@ -47,8 +52,10 @@ public class MemoryService extends AbstractNodeMain {
                         (request, response) -> {
 
 
-                                //memoryCreation.experience( scene(request.getTestRequest().getSceneName(), request.getTestRequest().getObjects(), request.getTestRequest().getX(), request.getTestRequest().getY(), request.getTestRequest().getDegree()),true,true);
-                                //response.getTestResponse().setResponse("The scene " + request.getTestRequest().getSceneName() + " has been loaded" );
+                            memory.experience( scene(request.getTestRequest().getItems(), request.getTestRequest().getRelations()),true,true);
+                            //Show the experience graph
+                            memory.getTbox().show();
+                            response.getTestResponse().setResponse("The scene " + " has been loaded" );
 
                             /*if(request.getTestRequest().getRequest().equals("scene")){
                                 memoryCreation.experience( scene0(),true,true);
@@ -69,6 +76,69 @@ public class MemoryService extends AbstractNodeMain {
 
     }
 
+
+    public static DefineRelationsOnScene scene1(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene1");
+        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
+        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
+        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
+        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
+        Region centralRegion = new Region("RC","CentralRegion", .9, new Point2(0.25, 0.5));
+        scene.addObject(region1);
+        scene.addObject(region2);
+        scene.addObject(region3);
+        scene.addObject(region4);
+        scene.addObject(centralRegion);
+        return scene;
+    }
+
+    public static DefineRelationsOnScene scene9(){
+        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene9");
+        Object plate = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
+        Object fork = new Object("Fork","F1", .9, new Point2(0.6, 0.6 ));
+        Object glass = new Object("Glass","G1", .9, new Point2(-0.1, 0.35 ));
+        Object knife = new Object("Knife","K1", .9, new Point2(0.55, 0.3 ));
+        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
+        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
+        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
+        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
+        Region centralRegion = new Region("RC","CentralRegion", .9, new Point2(0.25, 0.5));
+        scene.addObject(plate);
+        scene.addObject(fork);
+        scene.addObject(glass);
+        scene.addObject(knife);
+        scene.addObject(region1);
+        scene.addObject(region2);
+        scene.addObject(region3);
+        scene.addObject(region4);
+        scene.addObject(centralRegion);
+        return scene;
+    }
+
+    public static DefineRelationsOnScene scene(List<SceneItem> items, List<SceneRelations> relations) {
+        DefineRelationsOnScene scene = new DefineRelationsOnScene();
+        int nItems=0;
+        for (SceneItem item: items){
+            for (FuzzyDegree degrees:item.getDegrees())
+            {
+                StringBuilder obj = new StringBuilder();
+                obj.append(degrees.getValue().charAt(0));
+                obj.append(nItems);
+                String object = obj.toString();
+                if (degrees.getValue().charAt(0)=='R'){
+                    scene.addObject(new Region(degrees.getValue(),object , degrees.getDegree(), new Point2(item.getX(), item.getY())));
+                }
+                else{
+                    scene.addObject(new Object(degrees.getValue(),object , degrees.getDegree(), new Point2(item.getX(), item.getY())));
+                }
+
+            }
+
+            nItems++;
+        }
+        return scene;
+
+    }
 
    /* public static ConnectObjectScene scene(String sceneName, List<String> objects, double[] x, double[] y,  double[] degree){
         ConnectObjectScene scene = new ConnectObjectScene();

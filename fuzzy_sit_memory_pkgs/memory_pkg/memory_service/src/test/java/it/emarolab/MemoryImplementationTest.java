@@ -2,15 +2,9 @@ package it.emarolab;
 import com.google.common.collect.Lists;
 import it.emarolab.fuzzySIT.FuzzySITBase;
 //import it.emarolab.fuzzySIT.perception.simple2D.ConnectObjectScene;
-//import it.emarolab.fuzzySIT.perception.simple2D.ObjectOnScene;
-//import it.emarolab.fuzzySIT.perception.simple2D.NearObjectScene;
 import it.emarolab.fuzzySIT.perception.simple2D.Point2;
-//import it.emarolab.fuzzySIT.perception.simple2D.RelatedObjectOnScene;
-//import it.emarolab.fuzzySIT.perception.simple2D.RelatedRegionOnScene;
-//import it.emarolab.fuzzySIT.perception.simple2D.RegionOnScene;
 import it.emarolab.fuzzySIT.perception.simple2D.DefineRelationsOnScene;
 import it.emarolab.fuzzySIT.perception.simple2D.Object;
-import it.emarolab.fuzzySIT.perception.PerceptionBase;
 import it.emarolab.fuzzySIT.perception.simple2D.Region;
 import org.ros.internal.loader.CommandLineLoader;
 import org.ros.node.DefaultNodeMainExecutor;
@@ -698,15 +692,17 @@ public static DefineRelationsOnScene scene6(){
         MemoryImplementation memory = new MemoryImplementation("memory_service/src/main/resources/table_classification_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
 
          memory.experience( scene1(),true,true);
-         memory.experience( scene2(),true,true);
+         /*memory.experience( scene2(),true,true);
          memory.experience( scene3(),true,true);
          memory.experience( scene4(),true,true);
          memory.experience( scene5(),true,true);
          memory.experience( scene6(),true,true);
          memory.experience( scene7(),true,true);
-         memory.experience( scene8(),true,true);
-         memory.experience( scene9(),true,true);
-         memory.experience( scene10(),true,true);
+         memory.experience( scene8(),true,true);*/
+
+         //memory.experience( scene9(),true,true);
+
+         /*memory.experience( scene10(),true,true);
          memory.experience( scene11(),true,true);
          memory.experience( scene12(),true,true);
          memory.experience( scene13(),true,true);
@@ -737,7 +733,7 @@ public static DefineRelationsOnScene scene6(){
          memory.experience( scene21(),false,true);
          memory.experience( scene23(),true,true);
          memory.experience( scene24(),true,true);
-         memory.experience( scene25(),true,true);
+         memory.experience( scene25(),true,true);*/
 
 
 

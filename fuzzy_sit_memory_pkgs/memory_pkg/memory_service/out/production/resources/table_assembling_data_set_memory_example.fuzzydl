@@ -8,13 +8,17 @@
 #############################################################################################
 
 (define-primitive-concept Object *top*)
+(define-primitive-concept SpatialObject Object)
 (define-primitive-concept Scene  *top*)
 (disjoint Object Scene)
 (disjoint SpatialObject Scene)
 
-(implies Book  Object)
-(implies Mouse Object)
-(implies Cup   Object)
+(implies Pin Object)
+(implies Table Object)
+(implies BedLeg Object)
+(implies ChairLeg Object)
+(implies RoofLeg Object)
+(implies NotLeg Object)
 
 
 #############################################################################################
@@ -24,27 +28,10 @@
 ## this implies to adjust the below Δ specifications
 #############################################################################################
 
-(range  isRightOf Object)
-(domain isRightOf SpatialObject)
+(range  isConnectedTo SpatialObject) # Object
+(domain isConnectedTo SpatialObject)
 
-(range  isLeftOf  Object)
-(domain isLeftOf  SpatialObject)
-
-(range  isFrontOf  Object)
-(domain isFrontOf  SpatialObject)
-
-(range  isBehindOf Object)
-(domain isBehindOf SpatialObject)
-
-#(inverse isRightOf isLeftOf)
-#(inverse isLeftOf  isRightOf)
-#(inverse isFrontOf isBehindOf)
-#(inverse isBehindOf isFrontOf)
-
-(transitive isRightOf)
-(transitive isLeftOf)
-(transitive isBehindOf)
-(transitive isFrontOf)
+(inverse isConnectedTo isConnectedTo)
 
 
 #############################################################################################
@@ -76,20 +63,14 @@
 ## contained in the related spatial relation (ζ).
 #############################################################################################
 
-(define-concept BookRight  (and Book (some isRightOf  SpatialObject)))
-(define-concept BookLeft   (and Book (some isLeftOf   SpatialObject)))
-(define-concept BookFront  (and Book (some isFrontOf  SpatialObject)))
-(define-concept BookBehind (and Book (some isBehindOf SpatialObject)))
 
-(define-concept MouseRight  (and Mouse (some isRightOf  SpatialObject)))
-(define-concept MouseLeft   (and Mouse (some isLeftOf   SpatialObject)))
-(define-concept MouseFront  (and Mouse (some isFrontOf  SpatialObject)))
-(define-concept MouseBehind (and Mouse (some isBehindOf SpatialObject)))
+(define-concept PinConnected         (and Pin         (some isConnectedTo  SpatialObject)))
+(define-concept TableConnected       (and Table       (some isConnectedTo  SpatialObject)))
+(define-concept BedLegConnected      (and BedLeg      (some isConnectedTo  SpatialObject)))
+(define-concept ChairLegConnected    (and ChairLeg    (some isConnectedTo  SpatialObject)))
+(define-concept RoofLegConnected     (and RoofLeg     (some isConnectedTo  SpatialObject)))
+(define-concept NotLegConnected      (and NotLeg      (some isConnectedTo  SpatialObject)))
 
-(define-concept CupRight  (and Cup (some isRightOf  SpatialObject)))
-(define-concept CupLeft   (and Cup (some isLeftOf   SpatialObject)))
-(define-concept CupFront  (and Cup (some isFrontOf  SpatialObject)))
-(define-concept CupBehind (and Cup (some isBehindOf SpatialObject)))
 
 #############################################################################################
 ##    Learning

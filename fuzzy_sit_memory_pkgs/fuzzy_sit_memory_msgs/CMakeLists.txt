@@ -49,7 +49,6 @@ add_message_files(
   Scene.msg
   SceneItem.msg
   SceneRelations.msg
-  TestMessageReq.msg
   TestMessageRes.msg  
 )
 
