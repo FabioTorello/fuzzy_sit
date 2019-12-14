@@ -48,7 +48,6 @@ add_message_files(
   FuzzyDegree.msg
   Scene.msg
   SceneItem.msg
-  SceneRelations.msg
   TestMessageRes.msg  
 )
 
@@ -188,3 +187,4 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 catkin_package(CATKIN_DEPENDS message_runtime )
+

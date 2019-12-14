@@ -52,7 +52,7 @@ public class MemoryService extends AbstractNodeMain {
                         (request, response) -> {
 
 
-                            memory.experience( scene(request.getTestRequest().getItems(), request.getTestRequest().getRelations()),true,true);
+                            memory.experience( scene(request.getTestRequest().getItems()), true,true);
                             //Show the experience graph
                             memory.getTbox().show();
                             response.getTestResponse().setResponse("The scene " + " has been loaded" );
@@ -115,7 +115,7 @@ public class MemoryService extends AbstractNodeMain {
         return scene;
     }
 
-    public static DefineRelationsOnScene scene(List<SceneItem> items, List<SceneRelations> relations) {
+    public static DefineRelationsOnScene scene(List<SceneItem> items) {
         DefineRelationsOnScene scene = new DefineRelationsOnScene();
         int nItems=0;
         for (SceneItem item: items){
@@ -162,6 +162,50 @@ public class MemoryService extends AbstractNodeMain {
             }
             i++;
         }
+
+rosservice call /memory_service "test_request:
+  items:
+  - gamma_i: 'g1'
+    degrees:
+    - value: 'R1'
+      degree: 0.9
+    x: -0.25
+    y: 0.75
+  - gamma_i: 'g2'
+    degrees:
+    - value: 'R2'
+      degree: 0.9
+    x: 0.75
+    y: 0.75
+  - gamma_i: 'g3'
+    degrees:
+    - value: 'R3'
+      degree: 0.9
+    x: -0.25
+    y: 0.25
+  - gamma_i: 'g4'
+    degrees:
+    - value: 'R4'
+      degree: 0.9
+    x: 0.75
+    y: 0.25
+  - gamma_i: 'g5'
+    degrees:
+    - value: 'RC'
+      degree: 0.9
+    x: 0.25
+    y: 0.5"
+
+Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
+        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
+        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
+        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
+        Region centralRegion = new Region("RC","CentralRegion", .9, new Point2(0.25, 0.5));
+
+
+
+
+
 
         return scene;
     }*/

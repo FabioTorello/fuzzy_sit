@@ -1,15 +1,15 @@
 package it.emarolab;
-import com.google.common.collect.Lists;
+//import com.google.common.collect.Lists;
 import it.emarolab.fuzzySIT.FuzzySITBase;
 //import it.emarolab.fuzzySIT.perception.simple2D.ConnectObjectScene;
 import it.emarolab.fuzzySIT.perception.simple2D.Point2;
 import it.emarolab.fuzzySIT.perception.simple2D.DefineRelationsOnScene;
 import it.emarolab.fuzzySIT.perception.simple2D.Object;
 import it.emarolab.fuzzySIT.perception.simple2D.Region;
-import org.ros.internal.loader.CommandLineLoader;
-import org.ros.node.DefaultNodeMainExecutor;
-import org.ros.node.NodeConfiguration;
-import org.ros.node.NodeMainExecutor;
+//import org.ros.internal.loader.CommandLineLoader;
+//import org.ros.node.DefaultNodeMainExecutor;
+//import org.ros.node.NodeConfiguration;
+//import org.ros.node.NodeMainExecutor;
 
 import java.util.ArrayList;
 import java.util.List;
