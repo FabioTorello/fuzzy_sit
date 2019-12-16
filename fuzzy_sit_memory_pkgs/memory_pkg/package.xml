@@ -2,7 +2,7 @@
 <package>
     <name>memory_pkg</name>
     <version>0.1.0</version>
-    <description>ROS service with memory funcrions</description>
+    <description>ROS service with memory functions</description>
 
     <maintainer email="fabio.torello@virgilio.it">Fabio Torello</maintainer>
     <author email="fabio.torello@virgilio.it">Fabio Torello</author>
@@ -27,3 +27,4 @@
 
     </export>
 </package>
+

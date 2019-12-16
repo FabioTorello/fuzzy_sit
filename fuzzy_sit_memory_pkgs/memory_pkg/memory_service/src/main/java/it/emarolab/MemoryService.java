@@ -5,7 +5,7 @@ import fuzzy_sit_memory_msgs.*;
 import com.google.common.collect.Lists;
 import it.emarolab.fuzzySIT.FuzzySITBase;
 import it.emarolab.fuzzySIT.perception.PerceptionBase;
-//import it.emarolab.fuzzySIT.perception.simple2D.ConnectObjectScene;
+import it.emarolab.fuzzySIT.perception.simple2D.ConnectObjectScene;
 import org.ros.internal.loader.CommandLineLoader;
 import org.ros.message.MessageFactory;
 import org.ros.namespace.GraphName;
@@ -18,10 +18,11 @@ import java.util.List;
 import it.emarolab.fuzzySIT.semantic.SITTBox;
 import java.util.Scanner;
 import it.emarolab.fuzzySIT.perception.simple2D.Point2;
-import it.emarolab.fuzzySIT.perception.simple2D.DefineRelationsOnScene;
-import it.emarolab.fuzzySIT.perception.simple2D.Object;
-import it.emarolab.fuzzySIT.perception.PerceptionBase;
-import it.emarolab.fuzzySIT.perception.simple2D.Region;
+import it.emarolab.fuzzySIT.perception.simple2D.Leg;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin;
+import it.emarolab.fuzzySIT.perception.simple2D.Table;
+import java.lang.Object;
+import java.util.Arrays;
 
 public class MemoryService extends AbstractNodeMain {
 
@@ -42,7 +43,7 @@ public class MemoryService extends AbstractNodeMain {
 
         //Create an object representing the memory
        // MemoryImplementation memoryCreation = new MemoryImplementation("memory_service/src/main/resources/table_assembling_memory_example.fuzzydl");
-        MemoryImplementation memory = new MemoryImplementation("memory_service/src/main/resources/table_classification_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
+        MemoryImplementation memory = new MemoryImplementation("memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
 
 
         //Callback for TestServiceDirective.srv calls
@@ -54,7 +55,7 @@ public class MemoryService extends AbstractNodeMain {
 
                             memory.experience( scene(request.getTestRequest().getItems()), true,true);
                             //Show the experience graph
-                            memory.getTbox().show();
+                            //memory.getTbox().show();
                             response.getTestResponse().setResponse("The scene " + " has been loaded" );
 
                             /*if(request.getTestRequest().getRequest().equals("scene")){
@@ -77,59 +78,44 @@ public class MemoryService extends AbstractNodeMain {
     }
 
 
-    public static DefineRelationsOnScene scene1(){
-        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene1");
-        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
-        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
-        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
-        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
-        Region centralRegion = new Region("RC","CentralRegion", .9, new Point2(0.25, 0.5));
-        scene.addObject(region1);
-        scene.addObject(region2);
-        scene.addObject(region3);
-        scene.addObject(region4);
-        scene.addObject(centralRegion);
-        return scene;
-    }
+    private static final List<String> pins = Arrays.asList("1", "2","3","4","5","6","7","8","9","10","11","12");
+    private static final List<Double> pinsX = Arrays.asList(-0.30, -0.05, 0.03, 0.27, 0.24, 0.24, 0.27, 0.04, -0.04, -0.28, -0.24, -0.28);
+    private static final List<Double> pinsY = Arrays.asList(-0.16, -0.17, -0.15, -0.17, -0.02, 0.05, 0.19, 0.17, 0.17, 0.20, 0.05, -0.05);
+    private static final List<String> legsType = Arrays.asList("BED", "CHAIR", "ROOF", "NOT");
 
-    public static DefineRelationsOnScene scene9(){
-        DefineRelationsOnScene scene = new DefineRelationsOnScene ("Scene9");
-        Object plate = new Object("Plate","P1", .9, new Point2(-0.15, 0.75 ));
-        Object fork = new Object("Fork","F1", .9, new Point2(0.6, 0.6 ));
-        Object glass = new Object("Glass","G1", .9, new Point2(-0.1, 0.35 ));
-        Object knife = new Object("Knife","K1", .9, new Point2(0.55, 0.3 ));
-        Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
-        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
-        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
-        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
-        Region centralRegion = new Region("RC","CentralRegion", .9, new Point2(0.25, 0.5));
-        scene.addObject(plate);
-        scene.addObject(fork);
-        scene.addObject(glass);
-        scene.addObject(knife);
-        scene.addObject(region1);
-        scene.addObject(region2);
-        scene.addObject(region3);
-        scene.addObject(region4);
-        scene.addObject(centralRegion);
-        return scene;
-    }
-
-    public static DefineRelationsOnScene scene(List<SceneItem> items) {
-        DefineRelationsOnScene scene = new DefineRelationsOnScene();
+    public static ConnectObjectScene scene(List<SceneItem> items) {
+        ConnectObjectScene scene = new ConnectObjectScene();
+        //There is always the type Table object and it is the origin of my system so x=0 and y=0
+        scene.addObject(new Table("T0","Table",0.9, new Point2(0.0,0.0)));
         int nItems=0;
         for (SceneItem item: items){
             for (FuzzyDegree degrees:item.getDegrees())
             {
+
                 StringBuilder obj = new StringBuilder();
-                obj.append(degrees.getValue().charAt(0));
+                obj.append(degrees.getValue());
                 obj.append(nItems);
                 String object = obj.toString();
-                if (degrees.getValue().charAt(0)=='R'){
-                    scene.addObject(new Region(degrees.getValue(),object , degrees.getDegree(), new Point2(item.getX(), item.getY())));
+                if (pins.contains(degrees.getValue())){
+                    scene.addObject(new Pin("Pin" + degrees.getValue(), "Pin" , degrees.getDegree(), new Point2(pinsX.get(Integer.parseInt(degrees.getValue())-1), pinsY.get(Integer.parseInt(degrees.getValue())-1))));
                 }
                 else{
-                    scene.addObject(new Object(degrees.getValue(),object , degrees.getDegree(), new Point2(item.getX(), item.getY())));
+                    for (String pin: pins) {
+                        for (FuzzyDegree deg:item.getDegrees()) {
+                            if (deg.getValue().contains(pin)) {
+                                for (int i = 0; i < legsType.size(); i++) {
+                                    if (degrees.getValue().contains(legsType.get(i))) {
+                                        String legType = legsType.get(i).toLowerCase();
+                                        scene.addObject(new Leg(object, legType.replace(legType.charAt(0), Character.toUpperCase(legType.charAt(0))) + "Leg", degrees.getDegree(), new Point2(pinsX.get(Integer.parseInt(pin) - 1), pinsY.get(Integer.parseInt(pin) - 1))));
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+
                 }
 
             }
@@ -140,30 +126,8 @@ public class MemoryService extends AbstractNodeMain {
 
     }
 
-   /* public static ConnectObjectScene scene(String sceneName, List<String> objects, double[] x, double[] y,  double[] degree){
-        ConnectObjectScene scene = new ConnectObjectScene();
-        scene.setSceneName( sceneName);
-        int i=0;
-        for (String object : objects){
-            if (object.equals("Table") || object.equals("table")){
-                scene.addTable(x[i],y[i], degree[i]);
 
-            }
-            else if (object.equals("Leg") || object.equals("leg")){
-                scene.addLeg( x[i], y[i], degree[i]);
-            }
-            else if (object.equals("Screwdriver") || object.equals("screwdriver") || object.equals("ScrewDriver")){
-                scene.addScrewDriver( x[i], y[i], degree[i]);
-
-            }
-            else if (object.equals("Pen") || object.equals("pen")){
-                scene.addPen( x[i], y[i], degree[i]);
-
-            }
-            i++;
-        }
-
-rosservice call /memory_service "test_request:
+/*rosservice call /memory_service "test_request:
   items:
   - gamma_i: 'g1'
     degrees:
@@ -195,20 +159,9 @@ rosservice call /memory_service "test_request:
       degree: 0.9
     x: 0.25
     y: 0.5"
-
-Region region1 = new Region("R1","Region1", .9, new Point2(-0.25, 0.75));
-        Region region2 = new Region("R2","Region2", .9, new Point2(0.75, 0.75));
-        Region region3 = new Region("R3","Region3", .9, new Point2(-0.25, 0.25));
-        Region region4 = new Region("R4","Region4", .9, new Point2(0.75, 0.25));
-        Region centralRegion = new Region("RC","CentralRegion", .9, new Point2(0.25, 0.5));
+*/
 
 
-
-
-
-
-        return scene;
-    }*/
 //     For testing and debugging purposes only
 //     You can use this main as entry point in an IDE (e.g., IDEA) to run a debugger
 

@@ -21,7 +21,8 @@ int i=0; //counter for the number of gamma_i
 void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneTable::ConstPtr& msg)
 {  
       //Understand the number of elements of the array scene coming from the message on the topic "scene_data"
-      int size = sizeof(msg->scene)/sizeof(msg->scene[0]);   
+      //int size = sizeof(msg->scene)/sizeof(msg->scene[0]); 
+      int size= msg->scene.size();  
       i++;
       std::string name = "g";
       fuzzy_sit_memory_msgs::TestServiceDirective srv;
@@ -31,14 +32,20 @@ void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneTable::ConstPtr& msg)
       //message to send to the service (it is a vector of items)
       //fuzzy_sit_memory_msgs::Scene itemsInAScene;
       for (int j=0;j<size;j++){
-      directiveRequest.test_request.items[j].gamma_i= name + std::to_string(i);  //just some variables to give the service some structure.
+      srv.request.test_request.items[j].gamma_i=name + std::to_string(i);
+      //srv.request.test_request.items[j].degrees[j].value=sceneTable.scene[j].leg_id;
+      srv.request.test_request.items[j].degrees[j].value=msg->scene[j].name_config;
+      srv.request.test_request.items[j].degrees[j].degree=0.9;
+      srv.request.test_request.items[j].degrees[j+1].value=std::to_string(msg->scene[j].pin);
+      srv.request.test_request.items[j].degrees[j+1].degree=0.9;
+      /*directiveRequest.test_request.items[j].gamma_i= name + std::to_string(i);  //just some variables to give the service some structure.
       //directiveRequest.test_request.items[j].degrees[j].value=sceneTable.scene[j].leg_id; //Forse non importante
       //directiveRequest.test_request.items[j].degrees[j].value=sceneTable.scene[j].name_config;
       directiveRequest.test_request.items[j].degrees[j].value=msg->scene[j].name_config;
       directiveRequest.test_request.items[j].degrees[j].degree=0.9;
       //directiveRequest.test_request.items[j].degrees[j+1].value=std::to_string(sceneTable.scene[j].pin);
       directiveRequest.test_request.items[j].degrees[j+1].value=std::to_string(msg->scene[j].pin);
-      directiveRequest.test_request.items[j].degrees[j+1].degree=0.9;       
+      directiveRequest.test_request.items[j].degrees[j+1].degree=0.9;  */     
       }
       //srv.request = itemsInAScene;
       //srv.request.someFloat = 4;
@@ -52,7 +59,7 @@ void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneTable::ConstPtr& msg)
       }   
       else
       {
-          ROS_ERROR("Failed to call service from motor_control_node");    
+          ROS_ERROR("Error");    
       }
 
 }
@@ -69,5 +76,10 @@ int main(int argc, char **argv)
     ros::Subscriber sub = n.subscribe<vision::SceneTable>("scene_data", 1000, SUBSCRIBE_CALLBACK_FUNCTION); //subscribing
 
     ros::spin();
+/*while(n.ok()) {
+
+        ros::spinOnce();
+
+    }*/
     return 0;
 }

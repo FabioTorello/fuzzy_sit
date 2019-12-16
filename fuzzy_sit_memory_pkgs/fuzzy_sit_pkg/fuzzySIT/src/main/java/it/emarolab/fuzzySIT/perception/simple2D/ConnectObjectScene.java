@@ -11,16 +11,16 @@ import java.util.Set;
 public class ConnectObjectScene extends PerceptionBase<Point2> {
 
     // the name of the types of objects in this example (π)
-    public static final String LEG = "Leg";
+    /*public static final String LEG = "Leg";
     public static final String TABLE = "Table";
     public static final String SCREWDRIVER = "Screwdriver";
-    public static final String PEN = "Pen";
+    public static final String PEN = "Pen";*/
     // the name of the spatial relations used in this example (ζ)
     public static final String CONNECTED = "isConnectedTo";
 
     private static final double CONNECTED_THRESHOLD = 0.1; // meters (positive number)
 
-    // the name of individuals indicating objects in the scene
+    /*// the name of individuals indicating objects in the scene
     public static final String LEG_IND_PREFIX = "L";
     public static final String TABLE_IND_PREFIX = "T";
     public static final String SCREWDRIVER_IND_PREFIX = "S";
@@ -38,7 +38,7 @@ public class ConnectObjectScene extends PerceptionBase<Point2> {
     }
     private static String getNewPenInd(){
         return PEN_IND_PREFXI + penCnt++;
-    }
+    }*/
 
     public ConnectObjectScene() {}
     public ConnectObjectScene(String sceneName) {
@@ -60,7 +60,7 @@ public class ConnectObjectScene extends PerceptionBase<Point2> {
         return null;
     }
 
-    public void addLeg( double xPose, double yPose, double degree){
+    /*public void addLeg( double xPose, double yPose, double degree){
         Point2 feature = new Point2(xPose,yPose);
         this.addObject( ConnectObjectScene.LEG, ConnectObjectScene.getNewLegInd(), degree, feature);
     }
@@ -98,6 +98,6 @@ public class ConnectObjectScene extends PerceptionBase<Point2> {
                 out.add( new XYChart.Data( feature.getX(),feature.getY()));
             }
         return out;
-    }
+    }*/
 
 }
