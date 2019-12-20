@@ -3,7 +3,7 @@
  */
 
 #include "ros/ros.h"
-#include "ar_track_alvar_msgs/AlvarMarkers.h"
+//#include "ar_track_alvar_msgs/AlvarMarkers.h"
 #include "tf/LinearMath/Transform.h"
 #include "geometry_msgs/TransformStamped.h"
 #include <tf/transform_listener.h>
@@ -20,9 +20,10 @@
 # define ROWS 3
 # define COLUMNS 12
 # define THR 0.04
+
 using namespace ros;
 using namespace tf;
-using namespace ar_track_alvar_msgs;
+//using namespace ar_track_alvar_msgs;
 
 
 void init_message(vision::SceneTable::Ptr a, vision::Configuration::Ptr b, struct configuration c){

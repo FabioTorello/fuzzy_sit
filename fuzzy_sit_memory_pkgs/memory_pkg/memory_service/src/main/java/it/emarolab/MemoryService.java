@@ -82,38 +82,40 @@ public class MemoryService extends AbstractNodeMain {
     private static final List<Double> pinsX = Arrays.asList(-0.30, -0.05, 0.03, 0.27, 0.24, 0.24, 0.27, 0.04, -0.04, -0.28, -0.24, -0.28);
     private static final List<Double> pinsY = Arrays.asList(-0.16, -0.17, -0.15, -0.17, -0.02, 0.05, 0.19, 0.17, 0.17, 0.20, 0.05, -0.05);
     private static final List<String> legsType = Arrays.asList("BED", "CHAIR", "ROOF", "NOT");
-
+    private static int pin;
     public static ConnectObjectScene scene(List<SceneItem> items) {
         ConnectObjectScene scene = new ConnectObjectScene();
         //There is always the type Table object and it is the origin of my system so x=0 and y=0
-        scene.addObject(new Table("T0","Table",0.9, new Point2(0.0,0.0)));
+        scene.addObject(new Table("Table","T0",0.9, new Point2(0.0,0.0)));
         int nItems=0;
         for (SceneItem item: items){
             for (FuzzyDegree degrees:item.getDegrees())
             {
-
                 StringBuilder obj = new StringBuilder();
                 obj.append(degrees.getValue());
                 obj.append(nItems);
                 String object = obj.toString();
                 if (pins.contains(degrees.getValue())){
-                    scene.addObject(new Pin("Pin" + degrees.getValue(), "Pin" , degrees.getDegree(), new Point2(pinsX.get(Integer.parseInt(degrees.getValue())-1), pinsY.get(Integer.parseInt(degrees.getValue())-1))));
+                    pin = Integer.parseInt(degrees.getValue());
+                    scene.addObject(new Pin("Pin", "Pin" + degrees.getValue(), degrees.getDegree(), new Point2(pinsX.get(Integer.parseInt(degrees.getValue())-1), pinsY.get(Integer.parseInt(degrees.getValue())-1))));
+
                 }
                 else{
-                    for (String pin: pins) {
-                        for (FuzzyDegree deg:item.getDegrees()) {
-                            if (deg.getValue().contains(pin)) {
+
+                    //for (String pin: pins) {
+                        //for (FuzzyDegree deg:item.getDegrees()) {
+                            //if (degrees.getValue().contains(pin)) {
                                 for (int i = 0; i < legsType.size(); i++) {
                                     if (degrees.getValue().contains(legsType.get(i))) {
                                         String legType = legsType.get(i).toLowerCase();
-                                        scene.addObject(new Leg(object, legType.replace(legType.charAt(0), Character.toUpperCase(legType.charAt(0))) + "Leg", degrees.getDegree(), new Point2(pinsX.get(Integer.parseInt(pin) - 1), pinsY.get(Integer.parseInt(pin) - 1))));
+                                        scene.addObject(new Leg(legType.replace(legType.charAt(0), Character.toUpperCase(legType.charAt(0))) + "Leg", object, degrees.getDegree(), new Point2(pinsX.get(pin - 1), pinsY.get(pin - 1))));
                                         break;
                                     }
                                 }
-                                break;
-                            }
-                        }
-                    }
+                              //  break;
+                           //}
+                       // }
+                    //}
 
 
                 }
@@ -122,6 +124,8 @@ public class MemoryService extends AbstractNodeMain {
 
             nItems++;
         }
+
+
         return scene;
 
     }
@@ -159,6 +163,21 @@ public class MemoryService extends AbstractNodeMain {
       degree: 0.9
     x: 0.25
     y: 0.5"
+
+
+
+
+
+    rosservice call /memory_service "test_request:
+  items:
+  - gamma_i: 'g1'
+    degrees:
+    - value: '1'
+      degree: 0.9
+  - gamma_i: 'g2'
+    degrees:
+    - value: 'BED_MINUS_X'
+      degree: 0.9"
 */
 
 

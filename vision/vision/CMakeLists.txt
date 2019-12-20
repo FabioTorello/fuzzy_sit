@@ -11,11 +11,13 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   #rospy
   std_msgs
+  message_generation
+  tf
   ar_track_alvar
   ar_track_alvar_msgs
   geometry_msgs
-  tf
-  message_generation
+  
+  
 )
 
 ## System dependencies are found with CMake's conventions

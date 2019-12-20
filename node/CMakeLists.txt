@@ -11,9 +11,10 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   message_generation
-  memory_pkg
-  vision
   fuzzy_sit_memory_msgs
+  vision  
+  memory_pkg  
+  
 )
 
 ## System dependencies are found with CMake's conventions
@@ -105,7 +106,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES vision
-  CATKIN_DEPENDS roscpp std_msgs message_runtime
+  CATKIN_DEPENDS roscpp std_msgs message_runtime vision
 #  DEPENDS system_lib
 )
 
