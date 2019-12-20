@@ -18,7 +18,7 @@ int i=0; //counter for the number of gamma_i
 
 void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneTable::ConstPtr& msg)
 {  
-      //cout<<msg.c_str();
+      
       //Understand the number of elements of the array scene coming from the message on the topic "scene_data"
       //int size = sizeof(msg->scene)/sizeof(msg->scene[0]); 
       int size= msg->scene.size();  
@@ -31,9 +31,13 @@ void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneTable::ConstPtr& msg)
       //message to send to the service (it is a vector of items)
       //fuzzy_sit_memory_msgs::Scene itemsInAScene;
       for (int j=0;j<size;j++){
-      srv.request.test_request.items[j].gamma_i=name + std::to_string(i);
-      std::cout<<srv.request.test_request.items[j];
-      std::cout<<j;
+      /*std::cout<<msg->scene[j].leg_id;//WORKS
+      std::cout<<msg->scene[j].name_config;//WORKS
+      std::cout<<msg->scene[j].pin;//WORKS*/
+
+
+
+      //srv.request.test_request.items[j].gamma_i=name + std::to_string(i);
       //srv.request.test_request.items[j].degrees[j].value=sceneTable.scene[j].leg_id;
       /*srv.request.test_request.items[j+1].degrees[j].value=msg->scene[j].name_config;
       srv.request.test_request.items[j+1].degrees[j].degree=0.9;
