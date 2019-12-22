@@ -86,7 +86,7 @@ public class MemoryService extends AbstractNodeMain {
     public static ConnectObjectScene scene(List<SceneItem> items) {
         ConnectObjectScene scene = new ConnectObjectScene();
         //There is always the type Table object and it is the origin of my system so x=0 and y=0
-        scene.addObject(new Table("Table","T0",0.9, new Point2(0.0,0.0)));
+        /*scene.addObject(new Table("Table","T0",0.9, new Point2(0.0,0.0)));
         int nItems=0;
         for (SceneItem item: items){
             for (FuzzyDegree degrees:item.getDegrees())
@@ -123,7 +123,7 @@ public class MemoryService extends AbstractNodeMain {
             }
 
             nItems++;
-        }
+        }*/
 
 
         return scene;

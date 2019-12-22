@@ -1,64 +1,52 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
+#include <iostream>  
 
 #include <sstream>
 //Include the messages in the folder msgs
 #include <fuzzy_sit_memory_msgs/Scene.h>
 #include <fuzzy_sit_memory_msgs/FuzzyDegree.h>
 #include <fuzzy_sit_memory_msgs/SceneItem.h>
-//#include <fuzzy_sit_memory_msgs/TestMessageRes.h>
 //The header file generated from the srv file where there is the service
 #include <fuzzy_sit_memory_msgs/TestServiceDirective.h>
 #include <vision/Configuration.h>
 #include <vision/SceneTable.h>
 
-
 ros::ServiceClient *clientPtr; //pointer for a client (The client is instantiated in the main function, but it needs to be used in the callback function. I made a ros::ServiceClient pointer at a global level (w.r.t. the node) and then gave it the address of the client. In the callback function I dereference the client pointer and use it to request a service.)
 int i=0; //counter for the number of gamma_i
 
+
 void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneTable::ConstPtr& msg)
-{  
-      
-      //Understand the number of elements of the array scene coming from the message on the topic "scene_data"
-      //int size = sizeof(msg->scene)/sizeof(msg->scene[0]); 
-      int size= msg->scene.size();  
+{ 
+
+      int size= msg->scene.size(); 
+      fuzzy_sit_memory_msgs::TestServiceDirective srv;
+      fuzzy_sit_memory_msgs::Scene::Ptr sceneToSend(new fuzzy_sit_memory_msgs::Scene);
+      fuzzy_sit_memory_msgs::SceneItem itemsInAScene[size];
+      fuzzy_sit_memory_msgs::SceneItem item;
+      int sizeForFuzzyDegreeArray=size*2;
+      fuzzy_sit_memory_msgs::FuzzyDegree arrayOfFuzzyDegree[sizeForFuzzyDegreeArray];
       i++;
       std::string name = "g";
-      fuzzy_sit_memory_msgs::TestServiceDirective srv;
-      //fuzzy_sit_memory_msgs::TestServiceDirectiveRequest directiveRequest; 
-      //vision::SceneTable sceneTable;
-      //vision::Configuration configuration;
-      //message to send to the service (it is a vector of items)
-      //fuzzy_sit_memory_msgs::Scene itemsInAScene;
-      for (int j=0;j<size;j++){
-      /*std::cout<<msg->scene[j].leg_id;//WORKS
-      std::cout<<msg->scene[j].name_config;//WORKS
-      std::cout<<msg->scene[j].pin;//WORKS*/
-
-
-
-      //srv.request.test_request.items[j].gamma_i=name + std::to_string(i);
-      //srv.request.test_request.items[j].degrees[j].value=sceneTable.scene[j].leg_id;
-      /*srv.request.test_request.items[j+1].degrees[j].value=msg->scene[j].name_config;
-      srv.request.test_request.items[j+1].degrees[j].degree=0.9;
-      srv.request.test_request.items[j+1].degrees[j+1].value=std::to_string(msg->scene[j].pin);
-      srv.request.test_request.items[j+1].degrees[j+1].degree=0.9;*/
-      /*directiveRequest.test_request.items[j].gamma_i= name + std::to_string(i);  //just some variables to give the service some structure.
-      //directiveRequest.test_request.items[j].degrees[j].value=sceneTable.scene[j].leg_id; //Forse non importante
-      //directiveRequest.test_request.items[j].degrees[j].value=sceneTable.scene[j].name_config;
-      directiveRequest.test_request.items[j].degrees[j].value=msg->scene[j].name_config;
-      directiveRequest.test_request.items[j].degrees[j].degree=0.9;
-      //directiveRequest.test_request.items[j].degrees[j+1].value=std::to_string(sceneTable.scene[j].pin);
-      directiveRequest.test_request.items[j].degrees[j+1].value=std::to_string(msg->scene[j].pin);
-      directiveRequest.test_request.items[j].degrees[j+1].degree=0.9;  */
-    
+      for(int j=0; j<size; j++){
+      arrayOfFuzzyDegree[j].valueChair=msg->scene[j].name_config;
+      arrayOfFuzzyDegree[j].degreeChair=0.9;
+      arrayOfFuzzyDegree[j].valuePin=std::to_string(msg->scene[j].pin);
+      arrayOfFuzzyDegree[j].degreePin=1.0;
+      //std::cout << arrayOfFuzzyDegree[j] << std::endl;
+      item.gamma_i=name + std::to_string(i);
+      item.degrees.push_back(*(arrayOfFuzzyDegree+j));      
       }
-     
+      std::cout << item << std::endl;
+      srv.request.test_request=*sceneToSend;
+      //srv.request.test_request.items.push_back( );
+
       ros::ServiceClient client = (ros::ServiceClient)*clientPtr; //dereference the clientPtr
 
       if(client.call(srv)) //request service from the client
       {
           ROS_INFO("Success");
+          
       }   
       else
       {
