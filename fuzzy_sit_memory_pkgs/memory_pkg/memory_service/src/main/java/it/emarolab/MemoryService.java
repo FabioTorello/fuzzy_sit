@@ -86,29 +86,29 @@ public class MemoryService extends AbstractNodeMain {
     public static ConnectObjectScene scene(List<SceneItem> items) {
         ConnectObjectScene scene = new ConnectObjectScene();
         //There is always the type Table object and it is the origin of my system so x=0 and y=0
-        /*scene.addObject(new Table("Table","T0",0.9, new Point2(0.0,0.0)));
+        scene.addObject(new Table("Table","T0",0.9, new Point2(0.0,0.0)));
         int nItems=0;
         for (SceneItem item: items){
             for (FuzzyDegree degrees:item.getDegrees())
             {
                 StringBuilder obj = new StringBuilder();
-                obj.append(degrees.getValue());
+                obj.append(degrees.getValueChair());
                 obj.append(nItems);
                 String object = obj.toString();
-                if (pins.contains(degrees.getValue())){
-                    pin = Integer.parseInt(degrees.getValue());
-                    scene.addObject(new Pin("Pin", "Pin" + degrees.getValue(), degrees.getDegree(), new Point2(pinsX.get(Integer.parseInt(degrees.getValue())-1), pinsY.get(Integer.parseInt(degrees.getValue())-1))));
+                //if (pins.contains(degrees.getValuePin())){
+                    pin = Integer.parseInt(degrees.getValuePin());
+                    scene.addObject(new Pin("Pin", "Pin" + degrees.getValuePin(), degrees.getDegreePin(), new Point2(pinsX.get(Integer.parseInt(degrees.getValuePin())-1), pinsY.get(Integer.parseInt(degrees.getValuePin())-1))));
 
-                }
-                else{
+                //}
+                //else{
 
                     //for (String pin: pins) {
                         //for (FuzzyDegree deg:item.getDegrees()) {
                             //if (degrees.getValue().contains(pin)) {
                                 for (int i = 0; i < legsType.size(); i++) {
-                                    if (degrees.getValue().contains(legsType.get(i))) {
+                                    if (degrees.getValueChair().contains(legsType.get(i))) {
                                         String legType = legsType.get(i).toLowerCase();
-                                        scene.addObject(new Leg(legType.replace(legType.charAt(0), Character.toUpperCase(legType.charAt(0))) + "Leg", object, degrees.getDegree(), new Point2(pinsX.get(pin - 1), pinsY.get(pin - 1))));
+                                        scene.addObject(new Leg(legType.replace(legType.charAt(0), Character.toUpperCase(legType.charAt(0))) + "Leg", object, degrees.getDegreeChair(), new Point2(pinsX.get(pin - 1), pinsY.get(pin - 1))));
                                         break;
                                     }
                                 }
@@ -118,12 +118,12 @@ public class MemoryService extends AbstractNodeMain {
                     //}
 
 
-                }
+               // }
 
             }
 
             nItems++;
-        }*/
+        }
 
 
         return scene;
