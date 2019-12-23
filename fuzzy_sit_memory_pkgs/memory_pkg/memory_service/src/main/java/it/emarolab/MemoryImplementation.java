@@ -8,11 +8,20 @@ import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
 import org.jgrapht.ListenableGraph;
 import java.io.*;
 import java.util.*;
-
+import java.util.stream.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 public class MemoryImplementation extends MemoryInterface {
 
-
+    //Define variables to take into account the time consumption
+    private List<Timing> timings = new ArrayList<>();
+    private Timing timing;
+    //graph of the memory used to find the number of memory items
+    ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graphOfMemory = getTbox().getHierarchy();
+    private List<ElementsOfMemory> elements = new ArrayList<>();
+    private ElementsOfMemory element;
 
     //Static variables and coefficients related to the memory functionalities
     private static String SCENE_PREFIX = "Scene";
@@ -31,13 +40,23 @@ public class MemoryImplementation extends MemoryInterface {
     private static final double EXPERIENCE_STRUCTURE = 1;
     //Scene Counter
     private static int sceneCnt = 0;
-    //The Finite State Machine will decide the syncronitation of the consolidating and forgetting operations
-    private boolean synchConsolidateForget=false;
+
     //File containing the graph information
     private File fileName= new File("memory_service/files/GraphInformation.txt");
+    //CSV file for encoding time
+    private File fileCSVEncoding= new File("memory_service/files/EncodingTime_MemoryItems.csv");
+    //CSV file for storing time
+    private File fileCSVStoring= new File("memory_service/files/StoringTime_MemoryItems.csv");
+    //CSV file for retrieving time
+    private File fileCSVRetrieving= new File("memory_service/files/RetrievingTime_MemoryItems.csv");
+    //CSV file for consolidating time
+    private File fileCSVConsolidating= new File("memory_service/files/ConsolidatingTime_MemoryItems.csv");
+    //CSV file for forgetting time
+    private File fileCSVForgetting= new File("memory_service/files/ForgettingTime_MemoryItems.csv");
+
     //Time instant
     private static long time_instant = 0;
-    //Define variables to take into account the time consumption
+
     //private List<Timing> timings = new ArrayList<>();
     //private Timing timing;
 
@@ -99,30 +118,42 @@ public class MemoryImplementation extends MemoryInterface {
     }
     public void experience(PerceptionBase scene, boolean storeOrRetrieve, boolean synchConsolidateForget){ // true: from store, false: from retrieve
 
-        //timing = new Timing();
+
+
+        timing = new Timing();
+        element = new ElementsOfMemory();
 
         // must always be done before to store or retrieve
-        //long initialTime = System.nanoTime();
+        long initialTime = System.nanoTime();
         encode( scene);
-        //timing.encodingTime = System.nanoTime() - initialTime;
+        timing.encodingTime = System.nanoTime() - initialTime;
+        //CHECKS THE MEMORY IN ORDER TO FIND THE NUMBER OF ELEMENTS CONTAINED
+        graphOfMemory = getTbox().getHierarchy();
+        element.encodingElements=NumberOfElementInMemory(graphOfMemory);
         System.out.println( "[ ENCODE ]\texperience: " + scene);
         // set store or retrieve cases
 
         String logs;
         SceneHierarchyVertex learnedOrRetrievedScene;
-        //initialTime = System.nanoTime();
+        initialTime = System.nanoTime();
         if ( storeOrRetrieve) {
             if ( scene.getSceneName().isEmpty())
                 learnedOrRetrievedScene = store();
             else learnedOrRetrievedScene = store( scene.getSceneName());
-            //timing.storingTime = System.nanoTime() - initialTime;
+            timing.storingTime = System.nanoTime() - initialTime;
+            //CHECKS THE MEMORY IN ORDER TO FIND THE NUMBER OF ELEMENTS CONTAINED
+            graphOfMemory = getTbox().getHierarchy();
+            element.storingElements=NumberOfElementInMemory(graphOfMemory);
             logs = "storing";
             //If the returned graph is not empty (thus there is only the root node)
             if( learnedOrRetrievedScene != null)
                 System.out.println( "[  LEARN ]\texperience: " + learnedOrRetrievedScene);
         } else {
             learnedOrRetrievedScene = retrieve();
-            //timing.retrievingTime = System.nanoTime() - initialTime;
+            timing.retrievingTime = System.nanoTime() - initialTime;
+            //CHECKS THE MEMORY IN ORDER TO FIND THE NUMBER OF ELEMENTS CONTAINED
+            graphOfMemory = getTbox().getHierarchy();
+            element.retrievingElements=NumberOfElementInMemory(graphOfMemory);
             logs = "retrieving";
             System.out.println( "[RETRIEVE]\texperience: " + learnedOrRetrievedScene);
         }
@@ -132,8 +163,13 @@ public class MemoryImplementation extends MemoryInterface {
         }
         System.out.println( "[ RECOGN.]\texperience: " + recognize());
         //System.out.println( "     Time spent " + timing);
-        //timings.add( timing);
-        System.out.println( "----------------------------------------------");
+        //System.out.println( "     Elements in memory " + element);
+        timings.add( timing);
+        elements.add( element);
+        //Print the information of the different times and the memory items in different moments
+        convertToCSV(timings, elements);
+
+        //System.out.println( "----------------------------------------------");
     }
 
     public void consolidateAndForget(){
@@ -143,19 +179,25 @@ public class MemoryImplementation extends MemoryInterface {
         consolidateAndForget( scene, "external call");
     }
     private void consolidateAndForget( PerceptionBase scene, String logs){
-        //long initialTime = System.nanoTime();
+        long initialTime = System.nanoTime();
         consolidate();
-        //timing.consolidateTime = System.nanoTime() - initialTime;
+        timing.consolidateTime = System.nanoTime() - initialTime;
+        //CHECKS THE MEMORY IN ORDER TO FIND THE NUMBER OF ELEMENTS CONTAINED
+        graphOfMemory = getTbox().getHierarchy();
+        element.consolidateElements=NumberOfElementInMemory(graphOfMemory);
         System.out.println( "[ CONSOL.]\tnew experience from " + logs + " " + scene + " -> ");
 
-        //initialTime = System.nanoTime();
+        initialTime = System.nanoTime();
         Set<SceneHierarchyVertex> forgotten = forget();
 
-        //timing.forgetTime = System.nanoTime() - initialTime;
+        timing.forgetTime = System.nanoTime() - initialTime;
+        //CHECKS THE MEMORY IN ORDER TO FIND THE NUMBER OF ELEMENTS CONTAINED
+        graphOfMemory = getTbox().getHierarchy();
+        element.forgetElements=NumberOfElementInMemory(graphOfMemory);
         System.out.println( "[ FORGET ]\tfreeze nodes: " + forgotten);
 
         //Print the information about the graph in a text file
-        MemoryFile();
+        //MemoryFile();
     }
 
 
@@ -245,7 +287,149 @@ public class MemoryImplementation extends MemoryInterface {
 
         return forgotten;
     }
+    public Measure getTimings(){
+        return new Measure();
+    }
 
+    private class ElementsOfMemory{
+        int encodingElements, storingElements, retrievingElements, consolidateElements, forgetElements;
+
+        public long tot(){
+            return encodingElements + storingElements + retrievingElements + consolidateElements + forgetElements;
+        }
+
+
+
+        @Override
+        public String toString() {
+            return "(encode memory elements:" + encodingElements +
+                    ", store memory elements:" + storingElements +
+                    ", retrieve memory elements:" + retrievingElements +
+                    ", consolidate memory elements:" + consolidateElements +
+                    ", forget memory elements:" + forgetElements +
+                    ")=" + tot() + "total number of memory elements";
+        }
+
+
+    }
+
+    private class Timing{
+        long encodingTime, storingTime, retrievingTime, consolidateTime, forgetTime;
+
+        public long tot(){
+            return encodingTime + storingTime + retrievingTime + consolidateTime + forgetTime;
+        }
+
+        public Measure getMeasure(){
+            return new Measure();
+        }
+
+        @Override
+        public String toString() {
+            return "(encode:" + convert(encodingTime) +
+                    ", store:" + convert(storingTime) +
+                    ", retrieve:" + convert(retrievingTime) +
+                    ", consolidate:" + convert(consolidateTime) +
+                    ", forget:" + convert(forgetTime) +
+                    ")=" + convert(tot()) + "ms ";
+        }
+
+        private double convert(long nanosec){ // returns ms
+            return (double) nanosec / 1000000;
+        }
+    }
+
+    class Measure{
+        long encodeAverage, storeAverage, retrieveAverage, consolidateAverage, forgetAverage, allAverage;
+        long encodeVariance, storeVariance, retrieveVariance, consolidateVariance, forgetVariance, allVariance;
+
+        List<Timing> time;
+
+        private Measure(){
+            time = timings;
+            List<Long> encode = new ArrayList<>();
+            List<Long> store = new ArrayList<>();
+            List<Long> retrieve = new ArrayList<>();
+            List<Long> consolidate = new ArrayList<>();
+            List<Long> forget = new ArrayList<>();
+            List<Long> all = new ArrayList<>();
+            for ( Timing t : timings){
+                encode.add( t.encodingTime);
+                store.add( t.storingTime);
+                retrieve.add( t.retrievingTime);
+                consolidate.add( t.consolidateTime);
+                forget.add( t.forgetTime);
+                all.add( t.tot());
+            }
+
+            encodeAverage = average( encode);
+            storeAverage = average( store);
+            retrieveAverage = average( retrieve);
+            consolidateAverage = average( consolidate);
+            forgetAverage = average( forget);
+            allAverage = average( all);
+
+            encodeVariance = variance( encode);
+            storeVariance = variance( store);
+            retrieveVariance = variance( retrieve);
+            consolidateVariance = variance( consolidate);
+            forgetVariance = variance( forget);
+            allVariance = variance( all);
+        }
+
+        private long sum( List<Long> list){
+            long sum = 0l;
+            for (Long t : list)
+                sum += t;
+            return sum;
+        }
+        private long average( List<Long> list) {
+            return sum(list) / list.size();
+        }
+        public long variance( List<Long> list) {
+            long min = Long.MAX_VALUE, max = Long.MIN_VALUE;
+            for ( Long l : list){
+                if( l < min)
+                    min = l;
+                if (l > max)
+                    max = l;
+            }
+            return max-min;
+            /*double z = 0;
+            int y = 0;
+            double x = 0;
+            for (Long word : list) {
+                x = (double) list.get(y)* list.get(y);
+                z = z + x;
+                y++;
+            }
+            double var = (z - (sum(list) * sum(list)) / list.size()) / (list.size()-1);
+            return var;*/
+        }
+
+        @Override
+        public String toString() {
+            return "(encode=" + timing.convert(encodeAverage) + "±" + timing.convert(encodeVariance) + ", " +
+                    "store=" + timing.convert(storeAverage) + "±" + timing.convert(storeVariance) + ", " +
+                    "retrieve=" + timing.convert(retrieveAverage) + "±" + timing.convert(retrieveVariance) + ", " +
+                    "consolidate=" + timing.convert(consolidateAverage) + "±" + timing.convert(consolidateVariance) + ", " +
+                    "forget=" + timing.convert(forgetAverage) + "±" + timing.convert(forgetVariance) + ", " +
+                    "tot=" + timing.convert(allAverage) + "±" + timing.convert(allVariance) + "ms)";
+        }
+    }
+    private int NumberOfElementInMemory( ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graphOfMemory ){
+        int countVertices=0;
+        //Loop on all the vertices in the graph
+        for( SceneHierarchyVertex sourceVertices : graphOfMemory.vertexSet()) {
+            //Loop on all the edges touching the specified vertex
+            for (SceneHierarchyEdge edges : graphOfMemory.edgesOf(sourceVertices)) {
+                if (sourceVertices != graphOfMemory.getEdgeTarget(edges)) {
+                    countVertices++;
+                }
+            }
+        }
+                return countVertices;
+    }
     //Function used to print the memory graph information in a text file
     private void MemoryFile(){
         ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> GraphAfterForgettingOperation = getTbox().getHierarchy();
@@ -324,5 +508,137 @@ public class MemoryImplementation extends MemoryInterface {
         outpustream.close();
     }
 
+    public void convertToCSV(List<Timing> timings, List<ElementsOfMemory> elements) {
+        int i = 0;
+        PrintWriter outpustreamCSVEncoding = null;
+        PrintWriter outpustreamCSVStoring = null;
+        PrintWriter outpustreamCSVRetrieving = null;
+        PrintWriter outpustreamCSVConsolidating = null;
+        PrintWriter outpustreamCSVForgetting = null;
+        //Open the files
+        try {
+            //CREATES THE CSV FILES IF THEY DO NOT EXIST
+            if (!fileCSVEncoding.exists()) {
+                //Create the file
+                try {
+                    fileCSVEncoding.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            outpustreamCSVEncoding = new PrintWriter(new FileOutputStream(fileCSVEncoding, true));
+            if (!fileCSVStoring.exists()) {
+                //Create the file
+                try {
+                    fileCSVStoring.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            outpustreamCSVStoring = new PrintWriter(new FileOutputStream(fileCSVStoring, true));
+            if (!fileCSVRetrieving.exists()) {
+                //Create the file
+                try {
+                    fileCSVRetrieving.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            outpustreamCSVRetrieving=new PrintWriter(new FileOutputStream(fileCSVRetrieving, true));
+            if (!fileCSVConsolidating.exists()) {
+                //Create the file
+                try {
+                    fileCSVConsolidating.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            outpustreamCSVConsolidating=new PrintWriter(new FileOutputStream(fileCSVConsolidating, true));
+            if (!fileCSVForgetting.exists()) {
+                //Create the file
+                try {
+                    fileCSVForgetting.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            outpustreamCSVForgetting=new PrintWriter(new FileOutputStream(fileCSVForgetting, true));
+        }
+        catch(FileNotFoundException e){
+            System.out.println(e.getMessage());
+        }
+        //////////////////////////////////////////////
+        //If it is the beginning of the experiment or the memory is still empty write the first rows
+        //of the CSV files as heading
+        if ((time_instant == 0)|| elements.isEmpty()){
+            //Write in CSV Encoding File
+            outpustreamCSVEncoding.println("Encoding Time" + "," + "EncodingMemoryItems");
+            //Close CSV Encoding File
+            outpustreamCSVEncoding.close();
 
+            //Write in CSV Storing File
+             outpustreamCSVStoring.println("Storing Time" + "," + "StoringMemoryItems");
+            //Close CSV Storing File
+            outpustreamCSVStoring.close();
+
+            //Write in CSV Retrieving File
+             outpustreamCSVRetrieving.println("Retrieving Time" + "," + "RetrievingMemoryItems");
+            //Close CSV Retrieving File
+            outpustreamCSVRetrieving.close();
+
+            //Write in CSV Consolidating File
+             outpustreamCSVConsolidating.println("Consolidating Time" + "," + "ConsolidatingMemoryItems");
+            //Close CSV Consolidating File
+            outpustreamCSVConsolidating.close();
+
+            //Write in CSV Forgetting File
+             outpustreamCSVForgetting.println("Forgetting Time" + "," + "ForgettingMemoryItems");
+            //Close CSV Forgetting File
+            outpustreamCSVForgetting.close();
+
+
+        }
+        for (Timing timing: timings) {
+            for ( ElementsOfMemory element: elements) {
+                if (i==0){
+
+                }
+                else if(i==1){
+
+                }
+                else if (i==2){
+
+                }
+                else if(i==3){
+
+                }
+                else if(i==4){
+
+                }
+            }
+
+        }
+        /*try (PrintWriter writer = new PrintWriter(new File("test.csv"))) {
+            //if it is the first istant of the test it writes the name of the column
+            if (time_instant == 0) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("MemoryItems,");
+                sb.append(',');
+                sb.append("Time");
+                sb.append('\n');
+
+                sb.append("1");
+                sb.append(',');
+                sb.append("Prashant Ghimire");
+                sb.append('\n');
+
+                writer.write(sb.toString());
+
+                System.out.println("done!");
+
+
+        }*/
+
+        time_instant++;
+    }
 }
