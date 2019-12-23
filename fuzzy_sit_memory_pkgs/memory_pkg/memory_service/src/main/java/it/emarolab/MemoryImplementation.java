@@ -26,18 +26,9 @@ public class MemoryImplementation extends MemoryInterface {
 
     // reinforce factor for re-stored or re-retrieved experience
     private static final double EXPERIENCE_REINFORCE = 1.5;
-    //reinforce factor for bonus/malus from planner actions
-    //TODO this value should be added to the final score of the scene used by planner (action's results correct-->bonus, otherwise -->malus) and it should not be added to the score updating during the retrieving or storing phases but in consolidating phase
-    private double bonus_malus_reinforce=0.5; //TODO it is not "final" because the planner actions determine this value which has to be decided
-    //TODO it is not "static" because when this value is modified every instance of this class would see the same value due to the fact it is shared among all the instances of the class
 
     // reinforce factor for min edge fuzzy degree
     private static final double EXPERIENCE_STRUCTURE = 1;
-
-    //evaluation factor of the planner action //TODO degree of how the action correct or uncorrect is
-    private boolean evaluation_factor=false;
-    //coefficient considers if an action from planner happened //TODO Should be set from a signal
-    private boolean hasHappenedAction=false;
     //Scene Counter
     private static int sceneCnt = 0;
     //The Finite State Machine will decide the syncronitation of the consolidating and forgetting operations
@@ -102,8 +93,7 @@ public class MemoryImplementation extends MemoryInterface {
         double score = recognisedScene.getMemoryScore();
         if ( recognisedScene.getMemoryScore() > 0) { // not froze node
             // reinforce for re-stored or re-retrieved experiences
-            bonus_malus_reinforce=evaluationAction(hasHappenedAction);
-            score += EXPERIENCE_REINFORCE * recognisedValue + bonus_malus_reinforce;
+            score += EXPERIENCE_REINFORCE * recognisedValue;
         } // else score freeze (i.e., experience to remove)
         recognisedScene.setMemoryScore( score);
     }
@@ -235,19 +225,7 @@ public class MemoryImplementation extends MemoryInterface {
                 experience.setMemoryScore( experience.getMemoryScore() / maxScore);
         }
     }
-    public double evaluationAction (boolean hasHappenedAction){
-        //if an action happened, it is evaluated otherwise there is not any bonus or malus
-        if (hasHappenedAction) {
-            //TODO here there is the evaluation of the action, thus the setting of the bonus_malus factor by basing on that
-            if (evaluation_factor) {
-                bonus_malus_reinforce = 1;
-            }
-        }
-        else{
-            return bonus_malus_reinforce=0;
-        }
-        return bonus_malus_reinforce;
-    }
+
 
     @Override
     public Set<SceneHierarchyVertex> forget() {
