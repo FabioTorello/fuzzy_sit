@@ -35,13 +35,10 @@ void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneTable::ConstPtr& msg)
       arrayOfFuzzyDegree[j].degreePin=1.0;
       //std::cout << arrayOfFuzzyDegree[j] << std::endl;
       item.gamma_i=name + std::to_string(i);
-      item.degrees.push_back(*(arrayOfFuzzyDegree+j)); 
-         
+      item.degrees.push_back(*(arrayOfFuzzyDegree+j));      
       }
-      //sceneToSend.items.push_back(item); 
       std::cout << item << std::endl;
-      
-      srv.request.test_request.items.push_back(item);
+      srv.request.test_request=*sceneToSend;
       //srv.request.test_request.items.push_back( );
 
       ros::ServiceClient client = (ros::ServiceClient)*clientPtr; //dereference the clientPtr
