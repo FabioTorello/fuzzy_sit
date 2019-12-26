@@ -19,7 +19,7 @@ public class MemoryImplementation extends MemoryInterface {
     private List<Timing> timings = new ArrayList<>();
     private Timing timing;
     //graph of the memory used to find the number of memory items
-    ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graphOfMemory = getTbox().getHierarchy();
+    ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graphOfMemory;
     private List<ElementsOfMemory> elements = new ArrayList<>();
     private ElementsOfMemory element;
 
@@ -162,14 +162,14 @@ public class MemoryImplementation extends MemoryInterface {
             consolidateAndForget(scene, logs);
         }
         System.out.println( "[ RECOGN.]\texperience: " + recognize());
-        //System.out.println( "     Time spent " + timing);
-        //System.out.println( "     Elements in memory " + element);
+        System.out.println( "     Time spent " + timing);
+        System.out.println( "     Elements in memory " + element);
         timings.add( timing);
         elements.add( element);
         //Print the information of the different times and the memory items in different moments
         convertToCSV(timings, elements);
 
-        //System.out.println( "----------------------------------------------");
+        System.out.println( "----------------------------------------------");
     }
 
     public void consolidateAndForget(){
@@ -307,7 +307,7 @@ public class MemoryImplementation extends MemoryInterface {
                     ", retrieve memory elements:" + retrievingElements +
                     ", consolidate memory elements:" + consolidateElements +
                     ", forget memory elements:" + forgetElements +
-                    ")=" + tot() + "total number of memory elements";
+                    ")=" + tot() + " total number of memory elements";
         }
 
 
@@ -418,7 +418,7 @@ public class MemoryImplementation extends MemoryInterface {
         }
     }
     private int NumberOfElementInMemory( ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graphOfMemory ){
-        int countVertices=0;
+        int countVertices=1;
         //Loop on all the vertices in the graph
         for( SceneHierarchyVertex sourceVertices : graphOfMemory.vertexSet()) {
             //Loop on all the edges touching the specified vertex
@@ -570,63 +570,68 @@ public class MemoryImplementation extends MemoryInterface {
         //////////////////////////////////////////////
         //If it is the beginning of the experiment or the memory is still empty write the first rows
         //of the CSV files as heading
-        if ((time_instant == 0)|| elements.isEmpty()){
+        if (time_instant == 0){
             //Write in CSV Encoding File
             outpustreamCSVEncoding.println("Encoding Time" + "," + "EncodingMemoryItems");
+            outpustreamCSVEncoding.println(timing.convert(timing.encodingTime) + "," + element.encodingElements);
             //Close CSV Encoding File
             outpustreamCSVEncoding.close();
 
             //Write in CSV Storing File
              outpustreamCSVStoring.println("Storing Time" + "," + "StoringMemoryItems");
+             outpustreamCSVStoring.println(timing.convert(timing.storingTime) + "," + element.storingElements);
             //Close CSV Storing File
             outpustreamCSVStoring.close();
 
             //Write in CSV Retrieving File
              outpustreamCSVRetrieving.println("Retrieving Time" + "," + "RetrievingMemoryItems");
+             outpustreamCSVRetrieving.println(timing.convert(timing.retrievingTime)  + "," + element.retrievingElements);
             //Close CSV Retrieving File
             outpustreamCSVRetrieving.close();
 
             //Write in CSV Consolidating File
              outpustreamCSVConsolidating.println("Consolidating Time" + "," + "ConsolidatingMemoryItems");
+             outpustreamCSVConsolidating.println(timing.convert(timing.consolidateTime) + "," + element.consolidateElements);
             //Close CSV Consolidating File
             outpustreamCSVConsolidating.close();
 
             //Write in CSV Forgetting File
              outpustreamCSVForgetting.println("Forgetting Time" + "," + "ForgettingMemoryItems");
+             outpustreamCSVForgetting.println(timing.convert(timing.forgetTime)+ "," + element.forgetElements);
             //Close CSV Forgetting File
             outpustreamCSVForgetting.close();
 
 
         }
-        for (Timing timing: timings) {
-            for ( ElementsOfMemory element: elements) {
+        for (Timing timingType: timings) {
+            for ( ElementsOfMemory elementType: elements) {
                 if (i==0){
                     //Write in CSV Encoding File
-                    outpustreamCSVEncoding.println(timing.convert(timing.encodingTime) + "," + element.encodingElements);
+                    outpustreamCSVEncoding.println(timingType.convert(timing.encodingTime) + "," + element.encodingElements);
                     //Close CSV Encoding File
                     outpustreamCSVEncoding.close();
                 }
                 else if(i==1){
                     //Write in CSV Storing File
-                    outpustreamCSVStoring.println(timing.convert(timing.storingTime) + "," + element.storingElements);
+                    outpustreamCSVStoring.println(timingType.convert(timing.storingTime) + "," + element.storingElements);
                     //Close CSV Storing File
                     outpustreamCSVStoring.close();
                 }
                 else if (i==2){
                     //Write in CSV Retrieving File
-                    outpustreamCSVRetrieving.println(timing.convert(timing.retrievingTime)  + "," + element.retrievingElements);
+                    outpustreamCSVRetrieving.println(timingType.convert(timing.retrievingTime)  + "," + element.retrievingElements);
                     //Close CSV Retrieving File
                     outpustreamCSVRetrieving.close();
                 }
                 else if(i==3){
                     //Write in CSV Consolidating File
-                    outpustreamCSVConsolidating.println(timing.convert(timing.consolidateTime) + "," + element.consolidateElements);
+                    outpustreamCSVConsolidating.println(timingType.convert(timing.consolidateTime) + "," + element.consolidateElements);
                     //Close CSV Consolidating File
                     outpustreamCSVConsolidating.close();
                 }
                 else if(i==4){
                     //Write in CSV Forgetting File
-                    outpustreamCSVForgetting.println(timing.convert(timing.forgetTime)+ "," + element.forgetElements);
+                    outpustreamCSVForgetting.println(timingType.convert(timing.forgetTime)+ "," + element.forgetElements);
                     //Close CSV Forgetting File
                     outpustreamCSVForgetting.close();
                 }

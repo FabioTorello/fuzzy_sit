@@ -28,6 +28,7 @@ public class MemoryService extends AbstractNodeMain {
 
     private final static Boolean DEFAULT_FULL_ENTITY_IDENTIFIER = false;
     private final static Boolean DEFAULT_SHOW_GUI = false;
+    private static int numberFrame=0;
 
     //The getDefaultNodeName method returns the default name of the node.
     @Override
@@ -55,7 +56,12 @@ public class MemoryService extends AbstractNodeMain {
 
                             memory.experience( scene(request.getTestRequest().getItems()), true,true);
                             //Show the experience graph
-                            //memory.getTbox().show();
+                            numberFrame++;
+                            //THE SCENE GRAPH SHOULD BE VISUALIZE ONLY IN THE END OF THE BAGFILE
+                            // (THIS IS ONLY A TEMPTATIVE)
+                            if(numberFrame==50) {
+                                memory.getTbox().show();
+                            }
                             response.getTestResponse().setResponse("The scene " + " has been loaded" );
 
                             /*if(request.getTestRequest().getRequest().equals("scene")){
