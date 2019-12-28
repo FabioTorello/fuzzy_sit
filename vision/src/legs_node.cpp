@@ -8,6 +8,7 @@
 #include "geometry_msgs/TransformStamped.h"
 #include <tf/transform_listener.h>
 #include <math.h>
+#include <stdlib.h>
 #include "LegElaboration.h"
 #include <vision/Configuration.h>
 #include <vision/SceneTable.h>
@@ -19,8 +20,9 @@
 
 # define ROWS 3
 # define COLUMNS 12
-# define THR 0.04
-
+//# define THR 0.04
+# define NAMERELARION "isConnectedTo"
+# define CONNECTED_THRESHOLD  0.1 // meters (positive number)
 using namespace ros;
 using namespace tf;
 using namespace ar_track_alvar_msgs;
@@ -32,6 +34,8 @@ void init_message(vision::SceneTable::Ptr a, vision::Configuration::Ptr b, struc
     b->leg_id = c.leg_id;
     b->name_config = c.name_config;
     b->pin=c.pin;
+    b->nameRelation=c.nameRelation;
+    b->relationDegree=c.relationDegree;
     
    
 
@@ -106,31 +110,87 @@ void initialize_pins_position (double p[ROWS][COLUMNS]){
     p[2][11]=-0.05;
 }
 
-int eval_pin (double xy [2], double p[ROWS][COLUMNS], std::string name, std::string leg){
 
-    double x=xy[0];
-    double y=xy[1];
-    if (name == "NOT_X" || name == "BED_X")
-        x=x-0.115;
-    else if (name == "NOT_MINUS_X" || name == "BED_MINUS_X")
-        x=x+0.115;
-    else if (name == "NOT_Y" || name == "BED_Y")
-        y=y-0.115;
-    else if (name == "NOT_MINUS_Y" || name == "BED_MINUS_Y")
-        y=y+0.115;
-    int pin=0;
-    for (int i = 0; i<COLUMNS; i++){
-        if (x<p[1][i]+THR && x>p[1][i]-THR)
+
+double distance(double xlegframe,double ylegframe,double xPin,double yPin){
+    return sqrt((ylegframe - yPin) * (ylegframe - yPin) + (xlegframe - xPin) * (xlegframe - xPin));
+}
+
+
+double computeRelation (configuration &conf_leg,double p[ROWS][COLUMNS],double xlegframe,double ylegframe){
+//i is the name of the pin
+    for (int i = 0; i<COLUMNS; i++){       
+       double connectionNow=distance(xlegframe,ylegframe,p[1][i],p[2][i]);
+       double connectionBefore;
+       if(connectionNow<=connectionBefore){
+       	connectionBefore=connectionNow;
+       		if (connectionNow <= CONNECTED_THRESHOLD){
+            		double degree = 1 - (abs(connectionNow) / CONNECTED_THRESHOLD);
+                        conf_leg.nameRelation=NAMERELARION;
+			conf_leg.relationDegree=degree;
+                        ROS_INFO("\n\n***** %s %s to pin %d with degree %f*****", conf_leg.leg_id.c_str(), NAMERELARION, i+1, degree);
+	    		return i+1;
+       		}
+      	}
+    }
+}
+
+/*double computeRelation (configuration &conf_leg,double p[ROWS][COLUMNS],double xlegframe,double ylegframe){
+
+  double *degreePtr;
+  double degree;
+  degreePtr=&degree;
+  int *pinPtr;
+  int pin;
+  pinPtr=&pin;
+
+//i is the name of the pin
+  for (int i = 0; i<COLUMNS; i++){       
+	  double connectionNow=distance(xlegframe,ylegframe,p[1][i],p[2][i]);
+	  double connectionBefore;
+       
+ 	 if(connectionNow<=connectionBefore){
+ 		 connectionBefore=connectionNow;
+ 		 if (connectionNow <= CONNECTED_THRESHOLD){
+ 			 degree = 1 - (abs(connectionNow) / CONNECTED_THRESHOLD);                        
+ 			 pin= i+1;
+ 		 }
+ 	 }
+  }
+
+  conf_leg.nameRelation=NAMERELARION;
+  conf_leg.relationDegree=*degreePtr;
+  ROS_INFO("\n\n***** %s %s to pin %d with degree %f*****", conf_leg.leg_id.c_str(), NAMERELARION, *pinPtr, *degreePtr);
+}*/
+
+int eval_pin (double xy [2], double p[ROWS][COLUMNS], configuration &conf_leg){
+    //Degree to evaluate how much the most probable connected pin is connected to the specific leg
+    double xlegframe=xy[0];
+    double ylegframe=xy[1];
+    if (conf_leg.name_config == "NOT_X" || conf_leg.name_config == "BED_X")
+        xlegframe=xlegframe-0.115;
+    else if (conf_leg.name_config == "NOT_MINUS_X" || conf_leg.name_config == "BED_MINUS_X")
+        xlegframe=xlegframe+0.115;
+    else if (conf_leg.name_config == "NOT_Y" || conf_leg.name_config == "BED_Y")
+        ylegframe=ylegframe-0.115;
+    else if (conf_leg.name_config == "NOT_MINUS_Y" || conf_leg.name_config == "BED_MINUS_Y")
+        ylegframe=ylegframe+0.115;
+    int pin=computeRelation(conf_leg,p,xlegframe,ylegframe);
+    return pin;
+    
+       
+        /*if (x<p[1][i]+THR && x>p[1][i]-THR)
             if (y<p[2][i]+THR && y>p[2][i]-THR){
                 pin = i+1;
                 //ROS_INFO("\n\n***** %s connected to pin %d *****", leg.c_str(), pin);
                 return pin;
-            }
-    }
-
-    ROS_ERROR("   !!!!!!%s not connected to a PIN!!!!!!\n", leg.c_str());
-    return 0;
+            }*/
+            
+    //ROS_ERROR("   !!!!!!%s not connected to a PIN!!!!!!\n", leg.c_str());
+   // return 0;
 }
+
+
 
 void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double pins[ROWS][COLUMNS], configuration &conf_leg, std::string leg_name){
     tf::Matrix3x3 m0(t.getRotation());
@@ -139,13 +199,15 @@ void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double 
     angles[1] = angles[1] * (180 / M_PI);
     angles[2] = angles[2] * (180 / M_PI);
     change_angle_interval(angles);
+//After "check_configuration" function I know the type of the leg and the orientation respect to the WORLD frame
     check_configuration(angles, conf_leg, leg_name);
     ROS_INFO("Conf leg %s:  %s", leg_name.c_str(), conf_leg.name_config.c_str());
 
     xy[0]=t.getOrigin().x();
     xy[1]=t.getOrigin().y();
-    conf_leg.pin=eval_pin(xy, pins, conf_leg.name_config, conf_leg.leg_id);
-    ROS_INFO("\n%s\n%s\nCONNECTED TO PIN %d\n", conf_leg.leg_id.c_str(), conf_leg.name_config.c_str(), conf_leg.pin);
+    //conf_leg.pin=eval_pin(xy, pins, conf_leg.name_config, conf_leg.leg_id);
+    conf_leg.pin=eval_pin(xy, pins, conf_leg);
+    //ROS_INFO("\n%s\n%s\n%s TO PIN %d WITH DEGREE %f\n", conf_leg.leg_id.c_str(), conf_leg.name_config.c_str(), conf_leg.nameRelation, conf_leg.pin, conf_leg.relationDegree);
 }
 
 
@@ -229,7 +291,8 @@ int main(int argc, char **argv)
         try {
             listener0.waitForTransform("/WORLD", "/ar_marker_100", ros::Time(0), ros::Duration(0.00005));
             listener0.lookupTransform("/WORLD", "/ar_marker_100", ros::Time(0), transform_w_100);
-            ROS_INFO("\n%s\n%s\nCONNECTED TO PIN %d\n", conf_leg0.leg_id.c_str(), conf_leg0.name_config.c_str(), conf_leg0.pin);
+            //ROS_INFO("\n%s\n%s\n%s TO PIN %d WITH DEGREE %f\n", conf_leg0.leg_id.c_str(), conf_leg0.name_config.c_str(), conf_leg0.nameRelation, conf_leg0.pin, conf_leg0.relationDegree);
+            //ROS_INFO("\n%s\n%s\nCONNECTED TO PIN %d\n", conf_leg0.leg_id.c_str(), conf_leg0.name_config.c_str(), conf_leg0.pin);
             eval_config(angles_100,transform_w_100, xy_100, pins, conf_leg0, "Leg_0");
 
             if (conf_leg0.pin > 0 && conf_leg0.name_config.size()>0) {

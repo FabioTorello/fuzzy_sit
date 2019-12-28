@@ -15,6 +15,8 @@ struct configuration{
     std::string leg_id;
     std::string name_config;
     int pin;
+    std::string nameRelation;
+    double relationDegree;
     
 
 };
