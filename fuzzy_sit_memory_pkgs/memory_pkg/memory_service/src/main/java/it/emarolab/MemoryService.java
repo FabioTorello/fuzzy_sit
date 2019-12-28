@@ -54,7 +54,7 @@ public class MemoryService extends AbstractNodeMain {
                         (request, response) -> {
 
 
-                            memory.experience( scene(request.getTestRequest().getItems()), true,true);
+                            memory.experience( scene(request.getTestRequest().getItems(), request.getTestRequest().getFrame()), true,true);
                             //Show the experience graph
                             numberFrame++;
                             //THE SCENE GRAPH SHOULD BE VISUALIZE ONLY IN THE END OF THE BAGFILE
@@ -89,8 +89,8 @@ public class MemoryService extends AbstractNodeMain {
     private static final List<Double> pinsY = Arrays.asList(-0.16, -0.17, -0.15, -0.17, -0.02, 0.05, 0.19, 0.17, 0.17, 0.20, 0.05, -0.05);
     private static final List<String> legsType = Arrays.asList("BED", "CHAIR", "ROOF", "NOT");
     private static int pin;
-    public static ConnectObjectScene scene(List<SceneItem> items) {
-        ConnectObjectScene scene = new ConnectObjectScene();
+    public static ConnectObjectScene scene(List<SceneItem> items, int frame) {
+        ConnectObjectScene scene = new ConnectObjectScene("frame"+frame);
         //There is always the type Table object and it is the origin of my system so x=0 and y=0
         scene.addObject(new Table("Table","T0",0.9, new Point2(0.0,0.0)));
         int nItems=0;

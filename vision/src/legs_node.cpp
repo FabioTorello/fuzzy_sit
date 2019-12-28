@@ -25,14 +25,18 @@ using namespace ros;
 using namespace tf;
 using namespace ar_track_alvar_msgs;
 
+static int frameInstant=0;
 
 void init_message(vision::SceneTable::Ptr a, vision::Configuration::Ptr b, struct configuration c){
 
     b->leg_id = c.leg_id;
     b->name_config = c.name_config;
     b->pin=c.pin;
+    
+   
 
     a->scene.push_back( *b);
+    a->frame=frameInstant;
 
 }
 
@@ -158,6 +162,8 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "legs_node");
     ros::NodeHandle n;
+
+    
 
     std::fstream fxy;
     fxy.open("xy.txt", std::fstream::out);
@@ -312,7 +318,7 @@ int main(int argc, char **argv)
         f << "-------------------"<< std::endl << k << std::endl;
         k++;
         ros::spinOnce();
-
+	 frameInstant++;
         rate.sleep();
     }
     return 0;

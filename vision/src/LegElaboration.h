@@ -15,6 +15,7 @@ struct configuration{
     std::string leg_id;
     std::string name_config;
     int pin;
+    
 
 };
 
@@ -132,5 +133,6 @@ void check_configuration(double rpy[3], struct configuration &config, const std:
     std::string type=setType(rpy, formula);
     orientation=setOrientation(rpy, formula);
     config.name_config= type + orientation;
+    
 
 }
