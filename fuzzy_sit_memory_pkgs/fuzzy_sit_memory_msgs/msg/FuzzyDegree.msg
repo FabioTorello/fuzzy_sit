@@ -2,3 +2,7 @@ string valueChair
 float64 degreeChair
 string valuePin
 float64 degreePin
+string table
+float64 degreeTable
+string nameRelation
+float64 legPinRelationDegree

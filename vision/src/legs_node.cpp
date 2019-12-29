@@ -34,8 +34,9 @@ void init_message(vision::SceneTable::Ptr a, vision::Configuration::Ptr b, struc
     b->leg_id = c.leg_id;
     b->name_config = c.name_config;
     b->pin=c.pin;
+    b->table="Table";
     b->nameRelation=c.nameRelation;
-    b->relationDegree=c.relationDegree;
+    b->legPinRelationDegree=c.legPinRelationDegree;
     
    
 
@@ -117,7 +118,7 @@ double distance(double xlegframe,double ylegframe,double xPin,double yPin){
 }
 
 
-double computeRelation (configuration &conf_leg,double p[ROWS][COLUMNS],double xlegframe,double ylegframe){
+double computeLegPinRelation (configuration &conf_leg,double p[ROWS][COLUMNS],double xlegframe,double ylegframe){
 //i is the name of the pin
     for (int i = 0; i<COLUMNS; i++){       
        double connectionNow=distance(xlegframe,ylegframe,p[1][i],p[2][i]);
@@ -127,13 +128,22 @@ double computeRelation (configuration &conf_leg,double p[ROWS][COLUMNS],double x
        		if (connectionNow <= CONNECTED_THRESHOLD){
             		double degree = 1 - (abs(connectionNow) / CONNECTED_THRESHOLD);
                         conf_leg.nameRelation=NAMERELARION;
-			conf_leg.relationDegree=degree;
+			conf_leg.legPinRelationDegree=degree;
                         ROS_INFO("\n\n***** %s %s to pin %d with degree %f*****", conf_leg.leg_id.c_str(), NAMERELARION, i+1, degree);
 	    		return i+1;
        		}
       	}
     }
 }
+
+/*void computePinTableRelation(configuration &conf_leg, double pinX, double pinY,double xTable,double yTable,int pin){
+double connection=distance(xTable,yTable,pinX,pinY);
+if (connection <= CONNECTED_THRESHOLD){
+            		double degree = 1 - (abs(connection) / CONNECTED_THRESHOLD);                       
+			conf_leg.relationPinTableDegree=degree;
+                        ROS_INFO("\n\n***** Table %s pin %d with degree %f*****", NAMERELARION, pin, degree);
+       		}
+}*/
 
 /*double computeRelation (configuration &conf_leg,double p[ROWS][COLUMNS],double xlegframe,double ylegframe){
 
@@ -175,7 +185,7 @@ int eval_pin (double xy [2], double p[ROWS][COLUMNS], configuration &conf_leg){
         ylegframe=ylegframe-0.115;
     else if (conf_leg.name_config == "NOT_MINUS_Y" || conf_leg.name_config == "BED_MINUS_Y")
         ylegframe=ylegframe+0.115;
-    int pin=computeRelation(conf_leg,p,xlegframe,ylegframe);
+    int pin=computeLegPinRelation(conf_leg,p,xlegframe,ylegframe);
     return pin;
     
        

@@ -16,7 +16,7 @@ struct configuration{
     std::string name_config;
     int pin;
     std::string nameRelation;
-    double relationDegree;
+    double legPinRelationDegree;
     
 
 };
