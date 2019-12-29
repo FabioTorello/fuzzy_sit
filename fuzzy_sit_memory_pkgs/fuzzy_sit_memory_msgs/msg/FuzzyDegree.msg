@@ -5,4 +5,5 @@ float64 degreePin
 string table
 float64 degreeTable
 string nameRelation
+float64 pinTableRelationDegree
 float64 legPinRelationDegree

@@ -37,6 +37,7 @@ void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneTable::ConstPtr& msg)
       arrayOfFuzzyDegree[j].table=msg->scene[j].table;
       arrayOfFuzzyDegree[j].degreeTable=1.0;
       arrayOfFuzzyDegree[j].nameRelation=msg->scene[j].nameRelation;
+      arrayOfFuzzyDegree[j].pinTableRelationDegree=msg->scene[j].pinTableRelationDegree;
       arrayOfFuzzyDegree[j].legPinRelationDegree=msg->scene[j].legPinRelationDegree;
       //std::cout << arrayOfFuzzyDegree[j] << std::endl;
       item.gamma_i=name + std::to_string(i);

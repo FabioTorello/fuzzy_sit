@@ -36,7 +36,9 @@ void init_message(vision::SceneTable::Ptr a, vision::Configuration::Ptr b, struc
     b->pin=c.pin;
     b->table="Table";
     b->nameRelation=c.nameRelation;
+    b->pinTableRelationDegree=c.pinTableRelationDegree;
     b->legPinRelationDegree=c.legPinRelationDegree;
+    
     
    
 
@@ -136,14 +138,24 @@ double computeLegPinRelation (configuration &conf_leg,double p[ROWS][COLUMNS],do
     }
 }
 
-/*void computePinTableRelation(configuration &conf_leg, double pinX, double pinY,double xTable,double yTable,int pin){
-double connection=distance(xTable,yTable,pinX,pinY);
-if (connection <= CONNECTED_THRESHOLD){
-            		double degree = 1 - (abs(connection) / CONNECTED_THRESHOLD);                       
-			conf_leg.relationPinTableDegree=degree;
-                        ROS_INFO("\n\n***** Table %s pin %d with degree %f*****", NAMERELARION, pin, degree);
-       		}
-}*/
+double computePinTableRelation(configuration &conf_leg, double p[ROWS][COLUMNS], int pin){
+	double xTable=0;
+	double yTable=0;
+        
+	for (int i = 0; i<COLUMNS; i++){ 
+		if (i==pin-1){
+			double connection=distance(xTable,yTable,p[1][i],p[2][i]);
+//CALCOLANDO CON LA CALCOLATRICE NON VIENE DEGREE 1 MA -2... PERCIò NON CAPITO COME FA A VENIRE 1 CHE è CIò CHE PASSA
+			if (connection <= 0.4){
+				double degree = 1 - (abs(connection) / CONNECTED_THRESHOLD);	
+				ROS_INFO("\n\n***** Table %s pin %d with degree %f with connection %f*****", NAMERELARION, pin, degree, connection);
+				return degree;
+			}
+		}
+	}
+
+	return 0;
+}
 
 /*double computeRelation (configuration &conf_leg,double p[ROWS][COLUMNS],double xlegframe,double ylegframe){
 
@@ -216,7 +228,9 @@ void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double 
     xy[0]=t.getOrigin().x();
     xy[1]=t.getOrigin().y();
     //conf_leg.pin=eval_pin(xy, pins, conf_leg.name_config, conf_leg.leg_id);
-    conf_leg.pin=eval_pin(xy, pins, conf_leg);
+    int pin=eval_pin(xy, pins, conf_leg);
+    conf_leg.pin=pin;
+    conf_leg.pinTableRelationDegree=computePinTableRelation(conf_leg,pins,pin);
     //ROS_INFO("\n%s\n%s\n%s TO PIN %d WITH DEGREE %f\n", conf_leg.leg_id.c_str(), conf_leg.name_config.c_str(), conf_leg.nameRelation, conf_leg.pin, conf_leg.relationDegree);
 }
 
