@@ -14,6 +14,7 @@ struct configuration{
 
     std::string leg_id;
     std::string name_config;
+    //double degreeOrientation;
     int pin;
     std::string nameRelation;
     double pinTableRelationDegree;
@@ -129,14 +130,125 @@ std::string setOrientation (double rpy[3], double formula){
     return orientation;
 }
 
+double setDegreeOrientation (double formula){
+
+    double degree;
+    if (formula > 360){
+        formula=formula-360;
+    }
+
+    //All if for degree = 1
+    if (formula == 0){
+	//orientation = "_X";
+	degree=1.0;
+    }
+    else if(formula==90){
+	//orientation = "_Y";
+	degree=1.0;
+    }
+    else if(formula==180){
+	//orientation = "_MINUS_X";
+	degree=1.0;
+    }
+    else if(formula==270){
+	//orientation = "_MINUS_Y";
+	degree=1.0;
+    }
+   
+    //All if for degree = 0
+    if (formula==315){
+	//orientation = "_X";
+	degree=0;
+    }
+    else if(formula==45){
+	//orientation = "_Y";
+	degree=0;
+    }
+    else if(formula==135){
+	//orientation = "_MINUS_X";
+	degree=0;
+    }
+    else if(formula==225){
+	//orientation = "_MINUS_Y";
+	degree=0;
+    }
+
+
+    //All if statements to compute the degree
+    if (formula>315 || formula<360){
+	//orientation = "_X";
+    	degree=((315-formula)/315);
+    }
+    else if (formula>0 || formula<45){
+	//orientation = "_X";
+    	degree=((45-formula)/45);
+    }
+    else if(formula>45 ||formula<90){
+	//orientation = "_Y";
+    	degree=((formula-45)/45);
+    }
+    else if(formula>90 ||formula<135){
+	//orientation = "_Y";
+    	degree=((135-formula)/45);
+    }
+    else if(formula>135 || formula<180){
+	//orientation = "_MINUS_X";
+	degree=((formula-135)/45);
+    }
+    else if(formula>180 || formula<225){
+	//orientation = "_MINUS_X";
+	degree=((225-formula)/45);
+    }
+    else if(formula>225 || formula<270){
+	//orientation = "_MINUS_Y";
+	degree=((formula-225)/45);
+    }
+    else if(formula>270 || formula<315){
+	//orientation = "_MINUS_Y";
+	degree=((315-formula)/45);
+    }
+    else{
+  	//orientation="  ";
+        degree=0;
+    }
+    /*if(formula > 315 || formula < 45){
+
+        orientation = "_X";
+
+    }
+
+    else if(formula > 45 && formula < 135){
+
+        orientation = "_Y";
+
+    }
+
+    else if(formula > 135 && formula < 225){
+        orientation = "_MINUS_X";
+
+    }
+
+    else if(formula > 225 && formula < 315){
+
+        orientation = "_MINUS_Y";
+
+    }*/
+    //config.degreeOrientation=degree;
+
+    return degree;
+}
+
 void check_configuration(double rpy[3], struct configuration &config, const std::string &leg_id){
 
     config.leg_id = leg_id;
     double formula;
     std::string orientation;
+    double degreeOrientation;
     std::string type=setType(rpy, formula);
     orientation=setOrientation(rpy, formula);
+   // degreeOrientation=setDegreeOrientation(formula);
     config.name_config= type + orientation;
+    //config.degreeOrientation=degreeOrientation;
     
 
 }

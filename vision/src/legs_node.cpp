@@ -33,6 +33,7 @@ void init_message(vision::SceneTable::Ptr a, vision::Configuration::Ptr b, struc
 
     b->leg_id = c.leg_id;
     b->name_config = c.name_config;
+    //b->degreeOrientation=c.degreeOrientation;
     b->pin=c.pin;
     b->table="Table";
     b->nameRelation=c.nameRelation;
@@ -263,10 +264,10 @@ int main(int argc, char **argv)
     tf::TransformListener listener4;
     tf::TransformListener listener8;
     tf::TransformListener listener12;
-
+    //PROVATO CON 100 MA NESSUN RISULTATO
     ros::Publisher Scene_pub = n.advertise<vision::SceneTable>("scene_data", 10);
     //ros::Publisher Scene_pub_4Armor = n.advertise<sit_armor_injected_msgs::SceneElementVector>("scene_data_4Armor", 100);
-
+//PROVATO CON 20 MA NESSUN RISULTATO 
     ros::Rate rate(10.0);
 
     double xy_100[2];

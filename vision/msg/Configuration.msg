@@ -1,5 +1,6 @@
 string leg_id
 string name_config
+float64 degreeOrientation
 int64 pin
 string table
 string nameRelation
