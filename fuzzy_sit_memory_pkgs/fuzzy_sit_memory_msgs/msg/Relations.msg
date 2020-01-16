@@ -1,0 +1,4 @@
+string gamma_subject
+string gamma_object
+string nameRelation
+float64 degreeRelation

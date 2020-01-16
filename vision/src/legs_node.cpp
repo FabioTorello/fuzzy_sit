@@ -20,12 +20,14 @@
 
 # define ROWS 3
 # define COLUMNS 12
-//# define THR 0.04
-# define NAMERELARION "isConnectedTo"
+//IN ORIGINE THR ERA 0.04
+# define THR 0.04
+# define NAMERELATION "isConnectedTo"
 # define CONNECTED_THRESHOLD  0.1 // meters (positive number)
 using namespace ros;
 using namespace tf;
 using namespace ar_track_alvar_msgs;
+using namespace std;
 
 static int frameInstant=0;
 
@@ -33,7 +35,7 @@ void init_message(vision::SceneTable::Ptr a, vision::Configuration::Ptr b, struc
 
     b->leg_id = c.leg_id;
     b->name_config = c.name_config;
-    //b->degreeOrientation=c.degreeOrientation;
+    b->degreeOrientation=c.degreeOrientation;
     b->pin=c.pin;
     b->table="Table";
     b->nameRelation=c.nameRelation;
@@ -121,73 +123,146 @@ double distance(double xlegframe,double ylegframe,double xPin,double yPin){
 }
 
 
-double computeLegPinRelation (configuration &conf_leg,double p[ROWS][COLUMNS],double xlegframe,double ylegframe){
+//NUOVA COMPUTELEGPINRELATION
+double computeLegPinRelation (double xy [2], double p[ROWS][COLUMNS], int pin, std::string name, std::string leg){
+    double x=xy[0];
+    double y=xy[1];
+    if (name == "NOT_X" || name == "BED_X")
+        x=x-0.115;
+    else if (name == "NOT_MINUS_X" || name == "BED_MINUS_X")
+        x=x+0.115;
+    else if (name == "NOT_Y" || name == "BED_Y")
+        y=y-0.115;
+    else if (name == "NOT_MINUS_Y" || name == "BED_MINUS_Y")
+        y=y+0.115;
+//i is the name of the pin
+    for (int i = 0; i<COLUMNS; i++){ 
+	if (i==pin-1){     
+       double connection=distance(x,y,p[1][i],p[2][i]);     
+         //cout<<connection;
+                //if( connectionNow < 0)
+			//connectionNow = connectionNow * -1;
+       		if (connection <= CONNECTED_THRESHOLD){
+			//double degree = 1-(abs(connectionNow) / CONNECTED_THRESHOLD);
+			
+            		double degree = 1-(fabs(connection) / CONNECTED_THRESHOLD);
+                        
+			
+			
+                       //ROS_INFO("\n\n***** %s %s to pin %d with degree %f with connection: %f *****", conf_leg.leg_id.c_str(), NAMERELATION, i+1, degree, connectionNow);
+	    		return degree;
+		}
+      	}
+    }
+ROS_ERROR("   !!!!!!%s not connected to a PIN!!!!!!\n", leg.c_str());
+return 0;
+}
+
+
+//VECCHIA COMPUTEPINTABLERELATION
+/*int computeLegPinRelation (configuration &conf_leg,double p[ROWS][COLUMNS],double xlegframe,double ylegframe){
 //i is the name of the pin
     for (int i = 0; i<COLUMNS; i++){       
        double connectionNow=distance(xlegframe,ylegframe,p[1][i],p[2][i]);
        double connectionBefore;
        if(connectionNow<=connectionBefore){
        	connectionBefore=connectionNow;
+                //if( connectionNow < 0)
+			//connectionNow = connectionNow * -1;
        		if (connectionNow <= CONNECTED_THRESHOLD){
-            		double degree = 1 - (abs(connectionNow) / CONNECTED_THRESHOLD);
-                        conf_leg.nameRelation=NAMERELARION;
+			//double degree = 1-(abs(connectionNow) / CONNECTED_THRESHOLD);
+			
+            		double degree = 1-(fabs(connectionNow) / CONNECTED_THRESHOLD);
+                        
 			conf_leg.legPinRelationDegree=degree;
-                        ROS_INFO("\n\n***** %s %s to pin %d with degree %f*****", conf_leg.leg_id.c_str(), NAMERELARION, i+1, degree);
+			
+                       //ROS_INFO("\n\n***** %s %s to pin %d with degree %f with connection: %f *****", conf_leg.leg_id.c_str(), NAMERELATION, i+1, degree, connectionNow);
 	    		return i+1;
        		}
       	}
     }
-}
+ROS_ERROR("   !!!!!!%s not connected to a PIN!!!!!!\n", conf_leg.leg_id.c_str());
+return 0;
+}*/
 
-double computePinTableRelation(configuration &conf_leg, double p[ROWS][COLUMNS], int pin){
-	double xTable=0;
+
+//NUOVA COMPUTEPINTABLERELATION
+double computePinTableRelation(double p[ROWS][COLUMNS], int pin){
+        double xTable=0;
 	double yTable=0;
         
 	for (int i = 0; i<COLUMNS; i++){ 
 		if (i==pin-1){
 			double connection=distance(xTable,yTable,p[1][i],p[2][i]);
+			cout<<"\n"<<connection<<"\n";
+			double degree = 1 - (fabs(connection) / 0.4);	
+			return degree;
+		}
+	}
+}
+
+
+
+
+
+
+
+//VECCHIA COMPUTEPINTABLERELATION
+/*double computePinTableRelation(configuration &conf_leg, double p[ROWS][COLUMNS], int pin){
+	double xTable=0.0;
+	double yTable=0.0;
+        
+	for (int i = 0; i<COLUMNS; i++){ 
+		if (i==pin-1){
+			double connection=distance(xTable,yTable,p[1][i],p[2][i]);
 //CALCOLANDO CON LA CALCOLATRICE NON VIENE DEGREE 1 MA -2... PERCIò NON CAPITO COME FA A VENIRE 1 CHE è CIò CHE PASSA
-			if (connection <= 0.4){
-				double degree = 1 - (abs(connection) / CONNECTED_THRESHOLD);	
-				ROS_INFO("\n\n***** Table %s pin %d with degree %f with connection %f*****", NAMERELARION, pin, degree, connection);
+				//if( connection < 0)
+					//connection = connection * -1;
+				double degree = 1 - (fabs(connection) / 0.4);
+				//ROS_INFO("\n\n***** Table %s pin %d with degree %f with connection %f*****", NAMERELATION, pin, degree, connection);
 				return degree;
-			}
+			//}
 		}
 	}
 
-	return 0;
-}
-
-/*double computeRelation (configuration &conf_leg,double p[ROWS][COLUMNS],double xlegframe,double ylegframe){
-
-  double *degreePtr;
-  double degree;
-  degreePtr=&degree;
-  int *pinPtr;
-  int pin;
-  pinPtr=&pin;
-
-//i is the name of the pin
-  for (int i = 0; i<COLUMNS; i++){       
-	  double connectionNow=distance(xlegframe,ylegframe,p[1][i],p[2][i]);
-	  double connectionBefore;
-       
- 	 if(connectionNow<=connectionBefore){
- 		 connectionBefore=connectionNow;
- 		 if (connectionNow <= CONNECTED_THRESHOLD){
- 			 degree = 1 - (abs(connectionNow) / CONNECTED_THRESHOLD);                        
- 			 pin= i+1;
- 		 }
- 	 }
-  }
-
-  conf_leg.nameRelation=NAMERELARION;
-  conf_leg.relationDegree=*degreePtr;
-  ROS_INFO("\n\n***** %s %s to pin %d with degree %f*****", conf_leg.leg_id.c_str(), NAMERELARION, *pinPtr, *degreePtr);
+	//return 0;
 }*/
 
-int eval_pin (double xy [2], double p[ROWS][COLUMNS], configuration &conf_leg){
+
+
+
+//QUESTA FUNZIONE EVAL_PIN ERA GIà PRESENTE
+int eval_pin (double xy [2], double p[ROWS][COLUMNS], std::string name, std::string leg){
+
+    double x=xy[0];
+    double y=xy[1];
+    if (name == "NOT_X" || name == "BED_X")
+        x=x-0.115;
+    else if (name == "NOT_MINUS_X" || name == "BED_MINUS_X")
+        x=x+0.115;
+    else if (name == "NOT_Y" || name == "BED_Y")
+        y=y-0.115;
+    else if (name == "NOT_MINUS_Y" || name == "BED_MINUS_Y")
+        y=y+0.115;
+    int pin=0;
+    for (int i = 0; i<COLUMNS; i++){
+        if (x<p[1][i]+THR && x>p[1][i]-THR){
+            if (y<p[2][i]+THR && y>p[2][i]-THR){
+                pin = i+1;
+                //ROS_INFO("\n\n***** %s connected to pin %d *****", leg.c_str(), pin);
+                return pin;
+            }
+	}
+    }
+
+    ROS_ERROR("   !!!!!!%s not connected to a PIN!!!!!!\n", leg.c_str());
+    return 0;
+}
+
+//QUESTA è LA MIA FUNZIONE EVAL_PIN
+/*int eval_pin (double xy [2], double p[ROWS][COLUMNS], configuration &conf_leg){
     //Degree to evaluate how much the most probable connected pin is connected to the specific leg
+    
     double xlegframe=xy[0];
     double ylegframe=xy[1];
     if (conf_leg.name_config == "NOT_X" || conf_leg.name_config == "BED_X")
@@ -197,8 +272,8 @@ int eval_pin (double xy [2], double p[ROWS][COLUMNS], configuration &conf_leg){
     else if (conf_leg.name_config == "NOT_Y" || conf_leg.name_config == "BED_Y")
         ylegframe=ylegframe-0.115;
     else if (conf_leg.name_config == "NOT_MINUS_Y" || conf_leg.name_config == "BED_MINUS_Y")
-        ylegframe=ylegframe+0.115;
-    int pin=computeLegPinRelation(conf_leg,p,xlegframe,ylegframe);
+        ylegframe=ylegframe+0.115; 
+    int pin=computeLegPinRelation(conf_leg,p,xlegframe,ylegframe); 
     return pin;
     
        
@@ -211,11 +286,13 @@ int eval_pin (double xy [2], double p[ROWS][COLUMNS], configuration &conf_leg){
             
     //ROS_ERROR("   !!!!!!%s not connected to a PIN!!!!!!\n", leg.c_str());
    // return 0;
-}
+//}
 
 
 
 void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double pins[ROWS][COLUMNS], configuration &conf_leg, std::string leg_name){
+	
+    
     tf::Matrix3x3 m0(t.getRotation());
     m0.getEulerYPR(angles[2], angles[1], angles[0]);
     angles[0] = angles[0] * (180 / M_PI);
@@ -228,11 +305,23 @@ void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double 
 
     xy[0]=t.getOrigin().x();
     xy[1]=t.getOrigin().y();
-    //conf_leg.pin=eval_pin(xy, pins, conf_leg.name_config, conf_leg.leg_id);
-    int pin=eval_pin(xy, pins, conf_leg);
+    conf_leg.pin=eval_pin(xy, pins, conf_leg.name_config, conf_leg.leg_id);
+    conf_leg.legPinRelationDegree=computeLegPinRelation(xy,pins,conf_leg.pin,conf_leg.name_config,conf_leg.leg_id); 
+    conf_leg.pinTableRelationDegree=computePinTableRelation(pins, conf_leg.pin);
+    conf_leg.nameRelation=NAMERELATION;
+
+
+//PER LA MIA FUNZIONE (QUELLA VECCHIA) è QUESTA PARTE SOTTO DA DECOMMENTARE
+    /*int pin=eval_pin(xy, pins, conf_leg);
     conf_leg.pin=pin;
-    conf_leg.pinTableRelationDegree=computePinTableRelation(conf_leg,pins,pin);
-    //ROS_INFO("\n%s\n%s\n%s TO PIN %d WITH DEGREE %f\n", conf_leg.leg_id.c_str(), conf_leg.name_config.c_str(), conf_leg.nameRelation, conf_leg.pin, conf_leg.relationDegree);
+    conf_leg.nameRelation=NAMERELATION;*/
+//PRINT FOR DEBUGGING
+    //ROS_INFO("\n%s\n%s\nCONNECTED TO PIN %d\n", conf_leg.leg_id.c_str(), conf_leg.name_config.c_str(), conf_leg.pin);
+    //ROS_INFO("\n%s\n%s\n%s TO PIN %d WITH DEGREE %f\n", conf_leg.leg_id.c_str(), conf_leg.name_config.c_str(), conf_leg.nameRelation, pin, conf_leg.legPinRelationDegree);
+    //conf_leg.pinTableRelationDegree=computePinTableRelation(conf_leg,pins,pin);
+    
+
+    
 }
 
 
@@ -264,10 +353,14 @@ int main(int argc, char **argv)
     tf::TransformListener listener4;
     tf::TransformListener listener8;
     tf::TransformListener listener12;
+
     //PROVATO CON 100 MA NESSUN RISULTATO
-    ros::Publisher Scene_pub = n.advertise<vision::SceneTable>("scene_data", 10);
+//PRIMA IN ORIGINE ERA 10
+     ros::Publisher Scene_pub = n.advertise<vision::SceneTable>("scene_data", 10);
     //ros::Publisher Scene_pub_4Armor = n.advertise<sit_armor_injected_msgs::SceneElementVector>("scene_data_4Armor", 100);
+
 //PROVATO CON 20 MA NESSUN RISULTATO 
+//ORIGINALE è 10 di rate
     ros::Rate rate(10.0);
 
     double xy_100[2];
@@ -289,8 +382,8 @@ int main(int argc, char **argv)
     int k=1;
 
     while(n.ok()) {
-
-
+//DURATA ORIGINALE è 1
+//CON 8 IL RISULTATO SEMBRA ACCETTABILE MA POI TORNA A QUELLO CHE NON DEVE VENIRE DOPO CHE IL BAG è TERMINATO
         ros::Duration(1.0).sleep();
         tf::StampedTransform transform_w_100;
         tf::StampedTransform transform_w_104;
@@ -299,6 +392,10 @@ int main(int argc, char **argv)
         vision::SceneTable::Ptr ourScene (new vision::SceneTable);
         //sit_armor_injected_msgs::SceneElementVector::Ptr sceneForArmor(new sit_armor_injected_msgs::SceneElementVector);
 
+	frameInstant++;
+	cout<<"\n";
+	ROS_INFO("\nTHE FRAME NOW IS: %d", frameInstant);
+	//cout<<"\n";
 
         for (int i = 0; i<3; i++){
             angles_100[i];
@@ -316,14 +413,17 @@ int main(int argc, char **argv)
         try {
             listener0.waitForTransform("/WORLD", "/ar_marker_100", ros::Time(0), ros::Duration(0.00005));
             listener0.lookupTransform("/WORLD", "/ar_marker_100", ros::Time(0), transform_w_100);
-            //ROS_INFO("\n%s\n%s\n%s TO PIN %d WITH DEGREE %f\n", conf_leg0.leg_id.c_str(), conf_leg0.name_config.c_str(), conf_leg0.nameRelation, conf_leg0.pin, conf_leg0.relationDegree);
-            //ROS_INFO("\n%s\n%s\nCONNECTED TO PIN %d\n", conf_leg0.leg_id.c_str(), conf_leg0.name_config.c_str(), conf_leg0.pin);
+            //PRINT FOR DEBUGGING
+            
             eval_config(angles_100,transform_w_100, xy_100, pins, conf_leg0, "Leg_0");
-
+//PRINT FOR DEBUGGING
+            //ROS_INFO("DOPO EVAL_CONFIG FUNCTION: \n%s\n%s\nCONNECTED TO PIN %d\n", conf_leg0.leg_id.c_str(), conf_leg0.name_config.c_str(), conf_leg0.pin);
             if (conf_leg0.pin > 0 && conf_leg0.name_config.size()>0) {
                 f << conf_leg0.leg_id << std::endl << conf_leg0.name_config << std::endl << "Pin:" << conf_leg0.pin << std::endl << std::endl;
                 fypr << angles_100[2] <<" " << angles_100[1] <<" " << angles_100[0] << std::endl;
                 fxy << "leg 0 : " << xy_100[0] <<" " << xy_100[1] << std:: endl;
+//PRINT FOR DEBUGGING
+		//ROS_INFO("DENTRO A IF CON PIN >0: \n%s\n%s\nCONNECTED TO PIN %d\n", conf_leg0.leg_id.c_str(), conf_leg0.name_config.c_str(), conf_leg0.pin);
                 vision::Configuration::Ptr msg0(new vision::Configuration);
                 init_message(ourScene, msg0, conf_leg0);
                 /*sit_armor_injected_msgs::SceneElement::Ptr ar0(new sit_armor_injected_msgs::SceneElement);
@@ -402,12 +502,16 @@ int main(int argc, char **argv)
         }
 
         //Scene_pub_4Armor.publish(sceneForArmor);
+        //PRINT FOR DEBUGGING
+	//cout<<*ourScene;
         Scene_pub.publish(ourScene);
         f << "-------------------"<< std::endl << k << std::endl;
         k++;
+	
         ros::spinOnce();
-	 frameInstant++;
-        rate.sleep();
+        
+	
+	rate.sleep();
     }
     return 0;
 }

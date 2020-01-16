@@ -1,0 +1,57 @@
+#!/bin/bash
+#This is the folder have to use to loop over (Dataset folder)
+#/home/fabio/DataSet/rosbag-table/
+
+#find . -maxdepth 1 -mindepth 1 -type f -printf '%f\n'
+COUNTER_DIRECTORY=1
+COUNTER_FILE_IN_SUBDIRECTORY=0
+#for passa in rassegna tutti gli elementi della directory corrente (ritornati come risultato del comando ls -d $1/*, che riporta il loro percorso completo)
+#for elem in `ls -d /home/fabio/DataSet/rosbag-table/${COUNTER_DIRECTORY}`
+#do
+    #if [[ -f $elem ]]; then
+    #echo "$elem"
+#Loop over the folders in the main directory
+#for (( i = 0 ; i <= 3 ; i += 1 )); do
+	#Enter in a subfolder
+	#(cd /"${COUNTER_DIRECTORY}")
+	#Increase the directory to be access
+	
+	#echo "$COUNTER_DIRECTORY"
+
+	#Loop over all the files in a folder
+	#$((COUNTER_DIRECTORY++))
+#done
+
+#cerca /home/fabio/DataSet/rosbag-table
+  #echo "Trovati $? file in $1 contenenti il pattern $2 e salvati in
+
+
+SEARCH_FOLDER="/home/fabio/DataSet/rosbag-table/*"
+
+for f in $SEARCH_FOLDER
+
+do
+    if [ -d "$f" ]
+    then
+        for ff in $f/*
+        do 
+	    if [ -f "$ff"  ]  
+	    then
+		if [ ${ff: -4} == ".bag" ]
+		then
+            	     echo "Processing A FILE: $ff"
+	 	     rosparam set NAME true
+		     rosbag play $ff
+	 	     rosparam set NAME false
+
+
+	    #else
+		#echo "$ff IS A FOLDER"
+            	fi
+	    fi
+        done
+    else
+        echo "Processing file $f"
+    fi
+done
+

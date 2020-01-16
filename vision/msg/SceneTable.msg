@@ -1,2 +1,2 @@
 Configuration[] scene
-int8 frame
+int64 frame

@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import it.emarolab.fuzzySIT.FuzzySITBase;
 import it.emarolab.fuzzySIT.perception.PerceptionBase;
 import it.emarolab.fuzzySIT.perception.simple2D.ConnectObjectScene;
+import it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
 import org.ros.internal.loader.CommandLineLoader;
 import org.ros.message.MessageFactory;
 import org.ros.namespace.GraphName;
@@ -54,7 +55,7 @@ public class MemoryService extends AbstractNodeMain {
                         (request, response) -> {
 
 
-                            memory.experience( scene(request.getTestRequest().getItems(), request.getTestRequest().getFrame()), true,true);
+                            //memory.experience( scene(request.getTestRequest().getItems(), request.getTestRequest().getFrame()), true,true);
                             //Show the experience graph
                             numberFrame++;
                             //THE SCENE GRAPH SHOULD BE VISUALIZE ONLY IN THE END OF THE BAGFILE
@@ -104,6 +105,8 @@ public class MemoryService extends AbstractNodeMain {
                 //if (pins.contains(degrees.getValuePin())){
                     pin = Integer.parseInt(degrees.getValuePin());
                     scene.addObject(new Pin("Pin", "Pin" + degrees.getValuePin(), degrees.getDegreePin(), new Point2(pinsX.get(Integer.parseInt(degrees.getValuePin())-1), pinsY.get(Integer.parseInt(degrees.getValuePin())-1))));
+
+                    //scene.getRelations().add( new SpatialRelation( "Leg1", "CONNECTED", "Pin2", .8));
 
                 //}
                 //else{

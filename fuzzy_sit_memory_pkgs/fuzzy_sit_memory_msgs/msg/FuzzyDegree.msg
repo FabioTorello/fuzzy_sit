@@ -1,9 +1,8 @@
-string valueChair
+float64 degreeBed
+float64 degreeRoof
 float64 degreeChair
-string valuePin
+float64 degreeNot
 float64 degreePin
-string table
 float64 degreeTable
 string nameRelation
-float64 pinTableRelationDegree
-float64 legPinRelationDegree
+

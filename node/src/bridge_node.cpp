@@ -31,8 +31,8 @@ void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneTable::ConstPtr& msg)
       std::string name = "g";
       for(int j=0; j<size; j++){
       arrayOfFuzzyDegree[j].valueChair=msg->scene[j].name_config;
-      //arrayOfFuzzyDegree[j].degreeChair=msg->scene[j].degreeOrientation;
-      arrayOfFuzzyDegree[j].degreeChair=0.9;
+      arrayOfFuzzyDegree[j].degreeChair=msg->scene[j].degreeOrientation;
+      //arrayOfFuzzyDegree[j].degreeChair=0.9;
       arrayOfFuzzyDegree[j].valuePin=std::to_string(msg->scene[j].pin);
       arrayOfFuzzyDegree[j].degreePin=1.0;
       arrayOfFuzzyDegree[j].table=msg->scene[j].table;

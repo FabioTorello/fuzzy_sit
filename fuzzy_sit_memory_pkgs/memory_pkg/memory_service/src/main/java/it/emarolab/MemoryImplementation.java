@@ -128,7 +128,7 @@ public class MemoryImplementation extends MemoryInterface {
         encode( scene);
         timing.encodingTime = System.nanoTime() - initialTime;
         //CHECKS THE MEMORY IN ORDER TO FIND THE NUMBER OF ELEMENTS CONTAINED
-        graphOfMemory = getTbox().getHierarchy();
+        //graphOfMemory = getTbox().getHierarchy().vertexSet().size();
         element.encodingElements=NumberOfElementInMemory(graphOfMemory);
         System.out.println( "[ ENCODE ]\texperience: " + scene);
         // set store or retrieve cases
@@ -421,6 +421,7 @@ public class MemoryImplementation extends MemoryInterface {
         int countVertices=1;
         //Loop on all the vertices in the graph
         for( SceneHierarchyVertex sourceVertices : graphOfMemory.vertexSet()) {
+           // sourceVertices.getMemoryScore()
             //Loop on all the edges touching the specified vertex
             for (SceneHierarchyEdge edges : graphOfMemory.edgesOf(sourceVertices)) {
                 if (sourceVertices != graphOfMemory.getEdgeTarget(edges)) {
