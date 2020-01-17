@@ -20,7 +20,7 @@ void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneTable::ConstPtr& msg)
 { 
 
       int size= msg->scene.size(); 
-      fuzzy_sit_memory_msgs::TestServiceDirective srv;
+     /* fuzzy_sit_memory_msgs::TestServiceDirective srv;
       fuzzy_sit_memory_msgs::Scene::Ptr sceneToSend(new fuzzy_sit_memory_msgs::Scene);
       fuzzy_sit_memory_msgs::SceneItem itemsInAScene[size];
       fuzzy_sit_memory_msgs::SceneItem item;
@@ -65,7 +65,7 @@ void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneTable::ConstPtr& msg)
       {
           ROS_ERROR("Error");    
       }
-
+*/
 }
 
 int main(int argc, char **argv)

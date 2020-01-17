@@ -13,6 +13,8 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   roscpp
   #rospy
+  sensor_msgs
+  cv_bridge
   std_msgs
   tf 
   message_generation  
@@ -109,7 +111,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES vision
-  CATKIN_DEPENDS roscpp std_msgs message_runtime ar_track_alvar ar_track_alvar_msgs geometry_msgs tf
+  CATKIN_DEPENDS roscpp std_msgs message_runtime ar_track_alvar ar_track_alvar_msgs geometry_msgs tf sensor_msgs cv_bridge
 #  DEPENDS system_lib
 )
 

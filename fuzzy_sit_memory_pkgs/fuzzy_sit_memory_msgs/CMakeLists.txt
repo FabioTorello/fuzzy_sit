@@ -46,6 +46,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   FuzzyDegree.msg
+  Relations.msg
   Scene.msg
   SceneItem.msg
   TestMessageRes.msg  

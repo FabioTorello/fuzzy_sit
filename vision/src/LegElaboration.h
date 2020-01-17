@@ -135,13 +135,13 @@ std::string setOrientation (double rpy[3], double formula){
 double setDegreeOrientation (double formula){
 
     double degree;
-    cout<<"FORMULA CHE ENTRA NELLA FUNZIONE: " << formula << "\n";
+    //cout<<"FORMULA CHE ENTRA NELLA FUNZIONE: " << formula << "\n";
 
     if (formula > 360){
         formula=formula-360;
     }
 
-    cout<< "FORMULA DOPO CAMBIO SE > 360 GRADI: " << formula << "\n";
+    //cout<< "FORMULA DOPO CAMBIO SE > 360 GRADI: " << formula << "\n";
 
     //All if for degree = 1
     if (formula == 0 || formula==360){

@@ -6,17 +6,25 @@
 #include "ar_track_alvar_msgs/AlvarMarkers.h"
 #include "tf/LinearMath/Transform.h"
 #include "geometry_msgs/TransformStamped.h"
+#include "sensor_msgs/Image.h"
 #include <tf/transform_listener.h>
 #include <math.h>
 #include <stdlib.h>
 #include "LegElaboration.h"
 #include <vision/Configuration.h>
 #include <vision/SceneTable.h>
+
+#include <opencv2/opencv.hpp>
+
+#include <cv_bridge/cv_bridge.h>
+#include <sensor_msgs/image_encodings.h>
 //#include <sit_armor_injected_msgs/SceneElement.h>
 //#include <sit_armor_injected_msgs/Recognition.h>
 //#include <sit_armor_injected_msgs/SceneElementVector.h>
 
 #include <fstream>
+#include <string>
+#include <boost/lexical_cast.hpp>
 
 # define ROWS 3
 # define COLUMNS 12
@@ -28,8 +36,14 @@ using namespace ros;
 using namespace tf;
 using namespace ar_track_alvar_msgs;
 using namespace std;
+using namespace cv;
 
 static int frameInstant=0;
+static cv_bridge::CvImagePtr inputImage;
+static string path_to_save_images="/home/fabio/java_workspace/src/vision/images/";
+
+
+
 
 void init_message(vision::SceneTable::Ptr a, vision::Configuration::Ptr b, struct configuration c){
 
@@ -72,6 +86,25 @@ void init_message(vision::SceneTable::Ptr a, vision::Configuration::Ptr b, struc
     msg->element.push_back( *pin);
 
 }*/
+
+
+void callback_save_image (const sensor_msgs::ImageConstPtr& msg){
+//cv_bridge::CvImagePtr cv_ptr;
+//cout<<"ENTRA NELLA CALLBACK";
+    try
+    {
+      inputImage = cv_bridge::toCvCopy(msg,sensor_msgs::image_encodings::TYPE_8UC1);
+    }
+    catch (cv_bridge::Exception& e)
+    {
+      ROS_ERROR("cv_bridge exception: %s", e.what());
+      return;
+    }
+// inputImage=cv_ptr;
+}
+
+
+
 
 void initialize_pins_position (double p[ROWS][COLUMNS]){
 
@@ -194,7 +227,7 @@ double computePinTableRelation(double p[ROWS][COLUMNS], int pin){
 	for (int i = 0; i<COLUMNS; i++){ 
 		if (i==pin-1){
 			double connection=distance(xTable,yTable,p[1][i],p[2][i]);
-			cout<<"\n"<<connection<<"\n";
+			//cout<<"\n"<<connection<<"\n";
 			double degree = 1 - (fabs(connection) / 0.4);	
 			return degree;
 		}
@@ -356,7 +389,17 @@ int main(int argc, char **argv)
 
     //PROVATO CON 100 MA NESSUN RISULTATO
 //PRIMA IN ORIGINE ERA 10
+     //Publisher for data from tf
      ros::Publisher Scene_pub = n.advertise<vision::SceneTable>("scene_data", 10);
+
+
+     //Subscriber for the images
+     //ros::Subscriber sub = n.subscribe<sensor_msgs::Image>("sensor_msgs/Image", 10, callback_save_image);
+
+
+     ros::Subscriber sub = n.subscribe("kinect2/qhd/image_mono", 1000, callback_save_image);
+     //ros::Subscriber sub = n.subscribe("sensor_msgs/Image", 1000, callback_save_image);
+
     //ros::Publisher Scene_pub_4Armor = n.advertise<sit_armor_injected_msgs::SceneElementVector>("scene_data_4Armor", 100);
 
 //PROVATO CON 20 MA NESSUN RISULTATO 
@@ -391,8 +434,20 @@ int main(int argc, char **argv)
         tf::StampedTransform transform_w_112;
         vision::SceneTable::Ptr ourScene (new vision::SceneTable);
         //sit_armor_injected_msgs::SceneElementVector::Ptr sceneForArmor(new sit_armor_injected_msgs::SceneElementVector);
+	//Piece of code to take the image from the bag file convert it to cv_bridge andsave it	
+	
 
+	//string name_image= path_to_save_images+to_string(frameInstant)+".jpg";
 	frameInstant++;
+	cout<<inputImage;
+	if (inputImage){
+	string frame = boost::lexical_cast<string>(frameInstant);
+	
+	string name_image= path_to_save_images + frame + ".png";
+	
+	imwrite(name_image, inputImage->image);
+	inputImage.reset();
+	}
 	cout<<"\n";
 	ROS_INFO("\nTHE FRAME NOW IS: %d", frameInstant);
 	//cout<<"\n";
@@ -505,6 +560,7 @@ int main(int argc, char **argv)
         //PRINT FOR DEBUGGING
 	//cout<<*ourScene;
         Scene_pub.publish(ourScene);
+	
         f << "-------------------"<< std::endl << k << std::endl;
         k++;
 	
