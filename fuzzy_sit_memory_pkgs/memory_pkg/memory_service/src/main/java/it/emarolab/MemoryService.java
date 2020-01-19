@@ -53,16 +53,35 @@ public class MemoryService extends AbstractNodeMain {
         ServiceServer<TestServiceDirectiveRequest, TestServiceDirectiveResponse> MemoryTestCallback =
                 connectedNode.newServiceServer("memory_service", TestServiceDirective._TYPE,
                         (request, response) -> {
+                            System.out.print("---------------------------------------------"+"\n");
+                            System.out.print("Frame "+request.getTestRequest().getFrame()+"\n");
+                            for (SceneItem item: request.getTestRequest().getItems()) {
+                                System.out.print(item.getGammaI() + "\n");
+                                System.out.print(item.getDegreeBed() + "\n");
+                                System.out.print(item.getDegreeRoof() + "\n");
+                                System.out.print(item.getDegreeChair() + "\n");
+                                System.out.print(item.getDegreeNot() + "\n");
+                                System.out.print(item.getDegreePin() + "\n");
+                                System.out.print(item.getDegreeTable() + "\n");
+                                System.out.print("\n");
 
+                            }
 
+                            for (Relations relation: request.getTestRequest().getRelations()){
+                                System.out.print(relation.getGammaSubject() + "\n");
+                                System.out.print(relation.getGammaObject() + "\n");
+                                System.out.print(relation.getNameRelation() + "\n");
+                                System.out.print(relation.getDegreeRelation() + "\n");
+                                System.out.print("\n");
+                            }
                             //memory.experience( scene(request.getTestRequest().getItems(), request.getTestRequest().getFrame()), true,true);
                             //Show the experience graph
-                            numberFrame++;
+
                             //THE SCENE GRAPH SHOULD BE VISUALIZE ONLY IN THE END OF THE BAGFILE
                             // (THIS IS ONLY A TEMPTATIVE)
-                            if(numberFrame==50) {
+                            /*if(numberFrame==50) {
                                 memory.getTbox().show();
-                            }
+                            }*/
                             response.getTestResponse().setResponse("The scene " + " has been loaded" );
 
                             /*if(request.getTestRequest().getRequest().equals("scene")){

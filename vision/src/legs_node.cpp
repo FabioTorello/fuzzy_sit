@@ -88,7 +88,7 @@ void init_message(vision::SceneTable::Ptr a, vision::Configuration::Ptr b, struc
 }*/
 
 
-void callback_save_image (const sensor_msgs::ImageConstPtr& msg){
+/*void callback_save_image (const sensor_msgs::ImageConstPtr& msg){
 //cv_bridge::CvImagePtr cv_ptr;
 //cout<<"ENTRA NELLA CALLBACK";
     try
@@ -101,7 +101,7 @@ void callback_save_image (const sensor_msgs::ImageConstPtr& msg){
       return;
     }
 // inputImage=cv_ptr;
-}
+}*/
 
 
 
@@ -397,8 +397,13 @@ int main(int argc, char **argv)
      //ros::Subscriber sub = n.subscribe<sensor_msgs::Image>("sensor_msgs/Image", 10, callback_save_image);
 
 
-     ros::Subscriber sub = n.subscribe("kinect2/qhd/image_mono", 1000, callback_save_image);
+     //ros::Subscriber sub = n.subscribe("kinect2/qhd/image_mono", 1000, callback_save_image);
+
+
      //ros::Subscriber sub = n.subscribe("sensor_msgs/Image", 1000, callback_save_image);
+
+
+
 
     //ros::Publisher Scene_pub_4Armor = n.advertise<sit_armor_injected_msgs::SceneElementVector>("scene_data_4Armor", 100);
 
@@ -439,7 +444,7 @@ int main(int argc, char **argv)
 
 	//string name_image= path_to_save_images+to_string(frameInstant)+".jpg";
 	frameInstant++;
-	cout<<inputImage;
+	/*cout<<inputImage;
 	if (inputImage){
 	string frame = boost::lexical_cast<string>(frameInstant);
 	
@@ -447,7 +452,7 @@ int main(int argc, char **argv)
 	
 	imwrite(name_image, inputImage->image);
 	inputImage.reset();
-	}
+	}*/
 	cout<<"\n";
 	ROS_INFO("\nTHE FRAME NOW IS: %d", frameInstant);
 	//cout<<"\n";
