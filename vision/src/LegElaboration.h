@@ -222,32 +222,10 @@ double setDegreeOrientation (double formula){
 	degree=((315-formula)/45);
 	//ROS_INFO("\n ENTRA NEL > 270 && < 315 ");
     }
-    else{
-  	//orientation="  ";
-        degree=0;
+    if (degree>1){
+	ROS_ERROR("ERROR: Orientation degree is positive!!!!!!!!!!!!!!!!!!\n", degree);
     }
-    /*if(formula > 315 || formula < 45){
-
-        orientation = "_X";
-
-    }
-
-    else if(formula > 45 && formula < 135){
-
-        orientation = "_Y";
-
-    }
-
-    else if(formula > 135 && formula < 225){
-        orientation = "_MINUS_X";
-
-    }
-
-    else if(formula > 225 && formula < 315){
-
-        orientation = "_MINUS_Y";
-
-    }*/
+   
     //config.degreeOrientation=degree;
     //cout<< "\n" << degree << "\n";
     return degree;

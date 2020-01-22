@@ -31,7 +31,7 @@
 //IN ORIGINE THR ERA 0.04
 # define THR 0.04
 # define NAMERELATION "isConnectedTo"
-# define CONNECTED_THRESHOLD  0.1 // meters (positive number)
+# define CONNECTED_THRESHOLD  0.07 // meters (positive number) IN ORIGINE ERA 0.1
 using namespace ros;
 using namespace tf;
 using namespace ar_track_alvar_msgs;

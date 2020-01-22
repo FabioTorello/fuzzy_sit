@@ -4,6 +4,7 @@ package it.emarolab;
 import fuzzy_sit_memory_msgs.*;
 import com.google.common.collect.Lists;
 import it.emarolab.fuzzySIT.FuzzySITBase;
+import it.emarolab.fuzzySIT.perception.FeaturedSpatialObject;
 import it.emarolab.fuzzySIT.perception.PerceptionBase;
 import it.emarolab.fuzzySIT.perception.simple2D.ConnectObjectScene;
 import it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
@@ -20,7 +21,23 @@ import it.emarolab.fuzzySIT.semantic.SITTBox;
 import java.util.Scanner;
 import it.emarolab.fuzzySIT.perception.simple2D.Point2;
 import it.emarolab.fuzzySIT.perception.simple2D.Leg;
+import it.emarolab.fuzzySIT.perception.simple2D.BedLeg;
+import it.emarolab.fuzzySIT.perception.simple2D.ChairLeg;
+import it.emarolab.fuzzySIT.perception.simple2D.RoofLeg;
+import it.emarolab.fuzzySIT.perception.simple2D.NotLeg;
 import it.emarolab.fuzzySIT.perception.simple2D.Pin;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_1;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_2;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_3;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_4;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_5;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_6;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_7;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_8;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_9;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_10;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_11;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_12;
 import it.emarolab.fuzzySIT.perception.simple2D.Table;
 import java.lang.Object;
 import java.util.Arrays;
@@ -74,7 +91,7 @@ public class MemoryService extends AbstractNodeMain {
                                 System.out.print(relation.getDegreeRelation() + "\n");
                                 System.out.print("\n");
                             }
-                            //memory.experience( scene(request.getTestRequest().getItems(), request.getTestRequest().getFrame()), true,true);
+                            memory.experience( scene(request.getTestRequest().getItems(), request.getTestRequest().getRelations(), request.getTestRequest().getFrame()), true,true);
                             //Show the experience graph
 
                             //THE SCENE GRAPH SHOULD BE VISUALIZE ONLY IN THE END OF THE BAGFILE
@@ -102,13 +119,121 @@ public class MemoryService extends AbstractNodeMain {
 
 
     }
+ //THIS IS THE VERSION OF "ADD" FUNCTION I HAVE TO USE
+ /*public void addObject( FeaturedSpatialObject<F> newObject){
+     for ( FeaturedSpatialObject<F> obj : getObjects()) {
+         SpatialRelation rel = computeRelation(obj, newObject);
+         if ( rel != null)
+             relations.add(rel);
+     }
+     objects.add( newObject);
+ }*/
 
-
-    private static final List<String> pins = Arrays.asList("1", "2","3","4","5","6","7","8","9","10","11","12");
+    /*private static final List<String> pins = Arrays.asList("1", "2","3","4","5","6","7","8","9","10","11","12");
     private static final List<Double> pinsX = Arrays.asList(-0.30, -0.05, 0.03, 0.27, 0.24, 0.24, 0.27, 0.04, -0.04, -0.28, -0.24, -0.28);
     private static final List<Double> pinsY = Arrays.asList(-0.16, -0.17, -0.15, -0.17, -0.02, 0.05, 0.19, 0.17, 0.17, 0.20, 0.05, -0.05);
     private static final List<String> legsType = Arrays.asList("BED", "CHAIR", "ROOF", "NOT");
-    private static int pin;
+    private static int pin;*/
+
+    public static ConnectObjectScene scene(List<SceneItem> items, List<Relations> relations, long frame) {
+        //Define the scene
+        ConnectObjectScene scene = new ConnectObjectScene("frame"+frame);
+
+        boolean table=false;
+        boolean pin=false;
+        boolean bed=false;
+        boolean roof=false;
+        boolean chair=false;
+        boolean not=false;
+        for (SceneItem item: items){
+            if(item.getDegreeBed()!=0){
+                //Add an object type BedLeg
+                //bed=true;
+            }
+            else if (item.getDegreeRoof()!=0){
+                //Add an object type RoofLeg
+                //roof=true;
+
+            }
+            else if (item.getDegreeChair()!=0){
+                //Add an object type ChairLeg
+                //chair=true;
+
+            }
+            else if (item.getDegreeNot()!=0){
+                //Add an object type NotLeg
+                //not=true;
+            }
+            //If the test is general i.e. the pins are represented as a single pin without taking into account its position on the table
+            /*else if (item.getDegreePin()!=0){
+                //Add an object type Pin
+                //pin=true;
+            }*/
+            //If the test is less general i.e. each pins corresponds to a class
+            else if (item.getDegreePin_1()!=0){
+                //Add an object type Pin_1
+                //pin=true;
+            }
+            else if (item.getDegreePin_2()!=0){
+                //Add an object type Pin_2
+                //pin=true;
+            }
+            else if (item.getDegreePin_3()!=0){
+                //Add an object type Pin_3
+                //pin=true;
+            }
+            else if (item.getDegreePin_4()!=0){
+                //Add an object type Pin_4
+                //pin=true;
+            }
+            else if (item.getDegreePin_5()!=0){
+                //Add an object type Pin_5
+                //pin=true;
+            }
+            else if (item.getDegreePin_6()!=0){
+                //Add an object type Pin_6
+                //pin=true;
+            }
+            else if (item.getDegreePin_7()!=0){
+                //Add an object type Pin_7
+                //pin=true;
+            }
+            else if (item.getDegreePin_8()!=0){
+                //Add an object type Pin_8
+                //pin=true;
+            }
+            else if (item.getDegreePin_9()!=0){
+                //Add an object type Pin_9
+                //pin=true;
+            }
+            else if (item.getDegreePin_10()!=0){
+                //Add an object type Pin_10
+                //pin=true;
+            }
+            else if (item.getDegreePin_11()!=0){
+                //Add an object type Pin_2
+                //pin=true;
+            }
+            else if (item.getDegreePin_12()!=0){
+                //Add an object type Pin_12
+                //pin=true;
+            }
+            else if (item.getDegreeTable()!=0){
+                //Add an object type Table
+                //table=true;
+            }
+            else{
+                System.err.println("The leg has no type");
+            }
+        }
+
+        for (Relations relation: relations){
+            scene.getRelations().add( new SpatialRelation( relation.getGammaSubject(), relation.getNameRelation(), relation.getGammaObject(), relation.getDegreeRelation()));
+        }
+
+        return scene;
+
+    }
    /* public static ConnectObjectScene scene(List<SceneItem> items, int frame) {
         ConnectObjectScene scene = new ConnectObjectScene("frame"+frame);
         //There is always the type Table object and it is the origin of my system so x=0 and y=0
@@ -156,8 +281,7 @@ public class MemoryService extends AbstractNodeMain {
 
         return scene;
 
-    }
-*/
+    }*/
 
 /*rosservice call /memory_service "test_request:
   items:

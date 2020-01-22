@@ -12,16 +12,19 @@ import java.util.stream.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.time.LocalTime;
 
 public class MemoryImplementation extends MemoryInterface {
 
     //Define variables to take into account the time consumption
     private List<Timing> timings = new ArrayList<>();
     private Timing timing;
+
+
     //graph of the memory used to find the number of memory items
-    ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graphOfMemory;
-    private List<ElementsOfMemory> elements = new ArrayList<>();
-    private ElementsOfMemory element;
+   // ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graphOfMemory;
+    /*private List<ElementsOfMemory> elements = new ArrayList<>();
+    private ElementsOfMemory element;*/
 
     //Static variables and coefficients related to the memory functionalities
     private static String SCENE_PREFIX = "Scene";
@@ -41,6 +44,7 @@ public class MemoryImplementation extends MemoryInterface {
     //Scene Counter
     private static int sceneCnt = 0;
 
+    private static long id=0;
     //File containing the graph information
     private File fileName= new File("memory_service/files/GraphInformation.txt");
     //CSV file for encoding time
@@ -104,10 +108,14 @@ public class MemoryImplementation extends MemoryInterface {
             System.err.println("WARNING: similarity value " + out + " for: " + getAbox().getDefinition() +"="+ actualCardinality + ", and " + recognisedScene.getDefinition() +"=" + memoryCardinality);
         return  out;
     }
+
+
     protected void updateScoreStoring(SceneHierarchyVertex recognisedScene, double recognisedValue) {
-        updateScorePolicy(recognisedScene, recognisedValue,0,false);
+        updateScorePolicy(recognisedScene, recognisedValue);
     }
-    private void updateScorePolicy(SceneHierarchyVertex recognisedScene, double recognisedValue, double bonus_malus_reinforce,boolean hasHappenedAction) {
+
+
+    private void updateScorePolicy(SceneHierarchyVertex recognisedScene, double recognisedValue) {
         // TODO adjust and validate
         double score = recognisedScene.getMemoryScore();
         if ( recognisedScene.getMemoryScore() > 0) { // not froze node
@@ -116,20 +124,23 @@ public class MemoryImplementation extends MemoryInterface {
         } // else score freeze (i.e., experience to remove)
         recognisedScene.setMemoryScore( score);
     }
+
+
+
     public void experience(PerceptionBase scene, boolean storeOrRetrieve, boolean synchConsolidateForget){ // true: from store, false: from retrieve
 
-
+        boolean learnDone=false;
+        boolean forgetDone=false;
 
         timing = new Timing();
-        element = new ElementsOfMemory();
+        //element = new ElementsOfMemory();
 
         // must always be done before to store or retrieve
         long initialTime = System.nanoTime();
         encode( scene);
         timing.encodingTime = System.nanoTime() - initialTime;
-        //CHECKS THE MEMORY IN ORDER TO FIND THE NUMBER OF ELEMENTS CONTAINED
-        //graphOfMemory = getTbox().getHierarchy().vertexSet().size();
-        element.encodingElements=NumberOfElementInMemory(graphOfMemory);
+
+        //element.encodingElements=NumberOfElementInMemory(graphOfMemory);
         System.out.println( "[ ENCODE ]\texperience: " + scene);
         // set store or retrieve cases
 
@@ -141,9 +152,11 @@ public class MemoryImplementation extends MemoryInterface {
                 learnedOrRetrievedScene = store();
             else learnedOrRetrievedScene = store( scene.getSceneName());
             timing.storingTime = System.nanoTime() - initialTime;
+            timing.learnDone=true;
+
             //CHECKS THE MEMORY IN ORDER TO FIND THE NUMBER OF ELEMENTS CONTAINED
-            graphOfMemory = getTbox().getHierarchy();
-            element.storingElements=NumberOfElementInMemory(graphOfMemory);
+            //graphOfMemory = getTbox().getHierarchy();
+           // element.storingElements=NumberOfElementInMemory(graphOfMemory);
             logs = "storing";
             //If the returned graph is not empty (thus there is only the root node)
             if( learnedOrRetrievedScene != null)
@@ -152,8 +165,8 @@ public class MemoryImplementation extends MemoryInterface {
             learnedOrRetrievedScene = retrieve();
             timing.retrievingTime = System.nanoTime() - initialTime;
             //CHECKS THE MEMORY IN ORDER TO FIND THE NUMBER OF ELEMENTS CONTAINED
-            graphOfMemory = getTbox().getHierarchy();
-            element.retrievingElements=NumberOfElementInMemory(graphOfMemory);
+           // graphOfMemory = getTbox().getHierarchy();
+            //element.retrievingElements=NumberOfElementInMemory(graphOfMemory);
             logs = "retrieving";
             System.out.println( "[RETRIEVE]\texperience: " + learnedOrRetrievedScene);
         }
@@ -162,14 +175,28 @@ public class MemoryImplementation extends MemoryInterface {
             consolidateAndForget(scene, logs);
         }
         System.out.println( "[ RECOGN.]\texperience: " + recognize());
-        System.out.println( "     Time spent " + timing);
-        System.out.println( "     Elements in memory " + element);
-        timings.add( timing);
-        elements.add( element);
-        //Print the information of the different times and the memory items in different moments
-        convertToCSV(timings, elements);
+        //CHECKS THE MEMORY IN ORDER TO FIND THE NUMBER OF ELEMENTS CONTAINED
+        timing.elements = getTbox().getHierarchy().vertexSet().size();
+        System.out.println( "    Total time spent " + timing.tot());
+        System.out.println( "     Elements in memory " + timing.elements);
 
+        timings.add( timing);
+        //elements.add( element);
         System.out.println( "----------------------------------------------");
+
+
+
+        /////////////////////////////////////////////////////
+        //CODE FOR THE LOG FILES
+        id++;
+        LocalTime timeStamp= LocalTime.now();
+
+
+        //Print the information of the different times and the memory items in different moments
+        convertToCSV(timings, id, timeStamp);
+
+        ////////////////////////////////////////////////////
+
     }
 
     public void consolidateAndForget(){
@@ -183,8 +210,8 @@ public class MemoryImplementation extends MemoryInterface {
         consolidate();
         timing.consolidateTime = System.nanoTime() - initialTime;
         //CHECKS THE MEMORY IN ORDER TO FIND THE NUMBER OF ELEMENTS CONTAINED
-        graphOfMemory = getTbox().getHierarchy();
-        element.consolidateElements=NumberOfElementInMemory(graphOfMemory);
+        //graphOfMemory = getTbox().getHierarchy();
+        //element.consolidateElements=NumberOfElementInMemory(graphOfMemory);
         System.out.println( "[ CONSOL.]\tnew experience from " + logs + " " + scene + " -> ");
 
         initialTime = System.nanoTime();
@@ -192,8 +219,8 @@ public class MemoryImplementation extends MemoryInterface {
 
         timing.forgetTime = System.nanoTime() - initialTime;
         //CHECKS THE MEMORY IN ORDER TO FIND THE NUMBER OF ELEMENTS CONTAINED
-        graphOfMemory = getTbox().getHierarchy();
-        element.forgetElements=NumberOfElementInMemory(graphOfMemory);
+        //graphOfMemory = getTbox().getHierarchy();
+        //element.forgetElements=NumberOfElementInMemory(graphOfMemory);
         System.out.println( "[ FORGET ]\tfreeze nodes: " + forgotten);
 
         //Print the information about the graph in a text file
@@ -223,7 +250,7 @@ public class MemoryImplementation extends MemoryInterface {
         return out;
     }
     private void updateScoreRetrieve(SceneHierarchyVertex recognisedScene, double recognisedValue) {
-        updateScorePolicy( recognisedScene, recognisedValue,0, false);
+        updateScorePolicy( recognisedScene, recognisedValue);
     }
 
     @Override
@@ -278,6 +305,7 @@ public class MemoryImplementation extends MemoryInterface {
             if( scene.getMemoryScore() < SCORE_WEAK) {
                 //scene.setMemoryScore(-1); // score getter will be always 0 and is not consider on consolidation
                 forgotten.add( scene);
+                timing.forgetDone=true;
             }
         }
 
@@ -291,7 +319,7 @@ public class MemoryImplementation extends MemoryInterface {
         return new Measure();
     }
 
-    private class ElementsOfMemory{
+   /* private class ElementsOfMemory{
         int encodingElements, storingElements, retrievingElements, consolidateElements, forgetElements;
 
         public long tot(){
@@ -311,10 +339,14 @@ public class MemoryImplementation extends MemoryInterface {
         }
 
 
-    }
+    }*/
 
     private class Timing{
         long encodingTime, storingTime, retrievingTime, consolidateTime, forgetTime;
+        //Number of nodes in the memory after a loop of SIT algorithm
+        long elements;
+        boolean learnDone;
+        boolean forgetDone;
 
         public long tot(){
             return encodingTime + storingTime + retrievingTime + consolidateTime + forgetTime;
@@ -417,7 +449,10 @@ public class MemoryImplementation extends MemoryInterface {
                     "tot=" + timing.convert(allAverage) + "±" + timing.convert(allVariance) + "ms)";
         }
     }
-    private int NumberOfElementInMemory( ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graphOfMemory ){
+
+
+
+    /*private int NumberOfElementInMemory( ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graphOfMemory ){
         int countVertices=1;
         //Loop on all the vertices in the graph
         for( SceneHierarchyVertex sourceVertices : graphOfMemory.vertexSet()) {
@@ -430,7 +465,11 @@ public class MemoryImplementation extends MemoryInterface {
             }
         }
                 return countVertices;
-    }
+    }*/
+
+
+
+
     //Function used to print the memory graph information in a text file
     private void MemoryFile(){
         ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> GraphAfterForgettingOperation = getTbox().getHierarchy();
@@ -509,7 +548,7 @@ public class MemoryImplementation extends MemoryInterface {
         outpustream.close();
     }
 
-    public void convertToCSV(List<Timing> timings, List<ElementsOfMemory> elements) {
+    public void convertToCSV(List<Timing> timings, boolean learnDone, boolean forgetDone) {
         int i = 0;
         PrintWriter outpustreamCSVEncoding = null;
         PrintWriter outpustreamCSVStoring = null;
