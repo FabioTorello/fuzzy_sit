@@ -25,12 +25,28 @@ public abstract class PerceptionBase<F> {
 
     public void addObject( FeaturedSpatialObject<F> newObject){
         for ( FeaturedSpatialObject<F> obj : getObjects()) {
-            SpatialRelation rel = computeRelation(obj, newObject);
-            if ( rel != null)
-                relations.add(rel);
+
+            ////IF & RELATIONS & computeRelation:ADD ARE COMMENTED/////////
+            //SpatialRelation rel = computeRelation(obj, newObject);
+
+
+            //if ( rel != null)
+                //relations.add(rel);
+            /////////////////////////////////////////////
+
         }
         objects.add( newObject);
     }
+
+
+    ////////NEW ADD_OBJECT//////////////////////////////////////
+    protected void addObject(String type, String object, double degree){
+        FeaturedSpatialObject<F> newObject = new FeaturedSpatialObject<>(type, object, degree);
+        addObject( newObject);
+    }
+
+    ///////////////////////////////////////////////////////////
+
 
     protected void addObject(String type, String object, double degree, F feature){
         FeaturedSpatialObject<F> newObject = new FeaturedSpatialObject<>(type, object, degree, feature);

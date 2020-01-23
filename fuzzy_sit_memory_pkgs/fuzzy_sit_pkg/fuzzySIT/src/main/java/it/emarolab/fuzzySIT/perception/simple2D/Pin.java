@@ -11,6 +11,15 @@ import java.util.Set;
 public class Pin extends FeaturedSpatialObject <Point2> {
     //Constructors
 
+
+    /////////NEW CONSTRUCTOR//////////////////////////////////////
+    public Pin(String type, String object, double degree) {
+        super(type, object, degree);
+
+    }
+    /////////////////////////////////////////////////////////////
+
+
     public Pin(String type, String object, double degree, Point2 feature) {
         super(type, object, degree, feature);
 

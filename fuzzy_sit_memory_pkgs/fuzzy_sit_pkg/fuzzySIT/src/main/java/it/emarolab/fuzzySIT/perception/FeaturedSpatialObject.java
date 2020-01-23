@@ -11,6 +11,14 @@ public class FeaturedSpatialObject<F> extends SpatialObject {
         this.feature = copy.getFeature();
     }
 
+
+    ////////////////////////////////NEW CONSTRUCTOR//////////////////////////////
+    public FeaturedSpatialObject(String type, String object, double degree) {
+        super(type, object, degree);
+
+    }
+    ///////////////////////////////////////////////////////////////////////////
+
     public FeaturedSpatialObject(String type, String object, double degree, F feature) {
         super(type, object, degree);
         this.feature = feature;

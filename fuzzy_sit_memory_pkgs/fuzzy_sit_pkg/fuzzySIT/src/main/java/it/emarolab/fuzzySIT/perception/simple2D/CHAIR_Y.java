@@ -5,6 +5,13 @@ import it.emarolab.fuzzySIT.perception.FeaturedSpatialObject;
 public class CHAIR_Y  extends FeaturedSpatialObject<Point2> {
 
 
+    /////////NEW CONSTRUCTOR//////////////////////////////////////
+    public CHAIR_Y(String type, String object, double degree) {
+        super(type, object, degree);
+
+    }
+    /////////////////////////////////////////////////////////////
+
     public CHAIR_Y (String type, String object, double degree, Point2 feature) {
         super(type, object, degree, feature);
 

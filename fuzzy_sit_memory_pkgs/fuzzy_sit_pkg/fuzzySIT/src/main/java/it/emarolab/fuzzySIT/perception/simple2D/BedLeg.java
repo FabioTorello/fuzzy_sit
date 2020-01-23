@@ -5,6 +5,14 @@ import it.emarolab.fuzzySIT.perception.FeaturedSpatialObject;
 public class BedLeg extends FeaturedSpatialObject<Point2> {
 
 
+    /////////NEW CONSTRUCTOR//////////////////////////////////////
+    public BedLeg(String type, String object, double degree) {
+        super(type, object, degree);
+
+    }
+    /////////////////////////////////////////////////////////////
+
+
         public BedLeg(String type, String object, double degree, Point2 feature) {
             super(type, object, degree, feature);
 

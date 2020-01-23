@@ -5,6 +5,13 @@ import it.emarolab.fuzzySIT.perception.FeaturedSpatialObject;
 public class Pin_12 extends FeaturedSpatialObject<Point2> {
     //Constructors
 
+    /////////NEW CONSTRUCTOR//////////////////////////////////////
+    public Pin_12(String type, String object, double degree) {
+        super(type, object, degree);
+
+    }
+    /////////////////////////////////////////////////////////////
+
     public Pin_12(String type, String object, double degree, Point2 feature) {
         super(type, object, degree, feature);
 

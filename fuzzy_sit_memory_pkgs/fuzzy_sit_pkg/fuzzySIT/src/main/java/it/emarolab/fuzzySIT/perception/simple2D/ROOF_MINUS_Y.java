@@ -4,6 +4,12 @@ import it.emarolab.fuzzySIT.perception.FeaturedSpatialObject;
 
 public class ROOF_MINUS_Y  extends FeaturedSpatialObject<Point2> {
 
+    /////////NEW CONSTRUCTOR//////////////////////////////////////
+    public ROOF_MINUS_Y(String type, String object, double degree) {
+        super(type, object, degree);
+
+    }
+    /////////////////////////////////////////////////////////////
 
     public ROOF_MINUS_Y (String type, String object, double degree, Point2 feature) {
         super(type, object, degree, feature);
