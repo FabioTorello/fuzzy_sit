@@ -20,7 +20,8 @@ public class MemoryImplementation extends MemoryInterface {
     private List<Timing> timings = new ArrayList<>();
     private Timing timing;
 
-
+    List<Timing> scoreForgottenScene;
+    List<Timing> scoreScene;
     //graph of the memory used to find the number of memory items
     // ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graphOfMemory;
     /*private List<ElementsOfMemory> elements = new ArrayList<>();
@@ -173,9 +174,10 @@ public class MemoryImplementation extends MemoryInterface {
             // element.storingElements=NumberOfElementInMemory(graphOfMemory);
             logs = "storing";
             //If the returned graph is not empty (thus there is only the root node)
-            if (learnedOrRetrievedScene != null)
+            if (learnedOrRetrievedScene != null) {
                 System.out.println("[  LEARN ]\texperience: " + learnedOrRetrievedScene);
                 timing.learnDone = true;
+            }
         } else {
             learnedOrRetrievedScene = retrieve();
             timing.retrievingTime = System.nanoTime() - initialTime;
@@ -199,7 +201,7 @@ public class MemoryImplementation extends MemoryInterface {
         System.out.println("    Elements in memory " + timing.elements);
         System.out.println("    Memory has learnt in this loop: " + timing.learnDone);
         System.out.println("    Memory has forgot something in this loop: " + timing.forgetDone);
-        timings.add(timing);
+        //timings.add(timing);
 
 
         //elements.add( element);
@@ -214,24 +216,24 @@ public class MemoryImplementation extends MemoryInterface {
 
 
         //Print the information of the different times and the memory items in different moments
-        convertToCSV(timings, id, timeStamp);
+        convertToCSV(id, timeStamp);
 
 
         //Table which save the variation of the consolidating time respect to the number of memory items and
         // the type of the consolidating function
         // TODO when you change the consolidating fucntion remember to change the string which represents
         //  the name of the file at the beginning of this page
-        consolidatingTimeWithDifferentConsolidating(timings, id, timeStamp, "Consolidating Function 1");
+        consolidatingTimeWithDifferentConsolidating(id, timeStamp, "Consolidating Function 1");
 
         // TODO when you change the consolidating fucntion remember to change the string which represents
         //  the name of the file at the beginning of this page
-        itemsForgottenWithDifferentConsolidating(timings,id,timeStamp,"Consolidating Function 1");
+        itemsForgottenWithDifferentConsolidating(id,timeStamp,"Consolidating Function 1");
 
         // TODO when you change the consolidating fucntion remember to change the string which represents
         //  the name of the file at the beginning of this page
-        sceneForgottenFunctionWithDifferentConsolidating(timings,id,timeStamp,"Consolidating Function 1");
+        sceneForgottenFunctionWithDifferentConsolidating(id,timeStamp,"Consolidating Function 1");
 
-        sceneScoreVariationFunction(timings,id,timeStamp,"Consolidating Function 1");
+        //sceneScoreVariationFunction(timings,id,timeStamp,"Consolidating Function 1");
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     }
@@ -259,11 +261,11 @@ public class MemoryImplementation extends MemoryInterface {
 
         timing.numberOfItemsForgotten=forgotten.size();
         timing.forgetTime = System.nanoTime() - initialTime;
-        timing.scoreForgottenScene= new ArrayList<>();
+        scoreForgottenScene= new ArrayList<>();
         for (SceneHierarchyVertex itemForgotten : forgotten) {
             timing.sceneName = itemForgotten.getScene();
             timing.sceneScore = itemForgotten.getMemoryScore();
-            timing.scoreForgottenScene.add(timing);
+            scoreForgottenScene.add(timing);
         }
         //CHECKS THE MEMORY IN ORDER TO FIND THE NUMBER OF ELEMENTS CONTAINED
         //graphOfMemory = getTbox().getHierarchy();
@@ -339,15 +341,16 @@ public class MemoryImplementation extends MemoryInterface {
 
     public void normalizeScoreConsolidating(double maxScore) {
         ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> h = getTbox().getHierarchy();
-        timing.scoreScene= new ArrayList<>();
+        scoreScene= new ArrayList<>();
         for (SceneHierarchyVertex experience : h.vertexSet()) {
-            if (experience.getMemoryScore() >= 0)
+            if (experience.getMemoryScore() >= 0) {
                 experience.setMemoryScore(experience.getMemoryScore() / maxScore);
+            }
 
                 //Save the name and the score of the scene
                 timing.sceneName=experience.getScene();
                 timing.sceneScore=experience.getMemoryScore();
-                timing.scoreScene.add(timing);
+                scoreScene.add(timing);
         }
     }
 
@@ -407,8 +410,7 @@ public class MemoryImplementation extends MemoryInterface {
         String sceneName;
         int numberOfItemsForgotten;
         double sceneScore;
-        List<Timing> scoreForgottenScene;
-        List<Timing> scoreScene;
+
 
         public long tot() {
             return encodingTime + storingTime + retrievingTime + consolidateTime + forgetTime;
@@ -611,8 +613,8 @@ public class MemoryImplementation extends MemoryInterface {
         outpustream.close();
     }
 
-    public void convertToCSV(List<Timing> timings, long id, LocalTime timeStamp) {
-        int i = 0;
+    public void convertToCSV(long id, LocalTime timeStamp) {
+        //int i = 0;
         PrintWriter outpustreamCSVEncoding = null;
         PrintWriter outpustreamCSVStoring = null;
         PrintWriter outpustreamCSVRetrieving = null;
@@ -672,40 +674,40 @@ public class MemoryImplementation extends MemoryInterface {
         //////////////////////////////////////////////
         //If it is the beginning of the experiment or the memory is still empty write the first rows
         //of the CSV files as heading
-        if (time_instant == 0) {
+        if (id == 1) {
             //Write in CSV Encoding File
             outpustreamCSVEncoding.println("ID" + "," + "Time Stamp" + "," + "Encoding Time" + "," + "Memory Items" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
-            outpustreamCSVEncoding.println(id + "," + timeStamp + "," + timing.convert(timing.encodingTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
+            //outpustreamCSVEncoding.println(id + "," + timeStamp + "," + timing.convert(timing.encodingTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
             //Close CSV Encoding File
             outpustreamCSVEncoding.close();
 
             //Write in CSV Storing File
             outpustreamCSVStoring.println("ID" + "," + "Time Stamp" + "," + "Storing Time" + "," + "Memory Items" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
-            outpustreamCSVStoring.println(id + "," + timeStamp + "," + timing.convert(timing.storingTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
+            //outpustreamCSVStoring.println(id + "," + timeStamp + "," + timing.convert(timing.storingTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
             //Close CSV Storing File
             outpustreamCSVStoring.close();
 
             //Write in CSV Retrieving File
             outpustreamCSVRetrieving.println("ID" + "," + "Time Stamp" + "," + "Retrieving Time" + "," + "Memory Items" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
-            outpustreamCSVRetrieving.println(id + "," + timeStamp + "," + timing.convert(timing.retrievingTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
+            //outpustreamCSVRetrieving.println(id + "," + timeStamp + "," + timing.convert(timing.retrievingTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
             //Close CSV Retrieving File
             outpustreamCSVRetrieving.close();
 
             //Write in CSV Consolidating File
             outpustreamCSVConsolidating.println("ID" + "," + "Time Stamp" + "," + "Consolidating Time" + "," + "Memory Items" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
-            outpustreamCSVConsolidating.println(id + "," + timeStamp + "," + timing.convert(timing.consolidateTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
+            //outpustreamCSVConsolidating.println(id + "," + timeStamp + "," + timing.convert(timing.consolidateTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
             //Close CSV Consolidating File
             outpustreamCSVConsolidating.close();
 
             //Write in CSV Forgetting File
             outpustreamCSVForgetting.println("ID" + "," + "Time Stamp" + "," + "Forgetting Time" + "," + "Memory Items" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
-            outpustreamCSVForgetting.println(id + "," + timeStamp + "," + timing.convert(timing.forgetTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
+            //outpustreamCSVForgetting.println(id + "," + timeStamp + "," + timing.convert(timing.forgetTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
             //Close CSV Forgetting File
             outpustreamCSVForgetting.close();
 
 
         }
-        for (Timing timingType : timings) {
+        for (int i=0;i<5;i++) {
             if (i == 0) {
                 //Write in CSV Encoding File
                 outpustreamCSVEncoding.println(id + "," + timeStamp + "," + timing.convert(timing.encodingTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
@@ -732,14 +734,13 @@ public class MemoryImplementation extends MemoryInterface {
                 //Close CSV Forgetting File
                 outpustreamCSVForgetting.close();
             }
-
-            i++;
         }
-        time_instant++;
+            //i++;
+        //time_instant++;
     }
 
 
-    public void consolidatingTimeWithDifferentConsolidating(List<Timing> timings, long id, LocalTime timeStamp, String typeFunction){
+    public void consolidatingTimeWithDifferentConsolidating(long id, LocalTime timeStamp, String typeFunction){
 
         PrintWriter outpustreamDifferentConsolidating = null;
 
@@ -759,8 +760,10 @@ public class MemoryImplementation extends MemoryInterface {
         }
         if (id==1) {
             outpustreamDifferentConsolidating.println("ID" + "," + "Time Stamp" + "," + "Consolidating Function Type" + "," + "Consolidating Time"  + "," + "Memory Items");
+            outpustreamDifferentConsolidating.close();
         }
         outpustreamDifferentConsolidating.println(id + "," + timeStamp + "," + typeFunction + "," + timing.convert(timing.consolidateTime) + "," + timing.elements);
+        outpustreamDifferentConsolidating.close();
     }
 
 
@@ -769,7 +772,7 @@ public class MemoryImplementation extends MemoryInterface {
 
 
 
-    public void itemsForgottenWithDifferentConsolidating(List<Timing> timings, long id, LocalTime timeStamp, String typeFunction){
+    public void itemsForgottenWithDifferentConsolidating(long id, LocalTime timeStamp, String typeFunction){
 
         PrintWriter outpustreamItemsForgotten = null;
 
@@ -789,9 +792,11 @@ public class MemoryImplementation extends MemoryInterface {
         }
         if (id==1) {
             outpustreamItemsForgotten.println("ID" + "," + "Time Stamp" + "," + "Items Forgotten"  + "," + "Consolidating Function");
+            outpustreamItemsForgotten.close();
         }
         if (timing.forgetDone==true) {
             outpustreamItemsForgotten.println(id + "," + timeStamp + "," + timing.numberOfItemsForgotten + "," + typeFunction);
+            outpustreamItemsForgotten.close();
         }
     }
 
@@ -800,7 +805,7 @@ public class MemoryImplementation extends MemoryInterface {
 
 
 
-    public void sceneForgottenFunctionWithDifferentConsolidating(List<Timing> timings, long id, LocalTime timeStamp, String typeFunction){
+    public void sceneForgottenFunctionWithDifferentConsolidating(long id, LocalTime timeStamp, String typeFunction){
 
         PrintWriter outpustreamScoreItemsForgotten = null;
         try {
@@ -819,17 +824,19 @@ public class MemoryImplementation extends MemoryInterface {
         }
         if (id==1) {
             outpustreamScoreItemsForgotten.println("ID" + "," +"Time Stamp" + "," + "Scene Name" + "," + "Score"  + "," + "Score Weak Th." + "," + "Consolidating Function");
+            outpustreamScoreItemsForgotten.close();
         }
         if (timing.forgetDone==true){
-            for (Timing forgottenItem: timing.scoreForgottenScene ){
-                outpustreamScoreItemsForgotten.println(id + "," + timeStamp +"," + forgottenItem.sceneName + "," + forgottenItem.scoreForgottenScene  + "," + SCORE_WEAK + "," + typeFunction);
+            for (Timing forgottenItem: scoreForgottenScene ){
+                outpustreamScoreItemsForgotten.println(id + "," + timeStamp +"," + forgottenItem.sceneName + "," + scoreForgottenScene  + "," + SCORE_WEAK + "," + typeFunction);
+                outpustreamScoreItemsForgotten.close();
             }
         }
     }
 
 
 
-    public void sceneScoreVariationFunction(List<Timing> timings, long id, LocalTime timeStamp, String typeFunction){
+    public void sceneScoreVariationFunction( long id, LocalTime timeStamp, String typeFunction){
 
         PrintWriter outpustreamScoreVariation = null;
 
@@ -850,10 +857,12 @@ public class MemoryImplementation extends MemoryInterface {
 
         if (id==1) {
             outpustreamScoreVariation.println("ID" + "," +  "Time Stamp" + "," + "Scene Name" + "," + "Score"  + "," + "Consolidating Function");
+            outpustreamScoreVariation.close();
         }
 
-        for (Timing sceneScoreVariation: timing.scoreScene ){
+        for (Timing sceneScoreVariation: scoreScene ){
             outpustreamScoreVariation.println(id + "," + timeStamp +"," + sceneScoreVariation.sceneName + "," + sceneScoreVariation.sceneScore  + "," + typeFunction);
+            outpustreamScoreVariation.close();
         }
     }
 

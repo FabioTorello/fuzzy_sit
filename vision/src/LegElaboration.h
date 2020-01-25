@@ -66,12 +66,19 @@ void compute_avg(double avg[], const double sum[], int k, int size){
 std::string setType(const double rpy[3], double &formula){
 
     std::string type;
+   /* cout<<"ROLL CHE ENTRA NELLA FUNZIONE: " << rpy[0] << "\n";
+    cout<<"PITCH CHE ENTRA NELLA FUNZIONE: " << rpy[1] << "\n";
+    cout<<"YAW CHE ENTRA NELLA FUNZIONE: " << rpy[2] << "\n";
+    cout<<"FORMULA ENTRA NELLA FUNZIONE SETTYPE: " << formula << "\n";*/
+    ///////////////////////////////// SETTO IN BED E NOT <226 E NON < 225 Perchè 225 NON VIENE MAI CONSIDERATO /////////////
+
+
     if( (45 <= rpy[1]) && (rpy[1] < 135)){ // p = 90° --> roof
 
         formula = rpy[2] - rpy[0];
         type="ROOF";
     }
-    else if ( (226 <= rpy[1]) && (rpy[1] < 315)){ // p = 90° --> roof
+    else if ( (225 <= rpy[1]) && (rpy[1] < 315)){ // p = 90° --> roof
 
         formula = rpy[2] + rpy[0] + 180;
         type="CHAIR";
@@ -81,31 +88,56 @@ std::string setType(const double rpy[3], double &formula){
         formula = rpy[2];
         type="NOT";
     }
-    else if ( ((136 <= rpy[1]) && (rpy[1] < 225))&&((136 <= rpy[0]) && (rpy[0] < 225))){ // p = 90° --> roof
+else if ( ((136 <= rpy[1]) && (rpy[1] < 226))&&((136 <= rpy[0]) && (rpy[0] < 226))){ // p = 90° --> roof
 
         formula = rpy[2] + 180;
         type="NOT";
     }
-    else if ( ((136 <= rpy[1]) && (rpy[1] < 225))&&((315 <= rpy[0]) || (rpy[0] < 45))){ // p = 90° --> roof
+    /*else if ( ((136 <= rpy[1]) && (rpy[1] < 225))&&((136 <= rpy[0]) && (rpy[0] < 225))){ // p = 90° --> roof
+
+        formula = rpy[2] + 180;
+        type="NOT";
+    }*/
+else if ( ((136 <= rpy[1]) && (rpy[1] < 226))&&((315 <= rpy[0]) || (rpy[0] < 45))){ // p = 90° --> roof
 
         formula = rpy[2] + 180;
         type="BED";
     }
-    else if ( ((136 <= rpy[0]) && (rpy[0] < 225))&&((315 <= rpy[1]) || (rpy[1] < 45))){ // p = 90° --> roof
+    /*else if ( ((136 <= rpy[1]) && (rpy[1] < 225))&&((315 <= rpy[0]) || (rpy[0] < 45))){ // p = 90° --> roof
+
+        formula = rpy[2] + 180;
+        type="BED";
+    }*/
+else if ( ((136 <= rpy[0]) && (rpy[0] < 226))&&((315 <= rpy[1]) || (rpy[1] < 45))){ // p = 90° --> roof
 
         formula = rpy[2];
         type="BED";
     }
+    /*else if ( ((136 <= rpy[0]) && (rpy[0] < 225))&&((315 <= rpy[1]) || (rpy[1] < 45))){ // p = 90° --> roof
 
+        formula = rpy[2];
+        type="BED";
+    }*/
+    //cout<<"FORMULA CHE ESCE DALLA SETTYPE: " <<formula <<"\n";
     return type;
 }
+
+
+
 
 std::string setOrientation (double rpy[3], double formula){
 
     std::string orientation;
+
+    if(formula < 0){
+	formula=formula+360;
+
+    }
+
     if (formula > 360){
         formula=formula-360;
     }
+
     if(formula > 315 || formula < 45){
 
         orientation = "_X";
@@ -135,8 +167,15 @@ std::string setOrientation (double rpy[3], double formula){
 double setDegreeOrientation (double formula){
 
     double degree;
+    cout<< "\n";
     //cout<<"FORMULA CHE ENTRA NELLA FUNZIONE: " << formula << "\n";
+    //From negative angles to positive angles
+    if(formula < 0){
+	formula=formula+360;
 
+    }
+
+    //cout<<"FORMULA CHE ENTRA NELLA FUNZIONE: " << formula << "\n";
     if (formula > 360){
         formula=formula-360;
     }

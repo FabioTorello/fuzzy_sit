@@ -320,13 +320,13 @@ public class SceneHierarchyTest {
         new SITABox(h, objects, relations);
         System.out.println("--------------------------------------------------------");
 
-
+*/
         System.out.println("-------------------------  show ------------------------");
         // shows the inferred and learned SIT scene hierarchy
         h.show();
         // saved the augmented ontology
         h.saveTbox("src/test/resources/learnedTest.fuzzydl");
-        */
+
     }
 
 

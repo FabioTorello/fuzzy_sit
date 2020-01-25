@@ -10,9 +10,13 @@
 #include <tf/transform_listener.h>
 #include <math.h>
 #include <stdlib.h>
+
+
 #include "LegElaboration.h"
 #include <vision/Configuration.h>
 #include <vision/SceneTable.h>
+#include <vision/Configuration_SIT.h>
+#include <vision/SceneToSIT.h>
 
 #include <opencv2/opencv.hpp>
 
@@ -25,6 +29,7 @@
 #include <fstream>
 #include <string>
 #include <boost/lexical_cast.hpp>
+#include <boost/filesystem.hpp>
 
 # define ROWS 3
 # define COLUMNS 12
@@ -45,21 +50,40 @@ static string path_to_save_images="/home/fabio/java_workspace/src/vision/images/
 
 
 
-void init_message(vision::SceneTable::Ptr a, vision::Configuration::Ptr b, struct configuration c){
+void init_original_message(vision::SceneTable::Ptr a, vision::Configuration::Ptr b, struct configuration c){
 
     b->leg_id = c.leg_id;
     b->name_config = c.name_config;
-    b->degreeOrientation=c.degreeOrientation;
+    //b->degreeOrientation=c.degreeOrientation;
     b->pin=c.pin;
-    b->table="Table";
-    b->nameRelation=c.nameRelation;
-    b->pinTableRelationDegree=c.pinTableRelationDegree;
-    b->legPinRelationDegree=c.legPinRelationDegree;
+    //b->table="Table";
+    //b->nameRelation=c.nameRelation;
+    //b->pinTableRelationDegree=c.pinTableRelationDegree;
+    //b->legPinRelationDegree=c.legPinRelationDegree;
     
     
    
 
     a->scene.push_back( *b);
+   // a->frame=frameInstant;
+
+}
+
+void init_SIT_message(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr b, struct configuration c){
+
+    b->leg_id = c.leg_id;
+    b->name_config = c.name_config;
+    //b->degreeOrientation=c.degreeOrientation;
+    b->pin=c.pin;
+    //b->table="Table";
+    //b->nameRelation=c.nameRelation;
+    //b->pinTableRelationDegree=c.pinTableRelationDegree;
+    //b->legPinRelationDegree=c.legPinRelationDegree;
+    
+    
+   
+
+    a->sceneSIT.push_back( *b);
     a->frame=frameInstant;
 
 }
@@ -88,6 +112,9 @@ void init_message(vision::SceneTable::Ptr a, vision::Configuration::Ptr b, struc
 }*/
 
 
+
+
+/////////////CALLBACK FOR THE IMAGES/////////////////////////////////
 /*void callback_save_image (const sensor_msgs::ImageConstPtr& msg){
 //cv_bridge::CvImagePtr cv_ptr;
 //cout<<"ENTRA NELLA CALLBACK";
@@ -269,14 +296,22 @@ int eval_pin (double xy [2], double p[ROWS][COLUMNS], std::string name, std::str
 
     double x=xy[0];
     double y=xy[1];
-    if (name == "NOT_X" || name == "BED_X")
+    cout<<"X ENTRA NELLA FUNZIONE"<<"\n";
+    cout<<"Y ENTRA NELLA FUNZIONE"<<"\n";
+    if (name == "NOT_X" || name == "BED_X"){
         x=x-0.115;
-    else if (name == "NOT_MINUS_X" || name == "BED_MINUS_X")
+	}
+    else if (name == "NOT_MINUS_X" || name == "BED_MINUS_X"){
         x=x+0.115;
-    else if (name == "NOT_Y" || name == "BED_Y")
+}
+    else if (name == "NOT_Y" || name == "BED_Y"){
         y=y-0.115;
-    else if (name == "NOT_MINUS_Y" || name == "BED_MINUS_Y")
+}
+    else if (name == "NOT_MINUS_Y" || name == "BED_MINUS_Y"){
         y=y+0.115;
+   }
+cout<<"X ESCE DAGLI IF"<<x<<"\n";
+    cout<<"Y ESCE DAGLI IF"<<y<<"\n";
     int pin=0;
     for (int i = 0; i<COLUMNS; i++){
         if (x<p[1][i]+THR && x>p[1][i]-THR){
@@ -328,8 +363,11 @@ void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double 
     
     tf::Matrix3x3 m0(t.getRotation());
     m0.getEulerYPR(angles[2], angles[1], angles[0]);
+//roll
     angles[0] = angles[0] * (180 / M_PI);
+//pitch
     angles[1] = angles[1] * (180 / M_PI);
+//yaw
     angles[2] = angles[2] * (180 / M_PI);
     change_angle_interval(angles);
 //After "check_configuration" function I know the type of the leg and the orientation respect to the WORLD frame
@@ -343,7 +381,7 @@ void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double 
     conf_leg.pinTableRelationDegree=computePinTableRelation(pins, conf_leg.pin);
     conf_leg.nameRelation=NAMERELATION;
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //PER LA MIA FUNZIONE (QUELLA VECCHIA) è QUESTA PARTE SOTTO DA DECOMMENTARE
     /*int pin=eval_pin(xy, pins, conf_leg);
     conf_leg.pin=pin;
@@ -352,7 +390,7 @@ void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double 
     //ROS_INFO("\n%s\n%s\nCONNECTED TO PIN %d\n", conf_leg.leg_id.c_str(), conf_leg.name_config.c_str(), conf_leg.pin);
     //ROS_INFO("\n%s\n%s\n%s TO PIN %d WITH DEGREE %f\n", conf_leg.leg_id.c_str(), conf_leg.name_config.c_str(), conf_leg.nameRelation, pin, conf_leg.legPinRelationDegree);
     //conf_leg.pinTableRelationDegree=computePinTableRelation(conf_leg,pins,pin);
-    
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
 
     
 }
@@ -373,6 +411,8 @@ int main(int argc, char **argv)
     ros::NodeHandle n;
 
     
+    string folder_name;
+    string file_name;
 
     std::fstream fxy;
     fxy.open("xy.txt", std::fstream::out);
@@ -392,15 +432,15 @@ int main(int argc, char **argv)
      //Publisher for data from tf
      ros::Publisher Scene_pub = n.advertise<vision::SceneTable>("scene_data", 10);
 
+//////////////////////////////////////////////////////////////////////////////////
+     ros::Publisher SceneSIT_pub = n.advertise<vision::SceneToSIT>("sceneSIT_data", 10);
+///////////////////////////////////////////////////////////////////////////////////
 
      //Subscriber for the images
-     //ros::Subscriber sub = n.subscribe<sensor_msgs::Image>("sensor_msgs/Image", 10, callback_save_image);
+    //ros::Subscriber sub = n.subscribe("kinect2/qhd/image_mono", 1000, callback_save_image);
 
 
-     //ros::Subscriber sub = n.subscribe("kinect2/qhd/image_mono", 1000, callback_save_image);
-
-
-     //ros::Subscriber sub = n.subscribe("sensor_msgs/Image", 1000, callback_save_image);
+    
 
 
 
@@ -428,6 +468,13 @@ int main(int argc, char **argv)
     struct configuration conf_leg8;
     struct configuration conf_leg12;
     int k=1;
+    //Variables used to create the folders to save the images by basing on the parameter in the Parameter Server which have the name of the bag file and the folder name of it
+    char sep='/';
+    size_t index_position;
+    int stat;
+    string dirname;
+    std:string toErase=".bag";
+    size_t pos;
 
     while(n.ok()) {
 //DURATA ORIGINALE è 1
@@ -438,24 +485,83 @@ int main(int argc, char **argv)
         tf::StampedTransform transform_w_108;
         tf::StampedTransform transform_w_112;
         vision::SceneTable::Ptr ourScene (new vision::SceneTable);
-        //sit_armor_injected_msgs::SceneElementVector::Ptr sceneForArmor(new sit_armor_injected_msgs::SceneElementVector);
-	//Piece of code to take the image from the bag file convert it to cv_bridge andsave it	
+/////////////////////////////////////////////////////////////////
+        vision::SceneToSIT::Ptr ourSceneToSIT (new vision::SceneToSIT);
+/////////////////////////////////////////////////////////////////////	
+       
+
+
+ //sit_armor_injected_msgs::SceneElementVector::Ptr sceneForArmor(new sit_armor_injected_msgs::SceneElementVector);
+
+
+/////////////////////////Piece of code to take the image from the bag file convert it to cv_bridge andsave it/////////////////////////	
 	
 
 	//string name_image= path_to_save_images+to_string(frameInstant)+".jpg";
 	frameInstant++;
-	/*cout<<inputImage;
-	if (inputImage){
+
+	/*n.getParam("/folder_name", folder_name);
+    	n.getParam("/file_name",file_name);
+       
+   	
+    	cout<<"File Name: " << file_name <<"\n";
+    	cout<<"Folder Name:"<<folder_name<<"\n";
+        cout<<"\n";
+
+	index_position = folder_name.rfind(sep, folder_name.length());
+
+    	if (index_position != string::npos) {
+      		folder_name=folder_name.substr(index_position+1, folder_name.length() - index_position);
+    	}
+    	index_position = file_name.rfind(sep, file_name.length());
+    	if (index_position != string::npos) {
+      		file_name=file_name.substr(index_position+1, file_name.length() - index_position);
+    	}
+    		cout<<"Folder name: "<<folder_name<<"\n";
+    		cout<<"File name: "<<file_name<<"\n";
+
+	
+
+	dirname=path_to_save_images+folder_name;
+	// Search for the substring in string
+	
+	pos = dirname.find(toErase);
+ 
+	if (pos != std::string::npos)
+	{
+		// If found then erase it from string
+		dirname.erase(pos, toErase.length());
+	}
+	cout<<"DIRNAME: "<<dirname<<"\n";
+   	/*stat = boost::filesystem::create_directory(dirname);
+	if (!stat)
+      		ROS_INFO("Directory %s created\n",dirname);
+   	else
+   	{
+      		ROS_ERROR("Unable to create directory %s\n", dirname);
+      
+   	}*/
+
+	//cout<<inputImage;
+	/*if (inputImage){
 	string frame = boost::lexical_cast<string>(frameInstant);
 	
-	string name_image= path_to_save_images + frame + ".png";
+	string name_image= dirname + "_" + frame + ".png";
 	
 	imwrite(name_image, inputImage->image);
 	inputImage.reset();
-	}*/
+	}
 	cout<<"\n";
 	ROS_INFO("\nTHE FRAME NOW IS: %d", frameInstant);
-	//cout<<"\n";
+	//cout<<"\n";*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
 
         for (int i = 0; i<3; i++){
             angles_100[i];
@@ -473,19 +579,27 @@ int main(int argc, char **argv)
         try {
             listener0.waitForTransform("/WORLD", "/ar_marker_100", ros::Time(0), ros::Duration(0.00005));
             listener0.lookupTransform("/WORLD", "/ar_marker_100", ros::Time(0), transform_w_100);
-            //PRINT FOR DEBUGGING
-            
+                        
             eval_config(angles_100,transform_w_100, xy_100, pins, conf_leg0, "Leg_0");
-//PRINT FOR DEBUGGING
-            //ROS_INFO("DOPO EVAL_CONFIG FUNCTION: \n%s\n%s\nCONNECTED TO PIN %d\n", conf_leg0.leg_id.c_str(), conf_leg0.name_config.c_str(), conf_leg0.pin);
+
             if (conf_leg0.pin > 0 && conf_leg0.name_config.size()>0) {
                 f << conf_leg0.leg_id << std::endl << conf_leg0.name_config << std::endl << "Pin:" << conf_leg0.pin << std::endl << std::endl;
                 fypr << angles_100[2] <<" " << angles_100[1] <<" " << angles_100[0] << std::endl;
                 fxy << "leg 0 : " << xy_100[0] <<" " << xy_100[1] << std:: endl;
-//PRINT FOR DEBUGGING
-		//ROS_INFO("DENTRO A IF CON PIN >0: \n%s\n%s\nCONNECTED TO PIN %d\n", conf_leg0.leg_id.c_str(), conf_leg0.name_config.c_str(), conf_leg0.pin);
+
                 vision::Configuration::Ptr msg0(new vision::Configuration);
-                init_message(ourScene, msg0, conf_leg0);
+///////////////////////////////////////////////////////////////////////////////////////
+                vision::Configuration_SIT::Ptr msg0SIT(new vision::Configuration_SIT);
+////////////////////////////////////////////////////////////////////////////////////////
+
+                init_original_message(ourScene, msg0, conf_leg0);
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+                
+		init_SIT_message(ourSceneToSIT, msg0SIT, conf_leg0);
+
+
+//////////////////////////////////////////////////////////////////////////
                 /*sit_armor_injected_msgs::SceneElement::Ptr ar0(new sit_armor_injected_msgs::SceneElement);
                 sit_armor_injected_msgs::SceneElement::Ptr pin0(new sit_armor_injected_msgs::SceneElement);
                 init_msg_for_Armor(ar0, pin0, sceneForArmor, conf_leg0, xy_100, pins);*/
@@ -497,6 +611,8 @@ int main(int argc, char **argv)
         }
 
 
+
+
         try {
             listener4.waitForTransform("/WORLD", "/ar_marker_104", ros::Time(0), ros::Duration(0.00005));
             listener4.lookupTransform("/WORLD", "/ar_marker_104", ros::Time(0), transform_w_104);
@@ -506,8 +622,23 @@ int main(int argc, char **argv)
                 f << conf_leg4.leg_id << std::endl << conf_leg4.name_config << std::endl << "Pin:" << conf_leg4.pin << std::endl << std::endl;
                 fypr << angles_104[2] <<" " << angles_104[1] <<" " << angles_104[0] << std::endl;
                 fxy << "leg 4: " << xy_104[0] <<" " << xy_104[1] << std:: endl;
+
+
                 vision::Configuration::Ptr msg4(new vision::Configuration);
-                init_message(ourScene, msg4, conf_leg4);
+///////////////////////////////////////////////////////////////////////////////////////
+                vision::Configuration_SIT::Ptr msg4SIT(new vision::Configuration_SIT);
+////////////////////////////////////////////////////////////////////////////////////////
+                
+		init_original_message(ourScene, msg4, conf_leg4);
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+                
+		init_SIT_message(ourSceneToSIT, msg4SIT, conf_leg4);
+
+
+//////////////////////////////////////////////////////////////////////////
+		
                 /*sit_armor_injected_msgs::SceneElement::Ptr ar4(new sit_armor_injected_msgs::SceneElement);
                 sit_armor_injected_msgs::SceneElement::Ptr pin4(new sit_armor_injected_msgs::SceneElement);
                 init_msg_for_Armor(ar4, pin4, sceneForArmor, conf_leg4, xy_104, pins);*/
@@ -527,8 +658,22 @@ int main(int argc, char **argv)
                 f << conf_leg8.leg_id << std::endl << conf_leg8.name_config << std::endl << "Pin:" << conf_leg8.pin << std::endl << std::endl;
                 fypr << angles_108[2] <<" " << angles_108[1] <<" " << angles_108[0] << std::endl;
                 fxy << "leg 8: " << xy_108[0] <<" " << xy_108[1] << std:: endl;
+
                 vision::Configuration::Ptr msg8(new vision::Configuration);
-                init_message(ourScene, msg8, conf_leg8);
+
+///////////////////////////////////////////////////////////////////////////////////////
+                vision::Configuration_SIT::Ptr msg8SIT(new vision::Configuration_SIT);
+////////////////////////////////////////////////////////////////////////////////////////
+                
+		init_original_message(ourScene, msg8, conf_leg8);
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+                
+		init_SIT_message(ourSceneToSIT, msg8SIT, conf_leg8);
+
+
+//////////////////////////////////////////////////////////////////////////
+
                 /*sit_armor_injected_msgs::SceneElement::Ptr ar8(new sit_armor_injected_msgs::SceneElement);
                 sit_armor_injected_msgs::SceneElement::Ptr pin8(new sit_armor_injected_msgs::SceneElement);
                 init_msg_for_Armor(ar8, pin8, sceneForArmor, conf_leg8, xy_108, pins);*/
@@ -549,8 +694,21 @@ int main(int argc, char **argv)
                 f << conf_leg12.leg_id << std::endl << conf_leg12.name_config << std::endl <<"Pin:" << conf_leg12.pin << std::endl << std::endl;
                 fypr << angles_112[2] <<" " << angles_112[1] <<" " << angles_112[0] << std::endl;
                 fxy << "leg 12: " << xy_112[0] <<" " << xy_112[1] << std:: endl;
+
                 vision::Configuration::Ptr msg12(new vision::Configuration);
-                init_message(ourScene, msg12, conf_leg12);
+///////////////////////////////////////////////////////////////////////////////////////
+                vision::Configuration_SIT::Ptr msg12SIT(new vision::Configuration_SIT);
+////////////////////////////////////////////////////////////////////////////////////////
+
+                init_original_message(ourScene, msg12, conf_leg12);
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+                
+		init_SIT_message(ourSceneToSIT, msg12SIT, conf_leg12);
+
+
+//////////////////////////////////////////////////////////////////////////
+
                 /*sit_armor_injected_msgs::SceneElement::Ptr ar12(new sit_armor_injected_msgs::SceneElement);
                 sit_armor_injected_msgs::SceneElement::Ptr pin12(new sit_armor_injected_msgs::SceneElement);
                 init_msg_for_Armor(ar12, pin12, sceneForArmor, conf_leg12, xy_112, pins);*/
@@ -560,11 +718,15 @@ int main(int argc, char **argv)
         catch (tf::TransformException &ex112) {
             ROS_ERROR("%s", ex112.what());
         }
+	///////FUNZIONE CALCOLO DEGREE
 
         //Scene_pub_4Armor.publish(sceneForArmor);
         //PRINT FOR DEBUGGING
 	//cout<<*ourScene;
+
+	
         Scene_pub.publish(ourScene);
+	SceneSIT_pub.publish(ourSceneToSIT);
 	
         f << "-------------------"<< std::endl << k << std::endl;
         k++;

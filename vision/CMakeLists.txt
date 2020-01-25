@@ -58,6 +58,8 @@ find_package(catkin REQUIRED COMPONENTS
    FILES
    Configuration.msg
    SceneTable.msg
+   Configuration_SIT.msg
+   SceneToSIT.msg
   # SceneT.msg
  )
 

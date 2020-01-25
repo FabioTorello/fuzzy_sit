@@ -39,6 +39,7 @@ import it.emarolab.fuzzySIT.perception.simple2D.Pin_10;
 import it.emarolab.fuzzySIT.perception.simple2D.Pin_11;
 import it.emarolab.fuzzySIT.perception.simple2D.Pin_12;
 import it.emarolab.fuzzySIT.perception.simple2D.Table;
+import it.emarolab.fuzzySIT.semantic.axioms.SpatialObject;
 import java.lang.Object;
 import java.util.Arrays;
 
@@ -70,7 +71,7 @@ public class MemoryService extends AbstractNodeMain {
         ServiceServer<TestServiceDirectiveRequest, TestServiceDirectiveResponse> MemoryTestCallback =
                 connectedNode.newServiceServer("memory_service", TestServiceDirective._TYPE,
                         (request, response) -> {
-                            System.out.print("---------------------------------------------"+"\n");
+                           /* System.out.print("---------------------------------------------"+"\n");
                             System.out.print("Frame "+request.getTestRequest().getFrame()+"\n");
                             for (SceneItem item: request.getTestRequest().getItems()) {
                                 System.out.print(item.getGammaI() + "\n");
@@ -78,7 +79,18 @@ public class MemoryService extends AbstractNodeMain {
                                 System.out.print(item.getDegreeRoof() + "\n");
                                 System.out.print(item.getDegreeChair() + "\n");
                                 System.out.print(item.getDegreeNot() + "\n");
-                                //System.out.print(item.getDegreePin() + "\n");
+                                System.out.print(item.getDegreePin1() + "\n");
+                                System.out.print(item.getDegreePin2() + "\n");
+                                System.out.print(item.getDegreePin3() + "\n");
+                                System.out.print(item.getDegreePin4() + "\n");
+                                System.out.print(item.getDegreePin5() + "\n");
+                                System.out.print(item.getDegreePin6() + "\n");
+                                System.out.print(item.getDegreePin7() + "\n");
+                                System.out.print(item.getDegreePin8() + "\n");
+                                System.out.print(item.getDegreePin9() + "\n");
+                                System.out.print(item.getDegreePin10() + "\n");
+                                System.out.print(item.getDegreePin11() + "\n");
+                                System.out.print(item.getDegreePin12() + "\n");
                                 System.out.print(item.getDegreeTable() + "\n");
                                 System.out.print("\n");
 
@@ -90,15 +102,17 @@ public class MemoryService extends AbstractNodeMain {
                                 System.out.print(relation.getNameRelation() + "\n");
                                 System.out.print(relation.getDegreeRelation() + "\n");
                                 System.out.print("\n");
-                            }
+                            }*/
                             memory.experience( scene(request.getTestRequest().getItems(), request.getTestRequest().getRelations(), request.getTestRequest().getFrame()), true,true);
                             //Show the experience graph
 
                             //THE SCENE GRAPH SHOULD BE VISUALIZE ONLY IN THE END OF THE BAGFILE
                             // (THIS IS ONLY A TEMPTATIVE)
-                            /*if(numberFrame==50) {
+
+                           /* if( request.getTestRequest().getFrame()==64) {
                                 memory.getTbox().show();
                             }*/
+
                             response.getTestResponse().setResponse("The scene " + " has been loaded" );
 
                             /*if(request.getTestRequest().getRequest().equals("scene")){
@@ -136,157 +150,113 @@ public class MemoryService extends AbstractNodeMain {
     private static int pin;*/
 
     public static ConnectObjectScene scene(List<SceneItem> items, List<Relations> relations, long frame) {
-        //Define the scene
-        ConnectObjectScene scene = new ConnectObjectScene("frame"+frame);
+       // if ((!items.isEmpty())&&(!relations.isEmpty())) {
+            //Define the scene
+            ConnectObjectScene scene = new ConnectObjectScene("frame" + frame);
 
-        boolean table=false;
-        boolean pin=false;
-        boolean bed=false;
-        boolean roof=false;
-        boolean chair=false;
-        boolean not=false;
-        for (SceneItem item: items){
+            boolean table = false;
+            boolean pin = false;
+            boolean bed = false;
+            boolean roof = false;
+            boolean chair = false;
+            boolean not = false;
 
-
-            if(item.getDegreeBed()!=0){
-                //Add an object type BedLeg
-                scene.addObject(new BedLeg("BedLeg",item.getGammaI(),item.getDegreeBed()));
-                //bed=true;
-            }
+            for (SceneItem item : items) {
 
 
-            else if (item.getDegreeRoof()!=0){
-                //Add an object type RoofLeg
-                scene.addObject(new RoofLeg("RoofLeg",item.getGammaI(),item.getDegreeRoof()));
-                //roof=true;
+                if (item.getDegreeBed() != 0) {
+                    //Add an object type BedLeg
+                    scene.addObject(new BedLeg("BedLeg", item.getGammaI(), item.getDegreeBed()));
+                    //bed=true;
+                } else if (item.getDegreeRoof() != 0) {
+                    //Add an object type RoofLeg
+                    scene.addObject(new RoofLeg("RoofLeg", item.getGammaI(), item.getDegreeRoof()));
+                    //roof=true;
 
-            }
+                } else if (item.getDegreeChair() != 0) {
+                    //Add an object type ChairLeg
+                    scene.addObject(new ChairLeg("ChairLeg", item.getGammaI(), item.getDegreeChair()));
+                    //chair=true;
 
-
-            else if (item.getDegreeChair()!=0){
-                //Add an object type ChairLeg
-                scene.addObject(new ChairLeg("ChairLeg",item.getGammaI(),item.getDegreeChair()));
-                //chair=true;
-
-            }
-
-
-            else if (item.getDegreeNot()!=0){
-                //Add an object type NotLeg
-                scene.addObject(new NotLeg("NotLeg",item.getGammaI(),item.getDegreeNot()));
-                //not=true;
-            }
+                } else if (item.getDegreeNot() != 0) {
+                    //Add an object type NotLeg
+                    scene.addObject(new NotLeg("NotLeg", item.getGammaI(), item.getDegreeNot()));
+                    //not=true;
+                }
 
 
-
-
-            //If the test is general i.e. the pins are represented as a single pin without taking into account its position on the table
+                //If the test is general i.e. the pins are represented as a single pin without taking into account its position on the table
             /*else if (item.getDegreePin()!=0){
                 //Add an object type Pin
                 //pin=true;
             }*/
-            //If the test is less general i.e. each pins corresponds to a class
-            else if (item.getDegreePin1()!=0){
-                //Add an object type Pin_1
-                scene.addObject(new Pin_1("Pin_1",item.getGammaI(),item.getDegreePin1()));
-                //pin=true;
+                //If the test is less general i.e. each pins corresponds to a class
+                else if (item.getDegreePin1() != 0) {
+                    //Add an object type Pin_1
+                    scene.addObject(new Pin_1("Pin_1", item.getGammaI(), item.getDegreePin1()));
+                    //pin=true;
+                } else if (item.getDegreePin2() != 0) {
+                    //Add an object type Pin_2
+                    scene.addObject(new Pin_2("Pin_2", item.getGammaI(), item.getDegreePin2()));
+                    //pin=true;
+                } else if (item.getDegreePin3() != 0) {
+                    //Add an object type Pin_3
+                    scene.addObject(new Pin_3("Pin_3", item.getGammaI(), item.getDegreePin3()));
+                    //pin=true;
+                } else if (item.getDegreePin4() != 0) {
+                    //Add an object type Pin_4
+                    scene.addObject(new Pin_4("Pin_4", item.getGammaI(), item.getDegreePin4()));
+                    //pin=true;
+                } else if (item.getDegreePin5() != 0) {
+                    //Add an object type Pin_5
+                    scene.addObject(new Pin_5("Pin_5", item.getGammaI(), item.getDegreePin5()));
+                    //pin=true;
+                } else if (item.getDegreePin6() != 0) {
+                    //Add an object type Pin_6
+                    scene.addObject(new Pin_6("Pin_6", item.getGammaI(), item.getDegreePin6()));
+                    //pin=true;
+                } else if (item.getDegreePin7() != 0) {
+                    //Add an object type Pin_7
+                    scene.addObject(new Pin_7("Pin_7", item.getGammaI(), item.getDegreePin7()));
+                    //pin=true;
+                } else if (item.getDegreePin8() != 0) {
+                    //Add an object type Pin_8
+                    scene.addObject(new Pin_8("Pin_8", item.getGammaI(), item.getDegreePin8()));
+                    //pin=true;
+                } else if (item.getDegreePin9() != 0) {
+                    //Add an object type Pin_9
+                    scene.addObject(new Pin_9("Pin_9", item.getGammaI(), item.getDegreePin9()));
+                    //pin=true;
+                } else if (item.getDegreePin10() != 0) {
+                    //Add an object type Pin_10
+                    scene.addObject(new Pin_10("Pin_10", item.getGammaI(), item.getDegreePin10()));
+                    //pin=true;
+                } else if (item.getDegreePin11() != 0) {
+                    //Add an object type Pin_11
+                    scene.addObject(new Pin_11("Pin_11", item.getGammaI(), item.getDegreePin11()));
+                    //pin=true;
+                } else if (item.getDegreePin12() != 0) {
+                    //Add an object type Pin_12
+                    scene.addObject(new Pin_12("Pin_12", item.getGammaI(), item.getDegreePin12()));
+                    //pin=true;
+                } else if (item.getDegreeTable() != 0) {
+                    //Add an object type Table
+                    scene.addObject(new Table("Table", item.getGammaI(), item.getDegreeTable()));
+                    //table=true;
+                } else {
+                    System.err.println("The leg has no type");
+                }
+
+
             }
 
-
-            else if (item.getDegreePin2()!=0){
-                //Add an object type Pin_2
-                scene.addObject(new Pin_2("Pin_2",item.getGammaI(),item.getDegreePin2()));
-                //pin=true;
+            for (Relations relation : relations) {
+                scene.getRelations().add(new SpatialRelation(relation.getGammaSubject(), relation.getNameRelation(), relation.getGammaObject(), relation.getDegreeRelation()));
             }
 
-
-            else if (item.getDegreePin3()!=0){
-                //Add an object type Pin_3
-                scene.addObject(new Pin_3("Pin_3",item.getGammaI(),item.getDegreePin3()));
-                //pin=true;
-            }
-
-
-            else if (item.getDegreePin4()!=0){
-                //Add an object type Pin_4
-                scene.addObject(new Pin_4("Pin_4",item.getGammaI(),item.getDegreePin4()));
-                //pin=true;
-            }
-
-
-            else if (item.getDegreePin5()!=0){
-                //Add an object type Pin_5
-                scene.addObject(new Pin_5("Pin_5",item.getGammaI(),item.getDegreePin5()));
-                //pin=true;
-            }
-
-
-            else if (item.getDegreePin6()!=0){
-                //Add an object type Pin_6
-                scene.addObject(new Pin_6("Pin_6",item.getGammaI(),item.getDegreePin6()));
-                //pin=true;
-            }
-
-
-            else if (item.getDegreePin7()!=0){
-                //Add an object type Pin_7
-                scene.addObject(new Pin_7("Pin_7",item.getGammaI(),item.getDegreePin7()));
-                //pin=true;
-            }
-
-
-            else if (item.getDegreePin8()!=0){
-                //Add an object type Pin_8
-                scene.addObject(new Pin_8("Pin_8",item.getGammaI(),item.getDegreePin8()));
-                //pin=true;
-            }
-
-
-            else if (item.getDegreePin9()!=0){
-                //Add an object type Pin_9
-                scene.addObject(new Pin_9("Pin_9",item.getGammaI(),item.getDegreePin9()));
-                //pin=true;
-            }
-
-
-            else if (item.getDegreePin10()!=0){
-                //Add an object type Pin_10
-                scene.addObject(new Pin_10("Pin_10",item.getGammaI(),item.getDegreePin10()));
-                //pin=true;
-            }
-            else if (item.getDegreePin11()!=0){
-                //Add an object type Pin_11
-                scene.addObject(new Pin_11("Pin_11",item.getGammaI(),item.getDegreePin11()));
-                //pin=true;
-            }
-
-
-            else if (item.getDegreePin12()!=0){
-                //Add an object type Pin_12
-                scene.addObject(new Pin_12("Pin_12",item.getGammaI(),item.getDegreePin12()));
-                //pin=true;
-            }
-
-
-            else if (item.getDegreeTable()!=0){
-                //Add an object type Table
-                scene.addObject(new Table("Table",item.getGammaI(),item.getDegreeTable()));
-                //table=true;
-            }
-
-
-            else{
-                System.err.println("The leg has no type");
-            }
-
-
-        }
-
-        for (Relations relation: relations){
-            scene.getRelations().add( new SpatialRelation( relation.getGammaSubject(), relation.getNameRelation(), relation.getGammaObject(), relation.getDegreeRelation()));
-        }
-
-        return scene;
+            return scene;
+       // }
+        //return null;
 
     }
    /* public static ConnectObjectScene scene(List<SceneItem> items, int frame) {
