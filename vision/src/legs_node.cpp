@@ -102,7 +102,7 @@ void init_SIT_message(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr 
    
 
     
-    //a->relations.push_back(*d);
+    
     a->frame=frameInstant;
 
 }
@@ -125,8 +125,15 @@ void add_table(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr b, stru
 
 }
 
-void computeRelations(vision::SceneToSIT::Ptr a, double pins[ROWS][COLUMNS]){
+
+
+void computeRelations(vision::SceneToSIT::Ptr a, double pins[ROWS][COLUMNS], vector<scene_struct> structVector, vision::Relations::Ptr b, struct relation r){
+
+a->relations.push_back(*d);
 }
+
+
+
 /*void init_msg_for_Armor(sit_armor_injected_msgs::SceneElement::Ptr leg, sit_armor_injected_msgs::SceneElement::Ptr pin, sit_armor_injected_msgs::SceneElementVector::Ptr msg, struct configuration c,
                         double xy[2],double p[ROWS][COLUMNS] ){
 
@@ -518,7 +525,9 @@ int main(int argc, char **argv)
 
 
     double pins[ROWS][COLUMNS];
+
     initialize_pins_position(pins);
+
     struct configuration conf_leg0;
     struct configuration conf_leg4;
     struct configuration conf_leg8;
@@ -853,6 +862,9 @@ int main(int argc, char **argv)
 
 		}*/
 	}
+
+	vision::Relations::Ptr relation(new vision::Relations);
+	computeRelations(ourSceneToSIT, pins, sceneStructVector, relation, relationInScene);
 	sceneStructVector.clear();
        /*struct scene_struct LEG=sceneStruct_Leg0;
 	
