@@ -30,6 +30,8 @@
 #include <string>
 #include <boost/lexical_cast.hpp>
 #include <boost/filesystem.hpp>
+#include <vector>
+
 
 # define ROWS 3
 # define COLUMNS 12
@@ -70,18 +72,25 @@ void init_original_message(vision::SceneTable::Ptr a, vision::Configuration::Ptr
 
 }
 
-void init_SIT_message(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr b, struct configuration c){
+void init_SIT_message(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr b, struct configuration c, scene_struct &sceneStruct){
 
     gamma_index++;
 
+    std::string gamma_leg="g_"+ boost::to_string(gamma_index);
+    std::string gamma_pin="p_"+ boost::to_string(gamma_index);
+    sceneStruct.gamma_leg= gamma_leg;
+    sceneStruct.gamma_pin= gamma_pin;
+    cout<<"NOME GAMMA LEG: " <<sceneStruct.gamma_leg<<"\n";
+    cout<<"NOME GAMMA PIN: " <<sceneStruct.gamma_pin<<"\n";
+
     //For a leg
-    b->gamma_i="g_"+ boost::to_string(gamma_index); 
+    b->gamma_i=gamma_leg; 
     b->type = c.name_config;
     b->degree=c.degreeOrientation;
     a->items.push_back( *b);
 
     //For a pin
-    b->gamma_i="p_"+ boost::to_string(gamma_index);
+    b->gamma_i=gamma_pin;
     b->type="Pin_"+ boost::to_string(c.pin);
     b->degree=1.0;
     a->items.push_back( *b);
@@ -98,9 +107,13 @@ void init_SIT_message(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr 
 
 }
 
-void add_table(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr b, struct configuration c){   
+void add_table(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr b, struct configuration c, scene_struct &sceneStruct){   
 
     //For a table
+    sceneStruct.gamma_table="t";
+    sceneStruct.type_table="Table";
+    cout<<"NOME GAMMA TABLE: " <<sceneStruct.gamma_table<<"\n";
+    cout<<"NOME TIPO TABLE: " <<sceneStruct.type_table<<"\n";
 
     b->gamma_i="t";
     b->type="Table";
@@ -318,31 +331,43 @@ double computePinTableRelation(double p[ROWS][COLUMNS], int pin){
 
 
 //QUESTA FUNZIONE EVAL_PIN ERA GIà PRESENTE
-int eval_pin (double xy [2], double p[ROWS][COLUMNS], std::string name, std::string leg){
+int eval_pin (double xy [2], double p[ROWS][COLUMNS], std::string name, std::string leg, scene_struct &sceneStruct_Leg){
 
     double x=xy[0];
     double y=xy[1];
-    cout<<"X ENTRA NELLA FUNZIONE"<<"\n";
-    cout<<"Y ENTRA NELLA FUNZIONE"<<"\n";
-    if (name == "NOT_X" || name == "BED_X"){
+    cout<<"X ENTRA NELLA FUNZIONE: "<< x<<"\n";
+    cout<<"Y ENTRA NELLA FUNZIONE: "<<y<<"\n";
+
+    if (name == "NOT_X" || name == "BED_X")
         x=x-0.115;
-	}
-    else if (name == "NOT_MINUS_X" || name == "BED_MINUS_X"){
+    else if (name == "NOT_MINUS_X" || name == "BED_MINUS_X")
         x=x+0.115;
-}
-    else if (name == "NOT_Y" || name == "BED_Y"){
+    else if (name == "NOT_Y" || name == "BED_Y")
         y=y-0.115;
-}
-    else if (name == "NOT_MINUS_Y" || name == "BED_MINUS_Y"){
+    else if (name == "NOT_MINUS_Y" || name == "BED_MINUS_Y")
         y=y+0.115;
-   }
-cout<<"X ESCE DAGLI IF"<<x<<"\n";
-    cout<<"Y ESCE DAGLI IF"<<y<<"\n";
+
+    cout<<"X ESCE DAGLI IF: "<<x<<"\n";
+    cout<<"Y ESCE DAGLI IF: "<<y<<"\n";
+
+    sceneStruct_Leg.x_leg=x;
+    sceneStruct_Leg.y_leg=y;
+
+
+    cout<<"VALORE NELLA STRUCT X: " <<sceneStruct_Leg.x_leg<<"\n";
+    cout<<"VALORE NELLA STRUCT Y: " <<sceneStruct_Leg.y_leg<<"\n";
+
+
+    
     int pin=0;
     for (int i = 0; i<COLUMNS; i++){
         if (x<p[1][i]+THR && x>p[1][i]-THR){
             if (y<p[2][i]+THR && y>p[2][i]-THR){
                 pin = i+1;
+                cout<<"PIN TROVATO: " <<pin <<"\n";
+                sceneStruct_Leg.type_pin="Pin_"+ boost::to_string(pin);
+                cout<<"PIN ENTRA NELLA FUNZIONE: "<<sceneStruct_Leg.type_pin<<"\n";
+                
                 //ROS_INFO("\n\n***** %s connected to pin %d *****", leg.c_str(), pin);
                 return pin;
             }
@@ -384,7 +409,7 @@ cout<<"X ESCE DAGLI IF"<<x<<"\n";
 
 
 
-void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double pins[ROWS][COLUMNS], configuration &conf_leg, std::string leg_name){
+void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double pins[ROWS][COLUMNS], configuration &conf_leg, std::string leg_name, scene_struct &sceneStruct_Leg){
 	
     
     tf::Matrix3x3 m0(t.getRotation());
@@ -398,14 +423,19 @@ void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double 
     change_angle_interval(angles);
 //After "check_configuration" function I know the type of the leg and the orientation respect to the WORLD frame
     check_configuration(angles, conf_leg, leg_name);
+    sceneStruct_Leg.type_leg=conf_leg.name_config;
+    
     ROS_INFO("Conf leg %s:  %s", leg_name.c_str(), conf_leg.name_config.c_str());
-
+    cout<<"TIPO DI LEG NELLA STRUCT: " << sceneStruct_Leg.type_leg <<"\n";
     xy[0]=t.getOrigin().x();
     xy[1]=t.getOrigin().y();
-    conf_leg.pin=eval_pin(xy, pins, conf_leg.name_config, conf_leg.leg_id);
-    conf_leg.legPinRelationDegree=computeLegPinRelation(xy,pins,conf_leg.pin,conf_leg.name_config,conf_leg.leg_id); 
+    conf_leg.pin=eval_pin(xy, pins, conf_leg.name_config, conf_leg.leg_id, sceneStruct_Leg);
+
+
+
+    /*conf_leg.legPinRelationDegree=computeLegPinRelation(xy,pins,conf_leg.pin,conf_leg.name_config,conf_leg.leg_id); 
     conf_leg.pinTableRelationDegree=computePinTableRelation(pins, conf_leg.pin);
-    conf_leg.nameRelation=NAMERELATION;
+    conf_leg.nameRelation=NAMERELATION;*/
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //PER LA MIA FUNZIONE (QUELLA VECCHIA) è QUESTA PARTE SOTTO DA DECOMMENTARE
@@ -454,7 +484,7 @@ int main(int argc, char **argv)
     tf::TransformListener listener12;
 
     //PROVATO CON 100 MA NESSUN RISULTATO
-//PRIMA IN ORIGINE ERA 10
+    //PRIMA IN ORIGINE ERA 10
      //Publisher for data from tf
      ros::Publisher Scene_pub = n.advertise<vision::SceneTable>("scene_data", 10);
 
@@ -493,8 +523,16 @@ int main(int argc, char **argv)
     struct configuration conf_leg4;
     struct configuration conf_leg8;
     struct configuration conf_leg12;
-    ///////NEW STRUCT FOR RELATIONS
+    ///////NEW STRUCTS FOR RELATIONS
     struct relation relationInScene;
+    struct scene_struct sceneStruct_Leg0;
+    struct scene_struct sceneStruct_Leg4;
+    struct scene_struct sceneStruct_Leg8;
+    struct scene_struct sceneStruct_Leg12;
+    vector<scene_struct> sceneStructVector;
+    //struct scene_struct sceneStructArray [4];
+    int leg_counter=0;   
+    
     int k=1;
     //Variables used to create the folders to save the images by basing on the parameter in the Parameter Server which have the name of the bag file and the folder name of it
     char sep='/';
@@ -507,7 +545,7 @@ int main(int argc, char **argv)
     while(n.ok()) {
 
     bool isThereATable=false;
-    bool *tablePtr=&isThereATable;
+    //bool *tablePtr=&isThereATable;
     
 //DURATA ORIGINALE è 1
 //CON 8 IL RISULTATO SEMBRA ACCETTABILE MA POI TORNA A QUELLO CHE NON DEVE VENIRE DOPO CHE IL BAG è TERMINATO
@@ -612,28 +650,34 @@ int main(int argc, char **argv)
             listener0.waitForTransform("/WORLD", "/ar_marker_100", ros::Time(0), ros::Duration(0.00005));
             listener0.lookupTransform("/WORLD", "/ar_marker_100", ros::Time(0), transform_w_100);
                         
-            eval_config(angles_100,transform_w_100, xy_100, pins, conf_leg0, "Leg_0");
+            eval_config(angles_100,transform_w_100, xy_100, pins, conf_leg0, "Leg_0", sceneStruct_Leg0);
 
+	    
             if (conf_leg0.pin > 0 && conf_leg0.name_config.size()>0) {
                 f << conf_leg0.leg_id << std::endl << conf_leg0.name_config << std::endl << "Pin:" << conf_leg0.pin << std::endl << std::endl;
                 fypr << angles_100[2] <<" " << angles_100[1] <<" " << angles_100[0] << std::endl;
                 fxy << "leg 0 : " << xy_100[0] <<" " << xy_100[1] << std:: endl;
 
+		
+
                 vision::Configuration::Ptr msg0(new vision::Configuration);
 ///////////////////////////////////////////////////////////////////////////////////////
                 vision::Configuration_SIT::Ptr msg0SIT(new vision::Configuration_SIT);
+		
 ////////////////////////////////////////////////////////////////////////////////////////
 
                 init_original_message(ourScene, msg0, conf_leg0);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
                 
-		init_SIT_message(ourSceneToSIT, msg0SIT, conf_leg0);
-		if (*tablePtr==false){
-			add_table(ourSceneToSIT, msg0SIT, conf_leg0);
-			*tablePtr=true;
+		init_SIT_message(ourSceneToSIT, msg0SIT, conf_leg0, sceneStruct_Leg0);
+		if (isThereATable==false){
+			add_table(ourSceneToSIT, msg0SIT, conf_leg0, sceneStruct_Leg0);
+			//*tablePtr=true;
+			isThereATable=true;
 		}
-
+		sceneStructVector.push_back(sceneStruct_Leg0);
+		//sceneStructArray[leg_counter]=sceneStruct_Leg0;
 //////////////////////////////////////////////////////////////////////////
                 /*sit_armor_injected_msgs::SceneElement::Ptr ar0(new sit_armor_injected_msgs::SceneElement);
                 sit_armor_injected_msgs::SceneElement::Ptr pin0(new sit_armor_injected_msgs::SceneElement);
@@ -651,7 +695,7 @@ int main(int argc, char **argv)
         try {
             listener4.waitForTransform("/WORLD", "/ar_marker_104", ros::Time(0), ros::Duration(0.00005));
             listener4.lookupTransform("/WORLD", "/ar_marker_104", ros::Time(0), transform_w_104);
-            eval_config(angles_104,transform_w_104, xy_104, pins, conf_leg4, "Leg_4");
+            eval_config(angles_104,transform_w_104, xy_104, pins, conf_leg4, "Leg_4", sceneStruct_Leg4);
 
             if (conf_leg4.pin > 0 && conf_leg4.name_config.size()>0){
                 f << conf_leg4.leg_id << std::endl << conf_leg4.name_config << std::endl << "Pin:" << conf_leg4.pin << std::endl << std::endl;
@@ -670,12 +714,14 @@ int main(int argc, char **argv)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
                 
-		init_SIT_message(ourSceneToSIT, msg4SIT, conf_leg4);
-		if (*tablePtr==false){
-                	add_table(ourSceneToSIT, msg4SIT, conf_leg4);
-			*tablePtr=true;
+		init_SIT_message(ourSceneToSIT, msg4SIT, conf_leg4, sceneStruct_Leg4);
+		if (isThereATable==false){
+                	add_table(ourSceneToSIT, msg4SIT, conf_leg4, sceneStruct_Leg4);
+			isThereATable=true;
 		}
-
+                //leg_counter++;
+		sceneStructVector.push_back(sceneStruct_Leg4);
+                //sceneStructArray[leg_counter]=sceneStruct_Leg4;
 //////////////////////////////////////////////////////////////////////////
 		
                 /*sit_armor_injected_msgs::SceneElement::Ptr ar4(new sit_armor_injected_msgs::SceneElement);
@@ -691,13 +737,14 @@ int main(int argc, char **argv)
         try {
             listener8.waitForTransform("/WORLD", "/ar_marker_108", ros::Time(0), ros::Duration(0.00005));
             listener8.lookupTransform("/WORLD", "/ar_marker_108", ros::Time(0), transform_w_108);
-            eval_config(angles_108,transform_w_108, xy_108, pins, conf_leg8, "Leg_8");
+            eval_config(angles_108,transform_w_108, xy_108, pins, conf_leg8, "Leg_8", sceneStruct_Leg8);
 
             if (conf_leg8.pin > 0 && conf_leg8.name_config.size()>0){
                 f << conf_leg8.leg_id << std::endl << conf_leg8.name_config << std::endl << "Pin:" << conf_leg8.pin << std::endl << std::endl;
                 fypr << angles_108[2] <<" " << angles_108[1] <<" " << angles_108[0] << std::endl;
                 fxy << "leg 8: " << xy_108[0] <<" " << xy_108[1] << std:: endl;
-
+		
+		leg_counter++;
                 vision::Configuration::Ptr msg8(new vision::Configuration);
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -708,13 +755,14 @@ int main(int argc, char **argv)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
                 
-		init_SIT_message(ourSceneToSIT, msg8SIT, conf_leg8);
-		if (*tablePtr==false){
-			add_table(ourSceneToSIT, msg8SIT, conf_leg8);
-			*tablePtr=true;
+		init_SIT_message(ourSceneToSIT, msg8SIT, conf_leg8, sceneStruct_Leg8);
+		if (isThereATable==false){
+			add_table(ourSceneToSIT, msg8SIT, conf_leg8, sceneStruct_Leg8);
+			isThereATable=true;
 		}
-
-
+               // leg_counter++;
+		sceneStructVector.push_back(sceneStruct_Leg8);
+                //sceneStructArray[leg_counter]=sceneStruct_Leg8;
 //////////////////////////////////////////////////////////////////////////
 
                 /*sit_armor_injected_msgs::SceneElement::Ptr ar8(new sit_armor_injected_msgs::SceneElement);
@@ -731,12 +779,13 @@ int main(int argc, char **argv)
         try {
             listener12.waitForTransform("/WORLD", "/ar_marker_112", ros::Time(0), ros::Duration(0.00005));
             listener12.lookupTransform("/WORLD", "/ar_marker_112", ros::Time(0), transform_w_112);
-            eval_config(angles_112,transform_w_112, xy_112, pins, conf_leg12, "Leg_12");
+            eval_config(angles_112,transform_w_112, xy_112, pins, conf_leg12, "Leg_12", sceneStruct_Leg12);
 
             if (conf_leg12.pin > 0 && conf_leg12.name_config.size()>0) {
                 f << conf_leg12.leg_id << std::endl << conf_leg12.name_config << std::endl <<"Pin:" << conf_leg12.pin << std::endl << std::endl;
                 fypr << angles_112[2] <<" " << angles_112[1] <<" " << angles_112[0] << std::endl;
                 fxy << "leg 12: " << xy_112[0] <<" " << xy_112[1] << std:: endl;
+
 
                 vision::Configuration::Ptr msg12(new vision::Configuration);
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -747,12 +796,14 @@ int main(int argc, char **argv)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
                 
-		init_SIT_message(ourSceneToSIT, msg12SIT, conf_leg12);
-		if (*tablePtr==false){
-                	add_table(ourSceneToSIT, msg12SIT, conf_leg12);
-			*tablePtr=true;
+		init_SIT_message(ourSceneToSIT, msg12SIT, conf_leg12, sceneStruct_Leg12);
+		if (isThereATable==false){
+                	add_table(ourSceneToSIT, msg12SIT, conf_leg12, sceneStruct_Leg12);
+			isThereATable=true;
 		}
-
+                //leg_counter++;
+		sceneStructVector.push_back(sceneStruct_Leg12);
+                //sceneStructArray[leg_counter]=sceneStruct_Leg12;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -770,14 +821,55 @@ int main(int argc, char **argv)
         //Scene_pub_4Armor.publish(sceneForArmor);
         //PRINT FOR DEBUGGING
 	//cout<<*ourScene;
+	for(vector<scene_struct>::iterator it = sceneStructVector.begin(); it != sceneStructVector.end(); ++it){
 
+		//cout<<"NOME TIPO LEG NELL'ARRAY: "<<type_leg<<"\n";
+			cout<<"\n";
+			cout<<"SIZE ARRAY NOW: " << sceneStructVector.size()<<"\n";
+			cout<<"NOME GAMMA LEG NELL'ARRAY: "<<it->gamma_leg<<"\n";
+		        cout<<"TIPO LEG NELL'ARRAY: "<<it->type_leg<<"\n";
+			cout<<"X LEG NELL'ARRAY: "<<it->x_leg<<"\n";
+		        cout<<"Y LEG NELL'ARRAY: "<<it->y_leg<<"\n";
+			cout<<"GAMMA PIN NELL'ARRAY: "<<it->gamma_pin<<"\n";
+			cout<<"TIPO PIN NELL'ARRAY: "<<it->type_pin<<"\n";
+			cout<<"GAMMA TABLE NELL'ARRAY: "<<it->gamma_table<<"\n";
+			cout<<"TIPO TABLE NELL'ARRAY: "<<it->type_table<<"\n";
+			cout<<"\n";
+	  
+		
+		/*for (int i=0; i<=3; i++){
+		
+			cout<<"NOME GAMMA LEG NELL'ARRAY: "<<sceneStructArray[i].gamma_leg<<"\n";
+		        cout<<"TIPO LEG NELL'ARRAY: "<<sceneStructArray[i].type_leg<<"\n";
+			cout<<"X LEG NELL'ARRAY: "<<sceneStructArray[i].x_leg<<"\n";
+		        cout<<"Y LEG NELL'ARRAY: "<<sceneStructArray[i].y_leg<<"\n";
+			cout<<"GAMMA PIN NELL'ARRAY:: "<<sceneStructArray[i].gamma_pin<<"\n";
+			cout<<"TIPO PIN NELL'ARRAY: "<<sceneStructArray[i].type_pin<<"\n";
+			cout<<"GAMMA TABLE NELL'ARRAY: "<<sceneStructArray[i].gamma_table<<"\n";
+			cout<<"TIPO TABLE NELL'ARRAY: "<<sceneStructArray[i].type_table<<"\n";
+	  
+
+		
+
+		}*/
+	}
+	sceneStructVector.clear();
+       /*struct scene_struct LEG=sceneStruct_Leg0;
 	
-
-       
 	
-
 	//computeRelations(ourSceneToSIT);
-	
+	//cout<<sceneStruct_Leg0;
+        cout<<LEG.gamma_leg<<"\n";
+  	cout<<LEG.type_leg<<"\n";
+  	cout<<LEG.x_leg<<"\n";
+  	cout<<LEG.y_leg<<"\n";
+  	cout<<LEG.gamma_pin<<"\n";
+  	cout<<LEG.type_pin<<"\n";
+  	cout<<LEG.gamma_table<<"\n";
+  	cout<<LEG.type_table<<"\n";
+	/*cout<<sceneStruct_Leg4;
+	cout<<sceneStruct_Leg8;
+	cout<<sceneStruct_Leg12;*/
 
         Scene_pub.publish(ourScene);
 	SceneSIT_pub.publish(ourSceneToSIT);

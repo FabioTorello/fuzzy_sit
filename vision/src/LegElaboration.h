@@ -37,6 +37,19 @@ struct relation{
 
 };
 
+struct scene_struct{
+  std::string gamma_leg;
+  std::string type_leg;
+  double x_leg;
+  double y_leg;
+  std::string gamma_pin;
+  std::string type_pin;
+  std::string gamma_table;
+  std::string type_table;
+
+
+};
+
 void change_angle_interval(double rpy[3]){
 
     for(int i=0; i<3; i++){
