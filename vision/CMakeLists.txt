@@ -60,6 +60,7 @@ find_package(catkin REQUIRED COMPONENTS
    SceneTable.msg
    Configuration_SIT.msg
    SceneToSIT.msg
+   Relations.msg
   # SceneT.msg
  )
 

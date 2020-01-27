@@ -103,7 +103,7 @@ public class MemoryService extends AbstractNodeMain {
                                 System.out.print(relation.getDegreeRelation() + "\n");
                                 System.out.print("\n");
                             }*/
-                            memory.experience( scene(request.getTestRequest().getItems(), request.getTestRequest().getRelations(), request.getTestRequest().getFrame()), true,true);
+                           // memory.experience( scene(request.getTestRequest().getItems(), request.getTestRequest().getRelations(), request.getTestRequest().getFrame()), true,true);
                             //Show the experience graph
 
                             //THE SCENE GRAPH SHOULD BE VISUALIZE ONLY IN THE END OF THE BAGFILE
@@ -149,7 +149,7 @@ public class MemoryService extends AbstractNodeMain {
     private static final List<String> legsType = Arrays.asList("BED", "CHAIR", "ROOF", "NOT");
     private static int pin;*/
 
-    public static ConnectObjectScene scene(List<SceneItem> items, List<Relations> relations, long frame) {
+  /*  public static ConnectObjectScene scene(List<SceneItem> items, List<Relations> relations, long frame) {
        // if ((!items.isEmpty())&&(!relations.isEmpty())) {
             //Define the scene
             ConnectObjectScene scene = new ConnectObjectScene("frame" + frame);
@@ -191,7 +191,7 @@ public class MemoryService extends AbstractNodeMain {
                 //pin=true;
             }*/
                 //If the test is less general i.e. each pins corresponds to a class
-                else if (item.getDegreePin1() != 0) {
+              /*  else if (item.getDegreePin1() != 0) {
                     //Add an object type Pin_1
                     scene.addObject(new Pin_1("Pin_1", item.getGammaI(), item.getDegreePin1()));
                     //pin=true;
@@ -251,14 +251,14 @@ public class MemoryService extends AbstractNodeMain {
             }
 
             for (Relations relation : relations) {
-                scene.getRelations().add(new SpatialRelation(relation.getGammaSubject(), relation.getNameRelation(), relation.getGammaObject(), relation.getDegreeRelation()));
+                scene.getRelations().add(new SpatialRelation(relation.getGammaSubject(), relation.getNameRelation(), relation.getGammaObject(), relation.getDegreeRelation());
             }
 
             return scene;
        // }
         //return null;
 
-    }
+    }*/
    /* public static ConnectObjectScene scene(List<SceneItem> items, int frame) {
         ConnectObjectScene scene = new ConnectObjectScene("frame"+frame);
         //There is always the type Table object and it is the origin of my system so x=0 and y=0

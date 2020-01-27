@@ -26,6 +26,17 @@ struct configuration{
 
 };
 
+struct relation{
+
+   std::string gamma_subject;
+   std::string gamma_object;
+   std::string nameRelation;
+   double degreeRelation;
+    
+    
+
+};
+
 void change_angle_interval(double rpy[3]){
 
     for(int i=0; i<3; i++){

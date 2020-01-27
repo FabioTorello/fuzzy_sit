@@ -1,3 +1,3 @@
-string leg_id
-string name_config
-int64 pin
+string gamma_i
+string type
+float64 degree

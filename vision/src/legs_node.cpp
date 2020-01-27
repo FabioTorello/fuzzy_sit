@@ -7,10 +7,10 @@
 #include "tf/LinearMath/Transform.h"
 #include "geometry_msgs/TransformStamped.h"
 #include "sensor_msgs/Image.h"
+
 #include <tf/transform_listener.h>
 #include <math.h>
 #include <stdlib.h>
-
 
 #include "LegElaboration.h"
 #include <vision/Configuration.h>
@@ -46,7 +46,8 @@ using namespace cv;
 static int frameInstant=0;
 static cv_bridge::CvImagePtr inputImage;
 static string path_to_save_images="/home/fabio/java_workspace/src/vision/images/";
-
+static long gamma_index=0;
+//static int table=1;
 
 
 
@@ -71,23 +72,48 @@ void init_original_message(vision::SceneTable::Ptr a, vision::Configuration::Ptr
 
 void init_SIT_message(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr b, struct configuration c){
 
-    b->leg_id = c.leg_id;
-    b->name_config = c.name_config;
-    //b->degreeOrientation=c.degreeOrientation;
-    b->pin=c.pin;
-    //b->table="Table";
-    //b->nameRelation=c.nameRelation;
-    //b->pinTableRelationDegree=c.pinTableRelationDegree;
-    //b->legPinRelationDegree=c.legPinRelationDegree;
+    gamma_index++;
+
+    //For a leg
+    b->gamma_i="g_"+ boost::to_string(gamma_index); 
+    b->type = c.name_config;
+    b->degree=c.degreeOrientation;
+    a->items.push_back( *b);
+
+    //For a pin
+    b->gamma_i="p_"+ boost::to_string(gamma_index);
+    b->type="Pin_"+ boost::to_string(c.pin);
+    b->degree=1.0;
+    a->items.push_back( *b);
+    
+    
+    
     
     
    
 
-    a->sceneSIT.push_back( *b);
+    
+    //a->relations.push_back(*d);
     a->frame=frameInstant;
 
 }
 
+void add_table(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr b, struct configuration c){   
+
+    //For a table
+
+    b->gamma_i="t";
+    b->type="Table";
+    b->degree=1.0;
+
+    a->items.push_back( *b);    
+
+    
+
+}
+
+void computeRelations(vision::SceneToSIT::Ptr a, double pins[ROWS][COLUMNS]){
+}
 /*void init_msg_for_Armor(sit_armor_injected_msgs::SceneElement::Ptr leg, sit_armor_injected_msgs::SceneElement::Ptr pin, sit_armor_injected_msgs::SceneElementVector::Ptr msg, struct configuration c,
                         double xy[2],double p[ROWS][COLUMNS] ){
 
@@ -467,6 +493,8 @@ int main(int argc, char **argv)
     struct configuration conf_leg4;
     struct configuration conf_leg8;
     struct configuration conf_leg12;
+    ///////NEW STRUCT FOR RELATIONS
+    struct relation relationInScene;
     int k=1;
     //Variables used to create the folders to save the images by basing on the parameter in the Parameter Server which have the name of the bag file and the folder name of it
     char sep='/';
@@ -477,6 +505,10 @@ int main(int argc, char **argv)
     size_t pos;
 
     while(n.ok()) {
+
+    bool isThereATable=false;
+    bool *tablePtr=&isThereATable;
+    
 //DURATA ORIGINALE è 1
 //CON 8 IL RISULTATO SEMBRA ACCETTABILE MA POI TORNA A QUELLO CHE NON DEVE VENIRE DOPO CHE IL BAG è TERMINATO
         ros::Duration(1.0).sleep();
@@ -597,7 +629,10 @@ int main(int argc, char **argv)
 ///////////////////////////////////////////////////////////////////////////////////////////////
                 
 		init_SIT_message(ourSceneToSIT, msg0SIT, conf_leg0);
-
+		if (*tablePtr==false){
+			add_table(ourSceneToSIT, msg0SIT, conf_leg0);
+			*tablePtr=true;
+		}
 
 //////////////////////////////////////////////////////////////////////////
                 /*sit_armor_injected_msgs::SceneElement::Ptr ar0(new sit_armor_injected_msgs::SceneElement);
@@ -632,10 +667,14 @@ int main(int argc, char **argv)
 		init_original_message(ourScene, msg4, conf_leg4);
 
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
                 
 		init_SIT_message(ourSceneToSIT, msg4SIT, conf_leg4);
-
+		if (*tablePtr==false){
+                	add_table(ourSceneToSIT, msg4SIT, conf_leg4);
+			*tablePtr=true;
+		}
 
 //////////////////////////////////////////////////////////////////////////
 		
@@ -670,6 +709,10 @@ int main(int argc, char **argv)
 ///////////////////////////////////////////////////////////////////////////////////////////////
                 
 		init_SIT_message(ourSceneToSIT, msg8SIT, conf_leg8);
+		if (*tablePtr==false){
+			add_table(ourSceneToSIT, msg8SIT, conf_leg8);
+			*tablePtr=true;
+		}
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -705,6 +748,10 @@ int main(int argc, char **argv)
 ///////////////////////////////////////////////////////////////////////////////////////////////
                 
 		init_SIT_message(ourSceneToSIT, msg12SIT, conf_leg12);
+		if (*tablePtr==false){
+                	add_table(ourSceneToSIT, msg12SIT, conf_leg12);
+			*tablePtr=true;
+		}
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -725,6 +772,13 @@ int main(int argc, char **argv)
 	//cout<<*ourScene;
 
 	
+
+       
+	
+
+	//computeRelations(ourSceneToSIT);
+	
+
         Scene_pub.publish(ourScene);
 	SceneSIT_pub.publish(ourSceneToSIT);
 	
