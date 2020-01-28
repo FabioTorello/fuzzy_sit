@@ -31,7 +31,8 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/filesystem.hpp>
 #include <vector>
-
+#include <iostream> 
+#include <string> 
 
 # define ROWS 3
 # define COLUMNS 12
@@ -110,10 +111,10 @@ void init_SIT_message(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr 
 void add_table(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr b, struct configuration c, scene_struct &sceneStruct){   
 
     //For a table
-    sceneStruct.gamma_table="t";
-    sceneStruct.type_table="Table";
-    cout<<"NOME GAMMA TABLE: " <<sceneStruct.gamma_table<<"\n";
-    cout<<"NOME TIPO TABLE: " <<sceneStruct.type_table<<"\n";
+    //sceneStruct.gamma_table="t";
+    //sceneStruct.type_table="Table";
+    //cout<<"NOME GAMMA TABLE: " <<sceneStruct.gamma_table<<"\n";
+    //cout<<"NOME TIPO TABLE: " <<sceneStruct.type_table<<"\n";
 
     b->gamma_i="t";
     b->type="Table";
@@ -127,9 +128,153 @@ void add_table(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr b, stru
 
 
 
+double distance(double xlegframe,double ylegframe,double xPin,double yPin){
+    return sqrt((ylegframe - yPin) * (ylegframe - yPin) + (xlegframe - xPin) * (xlegframe - xPin));
+}
+
+double computeLegTableRelation (double xy [2]){
+    double xLeg=xy[0];
+    double yLeg=xy[1];
+    double xTable=0;
+    double yTable=0;
+    double connection=distance(xLeg, yLeg, xTable,yTable);
+    cout<<"CONNECTION TRA LEG E TABLE: " << connection <<"\n";			
+   /* if (connection <= CONNECTED_THRESHOLD){
+			
+	//double degree = 1-(fabs(connection) / CONNECTED_THRESHOLD);
+				
+	return degree;
+    }*/
+	double degree = 1 - (fabs(connection) / 0.4);
+
+return degree;
+//return 0;
+
+}
+
+
+//LA NUOVA COMPUTELEGPINRELATION IN ORIGINE ERA: double computeLegPinRelation (double xy [2], double p[ROWS][COLUMNS], int pin, std::string name, std::string leg)
+
+//NUOVA COMPUTELEGPINRELATION
+double computeLegPinRelation (double xy [2], double p[ROWS][COLUMNS], int pin){
+    double x=xy[0];
+    double y=xy[1];
+
+    ////è INUTILE PERCHÈ PASSO GIÀ, DALLA computeRelations, X E Y DELLE LEG MODIFICATI CON GLI STESSI CALCOLI IN EVAL_PIN PERCHÈ SALVATI NELLA 
+    //// STRUCT
+    /*if (name == "NOT_X" || name == "BED_X")
+        x=x-0.115;
+    else if (name == "NOT_MINUS_X" || name == "BED_MINUS_X")
+        x=x+0.115;
+    else if (name == "NOT_Y" || name == "BED_Y")
+        y=y-0.115;
+    else if (name == "NOT_MINUS_Y" || name == "BED_MINUS_Y")
+        y=y+0.115;*/
+    //////////////////////////////////////////////////////////////////////
+
+//i is the name of the pin
+    for (int i = 0; i<COLUMNS; i++){ 
+	if (i==pin-1){     
+       double connection=distance(x,y,p[1][i],p[2][i]);     
+         //cout<<connection;
+                //if( connectionNow < 0)
+			//connectionNow = connectionNow * -1;
+       		if (connection <= CONNECTED_THRESHOLD){
+			//double degree = 1-(abs(connectionNow) / CONNECTED_THRESHOLD);
+			
+            		double degree = 1-(fabs(connection) / CONNECTED_THRESHOLD);
+                        
+			
+			
+                       //ROS_INFO("\n\n***** %s %s to pin %d with degree %f with connection: %f *****", conf_leg.leg_id.c_str(), NAMERELATION, i+1, degree, connectionNow);
+	    		return degree;
+		}
+      	}
+    }
+//ROS_ERROR("   !!!!!!%s not connected to a PIN!!!!!!\n", leg.c_str());
+return 0;
+}
+
+
+//NUOVA COMPUTEPINTABLERELATION
+double computePinTableRelation(double p[ROWS][COLUMNS], int pin){
+        double xTable=0;
+	double yTable=0;
+        
+	for (int i = 0; i<COLUMNS; i++){ 
+		if (i==pin-1){
+			double connection=distance(xTable,yTable,p[1][i],p[2][i]);
+			//cout<<"\n"<<connection<<"\n";
+			double degree = 1 - (fabs(connection) / 0.4);	
+			return degree;
+		}
+	}
+}
+
+
+
 void computeRelations(vision::SceneToSIT::Ptr a, double pins[ROWS][COLUMNS], vector<scene_struct> structVector, vision::Relations::Ptr b, struct relation r){
 
-a->relations.push_back(*d);
+double xy[2];
+std:string toErase="Pin_";
+for(vector<scene_struct>::iterator it = structVector.begin(); it != structVector.end(); ++it){
+			/*cout<<"\n";
+			cout<<"DENTRO LA COMPUTERELATIONS"<<"\n";
+			cout<<"\n";
+			//cout<<"SIZE ARRAY NOW: " << sceneStructVector.size()<<"\n";
+			cout<<"NOME GAMMA LEG NELL'ARRAY: "<<it->gamma_leg<<"\n";
+		        cout<<"TIPO LEG NELL'ARRAY: "<<it->type_leg<<"\n";
+			cout<<"X LEG NELL'ARRAY: "<<it->x_leg<<"\n";
+		        cout<<"Y LEG NELL'ARRAY: "<<it->y_leg<<"\n";
+			cout<<"GAMMA PIN NELL'ARRAY: "<<it->gamma_pin<<"\n";
+			cout<<"TIPO PIN NELL'ARRAY: "<<it->type_pin<<"\n";
+			cout<<"GAMMA TABLE NELL'ARRAY: "<<it->gamma_table<<"\n";
+			cout<<"TIPO TABLE NELL'ARRAY: "<<it->type_table<<"\n";
+			cout<<"\n";*/
+
+	xy[0]=it->x_leg;
+	xy[1]=it->y_leg;
+	std::string pin_type=it->type_pin;
+	size_t pos = pin_type.find(toErase);
+ 
+	if (pos != std::string::npos)
+	{
+		// If found then erase it from string
+		pin_type.erase(pos, toErase.length());
+	}
+	
+	int pin=std::stoi(pin_type);
+
+///////////////Relations between a leg and a pin in a single scene_struct//////////
+	b->gamma_subject=it->gamma_leg;
+	b->gamma_object=it->gamma_pin;
+	b->nameRelation=NAMERELATION;
+	b->degreeRelation=computeLegPinRelation(xy,pins, pin);
+	a->relations.push_back(*b);
+////////////////////////////////////////////////////////////////////////////////////
+
+//////////////Relations between a pin and the table in a single scene_struct///////
+	b->gamma_subject=it->gamma_pin;
+	b->gamma_object="t";
+	b->nameRelation=NAMERELATION;
+	b->degreeRelation=computePinTableRelation(pins, pin);
+	a->relations.push_back(*b);
+	
+//////////////////////////////////////////////////////////////////////////////////
+
+//////////////Relations between a leg and the table in a single scene_struct///////
+
+	b->gamma_subject=it->gamma_leg;
+	b->gamma_object="t";
+	b->nameRelation=NAMERELATION;
+	b->degreeRelation=computeLegTableRelation(xy);	
+	a->relations.push_back(*b);
+
+//////////////////////////////////////////////////////////////////////////////////
+	
+}
+
+
 }
 
 
@@ -224,45 +369,8 @@ void initialize_pins_position (double p[ROWS][COLUMNS]){
 
 
 
-double distance(double xlegframe,double ylegframe,double xPin,double yPin){
-    return sqrt((ylegframe - yPin) * (ylegframe - yPin) + (xlegframe - xPin) * (xlegframe - xPin));
-}
 
 
-//NUOVA COMPUTELEGPINRELATION
-double computeLegPinRelation (double xy [2], double p[ROWS][COLUMNS], int pin, std::string name, std::string leg){
-    double x=xy[0];
-    double y=xy[1];
-    if (name == "NOT_X" || name == "BED_X")
-        x=x-0.115;
-    else if (name == "NOT_MINUS_X" || name == "BED_MINUS_X")
-        x=x+0.115;
-    else if (name == "NOT_Y" || name == "BED_Y")
-        y=y-0.115;
-    else if (name == "NOT_MINUS_Y" || name == "BED_MINUS_Y")
-        y=y+0.115;
-//i is the name of the pin
-    for (int i = 0; i<COLUMNS; i++){ 
-	if (i==pin-1){     
-       double connection=distance(x,y,p[1][i],p[2][i]);     
-         //cout<<connection;
-                //if( connectionNow < 0)
-			//connectionNow = connectionNow * -1;
-       		if (connection <= CONNECTED_THRESHOLD){
-			//double degree = 1-(abs(connectionNow) / CONNECTED_THRESHOLD);
-			
-            		double degree = 1-(fabs(connection) / CONNECTED_THRESHOLD);
-                        
-			
-			
-                       //ROS_INFO("\n\n***** %s %s to pin %d with degree %f with connection: %f *****", conf_leg.leg_id.c_str(), NAMERELATION, i+1, degree, connectionNow);
-	    		return degree;
-		}
-      	}
-    }
-ROS_ERROR("   !!!!!!%s not connected to a PIN!!!!!!\n", leg.c_str());
-return 0;
-}
 
 
 //VECCHIA COMPUTEPINTABLERELATION
@@ -292,20 +400,7 @@ return 0;
 }*/
 
 
-//NUOVA COMPUTEPINTABLERELATION
-double computePinTableRelation(double p[ROWS][COLUMNS], int pin){
-        double xTable=0;
-	double yTable=0;
-        
-	for (int i = 0; i<COLUMNS; i++){ 
-		if (i==pin-1){
-			double connection=distance(xTable,yTable,p[1][i],p[2][i]);
-			//cout<<"\n"<<connection<<"\n";
-			double degree = 1 - (fabs(connection) / 0.4);	
-			return degree;
-		}
-	}
-}
+
 
 
 
@@ -830,9 +925,11 @@ int main(int argc, char **argv)
         //Scene_pub_4Armor.publish(sceneForArmor);
         //PRINT FOR DEBUGGING
 	//cout<<*ourScene;
-	for(vector<scene_struct>::iterator it = sceneStructVector.begin(); it != sceneStructVector.end(); ++it){
+	/*for(vector<scene_struct>::iterator it = sceneStructVector.begin(); it != sceneStructVector.end(); ++it){
 
 		//cout<<"NOME TIPO LEG NELL'ARRAY: "<<type_leg<<"\n";
+			cout<<"\n";
+			cout<<"FUORI LA COMPUTERELATIONS"<<"\n";
 			cout<<"\n";
 			cout<<"SIZE ARRAY NOW: " << sceneStructVector.size()<<"\n";
 			cout<<"NOME GAMMA LEG NELL'ARRAY: "<<it->gamma_leg<<"\n";
@@ -846,22 +943,8 @@ int main(int argc, char **argv)
 			cout<<"\n";
 	  
 		
-		/*for (int i=0; i<=3; i++){
-		
-			cout<<"NOME GAMMA LEG NELL'ARRAY: "<<sceneStructArray[i].gamma_leg<<"\n";
-		        cout<<"TIPO LEG NELL'ARRAY: "<<sceneStructArray[i].type_leg<<"\n";
-			cout<<"X LEG NELL'ARRAY: "<<sceneStructArray[i].x_leg<<"\n";
-		        cout<<"Y LEG NELL'ARRAY: "<<sceneStructArray[i].y_leg<<"\n";
-			cout<<"GAMMA PIN NELL'ARRAY:: "<<sceneStructArray[i].gamma_pin<<"\n";
-			cout<<"TIPO PIN NELL'ARRAY: "<<sceneStructArray[i].type_pin<<"\n";
-			cout<<"GAMMA TABLE NELL'ARRAY: "<<sceneStructArray[i].gamma_table<<"\n";
-			cout<<"TIPO TABLE NELL'ARRAY: "<<sceneStructArray[i].type_table<<"\n";
-	  
-
-		
-
-		}*/
-	}
+	
+	}*/
 
 	vision::Relations::Ptr relation(new vision::Relations);
 	computeRelations(ourSceneToSIT, pins, sceneStructVector, relation, relationInScene);

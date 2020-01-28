@@ -44,8 +44,8 @@ struct scene_struct{
   double y_leg;
   std::string gamma_pin;
   std::string type_pin;
-  std::string gamma_table;
-  std::string type_table;
+  //std::string gamma_table;
+  //std::string type_table;
 
 
 };
