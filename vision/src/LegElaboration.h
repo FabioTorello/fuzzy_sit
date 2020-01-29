@@ -18,11 +18,19 @@ struct configuration{
     std::string name_config;
     double degreeOrientation;
     int pin;
-    std::string nameRelation;
+    /*std::string nameRelation;
     double pinTableRelationDegree;
-    double legPinRelationDegree;
+    double legPinRelationDegree;*/
     
     
+
+};
+
+struct item{
+
+   std::string gamma_i;
+   std::string type;
+   double degree;       
 
 };
 
@@ -37,7 +45,15 @@ struct relation{
 
 };
 
-struct scene_struct{
+
+
+struct object{
+std::string name;
+double x, y;
+};
+
+
+/*struct scene_struct{
   std::string gamma_leg;
   std::string type_leg;
   double x_leg;
@@ -48,7 +64,7 @@ struct scene_struct{
   //std::string type_table;
 
 
-};
+};*/
 
 void change_angle_interval(double rpy[3]){
 
