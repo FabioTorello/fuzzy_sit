@@ -6,7 +6,7 @@ import com.google.common.collect.Lists;
 import it.emarolab.fuzzySIT.FuzzySITBase;
 import it.emarolab.fuzzySIT.perception.FeaturedSpatialObject;
 import it.emarolab.fuzzySIT.perception.PerceptionBase;
-import it.emarolab.fuzzySIT.perception.simple2D.ConnectObjectScene;
+import it.emarolab.fuzzySIT.perception.simple2D.*;
 import it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
 import org.ros.internal.loader.CommandLineLoader;
 import org.ros.message.MessageFactory;
@@ -19,26 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import it.emarolab.fuzzySIT.semantic.SITTBox;
 import java.util.Scanner;
-import it.emarolab.fuzzySIT.perception.simple2D.Point2;
-import it.emarolab.fuzzySIT.perception.simple2D.Leg;
-import it.emarolab.fuzzySIT.perception.simple2D.BedLeg;
-import it.emarolab.fuzzySIT.perception.simple2D.ChairLeg;
-import it.emarolab.fuzzySIT.perception.simple2D.RoofLeg;
-import it.emarolab.fuzzySIT.perception.simple2D.NotLeg;
-import it.emarolab.fuzzySIT.perception.simple2D.Pin;
-import it.emarolab.fuzzySIT.perception.simple2D.Pin_1;
-import it.emarolab.fuzzySIT.perception.simple2D.Pin_2;
-import it.emarolab.fuzzySIT.perception.simple2D.Pin_3;
-import it.emarolab.fuzzySIT.perception.simple2D.Pin_4;
-import it.emarolab.fuzzySIT.perception.simple2D.Pin_5;
-import it.emarolab.fuzzySIT.perception.simple2D.Pin_6;
-import it.emarolab.fuzzySIT.perception.simple2D.Pin_7;
-import it.emarolab.fuzzySIT.perception.simple2D.Pin_8;
-import it.emarolab.fuzzySIT.perception.simple2D.Pin_9;
-import it.emarolab.fuzzySIT.perception.simple2D.Pin_10;
-import it.emarolab.fuzzySIT.perception.simple2D.Pin_11;
-import it.emarolab.fuzzySIT.perception.simple2D.Pin_12;
-import it.emarolab.fuzzySIT.perception.simple2D.Table;
+
 import it.emarolab.fuzzySIT.semantic.axioms.SpatialObject;
 import java.lang.Object;
 import java.util.Arrays;
@@ -149,116 +130,209 @@ public class MemoryService extends AbstractNodeMain {
     private static final List<String> legsType = Arrays.asList("BED", "CHAIR", "ROOF", "NOT");
     private static int pin;*/
 
-  /*  public static ConnectObjectScene scene(List<SceneItem> items, List<Relations> relations, long frame) {
-       // if ((!items.isEmpty())&&(!relations.isEmpty())) {
+   public static ConnectObjectScene scene(List<SceneItem> items, List<Relations> relations, long frame) {
+        if ((!items.isEmpty())&&(!relations.isEmpty())) {
             //Define the scene
             ConnectObjectScene scene = new ConnectObjectScene("frame" + frame);
 
-            boolean table = false;
-            boolean pin = false;
-            boolean bed = false;
-            boolean roof = false;
-            boolean chair = false;
-            boolean not = false;
+
 
             for (SceneItem item : items) {
-
-
-                if (item.getDegreeBed() != 0) {
-                    //Add an object type BedLeg
-                    scene.addObject(new BedLeg("BedLeg", item.getGammaI(), item.getDegreeBed()));
-                    //bed=true;
-                } else if (item.getDegreeRoof() != 0) {
-                    //Add an object type RoofLeg
-                    scene.addObject(new RoofLeg("RoofLeg", item.getGammaI(), item.getDegreeRoof()));
-                    //roof=true;
-
-                } else if (item.getDegreeChair() != 0) {
-                    //Add an object type ChairLeg
-                    scene.addObject(new ChairLeg("ChairLeg", item.getGammaI(), item.getDegreeChair()));
-                    //chair=true;
-
-                } else if (item.getDegreeNot() != 0) {
-                    //Add an object type NotLeg
-                    scene.addObject(new NotLeg("NotLeg", item.getGammaI(), item.getDegreeNot()));
-                    //not=true;
+                /////////////BED LEG////////////////////////////////
+                if(item.getType()=="BED_X") {
+                    //Add an object type BED_X
+                    scene.addObject(new BED_X(item.getType(), item.getGammaI(), item.getDegree()));
                 }
 
+                else if(item.getType()=="BED_MINUS_X") {
+                    //Add an object type BED_MINUS_X
+                    scene.addObject(new BED_MINUS_X(item.getType(), item.getGammaI(), item.getDegree()));
+                }
 
-                //If the test is general i.e. the pins are represented as a single pin without taking into account its position on the table
-            /*else if (item.getDegreePin()!=0){
-                //Add an object type Pin
-                //pin=true;
-            }*/
-                //If the test is less general i.e. each pins corresponds to a class
-              /*  else if (item.getDegreePin1() != 0) {
+                else if(item.getType()=="BED_Y") {
+                    //Add an object type BED_Y
+                    scene.addObject(new BED_Y(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+
+                else if(item.getType()=="BED_MINUS_Y") {
+                    //Add an object type BED_X
+                    scene.addObject(new BED_MINUS_Y(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+                ///////////////////////////////////////////////////////
+
+                ////////////CHAIR LEG/////////////////////////////////
+                else if(item.getType()=="CHAIR_X") {
+                    //Add an object type CHAIR_X
+                    scene.addObject(new CHAIR_X(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+
+                else if(item.getType()=="CHAIR_MINUS_X") {
+                    //Add an object type CHAIR_MINUS_X
+                    scene.addObject(new CHAIR_MINUS_X(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+
+                else if(item.getType()=="CHAIR_Y") {
+                    //Add an object type CHAIR_Y
+                    scene.addObject(new CHAIR_Y(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+
+                else if(item.getType()=="CHAIR_MINUS_Y") {
+                    //Add an object type CHAIR_MINUS_Y
+                    scene.addObject(new CHAIR_MINUS_Y(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+                ///////////////////////////////////////////////////////
+
+                ////////////ROOF LEG/////////////////////////////////
+                else if(item.getType()=="ROOF_X") {
+                    //Add an object type ROOF_X
+                    scene.addObject(new ROOF_X(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+
+                else if(item.getType()=="ROOF_MINUS_X") {
+                    //Add an object type ROOF_MINUS_X
+                    scene.addObject(new ROOF_MINUS_X(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+
+                else if(item.getType()=="ROOF_Y") {
+                    //Add an object type ROOF_Y
+                    scene.addObject(new ROOF_Y(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+
+                else if(item.getType()=="ROOF_MINUS_Y") {
+                    //Add an object type ROOF_MINUS_Y
+                    scene.addObject(new ROOF_MINUS_Y(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+                ///////////////////////////////////////////////////////
+
+                ////////////NOT LEG/////////////////////////////////
+                else if(item.getType()=="NOT_X") {
+                    //Add an object type NOT_X
+                    scene.addObject(new NOT_X(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+
+                else if(item.getType()=="NOT_MINUS_X") {
+                    //Add an object type NOT_MINUS_X
+                    scene.addObject(new NOT_MINUS_X(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+
+                else if(item.getType()=="NOT_Y") {
+                    //Add an object type NOT_Y
+                    scene.addObject(new NOT_Y(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+
+                else if(item.getType()=="NOT_MINUS_Y") {
+                    //Add an object type NOT_MINUS_Y
+                    scene.addObject(new NOT_MINUS_Y(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+                ///////////////////////////////////////////////////////
+
+                ///////////Pin_1//////////////////////////////////////
+                else if(item.getType()=="Pin_1") {
                     //Add an object type Pin_1
-                    scene.addObject(new Pin_1("Pin_1", item.getGammaI(), item.getDegreePin1()));
-                    //pin=true;
-                } else if (item.getDegreePin2() != 0) {
-                    //Add an object type Pin_2
-                    scene.addObject(new Pin_2("Pin_2", item.getGammaI(), item.getDegreePin2()));
-                    //pin=true;
-                } else if (item.getDegreePin3() != 0) {
-                    //Add an object type Pin_3
-                    scene.addObject(new Pin_3("Pin_3", item.getGammaI(), item.getDegreePin3()));
-                    //pin=true;
-                } else if (item.getDegreePin4() != 0) {
-                    //Add an object type Pin_4
-                    scene.addObject(new Pin_4("Pin_4", item.getGammaI(), item.getDegreePin4()));
-                    //pin=true;
-                } else if (item.getDegreePin5() != 0) {
-                    //Add an object type Pin_5
-                    scene.addObject(new Pin_5("Pin_5", item.getGammaI(), item.getDegreePin5()));
-                    //pin=true;
-                } else if (item.getDegreePin6() != 0) {
-                    //Add an object type Pin_6
-                    scene.addObject(new Pin_6("Pin_6", item.getGammaI(), item.getDegreePin6()));
-                    //pin=true;
-                } else if (item.getDegreePin7() != 0) {
-                    //Add an object type Pin_7
-                    scene.addObject(new Pin_7("Pin_7", item.getGammaI(), item.getDegreePin7()));
-                    //pin=true;
-                } else if (item.getDegreePin8() != 0) {
-                    //Add an object type Pin_8
-                    scene.addObject(new Pin_8("Pin_8", item.getGammaI(), item.getDegreePin8()));
-                    //pin=true;
-                } else if (item.getDegreePin9() != 0) {
-                    //Add an object type Pin_9
-                    scene.addObject(new Pin_9("Pin_9", item.getGammaI(), item.getDegreePin9()));
-                    //pin=true;
-                } else if (item.getDegreePin10() != 0) {
-                    //Add an object type Pin_10
-                    scene.addObject(new Pin_10("Pin_10", item.getGammaI(), item.getDegreePin10()));
-                    //pin=true;
-                } else if (item.getDegreePin11() != 0) {
-                    //Add an object type Pin_11
-                    scene.addObject(new Pin_11("Pin_11", item.getGammaI(), item.getDegreePin11()));
-                    //pin=true;
-                } else if (item.getDegreePin12() != 0) {
-                    //Add an object type Pin_12
-                    scene.addObject(new Pin_12("Pin_12", item.getGammaI(), item.getDegreePin12()));
-                    //pin=true;
-                } else if (item.getDegreeTable() != 0) {
-                    //Add an object type Table
-                    scene.addObject(new Table("Table", item.getGammaI(), item.getDegreeTable()));
-                    //table=true;
-                } else {
-                    System.err.println("The leg has no type");
+                    scene.addObject(new Pin_1(item.getType(), item.getGammaI(), item.getDegree()));
                 }
+                ///////////////////////////////////////////////////////
 
+                ///////////Pin_2//////////////////////////////////////
+                else if(item.getType()=="Pin_2") {
+                    //Add an object type Pin_2
+                    scene.addObject(new Pin_2(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+                ///////////////////////////////////////////////////////
+
+                ///////////Pin_3//////////////////////////////////////
+                else if(item.getType()=="Pin_3") {
+                    //Add an object type Pin_3
+                    scene.addObject(new Pin_3(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+                ///////////////////////////////////////////////////////
+
+                ///////////Pin_4//////////////////////////////////////
+                else if(item.getType()=="Pin_4") {
+                    //Add an object type Pin_4
+                    scene.addObject(new Pin_4(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+                ///////////////////////////////////////////////////////
+
+                ///////////Pin_5//////////////////////////////////////
+                else if(item.getType()=="Pin_5") {
+                    //Add an object type Pin_5
+                    scene.addObject(new Pin_5(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+                ///////////////////////////////////////////////////////
+
+                ///////////Pin_6//////////////////////////////////////
+                else if(item.getType()=="Pin_6") {
+                    //Add an object type Pin_6
+                    scene.addObject(new Pin_6(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+                ///////////////////////////////////////////////////////
+
+                ///////////Pin_7//////////////////////////////////////
+                else if(item.getType()=="Pin_7") {
+                    //Add an object type Pin_7
+                    scene.addObject(new Pin_7(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+                ///////////////////////////////////////////////////////
+
+                ///////////Pin_8//////////////////////////////////////
+                else if(item.getType()=="Pin_8") {
+                    //Add an object type Pin_8
+                    scene.addObject(new Pin_8(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+                ///////////////////////////////////////////////////////
+
+                ///////////Pin_9//////////////////////////////////////
+                else if(item.getType()=="Pin_9") {
+                    //Add an object type Pin_9
+                    scene.addObject(new Pin_9(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+                ///////////////////////////////////////////////////////
+
+                ///////////Pin_10//////////////////////////////////////
+                else if(item.getType()=="Pin_10") {
+                    //Add an object type Pin_10
+                    scene.addObject(new Pin_10(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+                ///////////////////////////////////////////////////////
+
+                ///////////Pin_11//////////////////////////////////////
+                else if(item.getType()=="Pin_11") {
+                    //Add an object type Pin_11
+                    scene.addObject(new Pin_11(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+                ///////////////////////////////////////////////////////
+
+                ///////////Pin_12//////////////////////////////////////
+                else if(item.getType()=="Pin_12") {
+                    //Add an object type Pin_12
+                    scene.addObject(new Pin_12(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+                ///////////////////////////////////////////////////////
+
+                ///////////Table//////////////////////////////////////
+                else if(item.getType()=="Table") {
+                    //Add an object type Table
+                    scene.addObject(new Table(item.getType(), item.getGammaI(), item.getDegree()));
+                }
+                ///////////////////////////////////////////////////////
 
             }
 
+
+
+
+
+
             for (Relations relation : relations) {
-                scene.getRelations().add(new SpatialRelation(relation.getGammaSubject(), relation.getNameRelation(), relation.getGammaObject(), relation.getDegreeRelation());
+                scene.getRelations().add(new SpatialRelation(relation.getGammaSubject(), relation.getNameRelation(), relation.getGammaObject(), relation.getDegreeRelation()));
             }
 
             return scene;
-       // }
-        //return null;
+            }
+        return null;
+   }
 
-    }*/
    /* public static ConnectObjectScene scene(List<SceneItem> items, int frame) {
         ConnectObjectScene scene = new ConnectObjectScene("frame"+frame);
         //There is always the type Table object and it is the origin of my system so x=0 and y=0

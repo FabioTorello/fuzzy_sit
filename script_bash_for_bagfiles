@@ -33,16 +33,19 @@ for f in $SEARCH_FOLDER
 do
     if [ -d "$f" ]
     then
+	#echo "$f is a FOLDER"
+	rosparam set folder_name $f
         for ff in $f/*
         do 
 	    if [ -f "$ff"  ]  
 	    then
 		if [ ${ff: -4} == ".bag" ]
 		then
-            	     echo "Processing A FILE: $ff"
-	 	     rosparam set NAME true
+            	     #echo "Processing A FILE: $ff"
+		     rosparam set file_name $ff
+	 	     #rosparam set NAME true
 		     rosbag play $ff
-	 	     rosparam set NAME false
+	 	     #rosparam set NAME false
 
 
 	    #else

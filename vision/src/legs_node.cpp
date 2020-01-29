@@ -95,11 +95,7 @@ void init_SIT_message(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr 
     b->type="Pin_"+ boost::to_string(c.pin);
     b->degree=1.0;
     a->items.push_back( *b);
-    
-    
-    
-    
-    
+       
    
 
     
@@ -132,6 +128,7 @@ double distance(double xlegframe,double ylegframe,double xPin,double yPin){
     return sqrt((ylegframe - yPin) * (ylegframe - yPin) + (xlegframe - xPin) * (xlegframe - xPin));
 }
 
+
 double computeLegTableRelation (double xy [2]){
     double xLeg=xy[0];
     double yLeg=xy[1];
@@ -152,6 +149,61 @@ return degree;
 
 }
 
+
+double computeLegLegRelation (double xyLeg1[2], double xyLeg2 [2]){
+    double xLeg1=xyLeg1[0];
+    double yLeg1=xyLeg1[1];
+    double xLeg2=xyLeg2[0];
+    double yLeg2=xyLeg2[1];
+    double connection=distance(xLeg1, yLeg1, xLeg2,yLeg2);
+    cout<<"CONNECTION TRA LEG E LEG: " << connection <<"\n";			
+   if (connection <= CONNECTED_THRESHOLD){
+			
+	double degree = 1-(fabs(connection) / CONNECTED_THRESHOLD);
+				
+	return degree;
+    }
+	//double degree = 1 - (fabs(connection) / 0.4);
+
+//return degree;
+return 0;
+
+}
+
+double computePinPinRelation (double p[ROWS][COLUMNS], int pin1, int pin2){
+	double xpin1;
+	double ypin1;
+	double xpin2;
+	double ypin2;
+     	for (int i = 0; i<COLUMNS; i++){ 
+		if (i==pin1-1){ 
+	 		xpin1=p[1][i];  
+	 		ypin1=p[2][i];
+			break;
+		}
+	}
+
+	for (int i = 0; i<COLUMNS; i++){ 
+		if (i==pin2-1){
+			xpin2=p[1][i];  
+	 		ypin2=p[2][i];
+			break;
+		}
+	}
+	
+       	double connection=distance(xpin1,ypin1,xpin2,ypin2);
+	cout<<"CONNECTION TRA PIN E PIN: " << connection <<"\n";         
+       	if (connection <= CONNECTED_THRESHOLD){
+					
+        	double degree = 1-(fabs(connection) / CONNECTED_THRESHOLD);                        
+			
+	   	return degree;
+	}
+      	
+
+return 0;
+
+}
 
 //LA NUOVA COMPUTELEGPINRELATION IN ORIGINE ERA: double computeLegPinRelation (double xy [2], double p[ROWS][COLUMNS], int pin, std::string name, std::string leg)
 
@@ -215,9 +267,17 @@ double computePinTableRelation(double p[ROWS][COLUMNS], int pin){
 
 void computeRelations(vision::SceneToSIT::Ptr a, double pins[ROWS][COLUMNS], vector<scene_struct> structVector, vision::Relations::Ptr b, struct relation r){
 
-double xy[2];
-std:string toErase="Pin_";
-for(vector<scene_struct>::iterator it = structVector.begin(); it != structVector.end(); ++it){
+	double xy_leg1[2];
+	double xy_leg2[2];
+	int pin1;
+	int pin2;
+	std:string toErase="Pin_";
+	int actual_loop_size=0;
+
+	for(vector<scene_struct>::iterator it = structVector.begin(); it != structVector.end(); ++it){
+
+			actual_loop_size++;
+		
 			/*cout<<"\n";
 			cout<<"DENTRO LA COMPUTERELATIONS"<<"\n";
 			cout<<"\n";
@@ -232,47 +292,99 @@ for(vector<scene_struct>::iterator it = structVector.begin(); it != structVector
 			cout<<"TIPO TABLE NELL'ARRAY: "<<it->type_table<<"\n";
 			cout<<"\n";*/
 
-	xy[0]=it->x_leg;
-	xy[1]=it->y_leg;
-	std::string pin_type=it->type_pin;
-	size_t pos = pin_type.find(toErase);
- 
-	if (pos != std::string::npos)
-	{
-		// If found then erase it from string
-		pin_type.erase(pos, toErase.length());
+		xy_leg1[0]=it->x_leg;
+		xy_leg1[1]=it->y_leg;
+		std::string pin_type=it->type_pin;
+		size_t pos = pin_type.find(toErase);
+	 
+		if (pos != std::string::npos)
+		{
+			// If found then erase it from string
+			pin_type.erase(pos, toErase.length());
+		}
+	
+		pin1=std::stoi(pin_type);
+
+		///////////////Relations between a leg and a pin in a single scene_struct//////////
+		b->gamma_subject=it->gamma_leg;
+		b->gamma_object=it->gamma_pin;
+		b->nameRelation=NAMERELATION;
+		b->degreeRelation=computeLegPinRelation(xy_leg1,pins, pin1);
+		a->relations.push_back(*b);
+
+		////////////////////////////////////////////////////////////////////////////////////
+
+		//////////////Relations between a pin and the table in a single scene_struct///////
+		b->gamma_subject=it->gamma_pin;
+		b->gamma_object="t";
+		b->nameRelation=NAMERELATION;
+		b->degreeRelation=computePinTableRelation(pins, pin1);
+		a->relations.push_back(*b);
+	
+		//////////////////////////////////////////////////////////////////////////////////
+
+		//////////////Relations between a leg and the table in a single scene_struct///////
+
+		b->gamma_subject=it->gamma_leg;
+		b->gamma_object="t";
+		b->nameRelation=NAMERELATION;
+		b->degreeRelation=computeLegTableRelation(xy_leg1);	
+		a->relations.push_back(*b);
+
+		//////////////////////////////////////////////////////////////////////////////////
+
+		/////Loop to compute the relations intra-struct elements//////////////////////////
+		for(int i = 1; i < structVector.size(); i++){
+			if(i!=actual_loop_size){
+				xy_leg2[0]=structVector[i-1].x_leg;
+				xy_leg2[1]=structVector[i-1].y_leg;
+				std::string pin_type2=structVector[i-1].type_pin;
+				size_t pos2 = pin_type2.find(toErase);
+	 
+				if (pos2 != std::string::npos)
+				{
+					// If found then erase it from string
+					pin_type2.erase(pos2, toErase.length());
+				}
+	
+				pin2=std::stoi(pin_type2);
+	
+				///////////////Relations between a leg and a pin between different scene_struct//////////
+
+				b->gamma_subject=it->gamma_leg;
+				b->gamma_object=structVector[i-1].gamma_pin;
+				b->nameRelation=NAMERELATION;
+				b->degreeRelation=computeLegPinRelation(xy_leg1,pins, pin2);
+				a->relations.push_back(*b);
+
+				////////////////////////////////////////////////////////////////////////////////////////
+
+				///////////////Relations between legs between different scene_struct////////////////////
+
+				b->gamma_subject=it->gamma_leg;
+				b->gamma_object=structVector[i-1].gamma_leg;
+				b->nameRelation=NAMERELATION;
+				b->degreeRelation= computeLegLegRelation(xy_leg1, xy_leg2);
+				a->relations.push_back(*b);
+
+				///////////////////////////////////////////////////////////////////////////////////////
+
+				///////////////Relations between pins between different scene_struct////////////////////
+
+				b->gamma_subject=it->gamma_pin;
+				b->gamma_object=structVector[i-1].gamma_pin;
+				b->nameRelation=NAMERELATION;
+				b->degreeRelation=computePinPinRelation(pins, pin1, pin2);			
+				a->relations.push_back(*b);
+
+				///////////////////////////////////////////////////////////////////////////////////////			
+
+
+			}
+		} 	
+	
+	
 	}
-	
-	int pin=std::stoi(pin_type);
-
-///////////////Relations between a leg and a pin in a single scene_struct//////////
-	b->gamma_subject=it->gamma_leg;
-	b->gamma_object=it->gamma_pin;
-	b->nameRelation=NAMERELATION;
-	b->degreeRelation=computeLegPinRelation(xy,pins, pin);
-	a->relations.push_back(*b);
-////////////////////////////////////////////////////////////////////////////////////
-
-//////////////Relations between a pin and the table in a single scene_struct///////
-	b->gamma_subject=it->gamma_pin;
-	b->gamma_object="t";
-	b->nameRelation=NAMERELATION;
-	b->degreeRelation=computePinTableRelation(pins, pin);
-	a->relations.push_back(*b);
-	
-//////////////////////////////////////////////////////////////////////////////////
-
-//////////////Relations between a leg and the table in a single scene_struct///////
-
-	b->gamma_subject=it->gamma_leg;
-	b->gamma_object="t";
-	b->nameRelation=NAMERELATION;
-	b->degreeRelation=computeLegTableRelation(xy);	
-	a->relations.push_back(*b);
-
-//////////////////////////////////////////////////////////////////////////////////
-	
-}
 
 
 }
