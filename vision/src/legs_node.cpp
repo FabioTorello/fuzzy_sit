@@ -135,7 +135,97 @@ double distance(double xlegframe,double ylegframe,double xPin,double yPin){
 }
 
 
-double computeLegTableRelation (double xy [2]){
+double computeRelation (double x1, double y1, double x2, double y2, float threshold){
+   
+    double connection=distance(x1, y1, x2,y2);
+    cout<<"CONNECTION: " << connection <<"\n";			
+    if (connection <= threshold){
+			
+	double degree = 1-(fabs(connection) / threshold);
+				
+	return degree;
+    }
+	
+
+return 0;
+
+}
+
+void computeAllRelations(vector<object> &objectVector){
+
+	for (int i=0; i<objectVector.size();i++){
+		for (int j=0; j<objectVector.size();j++){
+
+			if(j!=i && j>i){
+				//cout<< "i: " << i << "--"<< "j: " << j << "\n";
+
+				if(objectVector[i].name.find("g")!=std::string::npos && objectVector[j].name.find("p")!=std::string::npos){
+					cout<<"\n";
+					cout<<"Entra in p-g g-p "<<"\n";
+					cout<<"Subject: "<< objectVector[i].name<<"\n";
+					cout<<"Object: "<< objectVector[j].name<<"\n";
+
+					/*//Subject is a leg
+					relationStruct.gamma_subject=objectVector[i].name;
+					//Object is a pin
+					relationStruct.gamma_object=objectVector[j].name;
+					relationStruct.nameRelation=NAMERELATION;
+					relationStruct.degreeRelation=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, CONNECTED_THRESHOLD);
+					relationStructVector.push_back(relationStruct);*/
+				}
+
+				if(objectVector[j].name.find("t")!=std::string::npos){
+					cout<<"\n";
+					cout<<"Entra in t-otherObject "<<"\n";
+					cout<<"Subject: "<< objectVector[i].name<<"\n";
+					cout<<"Object: "<< objectVector[j].name<<"\n";
+
+				  	/*//Subject
+					relationStruct.gamma_subject=objectVector[i].name;
+					//Object is the table
+					relationStruct.gamma_object=objectVector[j].name;
+					relationStruct.nameRelation=NAMERELATION;
+					relationStruct.degreeRelation=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, 0.4);
+					relationStructVector.push_back(relationStruct);*/
+				}
+
+				if(objectVector[i].name.find("p")!=std::string::npos && objectVector[j].name.find("p")!=std::string::npos){
+					cout<<"\n";
+					cout<<"Entra in p-p "<<"\n";
+					cout<<"Subject: "<< objectVector[i].name<<"\n";
+					cout<<"Object: "<< objectVector[j].name<<"\n";
+
+					/*//Subject is a leg
+					relationStruct.gamma_subject=objectVector[i].name;
+					//Object is a pin
+					relationStruct.gamma_object=objectVector[j].name;
+					relationStruct.nameRelation=NAMERELATION;
+					relationStruct.degreeRelation=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, 0.4);
+					relationStructVector.push_back(relationStruct);*/
+				}
+
+				if(objectVector[i].name.find("g")!=std::string::npos && objectVector[j].name.find("g")!=std::string::npos){
+					cout<<"\n";
+					cout<<"Entra in g-g "<<"\n";
+					cout<<"Subject: "<< objectVector[i].name<<"\n";
+					cout<<"Object: "<< objectVector[j].name<<"\n";
+					/*//Subject is a leg
+					relationStruct.gamma_subject=objectVector[i].name;
+					//Object is a pin
+					relationStruct.gamma_object=objectVector[j].name;
+					relationStruct.nameRelation=NAMERELATION;
+					relationStruct.degreeRelation=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, 0.4);
+					relationStructVector.push_back(relationStruct);*/
+				}
+
+			}
+		}
+	}
+
+}
+
+
+/*double computeLegTableRelation (double xy [2]){
     double xLeg=xy[0];
     double yLeg=xy[1];
     double xTable=0;
@@ -147,16 +237,16 @@ double computeLegTableRelation (double xy [2]){
 	//double degree = 1-(fabs(connection) / CONNECTED_THRESHOLD);
 				
 	return degree;
-    }*/
+    }
 	double degree = 1 - (fabs(connection) / 0.4);
 
 return degree;
 //return 0;
 
-}
+}*/
 
 
-double computeLegLegRelation (double xyLeg1[2], double xyLeg2 [2]){
+/*double computeLegLegRelation (double xyLeg1[2], double xyLeg2 [2]){
     double xLeg1=xyLeg1[0];
     double yLeg1=xyLeg1[1];
     double xLeg2=xyLeg2[0];
@@ -174,9 +264,9 @@ double computeLegLegRelation (double xyLeg1[2], double xyLeg2 [2]){
 //return degree;
 return 0;
 
-}
+}*/
 
-double computePinPinRelation (double p[ROWS][COLUMNS], int pin1, int pin2){
+/*double computePinPinRelation (double p[ROWS][COLUMNS], int pin1, int pin2){
 	double xpin1;
 	double ypin1;
 	double xpin2;
@@ -209,12 +299,12 @@ double computePinPinRelation (double p[ROWS][COLUMNS], int pin1, int pin2){
 
 return 0;
 
-}
+}*/
 
 //LA NUOVA COMPUTELEGPINRELATION IN ORIGINE ERA: double computeLegPinRelation (double xy [2], double p[ROWS][COLUMNS], int pin, std::string name, std::string leg)
 
 //NUOVA COMPUTELEGPINRELATION
-double computeLegPinRelation (double xy [2], double p[ROWS][COLUMNS], int pin){
+/*double computeLegPinRelation (double xy [2], double p[ROWS][COLUMNS], int pin){
     double x=xy[0];
     double y=xy[1];
 
@@ -231,7 +321,7 @@ double computeLegPinRelation (double xy [2], double p[ROWS][COLUMNS], int pin){
     //////////////////////////////////////////////////////////////////////
 
 //i is the name of the pin
-    for (int i = 0; i<COLUMNS; i++){ 
+    /*for (int i = 0; i<COLUMNS; i++){ 
 	if (i==pin-1){     
        double connection=distance(x,y,p[1][i],p[2][i]);     
          //cout<<connection;
@@ -251,11 +341,11 @@ double computeLegPinRelation (double xy [2], double p[ROWS][COLUMNS], int pin){
     }
 //ROS_ERROR("   !!!!!!%s not connected to a PIN!!!!!!\n", leg.c_str());
 return 0;
-}
+}*/
 
 
 //NUOVA COMPUTEPINTABLERELATION
-double computePinTableRelation(double p[ROWS][COLUMNS], int pin){
+/*double computePinTableRelation(double p[ROWS][COLUMNS], int pin){
         double xTable=0;
 	double yTable=0;
         
@@ -267,7 +357,7 @@ double computePinTableRelation(double p[ROWS][COLUMNS], int pin){
 			return degree;
 		}
 	}
-}
+}*/
 
 
 
@@ -1139,7 +1229,7 @@ int main(int argc, char **argv)
 	itemStruct.degree=1;
 	itemStructVector.push_back(itemStruct);
 
-	for(vector<item>::iterator it = itemStructVector.begin(); it != itemStructVector.end(); ++it){
+	/*for(vector<item>::iterator it = itemStructVector.begin(); it != itemStructVector.end(); ++it){
 
 		
 			cout<<"\n";
@@ -1153,7 +1243,10 @@ int main(int argc, char **argv)
 	  
 		
 	
-	}
+	}*/
+	
+	computeAllRelations(objectStructVector);
+
 	//computeRelations(ourSceneToSIT, pins, sceneStructVector, relation, relationInScene);
 	
 
