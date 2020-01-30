@@ -27,6 +27,13 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/////NEW IMPORT TO SAVE GRAPH TO IMAGE
+import java.awt.Container;
+import java.awt.image.BufferedImage;
+import java.awt.Graphics2D;
+import javax.imageio.ImageIO;
+/////////////////////////////////////////
+
 /**
  * The fuzzy SIT manager for the ontological T-Box.
  * <p>
@@ -653,8 +660,9 @@ public class SITTBox
 
             frame = new JFrame("Scene Hierarchy");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-
+            /////////////////////////
+            saveGraph( frame);
+            ////////////////////////////
             /*Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             int height = screenSize.height * 2 / 3;
             int width = screenSize.width * 2 / 3;
@@ -663,6 +671,24 @@ public class SITTBox
             updateShowing();
         });
     }
+
+    //////Function to save the graph memory to image////////////////////////////////
+    void saveGraph(JFrame frame){
+        Container content = frame.getContentPane();
+        BufferedImage img = new BufferedImage(content.getWidth(), content.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = img.createGraphics();
+        content.printAll(g2d);
+        g2d.dispose();
+
+        try {
+            ImageIO.write(img, "jpg", new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/MemoryGraph.jpg"));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+///////////////////////////////////////////////////////////
+
+
     // used by show for using a different thread.
     private void updateShowing() {
         SwingUtilities.invokeLater(() -> {

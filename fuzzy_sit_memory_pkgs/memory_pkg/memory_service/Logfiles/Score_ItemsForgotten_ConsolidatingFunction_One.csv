@@ -1,1 +1,18 @@
 ID,Time Stamp,Scene Name,Score,Score Weak Th.,Consolidating Function
+ID,Time Stamp,Scene Name,Score,Score Weak Th.,Consolidating Function
+ID,Time Stamp,Scene Name,Score,Score Weak Th.,Consolidating Function
+ID,Time Stamp,Scene Name,Score,Score Weak Th.,Consolidating Function
+ID,Time Stamp,Scene Name,Score,Score Weak Th.,Consolidating Function
+ID,Time Stamp,Scene Name,Score,Score Weak Th.,Consolidating Function
+ID,Time Stamp,Scene Name,Score,Score Weak Th.,Consolidating Function
+ID,Time Stamp,Scene Name,Score,Score Weak Th.,Consolidating Function
+ID,Time Stamp,Scene Name,Score,Score Weak Th.,Consolidating Function
+ID,Time Stamp,Scene Name,Score,Score Weak Th.,Consolidating Function
+ID,Time Stamp,Scene Name,Score,Score Weak Th.,Consolidating Function
+12,16:00:05.342,frame28,[(encode:3719.046655, store:2345.991389, retrieve:0.0, consolidate:0.376077, forget:1672.083164)=7737.497285ms ],0.1,Consolidating Function 1
+16,16:00:31.491,frame32,[(encode:2043.297231, store:7239.382195, retrieve:0.0, consolidate:0.584386, forget:4103.420102)=13386.683914ms ],0.1,Consolidating Function 1
+20,16:00:44.004,frame36,[(encode:1121.376658, store:4140.725943, retrieve:0.0, consolidate:0.913716, forget:2671.718167)=7934.734484ms ],0.1,Consolidating Function 1
+25,16:01:00.209,frame41,[(encode:1240.549742, store:4349.958037, retrieve:0.0, consolidate:0.084063, forget:4395.242565)=9985.834407ms ],0.1,Consolidating Function 1
+36,16:07:27.824,frame52,[(encode:6590.410049, store:100474.354206, retrieve:0.0, consolidate:0.68655, forget:73895.624099)=180961.074904ms ],0.1,Consolidating Function 1
+40,16:13:42.605,frame56,[(encode:5578.784908, store:139874.838771, retrieve:0.0, consolidate:0.861817, forget:117326.496115)=262780.981611ms ],0.1,Consolidating Function 1
+46,16:20:28.844,frame62,[(encode:8236.815755, store:187661.334851, retrieve:0.0, consolidate:0.234021, forget:173971.29894)=369869.683567ms ],0.1,Consolidating Function 1

@@ -26,10 +26,22 @@
 (implies Pin_11 Object)
 (implies Pin_12 Object)
 (implies Table Object)
-(implies BedLeg Object)
-(implies ChairLeg Object)
-(implies RoofLeg Object)
-(implies NotLeg Object)
+(implies BED_X Object)
+(implies BED_MINUS_X Object)
+(implies BED_Y Object)
+(implies BED_MINUS_Y Object)
+(implies CHAIR_X Object)
+(implies CHAIR_MINUS_X Object)
+(implies CHAIR_Y Object)
+(implies CHAIR_MINUS_Y Object)
+(implies ROOF_X Object)
+(implies ROOF_MINUS_X Object)
+(implies ROOF_Y Object)
+(implies ROOF_MINUS_Y Object)
+(implies NOT_X Object)
+(implies NOT_MINUS_X Object)
+(implies NOT_Y Object)
+(implies NOT_MINUS_Y Object)
 
 
 #############################################################################################
@@ -75,23 +87,38 @@
 #############################################################################################
 
 
-(define-concept Pin_1Connected         (and Pin_1         (some isConnectedTo  SpatialObject)))
-(define-concept Pin_2Connected         (and Pin_2         (some isConnectedTo  SpatialObject)))
-(define-concept Pin_3Connected         (and Pin_3         (some isConnectedTo  SpatialObject)))
-(define-concept Pin_4Connected         (and Pin_4         (some isConnectedTo  SpatialObject)))
-(define-concept Pin_5Connected         (and Pin_5         (some isConnectedTo  SpatialObject)))
-(define-concept Pin_6Connected         (and Pin_6         (some isConnectedTo  SpatialObject)))
-(define-concept Pin_7Connected         (and Pin_7         (some isConnectedTo  SpatialObject)))
-(define-concept Pin_8Connected         (and Pin_8         (some isConnectedTo  SpatialObject)))
-(define-concept Pin_9Connected         (and Pin_9         (some isConnectedTo  SpatialObject)))
-(define-concept Pin_10Connected        (and Pin_10         (some isConnectedTo  SpatialObject)))
-(define-concept Pin_11Connected        (and Pin_11         (some isConnectedTo  SpatialObject)))
-(define-concept Pin_12Connected        (and Pin_12         (some isConnectedTo  SpatialObject)))
-(define-concept TableConnected         (and Table       (some isConnectedTo  SpatialObject)))
-(define-concept BedLegConnected        (and BedLeg      (some isConnectedTo  SpatialObject)))
-(define-concept ChairLegConnected      (and ChairLeg    (some isConnectedTo  SpatialObject)))
-(define-concept RoofLegConnected       (and RoofLeg     (some isConnectedTo  SpatialObject)))
-(define-concept NotLegConnected        (and NotLeg      (some isConnectedTo  SpatialObject)))
+(define-concept Pin_1Connected              (and Pin_1          (some isConnectedTo  SpatialObject)))
+(define-concept Pin_2Connected              (and Pin_2          (some isConnectedTo  SpatialObject)))
+(define-concept Pin_3Connected              (and Pin_3          (some isConnectedTo  SpatialObject)))
+(define-concept Pin_4Connected              (and Pin_4          (some isConnectedTo  SpatialObject)))
+(define-concept Pin_5Connected              (and Pin_5          (some isConnectedTo  SpatialObject)))
+(define-concept Pin_6Connected              (and Pin_6          (some isConnectedTo  SpatialObject)))
+(define-concept Pin_7Connected              (and Pin_7          (some isConnectedTo  SpatialObject)))
+(define-concept Pin_8Connected              (and Pin_8          (some isConnectedTo  SpatialObject)))
+(define-concept Pin_9Connected              (and Pin_9          (some isConnectedTo  SpatialObject)))
+(define-concept Pin_10Connected             (and Pin_10         (some isConnectedTo  SpatialObject)))
+(define-concept Pin_11Connected             (and Pin_11         (some isConnectedTo  SpatialObject)))
+(define-concept Pin_12Connected             (and Pin_12         (some isConnectedTo  SpatialObject)))
+(define-concept TableConnected              (and Table          (some isConnectedTo  SpatialObject)))
+(define-concept BED_XConnected              (and BED_X          (some isConnectedTo  SpatialObject)))
+(define-concept BED_MINUS_XConnected        (and BED_MINUS_X    (some isConnectedTo  SpatialObject)))
+(define-concept BED_YConnected              (and BED_Y          (some isConnectedTo  SpatialObject)))
+(define-concept BED_MINUS_YConnected        (and BED_MINUS_Y    (some isConnectedTo  SpatialObject)))
+(define-concept CHAIR_XConnected            (and CHAIR_X        (some isConnectedTo  SpatialObject)))
+(define-concept CHAIR_MINUS_XConnected      (and CHAIR_MINUS_X  (some isConnectedTo  SpatialObject)))
+(define-concept CHAIR_YConnected            (and CHAIR_Y        (some isConnectedTo  SpatialObject)))
+(define-concept CHAIR_MINUS_YConnected      (and CHAIR_MINUS_Y  (some isConnectedTo  SpatialObject)))
+(define-concept ROOF_XConnected             (and ROOF_X         (some isConnectedTo  SpatialObject)))
+(define-concept ROOF_MINUS_XConnected       (and ROOF_MINUS_X   (some isConnectedTo  SpatialObject)))
+(define-concept ROOF_YConnected             (and ROOF_Y         (some isConnectedTo  SpatialObject)))
+(define-concept ROOF_MINUS_YConnected       (and ROOF_MINUS_Y   (some isConnectedTo  SpatialObject)))
+(define-concept NOT_XConnected              (and NOT_X          (some isConnectedTo  SpatialObject)))
+(define-concept NOT_MINUS_XConnected        (and NOT_MINUS_X    (some isConnectedTo  SpatialObject)))
+(define-concept NOT_YConnected              (and NOT_Y          (some isConnectedTo  SpatialObject)))
+(define-concept NOT_MINUS_YConnected        (and NOT_MINUS_Y    (some isConnectedTo  SpatialObject)))
+
+
+
 
 
 #############################################################################################
@@ -111,4 +138,4 @@
 ## shoulder reach the maximum value (i.e.: 1). On the other hand, the point in
 ## which it starts to become grater than 0 is set during learning as a percentage
 ## of the value of φ.
-#############################################################################################
+##############################################################################################

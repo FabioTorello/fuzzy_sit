@@ -24,7 +24,7 @@ public abstract class PerceptionBase<F> {
     }
 
     public void addObject( FeaturedSpatialObject<F> newObject){
-        for ( FeaturedSpatialObject<F> obj : getObjects()) {
+       // for ( FeaturedSpatialObject<F> obj : getObjects()) {
 
             ////IF & RELATIONS & computeRelation:ADD ARE COMMENTED/////////
             //SpatialRelation rel = computeRelation(obj, newObject);
@@ -34,7 +34,7 @@ public abstract class PerceptionBase<F> {
                 //relations.add(rel);
             /////////////////////////////////////////////
 
-        }
+        //}
         objects.add( newObject);
     }
 

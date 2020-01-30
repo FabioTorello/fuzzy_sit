@@ -66,18 +66,18 @@ void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneToSIT::ConstPtr& msg)
       frameInstant=msg->frame;
 
    
-      std::cout << "Frame:" << frameInstant << std::endl;
+      //std::cout << "Frame:" << frameInstant << std::endl;
           cout <<"\n";
     for(vector<fuzzy_sit_memory_msgs::SceneItem>::iterator it = itemsInAScene.begin(); it != itemsInAScene.end(); ++it){
-    	//srv.request.test_request.items.push_back(*it);
-	cout<<*it;
-	cout<<"\n";
+    	srv.request.test_request.items.push_back(*it);
+	//cout<<*it;
+	//cout<<"\n";
     }
 
     for(vector<fuzzy_sit_memory_msgs::Relations>::iterator ite = relationsInAScene.begin(); ite != relationsInAScene.end(); ++ite){
-    	//srv.request.test_request.relations.push_back(*ite);
-	cout<<*ite;
-	cout<<"\n";
+    	srv.request.test_request.relations.push_back(*ite);
+	//cout<<*ite;
+	//cout<<"\n";
     }
       //srv.request.test_request.items.push_back(itemsInAScene);
       //srv.request.test_request.items.push_back(relation);

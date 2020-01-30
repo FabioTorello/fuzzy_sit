@@ -23,6 +23,36 @@ import java.util.Scanner;
 import it.emarolab.fuzzySIT.semantic.axioms.SpatialObject;
 import java.lang.Object;
 import java.util.Arrays;
+import it.emarolab.fuzzySIT.perception.simple2D.Table;
+import it.emarolab.fuzzySIT.perception.simple2D.BED_MINUS_X;
+import it.emarolab.fuzzySIT.perception.simple2D.BED_MINUS_Y;
+import it.emarolab.fuzzySIT.perception.simple2D.BED_X;
+import it.emarolab.fuzzySIT.perception.simple2D.BED_Y;
+import it.emarolab.fuzzySIT.perception.simple2D.CHAIR_MINUS_X;
+import it.emarolab.fuzzySIT.perception.simple2D.CHAIR_MINUS_Y;
+import it.emarolab.fuzzySIT.perception.simple2D.CHAIR_X;
+import it.emarolab.fuzzySIT.perception.simple2D.CHAIR_Y;
+import it.emarolab.fuzzySIT.perception.simple2D.ROOF_MINUS_X;
+import it.emarolab.fuzzySIT.perception.simple2D.ROOF_MINUS_Y;
+import it.emarolab.fuzzySIT.perception.simple2D.ROOF_X;
+import it.emarolab.fuzzySIT.perception.simple2D.ROOF_Y;
+import it.emarolab.fuzzySIT.perception.simple2D.NOT_MINUS_X;
+import it.emarolab.fuzzySIT.perception.simple2D.NOT_MINUS_Y;
+import it.emarolab.fuzzySIT.perception.simple2D.NOT_X;
+import it.emarolab.fuzzySIT.perception.simple2D.NOT_Y;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_1;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_2;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_3;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_4;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_5;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_6;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_7;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_8;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_9;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_10;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_11;
+import it.emarolab.fuzzySIT.perception.simple2D.Pin_12;
+
 
 public class MemoryService extends AbstractNodeMain {
 
@@ -52,27 +82,12 @@ public class MemoryService extends AbstractNodeMain {
         ServiceServer<TestServiceDirectiveRequest, TestServiceDirectiveResponse> MemoryTestCallback =
                 connectedNode.newServiceServer("memory_service", TestServiceDirective._TYPE,
                         (request, response) -> {
-                           /* System.out.print("---------------------------------------------"+"\n");
+                            /*System.out.print("---------------------------------------------"+"\n");
                             System.out.print("Frame "+request.getTestRequest().getFrame()+"\n");
                             for (SceneItem item: request.getTestRequest().getItems()) {
                                 System.out.print(item.getGammaI() + "\n");
-                                System.out.print(item.getDegreeBed() + "\n");
-                                System.out.print(item.getDegreeRoof() + "\n");
-                                System.out.print(item.getDegreeChair() + "\n");
-                                System.out.print(item.getDegreeNot() + "\n");
-                                System.out.print(item.getDegreePin1() + "\n");
-                                System.out.print(item.getDegreePin2() + "\n");
-                                System.out.print(item.getDegreePin3() + "\n");
-                                System.out.print(item.getDegreePin4() + "\n");
-                                System.out.print(item.getDegreePin5() + "\n");
-                                System.out.print(item.getDegreePin6() + "\n");
-                                System.out.print(item.getDegreePin7() + "\n");
-                                System.out.print(item.getDegreePin8() + "\n");
-                                System.out.print(item.getDegreePin9() + "\n");
-                                System.out.print(item.getDegreePin10() + "\n");
-                                System.out.print(item.getDegreePin11() + "\n");
-                                System.out.print(item.getDegreePin12() + "\n");
-                                System.out.print(item.getDegreeTable() + "\n");
+                                System.out.print(item.getType() + "\n");
+                                System.out.print(item.getDegree() + "\n");
                                 System.out.print("\n");
 
                             }
@@ -83,18 +98,19 @@ public class MemoryService extends AbstractNodeMain {
                                 System.out.print(relation.getNameRelation() + "\n");
                                 System.out.print(relation.getDegreeRelation() + "\n");
                                 System.out.print("\n");
-                            }*/
-                           // memory.experience( scene(request.getTestRequest().getItems(), request.getTestRequest().getRelations(), request.getTestRequest().getFrame()), true,true);
+                            }
+                            System.out.print(request.getTestRequest().getFrame() + "\n");*/
+                            memory.experience(scene(request.getTestRequest().getItems(), request.getTestRequest().getRelations(), request.getTestRequest().getFrame()), true, true);
                             //Show the experience graph
 
                             //THE SCENE GRAPH SHOULD BE VISUALIZE ONLY IN THE END OF THE BAGFILE
                             // (THIS IS ONLY A TEMPTATIVE)
 
-                           /* if( request.getTestRequest().getFrame()==64) {
+                            if (request.getTestRequest().getFrame() == 64) {
                                 memory.getTbox().show();
-                            }*/
+                            }
 
-                            response.getTestResponse().setResponse("The scene " + " has been loaded" );
+                            response.getTestResponse().setResponse("The scene " + " has been loaded");
 
                             /*if(request.getTestRequest().getRequest().equals("scene")){
                                 memoryCreation.experience( scene0(),true,true);
@@ -104,14 +120,7 @@ public class MemoryService extends AbstractNodeMain {
                                 response.getTestResponse().setResponse("There is no scene to load");
                             }*/
 
-
-                });
-
-
-
-
-
-
+                        });
 
     }
  //THIS IS THE VERSION OF "ADD" FUNCTION I HAVE TO USE
@@ -139,179 +148,179 @@ public class MemoryService extends AbstractNodeMain {
 
             for (SceneItem item : items) {
                 /////////////BED LEG////////////////////////////////
-                if(item.getType()=="BED_X") {
+                if(item.getType().contains("BED_X")) {
                     //Add an object type BED_X
                     scene.addObject(new BED_X(item.getType(), item.getGammaI(), item.getDegree()));
                 }
 
-                else if(item.getType()=="BED_MINUS_X") {
+                else if(item.getType().contains("BED_MINUS_X")) {
                     //Add an object type BED_MINUS_X
                     scene.addObject(new BED_MINUS_X(item.getType(), item.getGammaI(), item.getDegree()));
                 }
 
-                else if(item.getType()=="BED_Y") {
+                else if(item.getType().contains("BED_Y")) {
                     //Add an object type BED_Y
                     scene.addObject(new BED_Y(item.getType(), item.getGammaI(), item.getDegree()));
                 }
 
-                else if(item.getType()=="BED_MINUS_Y") {
+                else if(item.getType().contains("BED_MINUS_Y")) {
                     //Add an object type BED_X
                     scene.addObject(new BED_MINUS_Y(item.getType(), item.getGammaI(), item.getDegree()));
                 }
                 ///////////////////////////////////////////////////////
 
                 ////////////CHAIR LEG/////////////////////////////////
-                else if(item.getType()=="CHAIR_X") {
+                else if(item.getType().contains("CHAIR_X")) {
                     //Add an object type CHAIR_X
                     scene.addObject(new CHAIR_X(item.getType(), item.getGammaI(), item.getDegree()));
                 }
 
-                else if(item.getType()=="CHAIR_MINUS_X") {
+                else if(item.getType().contains("CHAIR_MINUS_X")) {
                     //Add an object type CHAIR_MINUS_X
                     scene.addObject(new CHAIR_MINUS_X(item.getType(), item.getGammaI(), item.getDegree()));
                 }
 
-                else if(item.getType()=="CHAIR_Y") {
+                else if(item.getType().contains("CHAIR_Y")) {
                     //Add an object type CHAIR_Y
                     scene.addObject(new CHAIR_Y(item.getType(), item.getGammaI(), item.getDegree()));
                 }
 
-                else if(item.getType()=="CHAIR_MINUS_Y") {
+                else if(item.getType().contains("CHAIR_MINUS_Y")) {
                     //Add an object type CHAIR_MINUS_Y
                     scene.addObject(new CHAIR_MINUS_Y(item.getType(), item.getGammaI(), item.getDegree()));
                 }
                 ///////////////////////////////////////////////////////
 
                 ////////////ROOF LEG/////////////////////////////////
-                else if(item.getType()=="ROOF_X") {
+                else if(item.getType().contains("ROOF_X")) {
                     //Add an object type ROOF_X
                     scene.addObject(new ROOF_X(item.getType(), item.getGammaI(), item.getDegree()));
                 }
 
-                else if(item.getType()=="ROOF_MINUS_X") {
+                else if(item.getType().contains("ROOF_MINUS_X")) {
                     //Add an object type ROOF_MINUS_X
                     scene.addObject(new ROOF_MINUS_X(item.getType(), item.getGammaI(), item.getDegree()));
                 }
 
-                else if(item.getType()=="ROOF_Y") {
+                else if(item.getType().contains("ROOF_Y")) {
                     //Add an object type ROOF_Y
                     scene.addObject(new ROOF_Y(item.getType(), item.getGammaI(), item.getDegree()));
                 }
 
-                else if(item.getType()=="ROOF_MINUS_Y") {
+                else if(item.getType().contains("ROOF_MINUS_Y")) {
                     //Add an object type ROOF_MINUS_Y
                     scene.addObject(new ROOF_MINUS_Y(item.getType(), item.getGammaI(), item.getDegree()));
                 }
                 ///////////////////////////////////////////////////////
 
                 ////////////NOT LEG/////////////////////////////////
-                else if(item.getType()=="NOT_X") {
+                else if(item.getType().contains("NOT_X")) {
                     //Add an object type NOT_X
                     scene.addObject(new NOT_X(item.getType(), item.getGammaI(), item.getDegree()));
                 }
 
-                else if(item.getType()=="NOT_MINUS_X") {
+                else if(item.getType().contains("NOT_MINUS_X")) {
                     //Add an object type NOT_MINUS_X
                     scene.addObject(new NOT_MINUS_X(item.getType(), item.getGammaI(), item.getDegree()));
                 }
 
-                else if(item.getType()=="NOT_Y") {
+                else if(item.getType().contains("NOT_Y")){
                     //Add an object type NOT_Y
                     scene.addObject(new NOT_Y(item.getType(), item.getGammaI(), item.getDegree()));
                 }
 
-                else if(item.getType()=="NOT_MINUS_Y") {
+                else if(item.getType().contains("NOT_MINUS_Y")) {
                     //Add an object type NOT_MINUS_Y
                     scene.addObject(new NOT_MINUS_Y(item.getType(), item.getGammaI(), item.getDegree()));
                 }
                 ///////////////////////////////////////////////////////
 
                 ///////////Pin_1//////////////////////////////////////
-                else if(item.getType()=="Pin_1") {
+                else if(item.getType().contains("Pin_1")) {
                     //Add an object type Pin_1
                     scene.addObject(new Pin_1(item.getType(), item.getGammaI(), item.getDegree()));
                 }
                 ///////////////////////////////////////////////////////
 
                 ///////////Pin_2//////////////////////////////////////
-                else if(item.getType()=="Pin_2") {
+                else if(item.getType().contains("Pin_2")) {
                     //Add an object type Pin_2
                     scene.addObject(new Pin_2(item.getType(), item.getGammaI(), item.getDegree()));
                 }
                 ///////////////////////////////////////////////////////
 
                 ///////////Pin_3//////////////////////////////////////
-                else if(item.getType()=="Pin_3") {
+                else if(item.getType().contains("Pin_3")) {
                     //Add an object type Pin_3
                     scene.addObject(new Pin_3(item.getType(), item.getGammaI(), item.getDegree()));
                 }
                 ///////////////////////////////////////////////////////
 
                 ///////////Pin_4//////////////////////////////////////
-                else if(item.getType()=="Pin_4") {
+                else if(item.getType().contains("Pin_4")) {
                     //Add an object type Pin_4
                     scene.addObject(new Pin_4(item.getType(), item.getGammaI(), item.getDegree()));
                 }
                 ///////////////////////////////////////////////////////
 
                 ///////////Pin_5//////////////////////////////////////
-                else if(item.getType()=="Pin_5") {
+                else if(item.getType().contains("Pin_5")) {
                     //Add an object type Pin_5
                     scene.addObject(new Pin_5(item.getType(), item.getGammaI(), item.getDegree()));
                 }
                 ///////////////////////////////////////////////////////
 
                 ///////////Pin_6//////////////////////////////////////
-                else if(item.getType()=="Pin_6") {
+                else if(item.getType().contains("Pin_6")) {
                     //Add an object type Pin_6
                     scene.addObject(new Pin_6(item.getType(), item.getGammaI(), item.getDegree()));
                 }
                 ///////////////////////////////////////////////////////
 
                 ///////////Pin_7//////////////////////////////////////
-                else if(item.getType()=="Pin_7") {
+                else if(item.getType().contains("Pin_7")) {
                     //Add an object type Pin_7
                     scene.addObject(new Pin_7(item.getType(), item.getGammaI(), item.getDegree()));
                 }
                 ///////////////////////////////////////////////////////
 
                 ///////////Pin_8//////////////////////////////////////
-                else if(item.getType()=="Pin_8") {
+                else if(item.getType().contains("Pin_8")) {
                     //Add an object type Pin_8
                     scene.addObject(new Pin_8(item.getType(), item.getGammaI(), item.getDegree()));
                 }
                 ///////////////////////////////////////////////////////
 
                 ///////////Pin_9//////////////////////////////////////
-                else if(item.getType()=="Pin_9") {
+                else if(item.getType().contains("Pin_9")) {
                     //Add an object type Pin_9
                     scene.addObject(new Pin_9(item.getType(), item.getGammaI(), item.getDegree()));
                 }
                 ///////////////////////////////////////////////////////
 
                 ///////////Pin_10//////////////////////////////////////
-                else if(item.getType()=="Pin_10") {
+                else if(item.getType().contains("Pin_10")) {
                     //Add an object type Pin_10
                     scene.addObject(new Pin_10(item.getType(), item.getGammaI(), item.getDegree()));
                 }
                 ///////////////////////////////////////////////////////
 
                 ///////////Pin_11//////////////////////////////////////
-                else if(item.getType()=="Pin_11") {
+                else if(item.getType().contains("Pin_11")) {
                     //Add an object type Pin_11
                     scene.addObject(new Pin_11(item.getType(), item.getGammaI(), item.getDegree()));
                 }
                 ///////////////////////////////////////////////////////
 
                 ///////////Pin_12//////////////////////////////////////
-                else if(item.getType()=="Pin_12") {
+                else if(item.getType().contains("Pin_12")) {
                     //Add an object type Pin_12
                     scene.addObject(new Pin_12(item.getType(), item.getGammaI(), item.getDegree()));
                 }
                 ///////////////////////////////////////////////////////
 
                 ///////////Table//////////////////////////////////////
-                else if(item.getType()=="Table") {
+                else if(item.getType().contains("Table")) {
                     //Add an object type Table
                     scene.addObject(new Table(item.getType(), item.getGammaI(), item.getDegree()));
                 }
@@ -330,6 +339,7 @@ public class MemoryService extends AbstractNodeMain {
 
             return scene;
             }
+
         return null;
    }
 
@@ -382,13 +392,88 @@ public class MemoryService extends AbstractNodeMain {
 
     }*/
 
+
+
+/*"test_request:
+    items:
+            - gamma_i: ''
+    type: ''
+    degree: 0.0
+    relations:
+            - gamma_subject: ''
+    gamma_object: ''
+    nameRelation: ''
+    degreeRelation: 0.0
+    frame: 0"
+
+ */
+   /*
+   rosservice call /memory_service "test_request:
+  items:
+  - gamma_i: 'g_1'
+    type: 'BED_X'
+    degree: 0.8
+  - gamma_i: 'p_1'
+    type: 'Pin_1'
+    degree: 1
+  - gamma_i: 't'
+    type: 'Table'
+    degree: 1
+  relations:
+  - gamma_subject: 'g_1'
+    gamma_object: 'p_1'
+    nameRelation: 'isConnectedTo'
+    degreeRelation: 0.8
+  - gamma_subject: 'g_1'
+    gamma_object: 't'
+    nameRelation: 'isConnectedTo'
+    degreeRelation: 0.17
+  - gamma_subject: 'p_1'
+    gamma_object: 't'
+    nameRelation: 'isConnectedTo'
+    degreeRelation: 0.2
+  frame: 2"
+
+   "test_request:
+   items:
+      - gamma_i: 'g_1'
+        type: 'BED_X'
+    degree: 0.8
+     - gamma_i: 'p_1'
+    type: 'Pin_1'
+    degree: 1
+     - gamma_i: 't'
+    type: 'Table'
+    degree: 1
+    relations:
+    - gamma_subject: 'g_1'
+    gamma_object: 'p_1'
+    nameRelation: 'isConnectedTo'
+    degreeRelation: 0.8
+    - gamma_subject: 'g_1'
+    gamma_object: 't'
+    nameRelation: 'isConnectedTo'
+    degreeRelation: 0.17
+     - gamma_subject: 'p_1'
+    gamma_object: 't'
+    nameRelation: 'isConnectedTo'
+    degreeRelation: 0.2
+    frame: 2"
+
+    */
+
+
+
+
+
+
 /*rosservice call /memory_service "test_request:
   items:
   - gamma_i: 'g1'
     degrees:
     - value: 'R1'
       degree: 0.9
-    x: -0.25
+    x: -0.25sservice call
     y: 0.75
   - gamma_i: 'g2'
     degrees:

@@ -138,4 +138,4 @@
 ## shoulder reach the maximum value (i.e.: 1). On the other hand, the point in
 ## which it starts to become grater than 0 is set during learning as a percentage
 ## of the value of φ.
-#############################################################################################
+##############################################################################################
