@@ -660,20 +660,23 @@ public class SITTBox
 
             frame = new JFrame("Scene Hierarchy");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            /////////////////////////
-            saveGraph( frame);
-            ////////////////////////////
+
             /*Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             int height = screenSize.height * 2 / 3;
             int width = screenSize.width * 2 / 3;
             frame.setPreferredSize(new Dimension(width, height));
             */
+
             updateShowing();
+            /////////////////////////
+            saveGraph( frame);
+            ////////////////////////////
+
         });
     }
 
     //////Function to save the graph memory to image////////////////////////////////
-    void saveGraph(JFrame frame){
+   public void saveGraph(JFrame frame){
         Container content = frame.getContentPane();
         BufferedImage img = new BufferedImage(content.getWidth(), content.getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = img.createGraphics();
@@ -681,7 +684,7 @@ public class SITTBox
         g2d.dispose();
 
         try {
-            ImageIO.write(img, "jpg", new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/MemoryGraph.jpg"));
+            ImageIO.write(img, "png", new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/fuzzySIT/files/MemoryGraph.png"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -714,9 +717,12 @@ public class SITTBox
             graphPanel.setZoomPolicy(mxGraphComponent.ZOOM_POLICY_WIDTH);
             frame.add( graphPanel);
 
+
+
             frame.pack();
             frame.setLocationByPlatform(true);
             frame.setVisible(true);
+
         });
     }
 

@@ -324,7 +324,7 @@ public class MemoryService extends AbstractNodeMain {
                     //Add an object type Table
                     scene.addObject(new Table(item.getType(), item.getGammaI(), item.getDegree()));
                 }
-                ///////////////////////////////////////////////////////
+                //////////////////////////////////////////////////////
 
             }
 
@@ -340,7 +340,7 @@ public class MemoryService extends AbstractNodeMain {
             return scene;
             }
 
-        return null;
+        return new ConnectObjectScene();
    }
 
    /* public static ConnectObjectScene scene(List<SceneItem> items, int frame) {
