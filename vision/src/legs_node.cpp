@@ -55,7 +55,7 @@ static long gamma_index=0;
 struct item itemStruct;
 struct relation relationStruct;
 vector<item> itemStructVector;
-vector <relation> relationStructVector;
+vector<relation> relationStructVector;
 //static int table=1;
 
 
@@ -75,10 +75,63 @@ void init_original_message(vision::SceneTable::Ptr a, vision::Configuration::Ptr
    
 
     a->scene.push_back( *b);
-   // a->frame=frameInstant;
+   
 
 }
 
+void init_SIT_message(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr b, vision::Relations::Ptr r, vector<item> itemStructVector, vector<relation> relationStructVector){
+
+	for(vector<item>::iterator it = itemStructVector.begin(); it != itemStructVector.end(); ++it){
+
+		
+			/*cout<<"\n";
+			cout<<"\n";
+			cout<<"----------------------"<<"\n";
+			cout<<"VECTOR OF ITEMS IN SIT MESSAGE"<<"\n";
+			cout<<"SIZE ARRAY NOW: " << itemStructVector.size()<<"\n";
+			cout<<"GAMMA NELL'ARRAY DI ITEMS: "<<it->gamma_i<<"\n";		        
+			cout<<"TYPE NELL'ARRAY DI ITEMS: "<<it->type<<"\n";
+		        cout<<"DEGREE NELL'ARRAY DI ITEMS: "<<it->degree<<"\n";
+			
+			cout<<"\n";*/
+
+			b->gamma_i=it->gamma_i; 
+    			b->type = it->type;
+    			b->degree=it->degree;
+    			a->items.push_back( *b);
+	  
+		
+	
+	}
+
+	for(vector<relation>::iterator it_rel = relationStructVector.begin(); it_rel != relationStructVector.end(); ++it_rel){
+
+		
+			/*cout<<"\n";
+			cout<<"\n";
+			cout<<"----------------------"<<"\n";
+			cout<<"VECTOR OF RELATIONS IN SIT MESSAGE"<<"\n";
+			cout<<"SIZE ARRAY NOW: " << relationStructVector.size()<<"\n";			
+			cout<<"GAMMA SUBJECT: "<<it_rel->gamma_subject<<"\n";
+			cout<<"GAMMA OBJECT: "<<it_rel->gamma_object<<"\n";	
+			cout<<"NAME RELATION: "<<it_rel->nameRelation<<"\n";	        
+		        cout<<"DEGREE RELATION: "<<it_rel->degreeRelation<<"\n";
+			
+			cout<<"\n";*/
+			
+				r->gamma_subject=it_rel->gamma_subject;
+				r->gamma_object=it_rel->gamma_object;
+				r->nameRelation=it_rel->nameRelation;
+				r->degreeRelation=it_rel->degreeRelation;
+				a->relations.push_back(*r);
+	  
+		
+	
+	}
+
+	a->frame=frameInstant;
+
+}
 /*void init_SIT_message(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr b, struct configuration c, scene_struct &sceneStruct){
 
     gamma_index++;
@@ -158,20 +211,20 @@ void computeAllRelations(vector<object> &objectVector){
 
 			if(j!=i && j>i){
 				//cout<< "i: " << i << "--"<< "j: " << j << "\n";
-
-				if(objectVector[i].name.find("g")!=std::string::npos && objectVector[j].name.find("p")!=std::string::npos){
+				cout<<"--------------------------"<<"\n";
+				if((objectVector[i].name.find("g")!=std::string::npos && objectVector[j].name.find("p")!=std::string::npos) || (objectVector[i].name.find("p")!=std::string::npos && objectVector[j].name.find("g")!=std::string::npos) ){
 					cout<<"\n";
 					cout<<"Entra in p-g g-p "<<"\n";
 					cout<<"Subject: "<< objectVector[i].name<<"\n";
 					cout<<"Object: "<< objectVector[j].name<<"\n";
 
-					/*//Subject is a leg
+					//Subject is a leg
 					relationStruct.gamma_subject=objectVector[i].name;
 					//Object is a pin
 					relationStruct.gamma_object=objectVector[j].name;
 					relationStruct.nameRelation=NAMERELATION;
 					relationStruct.degreeRelation=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, CONNECTED_THRESHOLD);
-					relationStructVector.push_back(relationStruct);*/
+					relationStructVector.push_back(relationStruct);
 				}
 
 				if(objectVector[j].name.find("t")!=std::string::npos){
@@ -180,13 +233,13 @@ void computeAllRelations(vector<object> &objectVector){
 					cout<<"Subject: "<< objectVector[i].name<<"\n";
 					cout<<"Object: "<< objectVector[j].name<<"\n";
 
-				  	/*//Subject
+				  	//Subject
 					relationStruct.gamma_subject=objectVector[i].name;
 					//Object is the table
 					relationStruct.gamma_object=objectVector[j].name;
 					relationStruct.nameRelation=NAMERELATION;
 					relationStruct.degreeRelation=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, 0.4);
-					relationStructVector.push_back(relationStruct);*/
+					relationStructVector.push_back(relationStruct);
 				}
 
 				if(objectVector[i].name.find("p")!=std::string::npos && objectVector[j].name.find("p")!=std::string::npos){
@@ -195,13 +248,13 @@ void computeAllRelations(vector<object> &objectVector){
 					cout<<"Subject: "<< objectVector[i].name<<"\n";
 					cout<<"Object: "<< objectVector[j].name<<"\n";
 
-					/*//Subject is a leg
+					//Subject is a leg
 					relationStruct.gamma_subject=objectVector[i].name;
 					//Object is a pin
 					relationStruct.gamma_object=objectVector[j].name;
 					relationStruct.nameRelation=NAMERELATION;
 					relationStruct.degreeRelation=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, 0.4);
-					relationStructVector.push_back(relationStruct);*/
+					relationStructVector.push_back(relationStruct);
 				}
 
 				if(objectVector[i].name.find("g")!=std::string::npos && objectVector[j].name.find("g")!=std::string::npos){
@@ -209,13 +262,13 @@ void computeAllRelations(vector<object> &objectVector){
 					cout<<"Entra in g-g "<<"\n";
 					cout<<"Subject: "<< objectVector[i].name<<"\n";
 					cout<<"Object: "<< objectVector[j].name<<"\n";
-					/*//Subject is a leg
+					//Subject is a leg
 					relationStruct.gamma_subject=objectVector[i].name;
 					//Object is a pin
 					relationStruct.gamma_object=objectVector[j].name;
 					relationStruct.nameRelation=NAMERELATION;
 					relationStruct.degreeRelation=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, 0.4);
-					relationStructVector.push_back(relationStruct);*/
+					relationStructVector.push_back(relationStruct);
 				}
 
 			}
@@ -225,81 +278,6 @@ void computeAllRelations(vector<object> &objectVector){
 }
 
 
-/*double computeLegTableRelation (double xy [2]){
-    double xLeg=xy[0];
-    double yLeg=xy[1];
-    double xTable=0;
-    double yTable=0;
-    double connection=distance(xLeg, yLeg, xTable,yTable);
-    cout<<"CONNECTION TRA LEG E TABLE: " << connection <<"\n";			
-   /* if (connection <= CONNECTED_THRESHOLD){
-			
-	//double degree = 1-(fabs(connection) / CONNECTED_THRESHOLD);
-				
-	return degree;
-    }
-	double degree = 1 - (fabs(connection) / 0.4);
-
-return degree;
-//return 0;
-
-}*/
-
-
-/*double computeLegLegRelation (double xyLeg1[2], double xyLeg2 [2]){
-    double xLeg1=xyLeg1[0];
-    double yLeg1=xyLeg1[1];
-    double xLeg2=xyLeg2[0];
-    double yLeg2=xyLeg2[1];
-    double connection=distance(xLeg1, yLeg1, xLeg2,yLeg2);
-    cout<<"CONNECTION TRA LEG E LEG: " << connection <<"\n";			
-   if (connection <= CONNECTED_THRESHOLD){
-			
-	double degree = 1-(fabs(connection) / CONNECTED_THRESHOLD);
-				
-	return degree;
-    }
-	//double degree = 1 - (fabs(connection) / 0.4);
-
-//return degree;
-return 0;
-
-}*/
-
-/*double computePinPinRelation (double p[ROWS][COLUMNS], int pin1, int pin2){
-	double xpin1;
-	double ypin1;
-	double xpin2;
-	double ypin2;
-     	for (int i = 0; i<COLUMNS; i++){ 
-		if (i==pin1-1){ 
-	 		xpin1=p[1][i];  
-	 		ypin1=p[2][i];
-			break;
-		}
-	}
-
-	for (int i = 0; i<COLUMNS; i++){ 
-		if (i==pin2-1){
-			xpin2=p[1][i];  
-	 		ypin2=p[2][i];
-			break;
-		}
-	}
-	
-       	double connection=distance(xpin1,ypin1,xpin2,ypin2);
-	cout<<"CONNECTION TRA PIN E PIN: " << connection <<"\n";         
-       	if (connection <= CONNECTED_THRESHOLD){
-					
-        	double degree = 1-(fabs(connection) / CONNECTED_THRESHOLD);                        
-			
-	   	return degree;
-	}
-      	
-
-return 0;
-
-}*/
 
 //LA NUOVA COMPUTELEGPINRELATION IN ORIGINE ERA: double computeLegPinRelation (double xy [2], double p[ROWS][COLUMNS], int pin, std::string name, std::string leg)
 
@@ -513,6 +491,11 @@ return 0;
 
 
 
+
+
+
+
+
 /////////////CALLBACK FOR THE IMAGES/////////////////////////////////
 /*void callback_save_image (const sensor_msgs::ImageConstPtr& msg){
 //cv_bridge::CvImagePtr cv_ptr;
@@ -671,7 +654,7 @@ int eval_pin (double xy [2], double p[ROWS][COLUMNS], std::string name, std::str
     //sceneStruct_Leg.x_leg=x;
     //sceneStruct_Leg.y_leg=y;
 
-    cout<<"NOME LEG IN STRUCT NELLA EVAL_PIN: " <<leg_object.name<<"\n";
+    //cout<<"NOME LEG IN STRUCT NELLA EVAL_PIN: " <<leg_object.name<<"\n";
     //cout<<"VALORE LEG X IN STRUCT NELLA EVAL_PIN: " <<leg_object.x<<"\n";
     //cout<<"VALORE LEG Y IN STRUCT NELLA EVAL_PIN: " <<leg_object.y<<"\n";
     
@@ -683,13 +666,13 @@ int eval_pin (double xy [2], double p[ROWS][COLUMNS], std::string name, std::str
         if (x<p[1][i]+THR && x>p[1][i]-THR){
             if (y<p[2][i]+THR && y>p[2][i]-THR){
                 pin = i+1;
-                cout<<"PIN TROVATO: " <<pin <<"\n";
+               //cout<<"PIN TROVATO: " <<pin <<"\n";
                 //sceneStruct_Leg.type_pin="Pin_"+ boost::to_string(pin);
                 //cout<<"PIN ENTRA NELLA FUNZIONE: "<<sceneStruct_Leg.type_pin<<"\n";
                  pin_object.x=p[1][i];
 		 pin_object.y=p[2][i];
-		 cout<<"\n";
-		 cout<<"PIN NAME IN STRUCT DENTRO EVAL_PIN: "<< pin_object.name<<"\n";
+		 //cout<<"\n";
+		 //cout<<"PIN NAME IN STRUCT DENTRO EVAL_PIN: "<< pin_object.name<<"\n";
 		 //cout<<"PIN X IN STRUCT DENTRO EVAL_PIN: "<< pin_object.x<<"\n";
 		 //cout<<"PIN Y IN STRUCT DENTRO EVAL_PIN: "<< pin_object.y<<"\n";
                  /////////////////////////////
@@ -775,18 +758,25 @@ void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double 
     int pin_type=eval_pin(xy, pins, conf_leg.name_config, conf_leg.leg_id, leg_object, pin_object, gamma_index);
     conf_leg.pin=pin_type;
 
-    cout<<"\n";
-    cout<<"LEG NAME IN STRUCT FUORI EVAL_PIN: "<< leg_object.name<<"\n";
+    //cout<<"\n";
+    //cout<<"LEG NAME IN STRUCT FUORI EVAL_PIN: "<< leg_object.name<<"\n";
     //cout<<"LEG X IN STRUCT FUORI EVAL_PIN: "<< leg_object.x<<"\n";
     //cout<<"LEG Y IN STRUCT FUORI EVAL_PIN: "<< leg_object.y<<"\n";
-    cout<<"PIN NAME IN STRUCT FUORI EVAL_PIN: "<< pin_object.name<<"\n";
+    //cout<<"PIN NAME IN STRUCT FUORI EVAL_PIN: "<< pin_object.name<<"\n";
     //cout<<"PIN X IN STRUCT FUORI EVAL_PIN: "<< pin_object.x<<"\n";
     //cout<<"PIN Y IN STRUCT FUORI EVAL_PIN: "<< pin_object.y<<"\n";
+
+    cout<< "pin type: " << conf_leg.pin<<"\n";
     
+    cout << "leg before the check on pin type: " << leg_object.name << "\n";
+    cout << "pin before the check on pin type: " << pin_object.name << "\n";
+    if(pin_type!=0){
+    cout << "\n";
+    cout << "leg insert in the vector of objects and as item: " << leg_object.name<<"\n";
+    cout << "pin insert in the vector of objects and as item: " << pin_object.name << "\n";
     objectVector.push_back(leg_object);
     objectVector.push_back(pin_object);
 
-    if(pin_type!=0){
     itemStruct.gamma_i=leg_gammaName;
     itemStruct.type=conf_leg.name_config;
     itemStruct.degree=conf_leg.degreeOrientation;
@@ -810,6 +800,17 @@ void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double 
 
     
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -928,8 +929,9 @@ int main(int argc, char **argv)
         tf::StampedTransform transform_w_108;
         tf::StampedTransform transform_w_112;
         vision::SceneTable::Ptr ourScene (new vision::SceneTable);
+
 /////////////////////////////////////////////////////////////////
-        vision::SceneToSIT::Ptr ourSceneToSIT (new vision::SceneToSIT);
+       // vision::SceneToSIT::Ptr ourSceneToSIT (new vision::SceneToSIT);
 /////////////////////////////////////////////////////////////////////	
        
 
@@ -1035,7 +1037,7 @@ int main(int argc, char **argv)
 
                 vision::Configuration::Ptr msg0(new vision::Configuration);
 ///////////////////////////////////////////////////////////////////////////////////////
-                vision::Configuration_SIT::Ptr msg0SIT(new vision::Configuration_SIT);
+                //vision::Configuration_SIT::Ptr msg0SIT(new vision::Configuration_SIT);
 		
 ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1078,7 +1080,7 @@ int main(int argc, char **argv)
 
                 vision::Configuration::Ptr msg4(new vision::Configuration);
 ///////////////////////////////////////////////////////////////////////////////////////
-                vision::Configuration_SIT::Ptr msg4SIT(new vision::Configuration_SIT);
+                //vision::Configuration_SIT::Ptr msg4SIT(new vision::Configuration_SIT);
 ////////////////////////////////////////////////////////////////////////////////////////
                 
 		init_original_message(ourScene, msg4, conf_leg4);
@@ -1122,7 +1124,7 @@ int main(int argc, char **argv)
                 vision::Configuration::Ptr msg8(new vision::Configuration);
 
 ///////////////////////////////////////////////////////////////////////////////////////
-                vision::Configuration_SIT::Ptr msg8SIT(new vision::Configuration_SIT);
+                //vision::Configuration_SIT::Ptr msg8SIT(new vision::Configuration_SIT);
 ////////////////////////////////////////////////////////////////////////////////////////
                 
 		init_original_message(ourScene, msg8, conf_leg8);
@@ -1164,7 +1166,7 @@ int main(int argc, char **argv)
 
                 vision::Configuration::Ptr msg12(new vision::Configuration);
 ///////////////////////////////////////////////////////////////////////////////////////
-                vision::Configuration_SIT::Ptr msg12SIT(new vision::Configuration_SIT);
+             //   vision::Configuration_SIT::Ptr msg12SIT(new vision::Configuration_SIT);
 ////////////////////////////////////////////////////////////////////////////////////////
 
                 init_original_message(ourScene, msg12, conf_leg12);
@@ -1199,7 +1201,7 @@ int main(int argc, char **argv)
 	//cout<<*ourScene;
 	
 
-	vision::Relations::Ptr relation(new vision::Relations);
+	//vision::Relations::Ptr relation(new vision::Relations);
 
 	table_object.name="t";
 	table_object.x=0;
@@ -1233,7 +1235,9 @@ int main(int argc, char **argv)
 
 		
 			cout<<"\n";
-			cout<<"FUORI NEL MAIN"<<"\n";
+			cout<<"\n";
+			cout<<"----------------------"<<"\n";
+			cout<<"VECTOR OF ITEMS"<<"\n";
 			cout<<"SIZE ARRAY NOW: " << itemStructVector.size()<<"\n";
 			cout<<"GAMMA NELL'ARRAY DI ITEMS: "<<it->gamma_i<<"\n";		        
 			cout<<"TYPE NELL'ARRAY DI ITEMS: "<<it->type<<"\n";
@@ -1246,6 +1250,32 @@ int main(int argc, char **argv)
 	}*/
 	
 	computeAllRelations(objectStructVector);
+
+	/*for(vector<relation>::iterator it_rel = relationStructVector.begin(); it_rel != relationStructVector.end(); ++it_rel){
+
+		
+			cout<<"\n";
+			cout<<"\n";
+			cout<<"----------------------"<<"\n";
+			cout<<"VECTOR OF RELATIONS"<<"\n";
+			cout<<"SIZE ARRAY NOW: " << itemStructVector.size()<<"\n";			
+			cout<<"GAMMA SUBJECT: "<<it_rel->gamma_subject<<"\n";
+			cout<<"GAMMA OBJECT: "<<it_rel->gamma_object<<"\n";	
+			cout<<"NAME RELATION: "<<it_rel->nameRelation<<"\n";	        
+		        cout<<"DEGREE RELATION: "<<it_rel->degreeRelation<<"\n";
+			
+			cout<<"\n";
+	  
+		
+	
+	}*/
+
+	//Now create the scene object and the object for the items and the relations 
+	vision::SceneToSIT::Ptr ourSceneToSIT (new vision::SceneToSIT);
+	vision::Configuration_SIT::Ptr msgItemSIT(new vision::Configuration_SIT);
+	vision::Relations::Ptr msgRelationSIT(new vision::Relations);
+	//init_SIT_message(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr b, vision::Relations::Ptr r, itemStructVector, relationStructVector);
+	init_SIT_message(ourSceneToSIT, msgItemSIT, msgRelationSIT, itemStructVector, relationStructVector);
 
 	//computeRelations(ourSceneToSIT, pins, sceneStructVector, relation, relationInScene);
 	
