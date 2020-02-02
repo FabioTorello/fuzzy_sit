@@ -100,7 +100,9 @@ public class MemoryService extends AbstractNodeMain {
                                 System.out.print("\n");
                             }
                             System.out.print(request.getTestRequest().getFrame() + "\n");*/
-                            memory.experience(scene(request.getTestRequest().getItems(), request.getTestRequest().getRelations(), request.getTestRequest().getFrame()), true, true);
+                            if (request.getTestRequest().getFrame() < 64) {
+                                memory.experience(scene(request.getTestRequest().getItems(), request.getTestRequest().getRelations(), request.getTestRequest().getFrame()), true, true);
+                            }
                             //Show the experience graph
 
                             //THE SCENE GRAPH SHOULD BE VISUALIZE ONLY IN THE END OF THE BAGFILE
@@ -432,7 +434,7 @@ public class MemoryService extends AbstractNodeMain {
     gamma_object: 't'
     nameRelation: 'isConnectedTo'
     degreeRelation: 0.2
-  frame: 2"
+  frame: 64"
 
    "test_request:
    items:

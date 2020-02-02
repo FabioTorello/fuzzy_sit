@@ -340,7 +340,7 @@ return 0;
 
 
 /////////////CALLBACK FOR THE IMAGES/////////////////////////////////
-/*void callback_save_image (const sensor_msgs::ImageConstPtr& msg){
+void callback_save_image (const sensor_msgs::ImageConstPtr& msg){
 //cv_bridge::CvImagePtr cv_ptr;
 //cout<<"ENTRA NELLA CALLBACK";
     try
@@ -353,7 +353,7 @@ return 0;
       return;
     }
 // inputImage=cv_ptr;
-}*/
+}
 
 
 
@@ -701,7 +701,7 @@ int main(int argc, char **argv)
 ///////////////////////////////////////////////////////////////////////////////////
 
      //Subscriber for the images
-    //ros::Subscriber sub = n.subscribe("kinect2/qhd/image_mono", 1000, callback_save_image);
+    ros::Subscriber sub = n.subscribe("kinect2/qhd/image_mono", 1000, callback_save_image);
 
 
     
@@ -785,7 +785,7 @@ int main(int argc, char **argv)
 	//string name_image= path_to_save_images+to_string(frameInstant)+".jpg";
 	frameInstant++;
 
-	/*n.getParam("/folder_name", folder_name);
+	n.getParam("/folder_name", folder_name);
     	n.getParam("/file_name",file_name);
        
    	
@@ -828,7 +828,7 @@ int main(int argc, char **argv)
    	}*/
 
 	//cout<<inputImage;
-	/*if (inputImage){
+	if (inputImage){
 	string frame = boost::lexical_cast<string>(frameInstant);
 	
 	string name_image= dirname + "_" + frame + ".png";
@@ -838,7 +838,7 @@ int main(int argc, char **argv)
 	}
 	cout<<"\n";
 	ROS_INFO("\nTHE FRAME NOW IS: %d", frameInstant);
-	//cout<<"\n";*/
+	//cout<<"\n";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

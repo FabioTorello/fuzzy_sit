@@ -32,6 +32,8 @@ import java.awt.Container;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 import javax.imageio.ImageIO;
+import com.mxgraph.util.mxCellRenderer;
+import java.awt.Color;
 /////////////////////////////////////////
 
 /**
@@ -670,27 +672,35 @@ public class SITTBox
 
             updateShowing();
 
-            /////////////////////////
-            saveGraph( frame);
-            ////////////////////////////
+
 
 
         });
     }
 
     //////Function to save the graph memory to image////////////////////////////////
-   public void saveGraph(JFrame frame){
-        Container content = frame.getContentPane();
-        BufferedImage img = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
+   public void saveGraph(JGraphXAdapter<SceneHierarchyVertex, SceneHierarchyEdge> graph){
+
+
+       try {
+           BufferedImage image = mxCellRenderer.createBufferedImage(graph, null, 1, Color.WHITE, true, null);
+           ImageIO.write(image, "PNG", new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/graph.png"));
+       } catch (IOException ex) {
+           //logger.error("Unable to save graph image: " + ex.getLocalizedMessage());
+           ex.printStackTrace();
+       }
+
+        /*Container content = frame.getContentPane();
+        BufferedImage img = new BufferedImage(300, 300, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = img.createGraphics();
         content.printAll(g2d);
         g2d.dispose();
 
         try {
-            ImageIO.write(img, "png", new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles"));
+            ImageIO.write(img, "png", new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/graph.png"));
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
+        }*/
     }
 ///////////////////////////////////////////////////////////
 
@@ -725,6 +735,11 @@ public class SITTBox
             frame.pack();
             frame.setLocationByPlatform(true);
             frame.setVisible(true);
+
+            /////////////////////////
+            saveGraph( graphAdapter);
+            ////////////////////////////
+
 
         });
     }
