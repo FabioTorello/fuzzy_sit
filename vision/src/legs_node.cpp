@@ -33,6 +33,7 @@
 #include <vector>
 #include <iostream> 
 #include <string> 
+#include <map> 
 
 # define ROWS 3
 # define COLUMNS 12
@@ -64,12 +65,8 @@ void init_original_message(vision::SceneTable::Ptr a, vision::Configuration::Ptr
 
     b->leg_id = c.leg_id;
     b->name_config = c.name_config;
-    //b->degreeOrientation=c.degreeOrientation;
     b->pin=c.pin;
-    //b->table="Table";
-    //b->nameRelation=c.nameRelation;
-    //b->pinTableRelationDegree=c.pinTableRelationDegree;
-    //b->legPinRelationDegree=c.legPinRelationDegree;
+   
     
     
    
@@ -132,54 +129,9 @@ void init_SIT_message(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr 
 	a->frame=frameInstant;
 
 }
-/*void init_SIT_message(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr b, struct configuration c, scene_struct &sceneStruct){
 
-    gamma_index++;
 
-    std::string gamma_leg="g_"+ boost::to_string(gamma_index);
-    std::string gamma_pin="p_"+ boost::to_string(gamma_index);
-    sceneStruct.gamma_leg= gamma_leg;
-    sceneStruct.gamma_pin= gamma_pin;
-    cout<<"NOME GAMMA LEG: " <<sceneStruct.gamma_leg<<"\n";
-    cout<<"NOME GAMMA PIN: " <<sceneStruct.gamma_pin<<"\n";
 
-    //For a leg
-    b->gamma_i=gamma_leg; 
-    b->type = c.name_config;
-    b->degree=c.degreeOrientation;
-    a->items.push_back( *b);
-
-    //For a pin
-    b->gamma_i=gamma_pin;
-    b->type="Pin_"+ boost::to_string(c.pin);
-    b->degree=1.0;
-    a->items.push_back( *b);
-       
-   
-
-    
-    
-    a->frame=frameInstant;
-
-}*/
-
-/*void add_table(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr b, struct configuration c, scene_struct &sceneStruct){   
-
-    //For a table
-    //sceneStruct.gamma_table="t";
-    //sceneStruct.type_table="Table";
-    //cout<<"NOME GAMMA TABLE: " <<sceneStruct.gamma_table<<"\n";
-    //cout<<"NOME TIPO TABLE: " <<sceneStruct.type_table<<"\n";
-
-    b->gamma_i="t";
-    b->type="Table";
-    b->degree=1.0;
-
-    a->items.push_back( *b);    
-
-    
-
-}*/
 
 
 
@@ -205,7 +157,8 @@ return 0;
 }
 
 void computeAllRelations(vector<object> &objectVector){
-
+	double degree;
+	double relationDegree;
 	for (int i=0; i<objectVector.size();i++){
 		for (int j=0; j<objectVector.size();j++){
 
@@ -217,13 +170,16 @@ void computeAllRelations(vector<object> &objectVector){
 					cout<<"Entra in p-g g-p "<<"\n";
 					cout<<"Subject: "<< objectVector[i].name<<"\n";
 					cout<<"Object: "<< objectVector[j].name<<"\n";
-
+					
 					//Subject is a leg
 					relationStruct.gamma_subject=objectVector[i].name;
 					//Object is a pin
 					relationStruct.gamma_object=objectVector[j].name;
 					relationStruct.nameRelation=NAMERELATION;
 					relationStruct.degreeRelation=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, CONNECTED_THRESHOLD);
+					/*degree=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, CONNECTED_THRESHOLD);
+					relationDegree=(int)(degree*1000.0)/1000.0;
+					relationStruct.degreeRelation=relationDegree;*/
 					relationStructVector.push_back(relationStruct);
 				}
 
@@ -239,6 +195,9 @@ void computeAllRelations(vector<object> &objectVector){
 					relationStruct.gamma_object=objectVector[j].name;
 					relationStruct.nameRelation=NAMERELATION;
 					relationStruct.degreeRelation=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, 0.4);
+					/*degree=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, 0.4);
+					relationDegree=(int)(degree*1000.0)/1000.0;
+					relationStruct.degreeRelation=relationDegree;*/
 					relationStructVector.push_back(relationStruct);
 				}
 
@@ -254,6 +213,9 @@ void computeAllRelations(vector<object> &objectVector){
 					relationStruct.gamma_object=objectVector[j].name;
 					relationStruct.nameRelation=NAMERELATION;
 					relationStruct.degreeRelation=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, 0.4);
+					/*degree=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, 0.4);
+					relationDegree=(int)(degree*1000.0)/1000.0;
+					relationStruct.degreeRelation=relationDegree;*/
 					relationStructVector.push_back(relationStruct);
 				}
 
@@ -268,6 +230,9 @@ void computeAllRelations(vector<object> &objectVector){
 					relationStruct.gamma_object=objectVector[j].name;
 					relationStruct.nameRelation=NAMERELATION;
 					relationStruct.degreeRelation=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, 0.4);
+					/*degree=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, 0.4);
+					relationDegree=(int)(degree*1000.0)/1000.0;
+					relationStruct.degreeRelation=relationDegree;*/
 					relationStructVector.push_back(relationStruct);
 				}
 
@@ -339,129 +304,7 @@ return 0;
 
 
 
-/*void computeRelations(vision::SceneToSIT::Ptr a, double pins[ROWS][COLUMNS], vector<scene_struct> structVector, vision::Relations::Ptr b, struct relation r){
 
-	double xy_leg1[2];
-	double xy_leg2[2];
-	int pin1;
-	int pin2;
-	std:string toErase="Pin_";
-	int actual_loop_size=0;
-
-	for(vector<scene_struct>::iterator it = structVector.begin(); it != structVector.end(); ++it){
-
-			actual_loop_size++;
-		
-			/*cout<<"\n";
-			cout<<"DENTRO LA COMPUTERELATIONS"<<"\n";
-			cout<<"\n";
-			//cout<<"SIZE ARRAY NOW: " << sceneStructVector.size()<<"\n";
-			cout<<"NOME GAMMA LEG NELL'ARRAY: "<<it->gamma_leg<<"\n";
-		        cout<<"TIPO LEG NELL'ARRAY: "<<it->type_leg<<"\n";
-			cout<<"X LEG NELL'ARRAY: "<<it->x_leg<<"\n";
-		        cout<<"Y LEG NELL'ARRAY: "<<it->y_leg<<"\n";
-			cout<<"GAMMA PIN NELL'ARRAY: "<<it->gamma_pin<<"\n";
-			cout<<"TIPO PIN NELL'ARRAY: "<<it->type_pin<<"\n";
-			cout<<"GAMMA TABLE NELL'ARRAY: "<<it->gamma_table<<"\n";
-			cout<<"TIPO TABLE NELL'ARRAY: "<<it->type_table<<"\n";
-			cout<<"\n";*/
-
-		/*xy_leg1[0]=it->x_leg;
-		xy_leg1[1]=it->y_leg;
-		std::string pin_type=it->type_pin;
-		size_t pos = pin_type.find(toErase);
-	 
-		if (pos != std::string::npos)
-		{
-			// If found then erase it from string
-			pin_type.erase(pos, toErase.length());
-		}
-	
-		pin1=std::stoi(pin_type);
-
-		///////////////Relations between a leg and a pin in a single scene_struct//////////
-		b->gamma_subject=it->gamma_leg;
-		b->gamma_object=it->gamma_pin;
-		b->nameRelation=NAMERELATION;
-		b->degreeRelation=computeLegPinRelation(xy_leg1,pins, pin1);
-		a->relations.push_back(*b);
-
-		////////////////////////////////////////////////////////////////////////////////////
-
-		//////////////Relations between a pin and the table in a single scene_struct///////
-		b->gamma_subject=it->gamma_pin;
-		b->gamma_object="t";
-		b->nameRelation=NAMERELATION;
-		b->degreeRelation=computePinTableRelation(pins, pin1);
-		a->relations.push_back(*b);
-	
-		//////////////////////////////////////////////////////////////////////////////////
-
-		//////////////Relations between a leg and the table in a single scene_struct///////
-
-		b->gamma_subject=it->gamma_leg;
-		b->gamma_object="t";
-		b->nameRelation=NAMERELATION;
-		b->degreeRelation=computeLegTableRelation(xy_leg1);	
-		a->relations.push_back(*b);
-
-		//////////////////////////////////////////////////////////////////////////////////
-
-		/////Loop to compute the relations intra-struct elements//////////////////////////
-		for(int i = 1; i < structVector.size(); i++){
-			if(i!=actual_loop_size){
-				xy_leg2[0]=structVector[i-1].x_leg;
-				xy_leg2[1]=structVector[i-1].y_leg;
-				std::string pin_type2=structVector[i-1].type_pin;
-				size_t pos2 = pin_type2.find(toErase);
-	 
-				if (pos2 != std::string::npos)
-				{
-					// If found then erase it from string
-					pin_type2.erase(pos2, toErase.length());
-				}
-	
-				pin2=std::stoi(pin_type2);
-	
-				///////////////Relations between a leg and a pin between different scene_struct//////////
-
-				b->gamma_subject=it->gamma_leg;
-				b->gamma_object=structVector[i-1].gamma_pin;
-				b->nameRelation=NAMERELATION;
-				b->degreeRelation=computeLegPinRelation(xy_leg1,pins, pin2);
-				a->relations.push_back(*b);
-
-				////////////////////////////////////////////////////////////////////////////////////////
-
-				///////////////Relations between legs between different scene_struct////////////////////
-
-				b->gamma_subject=it->gamma_leg;
-				b->gamma_object=structVector[i-1].gamma_leg;
-				b->nameRelation=NAMERELATION;
-				b->degreeRelation= computeLegLegRelation(xy_leg1, xy_leg2);
-				a->relations.push_back(*b);
-
-				///////////////////////////////////////////////////////////////////////////////////////
-
-				///////////////Relations between pins between different scene_struct////////////////////
-
-				b->gamma_subject=it->gamma_pin;
-				b->gamma_object=structVector[i-1].gamma_pin;
-				b->nameRelation=NAMERELATION;
-				b->degreeRelation=computePinPinRelation(pins, pin1, pin2);			
-				a->relations.push_back(*b);
-
-				///////////////////////////////////////////////////////////////////////////////////////			
-
-
-			}
-		} 	
-	
-	
-	}
-
-
-}*/
 
 
 
@@ -675,6 +518,7 @@ int eval_pin (double xy [2], double p[ROWS][COLUMNS], std::string name, std::str
 		 //cout<<"PIN NAME IN STRUCT DENTRO EVAL_PIN: "<< pin_object.name<<"\n";
 		 //cout<<"PIN X IN STRUCT DENTRO EVAL_PIN: "<< pin_object.x<<"\n";
 		 //cout<<"PIN Y IN STRUCT DENTRO EVAL_PIN: "<< pin_object.y<<"\n";
+
                  /////////////////////////////
 		 //fill an item of type pin
 		 itemStruct.gamma_i=pin_gammaName;		 
@@ -727,15 +571,15 @@ int eval_pin (double xy [2], double p[ROWS][COLUMNS], std::string name, std::str
 
 void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double pins[ROWS][COLUMNS], configuration &conf_leg, std::string leg_name, object &leg_object, object &pin_object, vector<object> &objectVector){
 	
-    
+    map<string,double> legsMap;
     tf::Matrix3x3 m0(t.getRotation());
     m0.getEulerYPR(angles[2], angles[1], angles[0]);
 
-    //roll
+    //roll radiants to degrees
     angles[0] = angles[0] * (180 / M_PI);
-    //pitch
+    //pitch radiants to degrees
     angles[1] = angles[1] * (180 / M_PI);
-    //yaw
+    //yaw radiants to degrees
     angles[2] = angles[2] * (180 / M_PI);
 
     change_angle_interval(angles);
@@ -745,7 +589,8 @@ void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double 
     leg_object.name=leg_gammaName;
 
     //After "check_configuration" function I know the type of the leg and the orientation respect to the WORLD frame
-    check_configuration(angles, conf_leg, leg_name);
+    legsMap=check_configuration(angles, conf_leg, leg_name);
+	
     
     
 	
@@ -771,16 +616,18 @@ void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double 
     cout << "leg before the check on pin type: " << leg_object.name << "\n";
     cout << "pin before the check on pin type: " << pin_object.name << "\n";
     if(pin_type!=0){
-    cout << "\n";
-    cout << "leg insert in the vector of objects and as item: " << leg_object.name<<"\n";
-    cout << "pin insert in the vector of objects and as item: " << pin_object.name << "\n";
-    objectVector.push_back(leg_object);
-    objectVector.push_back(pin_object);
+	    cout << "\n";
+	    cout << "leg insert in the vector of objects and as item: " << leg_object.name<<"\n";
+	    cout << "pin insert in the vector of objects and as item: " << pin_object.name << "\n";
+	    objectVector.push_back(leg_object);
+	    objectVector.push_back(pin_object);
 
-    itemStruct.gamma_i=leg_gammaName;
-    itemStruct.type=conf_leg.name_config;
-    itemStruct.degree=conf_leg.degreeOrientation;
-    itemStructVector.push_back(itemStruct);
+	    for (map<string,double>::iterator it=legsMap.begin(); it!=legsMap.end(); ++it){
+		    itemStruct.gamma_i=leg_gammaName;
+		    itemStruct.type=it->first;
+		    itemStruct.degree=it->second;
+		    itemStructVector.push_back(itemStruct);
+	    }
     }
 
     /*conf_leg.legPinRelationDegree=computeLegPinRelation(xy,pins,conf_leg.pin,conf_leg.name_config,conf_leg.leg_id); 
@@ -886,14 +733,7 @@ int main(int argc, char **argv)
     struct configuration conf_leg4;
     struct configuration conf_leg8;
     struct configuration conf_leg12;
-    ///////NEW STRUCTS FOR RELATIONS
-    /*struct relation relationInScene;
-    struct scene_struct sceneStruct_Leg0;
-    struct scene_struct sceneStruct_Leg4;
-    struct scene_struct sceneStruct_Leg8;
-    struct scene_struct sceneStruct_Leg12;
-    vector<scene_struct> sceneStructVector;*/
-    //struct scene_struct sceneStructArray [4];
+
     struct object leg_object;
     struct object pin_object;
     struct object table_object;

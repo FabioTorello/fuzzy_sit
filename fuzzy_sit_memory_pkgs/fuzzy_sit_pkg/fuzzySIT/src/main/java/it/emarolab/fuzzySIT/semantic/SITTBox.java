@@ -667,10 +667,13 @@ public class SITTBox
             frame.setPreferredSize(new Dimension(width, height));
             */
 
+
             updateShowing();
+
             /////////////////////////
             saveGraph( frame);
             ////////////////////////////
+
 
         });
     }
@@ -678,13 +681,13 @@ public class SITTBox
     //////Function to save the graph memory to image////////////////////////////////
    public void saveGraph(JFrame frame){
         Container content = frame.getContentPane();
-        BufferedImage img = new BufferedImage(content.getWidth(), content.getHeight(), BufferedImage.TYPE_INT_RGB);
+        BufferedImage img = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = img.createGraphics();
         content.printAll(g2d);
         g2d.dispose();
 
         try {
-            ImageIO.write(img, "png", new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/fuzzySIT/files/MemoryGraph.png"));
+            ImageIO.write(img, "png", new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }

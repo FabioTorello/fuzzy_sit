@@ -5,6 +5,7 @@
 #include <tf/transform_listener.h>
 #include <math.h>
 #include <stdlib.h>
+#include <map> 
 #ifndef VISION_LEGELABORATION_H
 #define VISION_LEGELABORATION_H
 
@@ -18,9 +19,7 @@ struct configuration{
     std::string name_config;
     double degreeOrientation;
     int pin;
-    /*std::string nameRelation;
-    double pinTableRelationDegree;
-    double legPinRelationDegree;*/
+   
     
     
 
@@ -53,18 +52,7 @@ double x, y;
 };
 
 
-/*struct scene_struct{
-  std::string gamma_leg;
-  std::string type_leg;
-  double x_leg;
-  double y_leg;
-  std::string gamma_pin;
-  std::string type_pin;
-  //std::string gamma_table;
-  //std::string type_table;
 
-
-};*/
 
 void change_angle_interval(double rpy[3]){
 
@@ -112,13 +100,13 @@ std::string setType(const double rpy[3], double &formula){
     cout<<"FORMULA ENTRA NELLA FUNZIONE SETTYPE: " << formula << "\n";*/
     ///////////////////////////////// SETTO IN BED E NOT <226 E NON < 225 Perchè 225 NON VIENE MAI CONSIDERATO /////////////
 
-
+    //////135 NON VIENE MAI CONSIDERATO
     if( (45 <= rpy[1]) && (rpy[1] < 135)){ // p = 90° --> roof
 
         formula = rpy[2] - rpy[0];
         type="ROOF";
     }
-    else if ( (225 <= rpy[1]) && (rpy[1] < 315)){ // p = 90° --> roof
+    else if ( (226 <= rpy[1]) && (rpy[1] < 315)){ // p = 90° --> roof
 
         formula = rpy[2] + rpy[0] + 180;
         type="CHAIR";
@@ -310,16 +298,23 @@ double setDegreeOrientation (double formula){
     return degree;
 }
 
-void check_configuration(double rpy[3], struct configuration &config, const std::string &leg_id){
+map<string, double> check_configuration(double rpy[3], struct configuration &config, const std::string &leg_id){
+    map<string, double> types_leg_degreeMap;
     double formula;
     double degreeOrientation;
+    double degree;
     std::string orientation;  
     std::string type=setType(rpy, formula);
     orientation=setOrientation(rpy, formula);
+    /*degree=setDegreeOrientation(formula);
+    degreeOrientation=(int)(degree*1000.0)/1000.0;*/
     degreeOrientation=setDegreeOrientation(formula);
     config.leg_id = leg_id;
-    config.name_config= type + orientation;
+    std::string leg_type=type + orientation;
+    types_leg_degreeMap.insert(pair<string,double>(leg_type,degreeOrientation));
+    config.name_config= leg_type;
     config.degreeOrientation=degreeOrientation;
+    return types_leg_degreeMap;
     
 
 }
