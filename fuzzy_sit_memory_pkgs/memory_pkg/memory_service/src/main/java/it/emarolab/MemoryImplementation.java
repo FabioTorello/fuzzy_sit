@@ -233,7 +233,7 @@ public class MemoryImplementation extends MemoryInterface {
         //  the name of the file at the beginning of this page
         sceneForgottenFunctionWithDifferentConsolidating(id,timeStamp,"Consolidating Function 1");
 
-        //sceneScoreVariationFunction(timings,id,timeStamp,"Consolidating Function 1");
+        sceneScoreVariationFunction(id,timeStamp,"Consolidating Function 1");
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     }
@@ -823,12 +823,12 @@ public class MemoryImplementation extends MemoryInterface {
             System.out.println(e.getMessage());
         }
         if (id==1) {
-            outpustreamScoreItemsForgotten.println("ID" + "," +"Time Stamp" + "," + "Scene Name" + "," + "Score"  + "," + "Score Weak Th." + "," + "Consolidating Function");
+            outpustreamScoreItemsForgotten.println("ID" + "," + "Time Stamp" + "," + "Scene Name" + "," + "Score"  + "," + "Score Weak Th." + "," + "Consolidating Function");
             outpustreamScoreItemsForgotten.close();
         }
         if (timing.forgetDone==true){
             for (Timing forgottenItem: scoreForgottenScene ){
-                outpustreamScoreItemsForgotten.println(id + "," + timeStamp +"," + forgottenItem.sceneName + "," + scoreForgottenScene  + "," + SCORE_WEAK + "," + typeFunction);
+                outpustreamScoreItemsForgotten.println(id + "," + timeStamp + "," + forgottenItem.sceneName + "," + forgottenItem.sceneScore  + "," + SCORE_WEAK + "," + typeFunction);
                 outpustreamScoreItemsForgotten.close();
             }
         }
@@ -861,7 +861,7 @@ public class MemoryImplementation extends MemoryInterface {
         }
 
         for (Timing sceneScoreVariation: scoreScene ){
-            outpustreamScoreVariation.println(id + "," + timeStamp +"," + sceneScoreVariation.sceneName + "," + sceneScoreVariation.sceneScore  + "," + typeFunction);
+            outpustreamScoreVariation.println(id + "," + timeStamp + "," + sceneScoreVariation.sceneName + "," + sceneScoreVariation.sceneScore  + "," + typeFunction);
             outpustreamScoreVariation.close();
         }
     }
