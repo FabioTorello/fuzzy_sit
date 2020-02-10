@@ -33,7 +33,8 @@ public class MemoryImplementation extends MemoryInterface {
     // threshold above which it consolidates
     private static final double ENCODE_TH = .5;
     // threshold under which it learns
-    private static final double LEARN_TH = 1;
+    //ORIGINALE LEARN_TH è 1
+    private static final double LEARN_TH = 0.8;
     // threshold under which it forgets (0,inf] (after consolidation (0,1])
     private static final double SCORE_WEAK = .1;
 
@@ -259,9 +260,12 @@ public class MemoryImplementation extends MemoryInterface {
         Set<SceneHierarchyVertex> forgotten = forget();
 
 
-        timing.numberOfItemsForgotten=forgotten.size();
+
+
         timing.forgetTime = System.nanoTime() - initialTime;
+
         scoreForgottenScene= new ArrayList<>();
+
         for (SceneHierarchyVertex itemForgotten : forgotten) {
             timing.sceneName = itemForgotten.getScene();
             timing.sceneScore = itemForgotten.getMemoryScore();
@@ -367,6 +371,8 @@ public class MemoryImplementation extends MemoryInterface {
                 timing.forgetDone = true;
             }
         }
+
+        timing.numberOfItemsForgotten=forgotten.size();
 
         for (SceneHierarchyVertex scene : forgotten)
             getTbox().removeScene(scene);
