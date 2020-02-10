@@ -143,7 +143,7 @@ double distance(double xlegframe,double ylegframe,double xPin,double yPin){
 double computeRelation (double x1, double y1, double x2, double y2, float threshold){
    
     double connection=distance(x1, y1, x2,y2);
-    cout<<"CONNECTION: " << connection <<"\n";			
+    //cout<<"CONNECTION: " << connection <<"\n";			
     if (connection <= threshold){
 			
 	double degree = 1-(fabs(connection) / threshold);
@@ -164,12 +164,12 @@ void computeAllRelations(vector<object> &objectVector){
 
 			if(j!=i && j>i){
 				//cout<< "i: " << i << "--"<< "j: " << j << "\n";
-				cout<<"--------------------------"<<"\n";
+				//cout<<"--------------------------"<<"\n";
 				if((objectVector[i].name.find("g")!=std::string::npos && objectVector[j].name.find("p")!=std::string::npos) || (objectVector[i].name.find("p")!=std::string::npos && objectVector[j].name.find("g")!=std::string::npos) ){
-					cout<<"\n";
-					cout<<"Entra in p-g g-p "<<"\n";
-					cout<<"Subject: "<< objectVector[i].name<<"\n";
-					cout<<"Object: "<< objectVector[j].name<<"\n";
+					//cout<<"\n";
+					//cout<<"Entra in p-g g-p "<<"\n";
+					//cout<<"Subject: "<< objectVector[i].name<<"\n";
+					//cout<<"Object: "<< objectVector[j].name<<"\n";
 					
 					//Subject is a leg
 					relationStruct.gamma_subject=objectVector[i].name;
@@ -184,10 +184,10 @@ void computeAllRelations(vector<object> &objectVector){
 				}
 
 				if(objectVector[j].name.find("t")!=std::string::npos){
-					cout<<"\n";
-					cout<<"Entra in t-otherObject "<<"\n";
-					cout<<"Subject: "<< objectVector[i].name<<"\n";
-					cout<<"Object: "<< objectVector[j].name<<"\n";
+					//cout<<"\n";
+					//cout<<"Entra in t-otherObject "<<"\n";
+					//cout<<"Subject: "<< objectVector[i].name<<"\n";
+					//cout<<"Object: "<< objectVector[j].name<<"\n";
 
 				  	//Subject
 					relationStruct.gamma_subject=objectVector[i].name;
@@ -202,10 +202,10 @@ void computeAllRelations(vector<object> &objectVector){
 				}
 
 				if(objectVector[i].name.find("p")!=std::string::npos && objectVector[j].name.find("p")!=std::string::npos){
-					cout<<"\n";
-					cout<<"Entra in p-p "<<"\n";
-					cout<<"Subject: "<< objectVector[i].name<<"\n";
-					cout<<"Object: "<< objectVector[j].name<<"\n";
+					//cout<<"\n";
+					//cout<<"Entra in p-p "<<"\n";
+					//cout<<"Subject: "<< objectVector[i].name<<"\n";
+					//cout<<"Object: "<< objectVector[j].name<<"\n";
 
 					//Subject is a leg
 					relationStruct.gamma_subject=objectVector[i].name;
@@ -221,9 +221,9 @@ void computeAllRelations(vector<object> &objectVector){
 
 				if(objectVector[i].name.find("g")!=std::string::npos && objectVector[j].name.find("g")!=std::string::npos){
 					cout<<"\n";
-					cout<<"Entra in g-g "<<"\n";
-					cout<<"Subject: "<< objectVector[i].name<<"\n";
-					cout<<"Object: "<< objectVector[j].name<<"\n";
+					//cout<<"Entra in g-g "<<"\n";
+					//cout<<"Subject: "<< objectVector[i].name<<"\n";
+					//cout<<"Object: "<< objectVector[j].name<<"\n";
 					//Subject is a leg
 					relationStruct.gamma_subject=objectVector[i].name;
 					//Object is a pin
@@ -611,14 +611,14 @@ void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double 
     //cout<<"PIN X IN STRUCT FUORI EVAL_PIN: "<< pin_object.x<<"\n";
     //cout<<"PIN Y IN STRUCT FUORI EVAL_PIN: "<< pin_object.y<<"\n";
 
-    cout<< "pin type: " << conf_leg.pin<<"\n";
+    //cout<< "pin type: " << conf_leg.pin<<"\n";
     
-    cout << "leg before the check on pin type: " << leg_object.name << "\n";
-    cout << "pin before the check on pin type: " << pin_object.name << "\n";
+    //cout << "leg before the check on pin type: " << leg_object.name << "\n";
+    //cout << "pin before the check on pin type: " << pin_object.name << "\n";
     if(pin_type!=0){
-	    cout << "\n";
-	    cout << "leg insert in the vector of objects and as item: " << leg_object.name<<"\n";
-	    cout << "pin insert in the vector of objects and as item: " << pin_object.name << "\n";
+	   // cout << "\n";
+	    //cout << "leg insert in the vector of objects and as item: " << leg_object.name<<"\n";
+	    //cout << "pin insert in the vector of objects and as item: " << pin_object.name << "\n";
 	    objectVector.push_back(leg_object);
 	    objectVector.push_back(pin_object);
 
@@ -629,21 +629,9 @@ void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double 
 		    itemStructVector.push_back(itemStruct);
 	    }
     }
-
-    /*conf_leg.legPinRelationDegree=computeLegPinRelation(xy,pins,conf_leg.pin,conf_leg.name_config,conf_leg.leg_id); 
-    conf_leg.pinTableRelationDegree=computePinTableRelation(pins, conf_leg.pin);
-    conf_leg.nameRelation=NAMERELATION;*/
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//PER LA MIA FUNZIONE (QUELLA VECCHIA) è QUESTA PARTE SOTTO DA DECOMMENTARE
-    /*int pin=eval_pin(xy, pins, conf_leg);
-    conf_leg.pin=pin;
-    conf_leg.nameRelation=NAMERELATION;*/
-//PRINT FOR DEBUGGING
-    //ROS_INFO("\n%s\n%s\nCONNECTED TO PIN %d\n", conf_leg.leg_id.c_str(), conf_leg.name_config.c_str(), conf_leg.pin);
-    //ROS_INFO("\n%s\n%s\n%s TO PIN %d WITH DEGREE %f\n", conf_leg.leg_id.c_str(), conf_leg.name_config.c_str(), conf_leg.nameRelation, pin, conf_leg.legPinRelationDegree);
-    //conf_leg.pinTableRelationDegree=computePinTableRelation(conf_leg,pins,pin);
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
+    
+    //every time a new leg is evaluated at the end of computations the map with type and degree will be cleared
+    legsMap.clear();
 
     
 }
