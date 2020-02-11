@@ -57,7 +57,7 @@ struct item itemStruct;
 struct relation relationStruct;
 vector<item> itemStructVector;
 vector<relation> relationStructVector;
-//static int table=1;
+
 
 
 
@@ -494,8 +494,6 @@ int eval_pin (double xy [2], double p[ROWS][COLUMNS], std::string name, std::str
    // cout<<"LEG X ESCE DAGLI IF: "<<x<<"\n";
     //cout<<"LEG Y ESCE DAGLI IF: "<<y<<"\n";
 
-    //sceneStruct_Leg.x_leg=x;
-    //sceneStruct_Leg.y_leg=y;
 
     //cout<<"NOME LEG IN STRUCT NELLA EVAL_PIN: " <<leg_object.name<<"\n";
     //cout<<"VALORE LEG X IN STRUCT NELLA EVAL_PIN: " <<leg_object.x<<"\n";
@@ -622,6 +620,7 @@ void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double 
 	    objectVector.push_back(leg_object);
 	    objectVector.push_back(pin_object);
 
+//////////////////////////////MAP CONTENT IS PUT IN THE ITEMS ARRAY EVEN SAME GAMMA WITH DIFFERENT TYPES
 	    for (map<string,double>::iterator it=legsMap.begin(); it!=legsMap.end(); ++it){
 		    itemStruct.gamma_i=leg_gammaName;
 		    itemStruct.type=it->first;
@@ -758,9 +757,7 @@ int main(int argc, char **argv)
         tf::StampedTransform transform_w_112;
         vision::SceneTable::Ptr ourScene (new vision::SceneTable);
 
-/////////////////////////////////////////////////////////////////
-       // vision::SceneToSIT::Ptr ourSceneToSIT (new vision::SceneToSIT);
-/////////////////////////////////////////////////////////////////////	
+
        
 
 
@@ -864,24 +861,12 @@ int main(int argc, char **argv)
 		
 
                 vision::Configuration::Ptr msg0(new vision::Configuration);
-///////////////////////////////////////////////////////////////////////////////////////
-                //vision::Configuration_SIT::Ptr msg0SIT(new vision::Configuration_SIT);
-		
-////////////////////////////////////////////////////////////////////////////////////////
 
                 init_original_message(ourScene, msg0, conf_leg0);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
                 
-		/*init_SIT_message(ourSceneToSIT, msg0SIT, conf_leg0, sceneStruct_Leg0);
-		if (isThereATable==false){
-			add_table(ourSceneToSIT, msg0SIT, conf_leg0, sceneStruct_Leg0);
-			//*tablePtr=true;
-			isThereATable=true;
-		}
-		sceneStructVector.push_back(sceneStruct_Leg0);*/
-		//sceneStructArray[leg_counter]=sceneStruct_Leg0;
-//////////////////////////////////////////////////////////////////////////
+		
                 /*sit_armor_injected_msgs::SceneElement::Ptr ar0(new sit_armor_injected_msgs::SceneElement);
                 sit_armor_injected_msgs::SceneElement::Ptr pin0(new sit_armor_injected_msgs::SceneElement);
                 init_msg_for_Armor(ar0, pin0, sceneForArmor, conf_leg0, xy_100, pins);*/
@@ -907,9 +892,7 @@ int main(int argc, char **argv)
 
 
                 vision::Configuration::Ptr msg4(new vision::Configuration);
-///////////////////////////////////////////////////////////////////////////////////////
-                //vision::Configuration_SIT::Ptr msg4SIT(new vision::Configuration_SIT);
-////////////////////////////////////////////////////////////////////////////////////////
+
                 
 		init_original_message(ourScene, msg4, conf_leg4);
 
@@ -917,15 +900,6 @@ int main(int argc, char **argv)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
                 
-		/*init_SIT_message(ourSceneToSIT, msg4SIT, conf_leg4, sceneStruct_Leg4);
-		if (isThereATable==false){
-                	add_table(ourSceneToSIT, msg4SIT, conf_leg4, sceneStruct_Leg4);
-			isThereATable=true;
-		}*/
-                //leg_counter++;
-		//sceneStructVector.push_back(sceneStruct_Leg4);
-                //sceneStructArray[leg_counter]=sceneStruct_Leg4;
-//////////////////////////////////////////////////////////////////////////
 		
                 /*sit_armor_injected_msgs::SceneElement::Ptr ar4(new sit_armor_injected_msgs::SceneElement);
                 sit_armor_injected_msgs::SceneElement::Ptr pin4(new sit_armor_injected_msgs::SceneElement);
@@ -951,23 +925,11 @@ int main(int argc, char **argv)
 		leg_counter++;
                 vision::Configuration::Ptr msg8(new vision::Configuration);
 
-///////////////////////////////////////////////////////////////////////////////////////
-                //vision::Configuration_SIT::Ptr msg8SIT(new vision::Configuration_SIT);
-////////////////////////////////////////////////////////////////////////////////////////
                 
 		init_original_message(ourScene, msg8, conf_leg8);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
                 
-		/*init_SIT_message(ourSceneToSIT, msg8SIT, conf_leg8, sceneStruct_Leg8);
-		if (isThereATable==false){
-			add_table(ourSceneToSIT, msg8SIT, conf_leg8, sceneStruct_Leg8);
-			isThereATable=true;
-		}*/
-               // leg_counter++;
-		//sceneStructVector.push_back(sceneStruct_Leg8);
-                //sceneStructArray[leg_counter]=sceneStruct_Leg8;
-//////////////////////////////////////////////////////////////////////////
 
                 /*sit_armor_injected_msgs::SceneElement::Ptr ar8(new sit_armor_injected_msgs::SceneElement);
                 sit_armor_injected_msgs::SceneElement::Ptr pin8(new sit_armor_injected_msgs::SceneElement);
@@ -993,25 +955,11 @@ int main(int argc, char **argv)
 
 
                 vision::Configuration::Ptr msg12(new vision::Configuration);
-///////////////////////////////////////////////////////////////////////////////////////
-             //   vision::Configuration_SIT::Ptr msg12SIT(new vision::Configuration_SIT);
-////////////////////////////////////////////////////////////////////////////////////////
 
                 init_original_message(ourScene, msg12, conf_leg12);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
                 
-		/*init_SIT_message(ourSceneToSIT, msg12SIT, conf_leg12, sceneStruct_Leg12);
-		if (isThereATable==false){
-                	add_table(ourSceneToSIT, msg12SIT, conf_leg12, sceneStruct_Leg12);
-			isThereATable=true;
-		}*/
-
-                //leg_counter++;
-		//sceneStructVector.push_back(sceneStruct_Leg12);
-                //sceneStructArray[leg_counter]=sceneStruct_Leg12;
-
-//////////////////////////////////////////////////////////////////////////
 
                 /*sit_armor_injected_msgs::SceneElement::Ptr ar12(new sit_armor_injected_msgs::SceneElement);
                 sit_armor_injected_msgs::SceneElement::Ptr pin12(new sit_armor_injected_msgs::SceneElement);
@@ -1026,10 +974,10 @@ int main(int argc, char **argv)
 
         //Scene_pub_4Armor.publish(sceneForArmor);
         //PRINT FOR DEBUGGING
-	//cout<<*ourScene;
+	
 	
 
-	//vision::Relations::Ptr relation(new vision::Relations);
+	
 
 	table_object.name="t";
 	table_object.x=0;
@@ -1102,7 +1050,6 @@ int main(int argc, char **argv)
 	vision::SceneToSIT::Ptr ourSceneToSIT (new vision::SceneToSIT);
 	vision::Configuration_SIT::Ptr msgItemSIT(new vision::Configuration_SIT);
 	vision::Relations::Ptr msgRelationSIT(new vision::Relations);
-	//init_SIT_message(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr b, vision::Relations::Ptr r, itemStructVector, relationStructVector);
 	init_SIT_message(ourSceneToSIT, msgItemSIT, msgRelationSIT, itemStructVector, relationStructVector);
 
 	//computeRelations(ourSceneToSIT, pins, sceneStructVector, relation, relationInScene);
