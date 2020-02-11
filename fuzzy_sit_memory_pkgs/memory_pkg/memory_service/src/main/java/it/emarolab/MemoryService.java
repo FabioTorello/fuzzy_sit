@@ -100,7 +100,7 @@ public class MemoryService extends AbstractNodeMain {
                                 System.out.print("\n");
                             }
                             System.out.print(request.getTestRequest().getFrame() + "\n");*/
-                            if (request.getTestRequest().getFrame() < 67 && (!request.getTestRequest().getItems().isEmpty())&&(!request.getTestRequest().getRelations().isEmpty())) {
+                            if ((!request.getTestRequest().getItems().isEmpty())&&(!request.getTestRequest().getRelations().isEmpty())) {
                                 memory.experience(scene(request.getTestRequest().getItems(), request.getTestRequest().getRelations(), request.getTestRequest().getFrame()), true, true);
                             }
                             //Show the experience graph
@@ -141,10 +141,10 @@ public class MemoryService extends AbstractNodeMain {
     private static final List<String> legsType = Arrays.asList("BED", "CHAIR", "ROOF", "NOT");
     private static int pin;*/
 
-   public static ConnectObjectScene scene(List<SceneItem> items, List<Relations> relations, long frame) {
+   public static ConnectObjectScene scene(List<SceneItem> items, List<Relations> relations, String frame) {
         if ((!items.isEmpty())&&(!relations.isEmpty())) {
             //Define the scene
-            ConnectObjectScene scene = new ConnectObjectScene("frame" + frame);
+            ConnectObjectScene scene = new ConnectObjectScene(frame);
 
 
 

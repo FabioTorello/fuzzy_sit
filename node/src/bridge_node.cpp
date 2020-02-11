@@ -36,7 +36,7 @@ void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneToSIT::ConstPtr& msg)
       fuzzy_sit_memory_msgs::SceneItem item;
       fuzzy_sit_memory_msgs::Relations relation;
       //int sizeForFuzzyDegreeArray=size*2;
-      long frameInstant=0;
+      std::string frameInstant;
     
 
       //////////ITEMS PART OF THE MESSAGE///////////////////////////////////////////////////

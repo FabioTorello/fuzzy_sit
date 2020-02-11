@@ -63,7 +63,9 @@ struct item itemStruct;
 struct relation relationStruct;
 vector<item> itemStructVector;
 vector<relation> relationStructVector;
-
+string folder_name;
+string file_name;
+bool start_stop;
 
 
 
@@ -132,7 +134,7 @@ void init_SIT_message(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr 
 	
 	}
 
-	a->frame=frameInstant;
+	a->frame=file_name+"_"+boost::lexical_cast<string>(frameInstant);
 
 }
 
@@ -668,9 +670,7 @@ int main(int argc, char **argv)
     ros::NodeHandle n;
 
     
-    string folder_name;
-    string file_name;
-    bool start_stop;
+    
 
     std::fstream fxy;
     fxy.open("xy.txt", std::fstream::out);
