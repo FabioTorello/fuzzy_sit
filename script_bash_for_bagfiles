@@ -43,9 +43,9 @@ do
 		then
             	     echo "Processing A FILE: $ff"
 		     rosparam set file_name $ff
-	 	     #rosparam set NAME true
-		     #rosbag play $ff
-	 	     #rosparam set NAME false
+	 	     rosparam set Start_Stop true
+		     rosbag play $ff
+	 	     rosparam set Start_Stop false
 
 
 	    #else
@@ -53,8 +53,8 @@ do
             	fi
 	    fi
         done
-    else
-        echo "Processing file $f"
+    #else
+  
     fi
 done
 

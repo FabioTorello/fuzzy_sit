@@ -670,6 +670,7 @@ int main(int argc, char **argv)
     
     string folder_name;
     string file_name;
+    bool start_stop;
 
     std::fstream fxy;
     fxy.open("xy.txt", std::fstream::out);
@@ -694,7 +695,7 @@ int main(int argc, char **argv)
 ///////////////////////////////////////////////////////////////////////////////////
 
      //Subscriber for the images
-    //ros::Subscriber sub = n.subscribe("kinect2/qhd/image_mono", 1000, callback_save_image);
+    ros::Subscriber sub = n.subscribe("kinect2/qhd/image_mono", 1000, callback_save_image);
 
 
     
@@ -739,6 +740,7 @@ int main(int argc, char **argv)
     size_t index_position;
     int stat;
     std::string dirname;
+    std::string subdirname;
     std:string toErase=".bag";
     size_t pos;
 
@@ -752,7 +754,7 @@ int main(int argc, char **argv)
 
     while(n.ok()) {
 
-    bool isThereATable=false;
+    //bool isThereATable=false;
     //bool *tablePtr=&isThereATable;
     
 	//DURATA ORIGINALE è 1
@@ -773,15 +775,19 @@ int main(int argc, char **argv)
 /////////////////////////Piece of code to take the image from the bag file convert it to cv_bridge andsave it/////////////////////////	
 	
 
-	//string name_image= path_to_save_images+to_string(frameInstant)+".jpg";
-	frameInstant++;
-
+	n.getParam("/Start_Stop", start_stop);	
 	n.getParam("/folder_name", folder_name);
     	n.getParam("/file_name",file_name);
+
+	if(start_stop==false){
+		frameInstant=0;
+	}
+
+		frameInstant++;
        
-   	
-    	cout<<"File Name: " << file_name <<"\n";
-    	cout<<"Folder Name: "<< folder_name<<"\n";
+   	cout<<"Start_Stop: " << start_stop << "\n";
+    	cout<<"File Name: " << file_name << "\n";
+    	cout<<"Folder Name: "<< folder_name << "\n";
         cout<<"\n";
 
 	index_position = folder_name.rfind(sep, folder_name.length());
@@ -797,61 +803,55 @@ int main(int argc, char **argv)
     	}
     		cout<<"Folder name: "<<folder_name<<"\n";
     		cout<<"File name: "<<file_name<<"\n";
+	pos = file_name.find(toErase);
+ 
+	if (pos != std::string::npos)
+	{
+		// If found then erase it from string
+		file_name.erase(pos, toErase.length());
+	}
 
+	cout<<"File name AFTER DELETE .Bag : "<<file_name<<"\n";
 	//path_to_save_images="/home/fabio/java_workspace/src/vision/images/
 
 	dirname=path_to_save_images+folder_name;
-//+folder_name;
+        subdirname=dirname+"/"+file_name;
 	// Search for the substring in string
 	
-	pos = dirname.find(toErase);
+	//pos = dirname.find(toErase);
  
-	/*if (pos != std::string::npos)
-	{
-		// If found then erase it from string
-		dirname.erase(pos, toErase.length());
-	}*/
+	
 	cout<<"DIRNAME: "<<dirname<<"\n";
-//char* DIR=path_to_save_images + "2";
-//const char* pippo=dirname;
-// Creating a directory 
- if (mkdir(dirname.c_str(), S_IRWXU)== -1){
-ROS_ERROR("Unable to create directory");
-}
- else{
-        cout << "Directory created"; 
-    }
 
-    /*if (mkdir(DIR, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) == -1) {
-        //cerr << "Error :  " << strerror(errno) << endl; 
-	ROS_ERROR("Unable to create directory");
-    }
-  
-    else{
-        cout << "Directory created"; 
-    }*/
+	// Creating a directory 
+ 	if (mkdir(dirname.c_str(), S_IRWXU)== -1){
+		ROS_ERROR("Unable to create directory");
+	}
+ 	else{
+        	cout << "Directory created"; 
+    	}
 
-	/*if (mkdir("/home/fabio/PIPPO") != 0){
-	    ROS_ERROR("Unable to create directory %s\n", "PIPPO");
-	}*/
-   	/*stat = boost::filesystem::create_directory(dirname);
-	if (!stat)
-      		ROS_INFO("Directory %s created\n",dirname);
-   	else
-   	{
-      		ROS_ERROR("Unable to create directory %s\n", dirname);
-      
-   	}*/
+	// Creating a directory 
+ 	if (mkdir(subdirname.c_str(), S_IRWXU)== -1){
+		ROS_ERROR("Unable to create subdirectory");
+	}
+ 	else{
+        	cout << "Subdirectory created"; 
+    	}
+
+   
+
+	
 
 	//cout<<inputImage;
-	/*if (inputImage){
+	if (inputImage){
 	string frame = boost::lexical_cast<string>(frameInstant);
 	
-	string name_image= dirname + "_" + frame + ".png";
+	string name_image= subdirname +"/" + file_name + "_" + frame + ".png";
 	
 	imwrite(name_image, inputImage->image);
 	inputImage.reset();
-	}*/
+	}
 	cout<<"\n";
 	ROS_INFO("\nTHE FRAME NOW IS: %d", frameInstant);
 	//cout<<"\n";
