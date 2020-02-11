@@ -34,6 +34,12 @@
 #include <iostream> 
 #include <string> 
 #include <map> 
+///DIRECTORY///////////////
+#include <bits/stdc++.h> 
+#include <iostream> 
+#include <sys/stat.h> 
+#include <sys/types.h> 
+/////////////////////////////
 
 # define ROWS 3
 # define COLUMNS 12
@@ -688,7 +694,7 @@ int main(int argc, char **argv)
 ///////////////////////////////////////////////////////////////////////////////////
 
      //Subscriber for the images
-    ros::Subscriber sub = n.subscribe("kinect2/qhd/image_mono", 1000, callback_save_image);
+    //ros::Subscriber sub = n.subscribe("kinect2/qhd/image_mono", 1000, callback_save_image);
 
 
     
@@ -732,7 +738,7 @@ int main(int argc, char **argv)
     char sep='/';
     size_t index_position;
     int stat;
-    string dirname;
+    std::string dirname;
     std:string toErase=".bag";
     size_t pos;
 
@@ -775,7 +781,7 @@ int main(int argc, char **argv)
        
    	
     	cout<<"File Name: " << file_name <<"\n";
-    	cout<<"Folder Name:"<<folder_name<<"\n";
+    	cout<<"Folder Name: "<< folder_name<<"\n";
         cout<<"\n";
 
 	index_position = folder_name.rfind(sep, folder_name.length());
@@ -783,26 +789,51 @@ int main(int argc, char **argv)
     	if (index_position != string::npos) {
       		folder_name=folder_name.substr(index_position+1, folder_name.length() - index_position);
     	}
+
     	index_position = file_name.rfind(sep, file_name.length());
+
     	if (index_position != string::npos) {
       		file_name=file_name.substr(index_position+1, file_name.length() - index_position);
     	}
     		cout<<"Folder name: "<<folder_name<<"\n";
     		cout<<"File name: "<<file_name<<"\n";
 
-	
+	//path_to_save_images="/home/fabio/java_workspace/src/vision/images/
 
 	dirname=path_to_save_images+folder_name;
+//+folder_name;
 	// Search for the substring in string
 	
 	pos = dirname.find(toErase);
  
-	if (pos != std::string::npos)
+	/*if (pos != std::string::npos)
 	{
 		// If found then erase it from string
 		dirname.erase(pos, toErase.length());
-	}
+	}*/
 	cout<<"DIRNAME: "<<dirname<<"\n";
+//char* DIR=path_to_save_images + "2";
+//const char* pippo=dirname;
+// Creating a directory 
+ if (mkdir(dirname.c_str(), S_IRWXU)== -1){
+ROS_ERROR("Unable to create directory");
+}
+ else{
+        cout << "Directory created"; 
+    }
+
+    /*if (mkdir(DIR, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) == -1) {
+        //cerr << "Error :  " << strerror(errno) << endl; 
+	ROS_ERROR("Unable to create directory");
+    }
+  
+    else{
+        cout << "Directory created"; 
+    }*/
+
+	/*if (mkdir("/home/fabio/PIPPO") != 0){
+	    ROS_ERROR("Unable to create directory %s\n", "PIPPO");
+	}*/
    	/*stat = boost::filesystem::create_directory(dirname);
 	if (!stat)
       		ROS_INFO("Directory %s created\n",dirname);
@@ -813,14 +844,14 @@ int main(int argc, char **argv)
    	}*/
 
 	//cout<<inputImage;
-	if (inputImage){
+	/*if (inputImage){
 	string frame = boost::lexical_cast<string>(frameInstant);
 	
 	string name_image= dirname + "_" + frame + ".png";
 	
 	imwrite(name_image, inputImage->image);
 	inputImage.reset();
-	}
+	}*/
 	cout<<"\n";
 	ROS_INFO("\nTHE FRAME NOW IS: %d", frameInstant);
 	//cout<<"\n";
