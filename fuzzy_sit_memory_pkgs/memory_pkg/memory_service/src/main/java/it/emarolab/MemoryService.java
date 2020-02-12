@@ -108,19 +108,13 @@ public class MemoryService extends AbstractNodeMain {
                             //THE SCENE GRAPH SHOULD BE VISUALIZE ONLY IN THE END OF THE BAGFILE
                             // (THIS IS ONLY A TEMPTATIVE)
 
-                            if (request.getTestRequest().getFrame() == 67) {
+                           /* if (request.getTestRequest().getFrame() == 67) {
                                 memory.getTbox().show();
-                            }
+                            }*/
 
                             response.getTestResponse().setResponse("The scene " + " has been loaded");
 
-                            /*if(request.getTestRequest().getRequest().equals("scene")){
-                                memoryCreation.experience( scene0(),true,true);
-                                response.getTestResponse().setResponse("There is scene to load");
-                            }
-                            else {
-                                response.getTestResponse().setResponse("There is no scene to load");
-                            }*/
+
 
                         });
 

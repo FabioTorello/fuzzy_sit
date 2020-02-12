@@ -18,6 +18,7 @@ vector<std::string> legOrientationsVector;
 vector<std::string> legTypesVector;
 vector<double> legDegreeOrientationsVector;
 vector<double> legDegreeTypesVector;
+std::string prev_type_leg;
 
 struct configuration{
 
@@ -97,60 +98,134 @@ void compute_avg(double avg[], const double sum[], int k, int size){
 //    avg[2]=sum[2]/i;
 }*/
 
-std::string setType(const double rpy[3], double &formula){
+/*double* turnToValidType(double rpy[3]){
+
+ double rpy_modified[3];
+ double distance;
+
+ rpy_modified[0]=rpy[0];
+ if(prev_type_leg=="ROOF"){
+   if(rpy[1]<45){
+     d
+   }
+   if(rpy[1]<135){
+   }
+  
+ }
+ else if(prev_type_leg=="CHAIR"){
+
+ }
+ else if(prev_type_leg=="NOT"){
+
+ }
+ else if(prev_type_leg=="BED"){
+
+ }
+
+ rpy_modified[1]=rpy[1];
+ rpy_modified[2]=rpy[2];
+
+ return rpy_modified;
+}*/
+
+//PRIMA ERA std::string setType(const double rpy[3], double &formula)
+
+std::string setType(double rpy[3], double &formula){
 
     std::string type;
-   /* cout<<"ROLL CHE ENTRA NELLA FUNZIONE: " << rpy[0] << "\n";
+    cout<<"ROLL CHE ENTRA NELLA FUNZIONE: " << rpy[0] << "\n";
     cout<<"PITCH CHE ENTRA NELLA FUNZIONE: " << rpy[1] << "\n";
-    cout<<"YAW CHE ENTRA NELLA FUNZIONE: " << rpy[2] << "\n";
-    cout<<"FORMULA ENTRA NELLA FUNZIONE SETTYPE: " << formula << "\n";*/
+    //cout<<"YAW CHE ENTRA NELLA FUNZIONE: " << rpy[2] << "\n";
+    //cout<<"FORMULA ENTRA NELLA FUNZIONE SETTYPE: " << formula << "\n";
     ///////////////////////////////// SETTO IN BED E NOT <226 E NON < 225 Perchè 225 NON VIENE MAI CONSIDERATO /////////////
 
     //////135 NON VIENE MAI CONSIDERATO
-    if( (45 <= rpy[1]) && (rpy[1] < 135)){ // p = 90° --> roof
+    if( ((45 <= rpy[1]) && (rpy[1] < 136))  ){ // p = 90° --> roof
 
         formula = rpy[2] - rpy[0];
         type="ROOF";
+	//prev_type_leg=type;
     }
-    else if ( (226 <= rpy[1]) && (rpy[1] < 315)){ // p = 90° --> roof
+	
+
+
+	/*if( (45 <= rpy[1]) && (rpy[1] < 135)){ // p = 90° --> roof
+
+        formula = rpy[2] - rpy[0];
+        type="ROOF";
+    }*/
+    
+    else if ( ((226 <= rpy[1]) && (rpy[1] < 315)) ){ // p = 90° --> roof
 
         formula = rpy[2] + rpy[0] + 180;
         type="CHAIR";
+	//prev_type_leg=type;
     }
+
     else if ( ((315 <= rpy[1]) || (rpy[1] < 45))&&((315 <= rpy[0]) || (rpy[0] < 45))){ // p = 90° --> roof
 
         formula = rpy[2];
         type="NOT";
+	//prev_type_leg=type;
     }
-else if ( ((136 <= rpy[1]) && (rpy[1] < 226))&&((136 <= rpy[0]) && (rpy[0] < 226))){ // p = 90° --> roof
+
+    else if ( ((136 <= rpy[1]) && (rpy[1] < 226))&&((136 <= rpy[0]) && (rpy[0] < 226))){ // p = 90° --> roof
 
         formula = rpy[2] + 180;
         type="NOT";
+ 	//prev_type_leg=type;
     }
+
     /*else if ( ((136 <= rpy[1]) && (rpy[1] < 225))&&((136 <= rpy[0]) && (rpy[0] < 225))){ // p = 90° --> roof
 
         formula = rpy[2] + 180;
         type="NOT";
     }*/
-else if ( ((136 <= rpy[1]) && (rpy[1] < 226))&&((315 <= rpy[0]) || (rpy[0] < 45))){ // p = 90° --> roof
+
+    else if ( ((136 <= rpy[1]) && (rpy[1] < 226))&&((315 <= rpy[0]) || (rpy[0] < 45))){ // p = 90° --> roof
 
         formula = rpy[2] + 180;
         type="BED";
+	//prev_type_leg=type;
     }
+
     /*else if ( ((136 <= rpy[1]) && (rpy[1] < 225))&&((315 <= rpy[0]) || (rpy[0] < 45))){ // p = 90° --> roof
 
         formula = rpy[2] + 180;
         type="BED";
     }*/
-else if ( ((136 <= rpy[0]) && (rpy[0] < 226))&&((315 <= rpy[1]) || (rpy[1] < 45))){ // p = 90° --> roof
+
+    else if ( ((136 <= rpy[0]) && (rpy[0] < 226))&&((315 <= rpy[1]) || (rpy[1] < 45))){ // p = 90° --> roof
 
         formula = rpy[2];
         type="BED";
+	//prev_type_leg=type;
     }
+
     /*else if ( ((136 <= rpy[0]) && (rpy[0] < 225))&&((315 <= rpy[1]) || (rpy[1] < 45))){ // p = 90° --> roof
 
         formula = rpy[2];
         type="BED";
+    }*/
+    //If type is empty it is assumed equal to the previous leg type and compute the formula by using a recursive call function
+    
+
+   /* if (type.empty()){
+      if((45 <= rpy[0]) && (rpy[0] < 136)){
+	formula = rpy[2] - rpy[0];
+        type="ROOF";
+	}
+      if(((226 <= rpy[0]) && (rpy[0] < 315))){
+	formula = rpy[2] + rpy[0] + 180;
+        type="CHAIR";
+      }
+    }*/
+
+
+    /*if (type.empty())
+    {
+	rpy=turnToValidType(rpy);
+	type=setType(rpy,formula);
     }*/
     //cout<<"FORMULA CHE ESCE DALLA SETTYPE: " <<formula <<"\n";
     return type;
@@ -161,7 +236,7 @@ else if ( ((136 <= rpy[0]) && (rpy[0] < 226))&&((315 <= rpy[1]) || (rpy[1] < 45)
 
 std::string setOrientation (double rpy[3], double formula){
 
-    cout<<"FORMULA IN setORIENTATION: "<<formula<<"\n";
+    //cout<<"FORMULA IN setORIENTATION: "<<formula<<"\n";
     std::string orientation;
 
     if(formula < 0){
@@ -224,7 +299,7 @@ double setDegreeOrientation (double formula){
         formula=formula-360;
     }*/
 
-    cout<< "FORMULA DOPO CAMBIO SE > 360 GRADI: " << formula << "\n";
+    //cout<< "FORMULA DOPO CAMBIO SE > 360 GRADI: " << formula << "\n";
 
     //All if for degree = 1
     if (formula == 0 || formula==360){
@@ -316,8 +391,166 @@ double setDegreeOrientation (double formula){
 
 
 
+//FUZZY TYPE FUNCTION
+map<string, double> setFuzzyType(double rpy[3], double &formula){
+   cout<<"\n";
+   cout<<"FORMULA: "<< formula<<"\n";
+  //Map used to save the orientations and the related degrees
+   map<std::string, double> orientations_degreeMap;
+   std::string orientationLeg;
+   double degreeOrientationLeg;
+
+   //If formula is a negative angle it is converted to positive one by adding 360 degree
+   if(formula < 0){
+	formula=formula+360;
+
+    }
+
+     //If formula is greater than 360 degree it is computed the equivalent angle within the first 360 degrees
+     while(formula>360){
+        formula=formula-360;
+    }
+
+    /*if (formula > 360){
+        formula=formula-360;
+    }*/
 
 
+   
+   //Only _X
+   if((formula>=325 && formula<=360) || (formula>=0 && formula<=35)){
+	   cout<<"Only _X"<<"\n";
+	   if(formula>=325 && formula<=360){
+           	orientationLeg="_X";
+  		degreeOrientationLeg=(((formula-325)/35)*0.8)+0.2;
+                orientations_degreeMap.insert(pair<string,double>(orientationLeg,degreeOrientationLeg));
+	   }
+	   else{
+		orientationLeg="_X";
+		degreeOrientationLeg=(((35-formula)/35)*0.8)+0.2;
+		orientations_degreeMap.insert(pair<string,double>(orientationLeg,degreeOrientationLeg));
+	   }
+
+   }
+
+   //Only _Y
+   if(formula>=55 && formula<=125){
+	   cout<<"Only _Y"<<"\n";
+	   if(formula>=55 && formula<=90){
+           	orientationLeg="_Y";
+  		degreeOrientationLeg=(((formula-55)/35)*0.8)+0.2;
+                orientations_degreeMap.insert(pair<string,double>(orientationLeg,degreeOrientationLeg));
+	   }
+	   else{
+		orientationLeg="_Y";
+		degreeOrientationLeg=(((125-formula)/35)*0.8)+0.2;
+		orientations_degreeMap.insert(pair<string,double>(orientationLeg,degreeOrientationLeg));
+	   }
+
+   }
+
+   //Only _MINUS_X
+   if(formula>=145 && formula<=215){
+	   cout<<"Only _MINUS_X"<<"\n";
+	   if(formula>=145 && formula<=180){
+           	orientationLeg="_MINUS_X";
+  		degreeOrientationLeg=(((formula-145)/35)*0.8)+0.2;
+                orientations_degreeMap.insert(pair<string,double>(orientationLeg,degreeOrientationLeg));
+	   }
+	   else{
+		orientationLeg="_MINUS_X";
+		degreeOrientationLeg=(((215-formula)/35)*0.8)+0.2;
+		orientations_degreeMap.insert(pair<string,double>(orientationLeg,degreeOrientationLeg));
+	   }
+
+   }
+
+   //Only _MINUS_Y
+   if(formula>=235 && formula<=305){
+	   cout<<"Only _MINUS_Y"<<"\n";
+	   if(formula>=235 && formula<=270){
+           	orientationLeg="_MINUS_Y";
+  		degreeOrientationLeg=(((formula-235)/35)*0.8)+0.2;
+                orientations_degreeMap.insert(pair<string,double>(orientationLeg,degreeOrientationLeg));
+	   }
+	   else{
+		orientationLeg="_MINUS_Y";
+		degreeOrientationLeg=(((305-formula)/35)*0.8)+0.2;
+		orientations_degreeMap.insert(pair<string,double>(orientationLeg,degreeOrientationLeg));
+	   }
+
+   }
+
+   // _X and _Y
+   if(formula>35 && formula<55){
+
+	        cout<<" _X And _Y"<<"\n";
+           	orientationLeg="_X";
+  		degreeOrientationLeg=(((45-formula)/10)*0.1)+0.1;
+                orientations_degreeMap.insert(pair<string,double>(orientationLeg,degreeOrientationLeg));
+	   
+	  
+		orientationLeg="_Y";
+		degreeOrientationLeg=(((formula-45)/10)*0.1)+0.1;
+		orientations_degreeMap.insert(pair<string,double>(orientationLeg,degreeOrientationLeg));
+	  
+
+   }
+
+   //_Y and _MINUS_X
+   if(formula>125 && formula<145){
+
+	  	cout<<" _Y And _MINUS_X"<<"\n";
+           	orientationLeg="_Y";
+  		degreeOrientationLeg=(((135-formula)/10)*0.1)+0.1;
+                orientations_degreeMap.insert(pair<string,double>(orientationLeg,degreeOrientationLeg));
+	   
+	  
+		orientationLeg="_MINUS_X";
+		degreeOrientationLeg=(((formula-135)/10)*0.1)+0.1;
+		orientations_degreeMap.insert(pair<string,double>(orientationLeg,degreeOrientationLeg));
+	  
+
+   }
+
+   //_MINUS_X and _MINUS_Y
+   if(formula>215 && formula<235){
+
+	  	cout<<" _MINUS_X And _MINUS_Y"<<"\n";
+           	orientationLeg="_MINUS_X";
+  		degreeOrientationLeg=(((225-formula)/10)*0.1)+0.1;
+                orientations_degreeMap.insert(pair<string,double>(orientationLeg,degreeOrientationLeg));
+	   
+	  
+		orientationLeg="_MINUS_Y";
+		degreeOrientationLeg=(((formula-225)/10)*0.1)+0.1;
+		orientations_degreeMap.insert(pair<string,double>(orientationLeg,degreeOrientationLeg));
+	  
+
+   }
+
+   //_MINUS_Y and _X
+   if(formula>305 && formula<325){
+
+	  	cout<<" _MINUS_Y And _X"<<"\n";
+           	orientationLeg="_MINUS_Y";
+  		degreeOrientationLeg=(((315-formula)/10)*0.1)+0.1;
+                orientations_degreeMap.insert(pair<string,double>(orientationLeg,degreeOrientationLeg));
+	   
+	  
+		orientationLeg="_X";
+		degreeOrientationLeg=(((formula-315)/10)*0.1)+0.1;
+		orientations_degreeMap.insert(pair<string,double>(orientationLeg,degreeOrientationLeg));
+	  
+
+   }
+
+   return orientations_degreeMap;
+
+}
+
+
+//FUZZY ORIENTATION FUNCTION
 map<string, double> setFuzzyOrientation(double formula){
    cout<<"\n";
    cout<<"FORMULA: "<< formula<<"\n";
@@ -501,12 +734,12 @@ map<string, double> check_configuration(double rpy[3], struct configuration &con
 
 
 
-    orientation_leg_degreeMap=setFuzzyOrientation(formula);
+   // orientation_leg_degreeMap=setFuzzyOrientation(formula);
 
-    for (map<string,double>::iterator it=orientation_leg_degreeMap.begin(); it!=orientation_leg_degreeMap.end(); ++it){
+   /* for (map<string,double>::iterator it=orientation_leg_degreeMap.begin(); it!=orientation_leg_degreeMap.end(); ++it){
 	orientationsVector.push_back(type+it->first);
         degreeOrientationVector.push_back(it->second);
-    }
+    }*/
     
     
     std::string leg_type=type + orientation;
@@ -516,7 +749,7 @@ map<string, double> check_configuration(double rpy[3], struct configuration &con
     config.name_config= leg_type;
     //config.degreeOrientation=degreeOrientation;
 
-    for(vector<std::string>::iterator it_orient = orientationsVector.begin(); it_orient != orientationsVector.end(); ++it_orient){
+    /*for(vector<std::string>::iterator it_orient = orientationsVector.begin(); it_orient != orientationsVector.end(); ++it_orient){
 
 		
 			cout<<"\n";
@@ -544,11 +777,11 @@ map<string, double> check_configuration(double rpy[3], struct configuration &con
 	  
 		
 	
-	}
+	}*/
     
-    orientationsVector.clear();
-    degreeOrientationVector.clear();
-    orientation_leg_degreeMap.clear();
+   // orientationsVector.clear();
+   // degreeOrientationVector.clear();
+    //orientation_leg_degreeMap.clear();
   
     return configuration_leg_degreeMap;
     

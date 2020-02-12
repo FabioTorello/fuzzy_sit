@@ -695,7 +695,7 @@ int main(int argc, char **argv)
 ///////////////////////////////////////////////////////////////////////////////////
 
      //Subscriber for the images
-    ros::Subscriber sub = n.subscribe("kinect2/qhd/image_mono", 1000, callback_save_image);
+    //ros::Subscriber sub = n.subscribe("kinect2/qhd/image_mono", 1000, callback_save_image);
 
 
     
@@ -824,7 +824,7 @@ int main(int argc, char **argv)
 	cout<<"DIRNAME: "<<dirname<<"\n";
 
 	// Creating a directory 
- 	if (mkdir(dirname.c_str(), S_IRWXU)== -1){
+ 	/*if (mkdir(dirname.c_str(), S_IRWXU)== -1){
 		ROS_ERROR("Unable to create directory");
 	}
  	else{
@@ -837,14 +837,14 @@ int main(int argc, char **argv)
 	}
  	else{
         	cout << "Subdirectory created"; 
-    	}
+    	}*/
 
    
 
 	
 
 	//cout<<inputImage;
-	if (inputImage){
+	/*if (inputImage){
 	string frame = boost::lexical_cast<string>(frameInstant);
 	
 	string name_image= subdirname +"/" + file_name + "_" + frame + ".png";
@@ -853,8 +853,8 @@ int main(int argc, char **argv)
 	inputImage.reset();
 	}
 	cout<<"\n";
-	ROS_INFO("\nTHE FRAME NOW IS: %d", frameInstant);
-	//cout<<"\n";
+	ROS_INFO("\nTHE FRAME NOW IS: %d", frameInstant);*/
+	
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
