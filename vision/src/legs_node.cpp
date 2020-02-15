@@ -46,8 +46,8 @@
 //IN ORIGINE THR ERA 0.04
 # define THR 0.04
 # define NAMERELATION "isConnectedTo"
-# define CONNECTED_THRESHOLD  0.07 // meters (positive number) IN ORIGINE ERA 0.1
-#define NUMBER_OBJECTS 10
+# define CONNECTED_THRESHOLD  0.1 // meters (positive number) IN ORIGINE ERA 0.1
+# define NUMBER_OBJECTS 10
 
 using namespace ros;
 using namespace tf;
@@ -134,7 +134,8 @@ void init_SIT_message(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr 
 	
 	}
 
-	a->frame=file_name+"_"+boost::lexical_cast<string>(frameInstant);
+	a->scene_name=file_name+"_"+boost::lexical_cast<string>(frameInstant);
+	a->frame=frameInstant;
 
 }
 
@@ -606,8 +607,13 @@ void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double 
    // cout<<"TIPO DI LEG NELLA STRUCT: " << sceneStruct_Leg.type_leg <<"\n";
     xy[0]=t.getOrigin().x();
     xy[1]=t.getOrigin().y();
-    int pin_type=eval_pin(xy, pins, conf_leg.name_config, conf_leg.leg_id, leg_object, pin_object, gamma_index);
-    conf_leg.pin=pin_type;
+int pin_type;
+for (map<string,double>::iterator it=legsMap.begin(); it!=legsMap.end(); ++it){
+     pin_type=eval_pin(xy, pins, it->first, conf_leg.leg_id, leg_object, pin_object, gamma_index);
+}
+    ////QUESTA è LA FORMULA ORIGINALE//////
+    //int pin_type=eval_pin(xy, pins, conf_leg.name_config, conf_leg.leg_id, leg_object, pin_object, gamma_index);
+   // conf_leg.pin=pin_type;
 
     //cout<<"\n";
     //cout<<"LEG NAME IN STRUCT FUORI EVAL_PIN: "<< leg_object.name<<"\n";
@@ -695,7 +701,7 @@ int main(int argc, char **argv)
 ///////////////////////////////////////////////////////////////////////////////////
 
      //Subscriber for the images
-    //ros::Subscriber sub = n.subscribe("kinect2/qhd/image_mono", 1000, callback_save_image);
+    ros::Subscriber sub = n.subscribe("kinect2/qhd/image_mono", 1000, callback_save_image);
 
 
     
@@ -824,7 +830,7 @@ int main(int argc, char **argv)
 	cout<<"DIRNAME: "<<dirname<<"\n";
 
 	// Creating a directory 
- 	/*if (mkdir(dirname.c_str(), S_IRWXU)== -1){
+ 	if (mkdir(dirname.c_str(), S_IRWXU)== -1){
 		ROS_ERROR("Unable to create directory");
 	}
  	else{
@@ -837,14 +843,14 @@ int main(int argc, char **argv)
 	}
  	else{
         	cout << "Subdirectory created"; 
-    	}*/
+    	}
 
    
 
 	
 
 	//cout<<inputImage;
-	/*if (inputImage){
+	if (inputImage){
 	string frame = boost::lexical_cast<string>(frameInstant);
 	
 	string name_image= subdirname +"/" + file_name + "_" + frame + ".png";
@@ -853,7 +859,7 @@ int main(int argc, char **argv)
 	inputImage.reset();
 	}
 	cout<<"\n";
-	ROS_INFO("\nTHE FRAME NOW IS: %d", frameInstant);*/
+	ROS_INFO("\nTHE FRAME NOW IS: %d", frameInstant);
 	
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

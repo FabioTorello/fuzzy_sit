@@ -36,7 +36,8 @@ void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneToSIT::ConstPtr& msg)
       fuzzy_sit_memory_msgs::SceneItem item;
       fuzzy_sit_memory_msgs::Relations relation;
       //int sizeForFuzzyDegreeArray=size*2;
-      std::string frameInstant;
+      long frameInstant;
+      std::string scene_name;
     
 
       //////////ITEMS PART OF THE MESSAGE///////////////////////////////////////////////////
@@ -62,8 +63,9 @@ void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneToSIT::ConstPtr& msg)
 
       }
 
-		      
+      scene_name=msg->scene_name;	      
       frameInstant=msg->frame;
+
 
    
       //std::cout << "Frame:" << frameInstant << std::endl;
@@ -83,6 +85,8 @@ void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneToSIT::ConstPtr& msg)
       //srv.request.test_request.items.push_back(relation);
       //srv.request.test_request.items.push_back(itemsInAScene);
       srv.request.test_request.frame=frameInstant;
+      srv.request.test_request.scene_name=scene_name;
+      
       //srv.request.test_request.items.push_back( );
 
       ros::ServiceClient client = (ros::ServiceClient)*clientPtr; //dereference the clientPtr

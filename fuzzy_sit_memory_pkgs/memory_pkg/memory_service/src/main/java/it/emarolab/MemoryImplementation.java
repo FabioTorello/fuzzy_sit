@@ -586,6 +586,8 @@ public class MemoryImplementation extends MemoryInterface {
                     outpustream.println("   " + "SCENE DESCRIPTION: " + sourceVertices.getDefinition());
 
 
+
+
                     //TARGET VERTEX INFORMATION
                     outpustream.println("\n" + " " + GraphAfterForgettingOperation.getEdgeTarget(edges).getScene() + " Information:");
                     outpustream.println("   " + "N° OBJECTS: " + GraphAfterForgettingOperation.getEdgeTarget(edges).getObjectNumber());

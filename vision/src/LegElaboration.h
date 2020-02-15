@@ -391,370 +391,22 @@ double setDegreeOrientation (double formula){
 
 
 
-//FUZZY TYPE FUNCTION
-map<string, double> setFuzzyType(double rpy[3], double &formula){
-   
-  //Map used to save the types and the related degrees
-   map<std::string, double> types_degreeMap;
-   std::string typeLeg;
-   double degreeTypeLeg;
-   double formula2;
-   double formula3;
-
-   //If the angles (yaw-pitch-roll) are negative they are converted to positive ones by adding 360 degree
-   if(rpy[0] < 0){
-	rpy[0]=rpy[0]+360;
-
-    }
-    
-    if(rpy[1] < 0){
-	rpy[1]=rpy[1]+360;
-
-    }
-    
-     if(rpy[2] < 0){
-	rpy[2]=rpy[2]+360;
-
-    }
-
-     //If formula is greater than 360 degree it is computed the equivalent angle within the first 360 degrees
-     while(rpy[0]>360){
-        rpy[0]=rpy[0]-360;
-    }
-
-    while(rpy[1]>360){
-        rpy[1]=rpy[1]-360;
-    }
-    
-    while(rpy[2]>360){
-        rpy[2]=rpy[2]-360;
-    }
-
-
-
-
-   //Only BED/NOT (1)
-   if((rpy[1]>=325 && rpy[1]<=360) || (rpy[1]>=0 && rpy[1]<=35)){
-
-	   cout<<"Only BED/NOT between 325 and 35 degrees"<<"\n";
-
-	   if(rpy[1]>=325 && rpy[1]<=360){
-
-		//NOT
-		if((315 <= rpy[0]) || (rpy[0] < 45)) {  
- 
-     			cout<<"Only NOT between 325 and 35 degrees"<<"\n";
-			typeLeg="NOT";
-			formula=rpy[2];
-	  		degreeTypeLeg=(((rpy[1]-325)/35)*0.8)+0.2;
-		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-
-		}
-
-		//BED
-		if((136 <= rpy[0]) && (rpy[0] < 226)) {  
- 
-     			cout<<"Only BED between 325 and 35 degrees"<<"\n";
-			typeLeg="BED";
-			formula=rpy[2];
-	  		degreeTypeLeg=(((rpy[1]-325)/35)*0.8)+0.2;
-		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-
-		}
-	   }
-
-	   else{
-
-		//NOT
-		if((315 <= rpy[0]) || (rpy[0] < 45)) {  
- 
-     			cout<<"Only NOT between 325 and 35 degrees"<<"\n";
-			typeLeg="NOT";
-			formula=rpy[2];
-	  		degreeTypeLeg=(((35-rpy[1])/35)*0.8)+0.2;
-		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-
-		}
-		
-		//BED
-		if((136 <= rpy[0]) && (rpy[0] < 226)) { 
-  
-     			cout<<"Only BED between 325 and 35 degrees"<<"\n";
-			typeLeg="BED";
-			formula=rpy[2];
-	  		degreeTypeLeg=(((35-rpy[1])/35)*0.8)+0.2;
-		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-
-		}
-		
-	   }
-
-   }
-
-   //Only ROOF
-   if(rpy[1]>=55 && rpy[1]<=125){
-
-	   cout<<"Only ROOF"<<"\n";
-
-	   if(rpy[1]>=55 && rpy[1]<=90){
-
-           	typeLeg="ROOF";
-		formula = rpy[2]-rpy[0];
-  		degreeTypeLeg=(((rpy[1]-55)/35)*0.8)+0.2;
-                types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-
-	   }
-
-	   else{
-
-		typeLeg="ROOF";
-		formula = rpy[2]-rpy[0];
-		degreeTypeLeg=(((125-rpy[1])/35)*0.8)+0.2;
-		types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-
-	   }
-
-   }
-
-   //Only BED/NOT (2)
-   if(rpy[1]>=145 && rpy[1]<=215){
-
-	   cout<<"Only BED/NOT between 145 and 215"<<"\n";
-
-	   if(rpy[1]>=145 && rpy[1]<=180){
-
-		//Only NOT
-		if((136 <= rpy[0]) && (rpy[0] < 226)){
-
-			cout<<"Only NOT between 145 and 215"<<"\n";
-		   	typeLeg="NOT";
-			formula=rpy[2]+180;
-	  		degreeTypeLeg=(((rpy[1]-145)/35)*0.8)+0.2;
-		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-		}
-
-		//Only BED
-		if((315 <= rpy[0]) || (rpy[0] < 45)){
-
-			cout<<"Only BED between 145 and 215"<<"\n";
-		   	typeLeg="BED";
-			formula=rpy[2]+180;
-	  		degreeTypeLeg=(((rpy[1]-145)/35)*0.8)+0.2;
-		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-		}
-
-	   }
-	   else{
-		
-		//Only NOT
-		if((136 <= rpy[0]) && (rpy[0] < 226)){
-
-			cout<<"Only NOT between 145 and 215"<<"\n";
-		   	typeLeg="NOT";
-			formula=rpy[2]+180;
-	  		degreeTypeLeg=(((215-rpy[1])/35)*0.8)+0.2;
-		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-		}
-
-		//Only BED
-		if((315 <= rpy[0]) || (rpy[0] < 45)){
-
-			cout<<"Only BED between 145 and 215"<<"\n";
-		   	typeLeg="BED";
-			formula=rpy[2]+180;
-	  		degreeTypeLeg=(((215-rpy[1])/35)*0.8)+0.2;
-		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-		}
-
-	   }
-
-   }
-
-   //Only CHAIR
-   if(rpy[1]>=235 && rpy[1]<=305){
-
-	   cout<<"Only CHAIR"<<"\n";
-	   if(rpy[1]>=235 && rpy[1]<=270){
-
-           	typeLeg="CHAIR";
-		formula = rpy[2]+rpy[0]+180;
-  		degreeTypeLeg=(((rpy[1]-235)/35)*0.8)+0.2;
-                types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-
-	   }
-
-	   else{
-
-		typeLeg="CHAIR";
- 		formula = rpy[2]+rpy[0]+180;
-		degreeTypeLeg=(((305-rpy[1])/35)*0.8)+0.2;
-		types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-
-	   }
-
-   }
-
-
-   // BED/NOT and ROOF (1)
-   if(rpy[1]>35 && rpy[1]<55){
-
-	        cout<<"BED/NOT and ROOF between 35 and 55"<<"\n";
-
-           	typeLeg="ROOF";
-		formula2=rpy[2]-rpy[0];
-  		degreeTypeLeg=(((rpy[1]-45)/10)*0.1)+0.1;
-                types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-	   	
-	  	//Now we have to determine which is the type between BED and NOT
-
-		//NOT
-		if((315 <= rpy[0]) || (rpy[0] < 45)) {  
- 
-     			cout<<"NOT between 35 and 55 degrees"<<"\n";
-			typeLeg="NOT";
-			formula3=rpy[2];
-	  		degreeTypeLeg=(((45-rpy[1])/10)*0.1)+0.1;
-		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-
-		}
-
-		//BED
-		if((136 <= rpy[0]) && (rpy[0] < 226)) {  
- 
-     			cout<<"BED between 35 and 55 degrees"<<"\n";
-			typeLeg="BED";
-			formula3=rpy[2];
-	  		degreeTypeLeg=(((45-rpy[1])/10)*0.1)+0.1;
-		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-
-		}
-		
-	  	formula=std::min(formula2,formula3);
-
-   }
-
-   //BED/NOT and ROOF (2)
-   if(rpy[1]>125 && rpy[1]<145){
-
-	  	cout<<"BED/NOT and ROOF between 125 and 145"<<"\n";
-           	typeLeg="ROOF";
-		formula2=rpy[2]-rpy[0];
-  		degreeTypeLeg=(((135-rpy[1])/10)*0.1)+0.1;
-                types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-
-	   	//Now we have to determine which is the type between BED and NOT
-
-		//NOT
-		if((136 <= rpy[0]) && (rpy[0] < 226)){
-
-			cout<<"NOT between 125 and 145 degrees"<<"\n";
-		   	typeLeg="NOT";
-			formula3=rpy[2]+180;
-	  		degreeTypeLeg=(((rpy[1]-135)/10)*0.1)+0.1;
-		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-		}
-
-		//BED
-		if((315 <= rpy[0]) || (rpy[0] < 45)){
-
-			cout<<"BED between 125 and 145 degrees"<<"\n";
-		   	typeLeg="BED";
-			formula3=rpy[2]+180;
-	  		degreeTypeLeg=(((rpy[1]-135)/10)*0.1)+0.1;
-		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-		}
-	  	
-		formula=std::min(formula2,formula3);
-
-   }
-
-   //BED/NOT and CHAIR (3)
-   if(rpy[1]>215 && rpy[1]<235){
-
-	  	cout<<"BED/NOT and CHAIR between 215 and 235"<<"\n"; 	
-	   
-		typeLeg="CHAIR";
-		formula2=rpy[2]+rpy[0]+180;
-		degreeTypeLeg=(((rpy[1]-225)/10)*0.1)+0.1;
-		types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-
-		//Now we have to determine which is the type between BED and NOT
-
-		//NOT
-		if((136 <= rpy[0]) && (rpy[0] < 226)){
-
-			cout<<"NOT between 215 and 235 degrees"<<"\n";
-		   	typeLeg="NOT";
-			formula3=rpy[2]+180;
-	  		degreeTypeLeg=(((225-rpy[1])/10)*0.1)+0.1;
-		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-		}
-
-		//BED
-		if((315 <= rpy[0]) || (rpy[0] < 45)){
-
-			cout<<"BED between 215 and 235 degrees"<<"\n";
-		   	typeLeg="BED";
-			formula3=rpy[2]+180;
-	  		degreeTypeLeg=(((225-rpy[1])/10)*0.1)+0.1;
-		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-		}
-	  
-		formula=std::min(formula2,formula3);	  
-
-   }
-
-   //BED/NOT and CHAIR (4)
-   if(rpy[1]>305 && rpy[1]<325){
-
-	  	cout<<"BED/NOT and CHAIR between 305 and 325"<<"\n";
-
-           	typeLeg="CHAIR";
-		formula2=rpy[2]+rpy[0]+180;
-  		degreeTypeLeg=(((315-rpy[1])/10)*0.1)+0.1;
-                types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-	   
-	  	//Now we have to determine which is the type between BED and NOT
-
-		//NOT
-		if((315 <= rpy[0]) || (rpy[0] < 45)) {  
- 
-     			cout<<"NOT between 305 and 325 degrees"<<"\n";
-			typeLeg="NOT";
-			formula3=rpy[2];
-	  		degreeTypeLeg=(((rpy[1]-315)/10)*0.1)+0.1;
-		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-
-		}
-
-		//BED
-		if((136 <= rpy[0]) && (rpy[0] < 226)) {  
- 
-     			cout<<"BED between 305 and 325 degrees"<<"\n";
-			typeLeg="BED";
-			formula3=rpy[2];
-	  		degreeTypeLeg=(((rpy[1]-315)/10)*0.1)+0.1;
-		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
-
-		}
-
-	  	formula=std::min(formula2,formula3);
-
-   }
-
-   return types_degreeMap;
-
-}
-
 
 //FUZZY ORIENTATION FUNCTION
-map<string, double> setFuzzyOrientation(double formula){
+map<string, double> setFuzzyOrientation(double formula, map<string, double> &types_degreeMap, map<string,double> &configuration_Map){
    cout<<"\n";
-   cout<<"FORMULA: "<< formula<<"\n";
+   cout<<"FORMULA: "<< formula <<"\n";
+
+   //Map used to save the combination between the types and the orientations
+   //map<string, double> configuration_Map;
   //Map used to save the orientations and the related degrees
    map<std::string, double> orientations_degreeMap;
    std::string orientationLeg;
    double degreeOrientationLeg;
+
+   //Variables describe the configuration which leg is and the related degree
+   double degreeLeg;
+   std::string configurationLeg;
 
    //If formula is a negative angle it is converted to positive one by adding 360 degree
    if(formula < 0){
@@ -899,9 +551,454 @@ map<string, double> setFuzzyOrientation(double formula){
 
    }
 
-   return orientations_degreeMap;
+
+//Combination between elements of two maps (types and orientations)
+  for (map<string,double>::iterator typesMap_it=types_degreeMap.begin(); typesMap_it!=types_degreeMap.end(); ++typesMap_it){
+
+
+
+	    for (map<string,double>::iterator orientMap_it=orientations_degreeMap.begin(); orientMap_it!=orientations_degreeMap.end(); ++orientMap_it){
+
+		configurationLeg=(typesMap_it->first)+(orientMap_it->first);
+
+		degreeLeg=std::min(typesMap_it->second,orientMap_it->second);
+
+		configuration_Map.insert(pair<string,double>(configurationLeg,degreeLeg));
+	    }
+
+
+
+
+   }
+
+   
+   orientations_degreeMap.clear();
+
+   return configuration_Map;
 
 }
+
+
+
+
+
+
+
+//FUZZY TYPE FUNCTION
+map<string, double> setFuzzyType(double rpy[3], double formula){
+
+   cout<<"ROLL CHE ENTRA NELLA FUNZIONE: " << rpy[0] << "\n";
+    cout<<"PITCH CHE ENTRA NELLA FUNZIONE: " << rpy[1] << "\n";
+//cout<<"YAW CHE ENTRA NELLA FUNZIONE: " << rpy[2] << "\n";
+cout<< "\n";
+   //Map used to save the types and the related degrees
+   map<std::string, double> types_degreeMap;
+
+   //Map used to save the configuration map after setFuzzyOrientation function operations. This is returned from setFuzzyType function
+   map<string, double> configuration_leg_FuzzyMap;
+
+  //Map gives as reference to setOrientation function used for the SetFuzzyOrientation function operations in particular when the types are more than one so the returned map could loose information
+   map<string, double> configuration_degreeMap;
+
+   std::string typeLeg;
+   double degreeTypeLeg;
+ 
+
+   //If the angles (yaw-pitch-roll) are negative they are converted to positive ones by adding 360 degree
+   if(rpy[0] < 0){
+	rpy[0]=rpy[0]+360;
+
+    }
+    
+    if(rpy[1] < 0){
+	rpy[1]=rpy[1]+360;
+
+    }
+    
+     if(rpy[2] < 0){
+	rpy[2]=rpy[2]+360;
+
+    }
+
+     //If formula is greater than 360 degree it is computed the equivalent angle within the first 360 degrees
+     while(rpy[0]>360){
+        rpy[0]=rpy[0]-360;
+    }
+
+    while(rpy[1]>360){
+        rpy[1]=rpy[1]-360;
+    }
+    
+    while(rpy[2]>360){
+        rpy[2]=rpy[2]-360;
+    }
+
+
+
+
+   //Only BED/NOT (1)
+   if((rpy[1]>=325 && rpy[1]<=360) || (rpy[1]>=0 && rpy[1]<=35)){
+
+	   cout<<"Only BED/NOT between 325 and 35 degrees"<<"\n";
+
+	   if(rpy[1]>=325 && rpy[1]<=360){
+
+		//NOT
+		if((315 <= rpy[0]) || (rpy[0] < 45)) {  
+ 
+     			cout<<"Only NOT between 325 and 35 degrees"<<"\n";
+			typeLeg="NOT";
+			formula=rpy[2];
+	  		degreeTypeLeg=(((rpy[1]-325)/35)*0.8)+0.2;
+		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+			configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+
+		}
+
+		//BED
+		if((136 <= rpy[0]) && (rpy[0] < 226)) {  
+ 
+     			cout<<"Only BED between 325 and 35 degrees"<<"\n";
+			typeLeg="BED";
+			formula=rpy[2];
+	  		degreeTypeLeg=(((rpy[1]-325)/35)*0.8)+0.2;
+		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+			configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+
+		}
+	   }
+
+	   else{
+
+		//NOT
+		if((315 <= rpy[0]) || (rpy[0] < 45)) {  
+ 
+     			cout<<"Only NOT between 325 and 35 degrees"<<"\n";
+			typeLeg="NOT";
+			formula=rpy[2];
+	  		degreeTypeLeg=(((35-rpy[1])/35)*0.8)+0.2;
+		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+			configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+
+		}
+		
+		//BED
+		if((136 <= rpy[0]) && (rpy[0] < 226)) { 
+  
+     			cout<<"Only BED between 325 and 35 degrees"<<"\n";
+			typeLeg="BED";
+			formula=rpy[2];
+	  		degreeTypeLeg=(((35-rpy[1])/35)*0.8)+0.2;
+		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+			configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+
+		}
+		
+	   }
+
+   }
+
+   //Only ROOF
+   if(rpy[1]>=55 && rpy[1]<=125){
+
+	   cout<<"Only ROOF"<<"\n";
+
+	   if(rpy[1]>=55 && rpy[1]<=90){
+
+           	typeLeg="ROOF";
+		formula = rpy[2]-rpy[0];
+  		degreeTypeLeg=(((rpy[1]-55)/35)*0.8)+0.2;
+                types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+		configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+
+	   }
+
+	   else{
+
+		typeLeg="ROOF";
+		formula = rpy[2]-rpy[0];
+		degreeTypeLeg=(((125-rpy[1])/35)*0.8)+0.2;
+		types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+		configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+
+	   }
+
+   }
+
+   //Only BED/NOT (2)
+   if(rpy[1]>=145 && rpy[1]<=215){
+
+	   cout<<"Only BED/NOT between 145 and 215"<<"\n";
+
+	   if(rpy[1]>=145 && rpy[1]<=180){
+
+		//Only NOT
+		if((136 <= rpy[0]) && (rpy[0] < 226)){
+
+			cout<<"Only NOT between 145 and 215"<<"\n";
+		   	typeLeg="NOT";
+			formula=rpy[2]+180;
+	  		degreeTypeLeg=(((rpy[1]-145)/35)*0.8)+0.2;
+		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+			configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+		}
+
+		//Only BED
+		if((315 <= rpy[0]) || (rpy[0] < 45)){
+
+			cout<<"Only BED between 145 and 215"<<"\n";
+		   	typeLeg="BED";
+			formula=rpy[2]+180;
+	  		degreeTypeLeg=(((rpy[1]-145)/35)*0.8)+0.2;
+		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+			configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+		}
+
+	   }
+	   else{
+		
+		//Only NOT
+		if((136 <= rpy[0]) && (rpy[0] < 226)){
+
+			cout<<"Only NOT between 145 and 215"<<"\n";
+		   	typeLeg="NOT";
+			formula=rpy[2]+180;
+	  		degreeTypeLeg=(((215-rpy[1])/35)*0.8)+0.2;
+		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+			configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+		}
+
+		//Only BED
+		if((315 <= rpy[0]) || (rpy[0] < 45)){
+
+			cout<<"Only BED between 145 and 215"<<"\n";
+		   	typeLeg="BED";
+			formula=rpy[2]+180;
+	  		degreeTypeLeg=(((215-rpy[1])/35)*0.8)+0.2;
+		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+			configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+		}
+
+	   }
+
+   }
+
+   //Only CHAIR
+   if(rpy[1]>=235 && rpy[1]<=305){
+
+	   cout<<"Only CHAIR"<<"\n";
+	   if(rpy[1]>=235 && rpy[1]<=270){
+
+           	typeLeg="CHAIR";
+		formula = rpy[2]+rpy[0]+180;
+  		degreeTypeLeg=(((rpy[1]-235)/35)*0.8)+0.2;
+                types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+		configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+
+	   }
+
+	   else{
+
+		typeLeg="CHAIR";
+ 		formula = rpy[2]+rpy[0]+180;
+		degreeTypeLeg=(((305-rpy[1])/35)*0.8)+0.2;
+		types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+		configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+
+	   }
+
+   }
+
+
+   // BED/NOT and ROOF (1)
+   if(rpy[1]>35 && rpy[1]<55){
+
+	        cout<<"BED/NOT and ROOF between 35 and 55"<<"\n";
+
+           	typeLeg="ROOF";
+		formula=rpy[2]-rpy[0];
+  		degreeTypeLeg=(((rpy[1]-45)/10)*0.1)+0.1;
+                types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+		configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+	   	
+	  	//Now we have to determine which is the type between BED and NOT
+
+		//NOT
+		if((315 <= rpy[0]) || (rpy[0] < 45)) {  
+ 
+     			cout<<"NOT between 35 and 55 degrees"<<"\n";
+			typeLeg="NOT";
+			formula=rpy[2];
+	  		degreeTypeLeg=(((45-rpy[1])/10)*0.1)+0.1;
+		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+			configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+
+		}
+
+		//BED
+		if((136 <= rpy[0]) && (rpy[0] < 226)) {  
+ 
+     			cout<<"BED between 35 and 55 degrees"<<"\n";
+			typeLeg="BED";
+			formula=rpy[2];
+	  		degreeTypeLeg=(((45-rpy[1])/10)*0.1)+0.1;
+		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+			configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+
+		}
+		
+	  	
+
+   }
+
+   //BED/NOT and ROOF (2)
+   if(rpy[1]>125 && rpy[1]<145){
+
+	  	cout<<"BED/NOT and ROOF between 125 and 145"<<"\n";
+           	typeLeg="ROOF";
+		formula=rpy[2]-rpy[0];
+  		degreeTypeLeg=(((135-rpy[1])/10)*0.1)+0.1;
+                types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+		configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+
+	   	//Now we have to determine which is the type between BED and NOT
+
+		//NOT
+		if((136 <= rpy[0]) && (rpy[0] < 226)){
+
+			cout<<"NOT between 125 and 145 degrees"<<"\n";
+		   	typeLeg="NOT";
+			formula=rpy[2]+180;
+	  		degreeTypeLeg=(((rpy[1]-135)/10)*0.1)+0.1;
+		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+			configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+		}
+
+		//BED
+		if((315 <= rpy[0]) || (rpy[0] < 45)){
+
+			cout<<"BED between 125 and 145 degrees"<<"\n";
+		   	typeLeg="BED";
+			formula=rpy[2]+180;
+	  		degreeTypeLeg=(((rpy[1]-135)/10)*0.1)+0.1;
+		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+			configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+		}
+	  	
+		
+
+   }
+
+   //BED/NOT and CHAIR (3)
+   if(rpy[1]>215 && rpy[1]<235){
+
+	  	cout<<"BED/NOT and CHAIR between 215 and 235"<<"\n"; 	
+	   
+		typeLeg="CHAIR";
+		formula=rpy[2]+rpy[0]+180;
+		degreeTypeLeg=(((rpy[1]-225)/10)*0.1)+0.1;
+		types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+		configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+
+		//Now we have to determine which is the type between BED and NOT
+
+		//NOT
+		if((136 <= rpy[0]) && (rpy[0] < 226)){
+
+			cout<<"NOT between 215 and 235 degrees"<<"\n";
+		   	typeLeg="NOT";
+			formula=rpy[2]+180;
+	  		degreeTypeLeg=(((225-rpy[1])/10)*0.1)+0.1;
+		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+			configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+		}
+
+		//BED
+		if((315 <= rpy[0]) || (rpy[0] < 45)){
+
+			cout<<"BED between 215 and 235 degrees"<<"\n";
+		   	typeLeg="BED";
+			formula=rpy[2]+180;
+	  		degreeTypeLeg=(((225-rpy[1])/10)*0.1)+0.1;
+		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+			configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+		}
+	  
+			  
+
+   }
+
+   //BED/NOT and CHAIR (4)
+   if(rpy[1]>305 && rpy[1]<325){
+
+	  	cout<<"BED/NOT and CHAIR between 305 and 325"<<"\n";
+
+           	typeLeg="CHAIR";
+		formula=rpy[2]+rpy[0]+180;
+  		degreeTypeLeg=(((315-rpy[1])/10)*0.1)+0.1;
+                types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+		configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+	   
+	  	//Now we have to determine which is the type between BED and NOT
+
+		//NOT
+		if((315 <= rpy[0]) || (rpy[0] < 45)) {  
+ 
+     			cout<<"NOT between 305 and 325 degrees"<<"\n";
+			typeLeg="NOT";
+			formula=rpy[2];
+	  		degreeTypeLeg=(((rpy[1]-315)/10)*0.1)+0.1;
+		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+			configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+
+		}
+
+		//BED
+		if((136 <= rpy[0]) && (rpy[0] < 226)) {  
+ 
+     			cout<<"BED between 305 and 325 degrees"<<"\n";
+			typeLeg="BED";
+			formula=rpy[2];
+	  		degreeTypeLeg=(((rpy[1]-315)/10)*0.1)+0.1;
+		        types_degreeMap.insert(pair<string,double>(typeLeg,degreeTypeLeg));
+
+			configuration_leg_FuzzyMap=setFuzzyOrientation(formula, types_degreeMap, configuration_degreeMap);
+
+		}
+
+
+   }
+  
+   types_degreeMap.clear();
+   configuration_degreeMap.clear();
+   return configuration_leg_FuzzyMap;
+
+}
+
+
 
 
 
@@ -912,26 +1009,26 @@ map<string, double> setFuzzyOrientation(double formula){
 map<string, double> check_configuration(double rpy[3], struct configuration &config, const std::string &leg_id){
 
     map<string, double> configuration_leg_degreeMap;
-    map<string, double> orientations_leg_degreeMap;
-    map<string, double> types_leg_degreeMap;
+    //map<string, double> orientations_leg_degreeMap;
+    //map<string, double> types_leg_degreeMap;
 
     //vector<std::string> orientationsVector;
     //vector<double> degreeOrientationVector;
 
     double formula;
+    double formula_crisp;
    // double degreeOrientation;    
     std::string orientation; 
 
-    double degreeLeg;
-    std::string configurationLeg;
+    
 	
 
  
-    std::string type=setType(rpy, formula);
-    orientation=setOrientation(rpy, formula);
+    //std::string type=setType(rpy, formula_crisp);
+    //orientation=setOrientation(rpy, formula_crisp);
     config.leg_id = leg_id;
-    std::string leg_type=type + orientation;
-    config.name_config= leg_type;
+    //std::string leg_type=type + orientation;
+    //config.name_config= leg_type;
 
     /*degree=setDegreeOrientation(formula);
     degreeOrientation=(int)(degree*1000.0)/1000.0;*/
@@ -942,26 +1039,10 @@ map<string, double> check_configuration(double rpy[3], struct configuration &con
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //FUZZY FUNCTIONS AND COMPUTATIONS
 
-    types_leg_degreeMap=setFuzzyType(rpy, formula);
-    orientations_leg_degreeMap=setFuzzyOrientation(formula);
+    configuration_leg_degreeMap=setFuzzyType(rpy, formula);
+   // orientations_leg_degreeMap=setFuzzyOrientation(formula);
 
-    for (map<string,double>::iterator typesMap_it=types_leg_degreeMap.begin(); typesMap_it!=types_leg_degreeMap.end(); ++typesMap_it){
-
-
-
-	    for (map<string,double>::iterator orientMap_it=orientations_leg_degreeMap.begin(); orientMap_it!=orientations_leg_degreeMap.end(); ++orientMap_it){
-
-		configurationLeg=(typesMap_it->first)+(orientMap_it->first);
-
-		degreeLeg=std::min(typesMap_it->second,orientMap_it->second);
-
-		configuration_leg_degreeMap.insert(pair<string,double>(configurationLeg,degreeLeg));
-	    }
-
-
-
-
-    }
+    
 
     //configuration_leg_degreeMap.insert(pair<string,double>(leg_type,degreeOrientation));
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1008,8 +1089,8 @@ map<string, double> check_configuration(double rpy[3], struct configuration &con
     
    // orientationsVector.clear();
    // degreeOrientationVector.clear();
-    types_leg_degreeMap.clear();
-    orientations_leg_degreeMap.clear();
+    //types_leg_degreeMap.clear();
+    //orientations_leg_degreeMap.clear();
   
     return configuration_leg_degreeMap;
     

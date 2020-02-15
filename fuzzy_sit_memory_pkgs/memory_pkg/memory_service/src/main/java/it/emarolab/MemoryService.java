@@ -101,16 +101,16 @@ public class MemoryService extends AbstractNodeMain {
                             }
                             System.out.print(request.getTestRequest().getFrame() + "\n");*/
                             if ((!request.getTestRequest().getItems().isEmpty())&&(!request.getTestRequest().getRelations().isEmpty())) {
-                                memory.experience(scene(request.getTestRequest().getItems(), request.getTestRequest().getRelations(), request.getTestRequest().getFrame()), true, true);
+                                memory.experience(scene(request.getTestRequest().getItems(), request.getTestRequest().getRelations(), request.getTestRequest().getSceneName()), true, true);
                             }
                             //Show the experience graph
 
                             //THE SCENE GRAPH SHOULD BE VISUALIZE ONLY IN THE END OF THE BAGFILE
                             // (THIS IS ONLY A TEMPTATIVE)
 
-                           /* if (request.getTestRequest().getFrame() == 67) {
+                            if (request.getTestRequest().getFrame() == 67) {
                                 memory.getTbox().show();
-                            }*/
+                            }
 
                             response.getTestResponse().setResponse("The scene " + " has been loaded");
 

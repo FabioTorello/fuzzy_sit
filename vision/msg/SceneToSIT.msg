@@ -1,3 +1,4 @@
 Configuration_SIT[] items
 Relations[] relations
-string frame
+string scene_name
+int64 frame
