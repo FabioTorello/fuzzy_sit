@@ -58,7 +58,6 @@ using namespace cv;
 static int frameInstant=0;
 static cv_bridge::CvImagePtr inputImage;
 static string path_to_save_images="/home/fabio/java_workspace/src/vision/images/";
-static long gamma_index=0;
 struct item itemStruct;
 struct relation relationStruct;
 vector<item> itemStructVector;
@@ -66,7 +65,7 @@ vector<relation> relationStructVector;
 string folder_name;
 string file_name;
 bool start_stop;
-
+static long gamma_index=0;
 
 
 void init_original_message(vision::SceneTable::Ptr a, vision::Configuration::Ptr b, struct configuration c){
@@ -253,63 +252,9 @@ void computeAllRelations(vector<object> &objectVector){
 
 
 
-//LA NUOVA COMPUTELEGPINRELATION IN ORIGINE ERA: double computeLegPinRelation (double xy [2], double p[ROWS][COLUMNS], int pin, std::string name, std::string leg)
-
-//NUOVA COMPUTELEGPINRELATION
-/*double computeLegPinRelation (double xy [2], double p[ROWS][COLUMNS], int pin){
-    double x=xy[0];
-    double y=xy[1];
-
-    ////è INUTILE PERCHÈ PASSO GIÀ, DALLA computeRelations, X E Y DELLE LEG MODIFICATI CON GLI STESSI CALCOLI IN EVAL_PIN PERCHÈ SALVATI NELLA 
-    //// STRUCT
-    /*if (name == "NOT_X" || name == "BED_X")
-        x=x-0.115;
-    else if (name == "NOT_MINUS_X" || name == "BED_MINUS_X")
-        x=x+0.115;
-    else if (name == "NOT_Y" || name == "BED_Y")
-        y=y-0.115;
-    else if (name == "NOT_MINUS_Y" || name == "BED_MINUS_Y")
-        y=y+0.115;*/
-    //////////////////////////////////////////////////////////////////////
-
-//i is the name of the pin
-    /*for (int i = 0; i<COLUMNS; i++){ 
-	if (i==pin-1){     
-       double connection=distance(x,y,p[1][i],p[2][i]);     
-         //cout<<connection;
-                //if( connectionNow < 0)
-			//connectionNow = connectionNow * -1;
-       		if (connection <= CONNECTED_THRESHOLD){
-			//double degree = 1-(abs(connectionNow) / CONNECTED_THRESHOLD);
-			
-            		double degree = 1-(fabs(connection) / CONNECTED_THRESHOLD);
-                        
-			
-			
-                       //ROS_INFO("\n\n***** %s %s to pin %d with degree %f with connection: %f *****", conf_leg.leg_id.c_str(), NAMERELATION, i+1, degree, connectionNow);
-	    		return degree;
-		}
-      	}
-    }
-//ROS_ERROR("   !!!!!!%s not connected to a PIN!!!!!!\n", leg.c_str());
-return 0;
-}*/
 
 
-//NUOVA COMPUTEPINTABLERELATION
-/*double computePinTableRelation(double p[ROWS][COLUMNS], int pin){
-        double xTable=0;
-	double yTable=0;
-        
-	for (int i = 0; i<COLUMNS; i++){ 
-		if (i==pin-1){
-			double connection=distance(xTable,yTable,p[1][i],p[2][i]);
-			//cout<<"\n"<<connection<<"\n";
-			double degree = 1 - (fabs(connection) / 0.4);	
-			return degree;
-		}
-	}
-}*/
+
 
 
 
@@ -416,31 +361,6 @@ void initialize_pins_position (double p[ROWS][COLUMNS]){
 
 
 
-//VECCHIA COMPUTEPINTABLERELATION
-/*int computeLegPinRelation (configuration &conf_leg,double p[ROWS][COLUMNS],double xlegframe,double ylegframe){
-//i is the name of the pin
-    for (int i = 0; i<COLUMNS; i++){       
-       double connectionNow=distance(xlegframe,ylegframe,p[1][i],p[2][i]);
-       double connectionBefore;
-       if(connectionNow<=connectionBefore){
-       	connectionBefore=connectionNow;
-                //if( connectionNow < 0)
-			//connectionNow = connectionNow * -1;
-       		if (connectionNow <= CONNECTED_THRESHOLD){
-			//double degree = 1-(abs(connectionNow) / CONNECTED_THRESHOLD);
-			
-            		double degree = 1-(fabs(connectionNow) / CONNECTED_THRESHOLD);
-                        
-			conf_leg.legPinRelationDegree=degree;
-			
-                       //ROS_INFO("\n\n***** %s %s to pin %d with degree %f with connection: %f *****", conf_leg.leg_id.c_str(), NAMERELATION, i+1, degree, connectionNow);
-	    		return i+1;
-       		}
-      	}
-    }
-ROS_ERROR("   !!!!!!%s not connected to a PIN!!!!!!\n", conf_leg.leg_id.c_str());
-return 0;
-}*/
 
 
 
@@ -451,35 +371,16 @@ return 0;
 
 
 
-//VECCHIA COMPUTEPINTABLERELATION
-/*double computePinTableRelation(configuration &conf_leg, double p[ROWS][COLUMNS], int pin){
-	double xTable=0.0;
-	double yTable=0.0;
-        
-	for (int i = 0; i<COLUMNS; i++){ 
-		if (i==pin-1){
-			double connection=distance(xTable,yTable,p[1][i],p[2][i]);
-//CALCOLANDO CON LA CALCOLATRICE NON VIENE DEGREE 1 MA -2... PERCIò NON CAPITO COME FA A VENIRE 1 CHE è CIò CHE PASSA
-				//if( connection < 0)
-					//connection = connection * -1;
-				double degree = 1 - (fabs(connection) / 0.4);
-				//ROS_INFO("\n\n***** Table %s pin %d with degree %f with connection %f*****", NAMERELATION, pin, degree, connection);
-				return degree;
-			//}
-		}
-	}
 
-	//return 0;
-}*/
+
 
 
 
 
 //QUESTA FUNZIONE EVAL_PIN ERA GIà PRESENTE
-int eval_pin (double xy [2], double p[ROWS][COLUMNS], std::string name, std::string leg, object &leg_object, object &pin_object, int gamma_index){
+int eval_pin (double xy [2], double p[ROWS][COLUMNS], std::string name, std::string leg, object &leg_object, object &pin_object){
 
-    std::string pin_gammaName="p_"+ boost::to_string(gamma_index);
-    pin_object.name=pin_gammaName;
+    
    
     double x=xy[0];
     double y=xy[1];
@@ -496,8 +397,7 @@ int eval_pin (double xy [2], double p[ROWS][COLUMNS], std::string name, std::str
     else if (name == "NOT_MINUS_Y" || name == "BED_MINUS_Y")
         y=y+0.115;
     
-    leg_object.x=x;
-    leg_object.y=y;
+   
    
     
    // cout<<"LEG X ESCE DAGLI IF: "<<x<<"\n";
@@ -519,8 +419,8 @@ int eval_pin (double xy [2], double p[ROWS][COLUMNS], std::string name, std::str
                //cout<<"PIN TROVATO: " <<pin <<"\n";
                 //sceneStruct_Leg.type_pin="Pin_"+ boost::to_string(pin);
                 //cout<<"PIN ENTRA NELLA FUNZIONE: "<<sceneStruct_Leg.type_pin<<"\n";
-                 pin_object.x=p[1][i];
-		 pin_object.y=p[2][i];
+                 //pin_object.x=p[1][i];
+		 //pin_object.y=p[2][i];
 		 //cout<<"\n";
 		 //cout<<"PIN NAME IN STRUCT DENTRO EVAL_PIN: "<< pin_object.name<<"\n";
 		 //cout<<"PIN X IN STRUCT DENTRO EVAL_PIN: "<< pin_object.x<<"\n";
@@ -528,11 +428,11 @@ int eval_pin (double xy [2], double p[ROWS][COLUMNS], std::string name, std::str
 
                  /////////////////////////////
 		 //fill an item of type pin
-		 itemStruct.gamma_i=pin_gammaName;		 
-		 itemStruct.type="Pin_"+boost::to_string(pin);
-		 itemStruct.degree=1;
+		// itemStruct.gamma_i=pin_gammaName;		 
+		// itemStruct.type="Pin_"+boost::to_string(pin);
+		// itemStruct.degree=1;
                  //put the item in a vector of items
-		 itemStructVector.push_back(itemStruct);
+		// itemStructVector.push_back(itemStruct);
 		 ////////////////////////////////////
 
                 //ROS_INFO("\n\n***** %s connected to pin %d *****", leg.c_str(), pin);
@@ -545,40 +445,17 @@ int eval_pin (double xy [2], double p[ROWS][COLUMNS], std::string name, std::str
     return 0;
 }
 
-//QUESTA è LA MIA FUNZIONE EVAL_PIN
-/*int eval_pin (double xy [2], double p[ROWS][COLUMNS], configuration &conf_leg){
-    //Degree to evaluate how much the most probable connected pin is connected to the specific leg
-    
-    double xlegframe=xy[0];
-    double ylegframe=xy[1];
-    if (conf_leg.name_config == "NOT_X" || conf_leg.name_config == "BED_X")
-        xlegframe=xlegframe-0.115;
-    else if (conf_leg.name_config == "NOT_MINUS_X" || conf_leg.name_config == "BED_MINUS_X")
-        xlegframe=xlegframe+0.115;
-    else if (conf_leg.name_config == "NOT_Y" || conf_leg.name_config == "BED_Y")
-        ylegframe=ylegframe-0.115;
-    else if (conf_leg.name_config == "NOT_MINUS_Y" || conf_leg.name_config == "BED_MINUS_Y")
-        ylegframe=ylegframe+0.115; 
-    int pin=computeLegPinRelation(conf_leg,p,xlegframe,ylegframe); 
-    return pin;
-    
-       
-        /*if (x<p[1][i]+THR && x>p[1][i]-THR)
-            if (y<p[2][i]+THR && y>p[2][i]-THR){
-                pin = i+1;
-                //ROS_INFO("\n\n***** %s connected to pin %d *****", leg.c_str(), pin);
-                return pin;
-            }*/
-            
-    //ROS_ERROR("   !!!!!!%s not connected to a PIN!!!!!!\n", leg.c_str());
-   // return 0;
-//}
 
 
 
-void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double pins[ROWS][COLUMNS], configuration &conf_leg, std::string leg_name, object &leg_object, object &pin_object, vector<object> &objectVector){
+
+void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double pins[ROWS][COLUMNS], configuration &conf_leg, std::string leg_name, object &leg_object, vector<object> &objectVector){
 	
     map<string,double> legsMap;
+    double xLeg;
+    double yLeg;
+    double degreeTemp;
+
     tf::Matrix3x3 m0(t.getRotation());
     m0.getEulerYPR(angles[2], angles[1], angles[0]);
 
@@ -591,9 +468,7 @@ void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double 
 
     change_angle_interval(angles);
 
-    gamma_index++;
-    std::string leg_gammaName="g_"+ boost::to_string(gamma_index);
-    leg_object.name=leg_gammaName;
+    
 
     //After "check_configuration" function I know the type of the leg and the orientation respect to the WORLD frame
     legsMap=check_configuration(angles, conf_leg, leg_name);
@@ -607,10 +482,19 @@ void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double 
    // cout<<"TIPO DI LEG NELLA STRUCT: " << sceneStruct_Leg.type_leg <<"\n";
     xy[0]=t.getOrigin().x();
     xy[1]=t.getOrigin().y();
-int pin_type;
+
+    xLeg=xy[0];
+    yLeg=xy[1];
+
+    gamma_index++;
+    std::string leg_gammaName="g_"+ boost::to_string(gamma_index);
+    leg_object.name=leg_gammaName;
+    
+
+/*int pin_type;
 for (map<string,double>::iterator it=legsMap.begin(); it!=legsMap.end(); ++it){
      pin_type=eval_pin(xy, pins, it->first, conf_leg.leg_id, leg_object, pin_object, gamma_index);
-}
+}*/
     ////QUESTA è LA FORMULA ORIGINALE//////
     //int pin_type=eval_pin(xy, pins, conf_leg.name_config, conf_leg.leg_id, leg_object, pin_object, gamma_index);
    // conf_leg.pin=pin_type;
@@ -627,21 +511,75 @@ for (map<string,double>::iterator it=legsMap.begin(); it!=legsMap.end(); ++it){
     
     //cout << "leg before the check on pin type: " << leg_object.name << "\n";
     //cout << "pin before the check on pin type: " << pin_object.name << "\n";
-    if(pin_type!=0){
+    //if(pin_type!=0){
 	   // cout << "\n";
 	    //cout << "leg insert in the vector of objects and as item: " << leg_object.name<<"\n";
 	    //cout << "pin insert in the vector of objects and as item: " << pin_object.name << "\n";
-	    objectVector.push_back(leg_object);
-	    objectVector.push_back(pin_object);
+	    
+	    
 
 //////////////////////////////MAP CONTENT IS PUT IN THE ITEMS ARRAY EVEN SAME GAMMA WITH DIFFERENT TYPES
 	    for (map<string,double>::iterator it=legsMap.begin(); it!=legsMap.end(); ++it){
-		    itemStruct.gamma_i=leg_gammaName;
-		    itemStruct.type=it->first;
-		    itemStruct.degree=it->second;
-		    itemStructVector.push_back(itemStruct);
+
+ 		    
+		   if (legsMap.size()==1){
+
+		     	    if (it->first == "NOT_X" || it->first == "BED_X")
+				xLeg=xLeg-0.115;
+	    		    else if (it->first == "NOT_MINUS_X" || it->first == "BED_MINUS_X")
+				xLeg=xLeg+0.115;
+	    		    else if (it->first == "NOT_Y" || it->first == "BED_Y")
+				yLeg=yLeg-0.115;
+	    		    else if (it->first == "NOT_MINUS_Y" || it->first == "BED_MINUS_Y")
+				yLeg=yLeg+0.115;
+
+			    leg_object.x=xLeg;
+	    		    leg_object.y=yLeg;
+			    objectVector.push_back(leg_object);
+
+			    itemStruct.gamma_i=leg_gammaName;
+			    itemStruct.type=it->first;
+			    itemStruct.degree=it->second;
+			    itemStructVector.push_back(itemStruct);
+		    }
+
+		   if (legsMap.size()>1){
+				//This, rather than using std::map::value_comp() (which compares the key values) looks at the second member in the pair, which contains the value.
+				auto x = std::max_element(legsMap.begin(), legsMap.end(), [](const pair<string, double>& p1, const pair<string, double>& p2) {        return p1.second < p2.second; });
+				if(it->second==x->second){
+
+					 if (it->first == "NOT_X" || it->first == "BED_X")
+					xLeg=xLeg-0.115;
+		    		    else if (it->first == "NOT_MINUS_X" || it->first == "BED_MINUS_X")
+					xLeg=xLeg+0.115;
+		    		    else if (it->first == "NOT_Y" || it->first == "BED_Y")
+					yLeg=yLeg-0.115;
+		    		    else if (it->first == "NOT_MINUS_Y" || it->first == "BED_MINUS_Y")
+					yLeg=yLeg+0.115;
+
+					//Put only the x and y of the leg with greatest degree
+					leg_object.x=xLeg;
+	    		    		leg_object.y=yLeg;
+			    		objectVector.push_back(leg_object);
+
+			   
+
+				}
+
+			    //Put all types of leg found in items vector
+			    itemStruct.gamma_i=leg_gammaName;
+			    itemStruct.type=it->first;
+			    itemStruct.degree=it->second;
+			    itemStructVector.push_back(itemStruct);
+
+		  }
+			
+			   
+			    
+				
+
+		    
 	    }
-    }
     
     //every time a new leg is evaluated at the end of computations the map with type and degree will be cleared
     legsMap.clear();
@@ -737,6 +675,7 @@ int main(int argc, char **argv)
     struct object leg_object;
     struct object pin_object;
     struct object table_object;
+
     vector<object> objectStructVector;
     int leg_counter=0;   
     
@@ -887,7 +826,7 @@ int main(int argc, char **argv)
             listener0.waitForTransform("/WORLD", "/ar_marker_100", ros::Time(0), ros::Duration(0.00005));
             listener0.lookupTransform("/WORLD", "/ar_marker_100", ros::Time(0), transform_w_100);
                         
-            eval_config(angles_100,transform_w_100, xy_100, pins, conf_leg0, "Leg_0", leg_object, pin_object, objectStructVector);
+            eval_config(angles_100,transform_w_100, xy_100, pins, conf_leg0, "Leg_0", leg_object, objectStructVector);
 
 	    
             if (conf_leg0.pin > 0 && conf_leg0.name_config.size()>0) {
@@ -920,7 +859,7 @@ int main(int argc, char **argv)
         try {
             listener4.waitForTransform("/WORLD", "/ar_marker_104", ros::Time(0), ros::Duration(0.00005));
             listener4.lookupTransform("/WORLD", "/ar_marker_104", ros::Time(0), transform_w_104);
-            eval_config(angles_104,transform_w_104, xy_104, pins, conf_leg4, "Leg_4",leg_object,pin_object, objectStructVector);
+            eval_config(angles_104,transform_w_104, xy_104, pins, conf_leg4, "Leg_4",leg_object, objectStructVector);
 
             if (conf_leg4.pin > 0 && conf_leg4.name_config.size()>0){
                 f << conf_leg4.leg_id << std::endl << conf_leg4.name_config << std::endl << "Pin:" << conf_leg4.pin << std::endl << std::endl;
@@ -952,7 +891,7 @@ int main(int argc, char **argv)
             listener8.waitForTransform("/WORLD", "/ar_marker_108", ros::Time(0), ros::Duration(0.00005));
             listener8.lookupTransform("/WORLD", "/ar_marker_108", ros::Time(0), transform_w_108);
 
-            eval_config(angles_108,transform_w_108, xy_108, pins, conf_leg8, "Leg_8", leg_object, pin_object, objectStructVector);
+            eval_config(angles_108,transform_w_108, xy_108, pins, conf_leg8, "Leg_8", leg_object, objectStructVector);
 
             if (conf_leg8.pin > 0 && conf_leg8.name_config.size()>0){
                 f << conf_leg8.leg_id << std::endl << conf_leg8.name_config << std::endl << "Pin:" << conf_leg8.pin << std::endl << std::endl;
@@ -983,7 +922,7 @@ int main(int argc, char **argv)
             listener12.waitForTransform("/WORLD", "/ar_marker_112", ros::Time(0), ros::Duration(0.00005));
             listener12.lookupTransform("/WORLD", "/ar_marker_112", ros::Time(0), transform_w_112);
 
-            eval_config(angles_112,transform_w_112, xy_112, pins, conf_leg12, "Leg_12", leg_object, pin_object, objectStructVector);
+            eval_config(angles_112,transform_w_112, xy_112, pins, conf_leg12, "Leg_12", leg_object, objectStructVector);
 
             if (conf_leg12.pin > 0 && conf_leg12.name_config.size()>0) {
                 f << conf_leg12.leg_id << std::endl << conf_leg12.name_config << std::endl <<"Pin:" << conf_leg12.pin << std::endl << std::endl;
@@ -1014,7 +953,16 @@ int main(int argc, char **argv)
 	
 	
 
+	for (int i = 0; i<COLUMNS; i++){ 
+		
+		std::string pin_gammaName="p_"+ boost::to_string(i+1);
+        	pin_object.name=pin_gammaName;
+		pin_object.x=pins[1][i];
+		pin_object.y=pins[2][i];
+		objectStructVector.push_back(pin_object);
+	}
 	
+        
 
 	table_object.name="t";
 	table_object.x=0;
@@ -1022,7 +970,7 @@ int main(int argc, char **argv)
 	objectStructVector.push_back(table_object);
 
 
-	/*for(vector<object>::iterator it = objectStructVector.begin(); it != objectStructVector.end(); ++it){
+	for(vector<object>::iterator it = objectStructVector.begin(); it != objectStructVector.end(); ++it){
 
 		
 			cout<<"\n";
@@ -1037,7 +985,7 @@ int main(int argc, char **argv)
 	  
 		
 	
-	}*/
+	}
 
 	itemStruct.gamma_i="t";
 	itemStruct.type="Table";
@@ -1062,7 +1010,7 @@ int main(int argc, char **argv)
 	
 	}*/
 	
-	computeAllRelations(objectStructVector);
+//	computeAllRelations(objectStructVector);
 
 	/*for(vector<relation>::iterator it_rel = relationStructVector.begin(); it_rel != relationStructVector.end(); ++it_rel){
 
@@ -1087,9 +1035,9 @@ int main(int argc, char **argv)
 	vision::SceneToSIT::Ptr ourSceneToSIT (new vision::SceneToSIT);
 	vision::Configuration_SIT::Ptr msgItemSIT(new vision::Configuration_SIT);
 	vision::Relations::Ptr msgRelationSIT(new vision::Relations);
-	init_SIT_message(ourSceneToSIT, msgItemSIT, msgRelationSIT, itemStructVector, relationStructVector);
+	//init_SIT_message(ourSceneToSIT, msgItemSIT, msgRelationSIT, itemStructVector, relationStructVector);
 
-	//computeRelations(ourSceneToSIT, pins, sceneStructVector, relation, relationInScene);
+	
 	
 
 	objectStructVector.clear();
