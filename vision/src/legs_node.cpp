@@ -40,6 +40,7 @@
 #include <sys/stat.h> 
 #include <sys/types.h> 
 /////////////////////////////
+#include <algorithm>
 
 # define ROWS 3
 # define COLUMNS 12
@@ -61,6 +62,7 @@ static string path_to_save_images="/home/fabio/java_workspace/src/vision/images/
 struct item itemStruct;
 struct relation relationStruct;
 vector<item> itemStructVector;
+vector<item> itemStructVectorTemp;
 vector<relation> relationStructVector;
 string folder_name;
 string file_name;
@@ -178,17 +180,25 @@ void computeAllRelations(vector<object> &objectVector){
 					//cout<<"Entra in p-g g-p "<<"\n";
 					//cout<<"Subject: "<< objectVector[i].name<<"\n";
 					//cout<<"Object: "<< objectVector[j].name<<"\n";
+					relationDegree=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, CONNECTED_THRESHOLD);
 					
-					//Subject is a leg
-					relationStruct.gamma_subject=objectVector[i].name;
-					//Object is a pin
-					relationStruct.gamma_object=objectVector[j].name;
-					relationStruct.nameRelation=NAMERELATION;
-					relationStruct.degreeRelation=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, CONNECTED_THRESHOLD);
+					/*cout<<"RELATION DEGREE: " << relationDegree<<"\n";
+					cout<<"\n";*/
+
+					if (relationDegree!=0){
+						relationStruct.degreeRelation=relationDegree;
+						//Subject is a leg
+						relationStruct.gamma_subject=objectVector[i].name;
+						//Object is a pin
+						relationStruct.gamma_object=objectVector[j].name;
+						relationStruct.nameRelation=NAMERELATION;
+						relationStructVector.push_back(relationStruct);
+					}
+
 					/*degree=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, CONNECTED_THRESHOLD);
 					relationDegree=(int)(degree*1000.0)/1000.0;
 					relationStruct.degreeRelation=relationDegree;*/
-					relationStructVector.push_back(relationStruct);
+					
 				}
 
 				if(objectVector[j].name.find("t")!=std::string::npos){
@@ -197,16 +207,25 @@ void computeAllRelations(vector<object> &objectVector){
 					//cout<<"Subject: "<< objectVector[i].name<<"\n";
 					//cout<<"Object: "<< objectVector[j].name<<"\n";
 
-				  	//Subject
-					relationStruct.gamma_subject=objectVector[i].name;
-					//Object is the table
-					relationStruct.gamma_object=objectVector[j].name;
-					relationStruct.nameRelation=NAMERELATION;
-					relationStruct.degreeRelation=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, 0.4);
+//QUI USAVO 0.4 di threshold				  	
+					relationDegree=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, CONNECTED_THRESHOLD);
+					/*cout<<"RELATION DEGREE: " << relationDegree<<"\n";
+					cout<<"\n";*/
+
+					if (relationDegree!=0){
+						relationStruct.degreeRelation=relationDegree;
+						//Subject is a leg
+						relationStruct.gamma_subject=objectVector[i].name;
+						//Object is the table
+						relationStruct.gamma_object=objectVector[j].name;
+						relationStruct.nameRelation=NAMERELATION;
+						relationStructVector.push_back(relationStruct);
+					}
+
 					/*degree=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, 0.4);
 					relationDegree=(int)(degree*1000.0)/1000.0;
 					relationStruct.degreeRelation=relationDegree;*/
-					relationStructVector.push_back(relationStruct);
+					
 				}
 
 				if(objectVector[i].name.find("p")!=std::string::npos && objectVector[j].name.find("p")!=std::string::npos){
@@ -215,16 +234,24 @@ void computeAllRelations(vector<object> &objectVector){
 					//cout<<"Subject: "<< objectVector[i].name<<"\n";
 					//cout<<"Object: "<< objectVector[j].name<<"\n";
 
-					//Subject is a leg
-					relationStruct.gamma_subject=objectVector[i].name;
-					//Object is a pin
-					relationStruct.gamma_object=objectVector[j].name;
-					relationStruct.nameRelation=NAMERELATION;
-					relationStruct.degreeRelation=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, 0.4);
+//QUI USAVO 0.4 DI THRESHOLD					
+					relationDegree=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, CONNECTED_THRESHOLD);
+					/*cout<<"RELATION DEGREE: " << relationDegree<<"\n";
+					cout<<"\n";*/
+
+				        if (relationDegree!=0){
+						relationStruct.degreeRelation=relationDegree;
+						//Subject is a pin
+						relationStruct.gamma_subject=objectVector[i].name;
+						//Object is a pin
+						relationStruct.gamma_object=objectVector[j].name;
+						relationStruct.nameRelation=NAMERELATION;
+						relationStructVector.push_back(relationStruct);
+					}
 					/*degree=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, 0.4);
 					relationDegree=(int)(degree*1000.0)/1000.0;
 					relationStruct.degreeRelation=relationDegree;*/
-					relationStructVector.push_back(relationStruct);
+					
 				}
 
 				if(objectVector[i].name.find("g")!=std::string::npos && objectVector[j].name.find("g")!=std::string::npos){
@@ -232,16 +259,25 @@ void computeAllRelations(vector<object> &objectVector){
 					//cout<<"Entra in g-g "<<"\n";
 					//cout<<"Subject: "<< objectVector[i].name<<"\n";
 					//cout<<"Object: "<< objectVector[j].name<<"\n";
-					//Subject is a leg
-					relationStruct.gamma_subject=objectVector[i].name;
-					//Object is a pin
-					relationStruct.gamma_object=objectVector[j].name;
-					relationStruct.nameRelation=NAMERELATION;
-					relationStruct.degreeRelation=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, 0.4);
+
+//QUI USAVO 0.4 DI THRESHOLD					
+					relationDegree=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, CONNECTED_THRESHOLD);
+					/*cout<<"RELATION DEGREE: " << relationDegree<<"\n";
+					cout<<"\n";*/
+
+					if (relationDegree!=0){
+						relationStruct.degreeRelation=relationDegree;
+						//Subject is a leg
+						relationStruct.gamma_subject=objectVector[i].name;
+						//Object is a pin
+						relationStruct.gamma_object=objectVector[j].name;
+						relationStruct.nameRelation=NAMERELATION;
+						relationStructVector.push_back(relationStruct);
+					}
 					/*degree=computeRelation(objectVector[i].x, objectVector[i].y, objectVector[j].x, objectVector[j].y, 0.4);
 					relationDegree=(int)(degree*1000.0)/1000.0;
 					relationStruct.degreeRelation=relationDegree;*/
-					relationStructVector.push_back(relationStruct);
+					
 				}
 
 			}
@@ -454,7 +490,7 @@ void eval_config (double angles[3],tf::StampedTransform t, double xy[2], double 
     map<string,double> legsMap;
     double xLeg;
     double yLeg;
-    double degreeTemp;
+    
 
     tf::Matrix3x3 m0(t.getRotation());
     m0.getEulerYPR(angles[2], angles[1], angles[0]);
@@ -540,11 +576,11 @@ for (map<string,double>::iterator it=legsMap.begin(); it!=legsMap.end(); ++it){
 			    itemStruct.gamma_i=leg_gammaName;
 			    itemStruct.type=it->first;
 			    itemStruct.degree=it->second;
-			    itemStructVector.push_back(itemStruct);
+			    itemStructVectorTemp.push_back(itemStruct);
 		    }
 
 		   if (legsMap.size()>1){
-				//This, rather than using std::map::value_comp() (which compares the key values) looks at the second member in the pair, which contains the value.
+				//This, rather than using std::map::value_comp() (which compares the key values) looks at the second member in the pair, which contains the value. Find the max values in the map considering the values not the keys in the search
 				auto x = std::max_element(legsMap.begin(), legsMap.end(), [](const pair<string, double>& p1, const pair<string, double>& p2) {        return p1.second < p2.second; });
 				if(it->second==x->second){
 
@@ -570,7 +606,7 @@ for (map<string,double>::iterator it=legsMap.begin(); it!=legsMap.end(); ++it){
 			    itemStruct.gamma_i=leg_gammaName;
 			    itemStruct.type=it->first;
 			    itemStruct.degree=it->second;
-			    itemStructVector.push_back(itemStruct);
+			    itemStructVectorTemp.push_back(itemStruct);
 
 		  }
 			
@@ -952,7 +988,7 @@ int main(int argc, char **argv)
         //PRINT FOR DEBUGGING
 	
 	
-
+	//Put the pin information in the objectVector and itemStructVectorTemp
 	for (int i = 0; i<COLUMNS; i++){ 
 		
 		std::string pin_gammaName="p_"+ boost::to_string(i+1);
@@ -960,6 +996,12 @@ int main(int argc, char **argv)
 		pin_object.x=pins[1][i];
 		pin_object.y=pins[2][i];
 		objectStructVector.push_back(pin_object);
+
+		itemStruct.gamma_i=pin_gammaName;
+		itemStruct.type="Pin_"+boost::to_string(i+1);
+
+		itemStruct.degree=1;
+		itemStructVectorTemp.push_back(itemStruct);
 	}
 	
         
@@ -970,7 +1012,7 @@ int main(int argc, char **argv)
 	objectStructVector.push_back(table_object);
 
 
-	for(vector<object>::iterator it = objectStructVector.begin(); it != objectStructVector.end(); ++it){
+	/*for(vector<object>::iterator it = objectStructVector.begin(); it != objectStructVector.end(); ++it){
 
 		
 			cout<<"\n";
@@ -985,13 +1027,133 @@ int main(int argc, char **argv)
 	  
 		
 	
-	}
+	}*/
 
 	itemStruct.gamma_i="t";
 	itemStruct.type="Table";
 	itemStruct.degree=1;
-	itemStructVector.push_back(itemStruct);
+	itemStructVectorTemp.push_back(itemStruct);
 
+	/*for(vector<item>::iterator it_temp = itemStructVectorTemp.begin(); it_temp != itemStructVectorTemp.end(); ++it_temp){
+
+		
+			cout<<"\n";
+			cout<<"\n";
+			cout<<"----------------------"<<"\n";
+			cout<<"VECTOR OF ITEMS TEMP"<<"\n";
+			cout<<"SIZE ARRAY NOW: " << itemStructVectorTemp.size()<<"\n";
+			cout<<"GAMMA NELL'ARRAY DI ITEMS: "<<it_temp->gamma_i<<"\n";		        
+			cout<<"TYPE NELL'ARRAY DI ITEMS: "<<it_temp->type<<"\n";
+		        cout<<"DEGREE NELL'ARRAY DI ITEMS: "<<it_temp->degree<<"\n";
+			
+			cout<<"\n";
+	  
+		
+	
+	}*/
+
+	
+	computeAllRelations(objectStructVector);
+
+	/*for(vector<relation>::iterator it_rel = relationStructVector.begin(); it_rel != relationStructVector.end(); ++it_rel){
+
+		
+			cout<<"\n";
+			cout<<"\n";
+			cout<<"----------------------"<<"\n";
+			cout<<"VECTOR OF RELATIONS"<<"\n";
+			cout<<"SIZE ARRAY NOW: " << relationStructVector.size()<<"\n";			
+			cout<<"GAMMA SUBJECT: "<<it_rel->gamma_subject<<"\n";
+			cout<<"GAMMA OBJECT: "<<it_rel->gamma_object<<"\n";	
+			cout<<"NAME RELATION: "<<it_rel->nameRelation<<"\n";	        
+		        cout<<"DEGREE RELATION: "<<it_rel->degreeRelation<<"\n";
+			
+			cout<<"\n";
+	  
+		
+	
+	}*/
+
+	
+	//Loop over all relations with degree not equal to 0
+	for(vector<relation>::iterator it_rel = relationStructVector.begin(); it_rel != relationStructVector.end(); ++it_rel){
+		
+		//Loop over all the items in the temporary items vector
+		for(vector<item>::iterator it = itemStructVectorTemp.begin(); it != itemStructVectorTemp.end(); ++it){
+			
+			//Check if the name of the subject is equal to the actual element considereted in the temporary items vector
+			if( it_rel->gamma_subject == it->gamma_i ){				
+
+				
+				//Check if the items vector is empty and then put the element inside
+				if(itemStructVector.empty()){
+
+					itemStructVector.push_back(*it);
+
+				}
+
+				else{
+					//Check if the element considereted is already in the items vector
+					bool isInVector;
+					for(vector<item>::iterator it_item = itemStructVector.begin(); it_item != itemStructVector.end(); ++it_item){
+						//If the element is already in the items vector go outside the loop over the items vector and set the flag as true
+						if(it_rel->gamma_subject==it_item->gamma_i){
+							isInVector=true;
+							break;
+						}
+
+						//If the element is not equal to the actual element considereted in the items vector set the flag to false and keep going to search over the vector
+						else{
+							isInVector=false;
+						}
+					}
+
+					if(isInVector==false){
+						itemStructVector.push_back(*it);
+					}
+					
+				}
+
+			}
+
+			//Check if the name of the subject is equal to the actual element considereted in the temporary items vector
+			if(it_rel->gamma_object == it->gamma_i){
+				
+				//Check if the items vector is empty and then put the element inside
+				if(itemStructVector.empty()){
+
+					itemStructVector.push_back(*it);
+
+				}
+
+				else{
+					
+					bool isInVector;
+					for(vector<item>::iterator it_item = itemStructVector.begin(); it_item != itemStructVector.end(); ++it_item){
+						//If the element is already in the items vector go outside the loop over the items vector and set the flag as true
+						if(it_rel->gamma_object==it_item->gamma_i){
+							isInVector=true;
+							break;
+						}
+
+						//If the element is not equal to the actual element considereted in the items vector set the flag to false and keep going to search over the vector
+						else{
+							isInVector=false;
+						}
+					}
+
+					if(isInVector==false){
+						itemStructVector.push_back(*it);
+					}
+
+				}
+
+
+			}
+
+		}
+	}
+	
 	/*for(vector<item>::iterator it = itemStructVector.begin(); it != itemStructVector.end(); ++it){
 
 		
@@ -1009,33 +1171,12 @@ int main(int argc, char **argv)
 		
 	
 	}*/
-	
-//	computeAllRelations(objectStructVector);
-
-	/*for(vector<relation>::iterator it_rel = relationStructVector.begin(); it_rel != relationStructVector.end(); ++it_rel){
-
-		
-			cout<<"\n";
-			cout<<"\n";
-			cout<<"----------------------"<<"\n";
-			cout<<"VECTOR OF RELATIONS"<<"\n";
-			cout<<"SIZE ARRAY NOW: " << itemStructVector.size()<<"\n";			
-			cout<<"GAMMA SUBJECT: "<<it_rel->gamma_subject<<"\n";
-			cout<<"GAMMA OBJECT: "<<it_rel->gamma_object<<"\n";	
-			cout<<"NAME RELATION: "<<it_rel->nameRelation<<"\n";	        
-		        cout<<"DEGREE RELATION: "<<it_rel->degreeRelation<<"\n";
-			
-			cout<<"\n";
-	  
-		
-	
-	}*/
 
 	//Now create the scene object and the object for the items and the relations 
 	vision::SceneToSIT::Ptr ourSceneToSIT (new vision::SceneToSIT);
 	vision::Configuration_SIT::Ptr msgItemSIT(new vision::Configuration_SIT);
 	vision::Relations::Ptr msgRelationSIT(new vision::Relations);
-	//init_SIT_message(ourSceneToSIT, msgItemSIT, msgRelationSIT, itemStructVector, relationStructVector);
+	init_SIT_message(ourSceneToSIT, msgItemSIT, msgRelationSIT, itemStructVector, relationStructVector);
 
 	
 	
@@ -1049,7 +1190,8 @@ int main(int argc, char **argv)
 
         Scene_pub.publish(ourScene);
 	SceneSIT_pub.publish(ourSceneToSIT);
-
+	
+	itemStructVectorTemp.clear();
 	itemStructVector.clear();
 	relationStructVector.clear();
 
