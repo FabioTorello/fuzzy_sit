@@ -17,7 +17,8 @@
 #include <vector>
 using namespace std;
 ros::ServiceClient *clientPtr; //pointer for a client (The client is instantiated in the main function, but it needs to be used in the callback function. I made a ros::ServiceClient pointer at a global level (w.r.t. the node) and then gave it the address of the client. In the callback function I dereference the client pointer and use it to request a service.)
-
+ros::NodeHandle *nPtr;
+std::string res;
 
 
 
@@ -25,6 +26,8 @@ void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneToSIT::ConstPtr& msg)
 { 
 
       ros::ServiceClient client = (ros::ServiceClient)*clientPtr; //dereference the clientPtr
+
+      ros::NodeHandle nh = *nPtr;
 
       int size_items = msg->items.size(); 
       int size_relations = msg->relations.size(); 
@@ -39,7 +42,7 @@ void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneToSIT::ConstPtr& msg)
       long frameInstant;
       std::string scene_name;
     
-      std::cout<<"THIS IS THE SERVICE RESPONSE: "<< srv.response.test_response<<"\n";
+      //std::cout<<"THIS IS THE SERVICE RESPONSE: "<< srv.response.test_response<<"\n";
       frameInstant=msg->frame;
 
       //If the bagfile is not finished
@@ -104,7 +107,13 @@ void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneToSIT::ConstPtr& msg)
       if(client.call(srv)) //request service from the client
       {
 		ROS_INFO("Success");
-		std::cout<<"THIS IS THE SERVICE RESPONSE: "<< srv.response.test_response<<"\n";
+		res=srv.response.test_response.response;
+		std::cout<<"THIS IS THE SERVICE RESPONSE: "<< res <<"\n";
+
+		if(res.compare("Ready")){
+			nh.setParam("service_ready",true);
+    		}
+
 		  
       }   
       else
@@ -125,13 +134,18 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "bridge_node");
     
     ros::NodeHandle n;
+	
 
     ros::ServiceClient client = n.serviceClient<fuzzy_sit_memory_msgs::TestServiceDirective>("memory_service"); //create the client
 
     clientPtr = &client; //give the address of the client to the clientPtr
 
-    ros::Subscriber sub = n.subscribe<vision::SceneToSIT>("sceneSIT_data", 1000, SUBSCRIBE_CALLBACK_FUNCTION); //subscribing
+    nPtr=&n;
 
+    ros::Subscriber sub = n.subscribe<vision::SceneToSIT>("sceneSIT_data", 1000, SUBSCRIBE_CALLBACK_FUNCTION); //subscribing
+    /*if(res.compare("Ready")){
+	n.setParam("service_ready",true);
+    }*/
     ros::spin();
 /*while(n.ok()) {
 
