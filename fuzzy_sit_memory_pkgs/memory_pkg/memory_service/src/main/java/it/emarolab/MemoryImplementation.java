@@ -34,7 +34,7 @@ public class MemoryImplementation extends MemoryInterface {
     private static final double ENCODE_TH = .5;
     // threshold under which it learns
     //ORIGINALE LEARN_TH è 1
-    private static final double LEARN_TH = 0.8;
+    private static final double LEARN_TH = 1;
     // threshold under which it forgets (0,inf] (after consolidation (0,1])
     private static final double SCORE_WEAK = .1;
 

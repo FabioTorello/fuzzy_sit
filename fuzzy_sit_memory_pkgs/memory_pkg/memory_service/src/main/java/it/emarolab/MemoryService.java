@@ -100,7 +100,7 @@ public class MemoryService extends AbstractNodeMain {
                                 System.out.print("\n");
                             }
                             System.out.print(request.getTestRequest().getFrame() + "\n");*/
-                            if ((!request.getTestRequest().getItems().isEmpty())&&(!request.getTestRequest().getRelations().isEmpty())) {
+                            if ((!request.getTestRequest().getItems().isEmpty())&&(!request.getTestRequest().getRelations().isEmpty())&&request.getTestRequest().getFrame()!=-1) {
                                 memory.experience(scene(request.getTestRequest().getItems(), request.getTestRequest().getRelations(), request.getTestRequest().getSceneName()), true, true);
                             }
                             //Show the experience graph
@@ -108,11 +108,15 @@ public class MemoryService extends AbstractNodeMain {
                             //THE SCENE GRAPH SHOULD BE VISUALIZE ONLY IN THE END OF THE BAGFILE
                             // (THIS IS ONLY A TEMPTATIVE)
 
-                            if (request.getTestRequest().getFrame() == 67) {
-                                memory.getTbox().show();
+                            if (request.getTestRequest().getFrame()==-1) {
+
+                                //memory.getTbox().show();
+                                response.getTestResponse().setResponse("Ready");
                             }
 
-                            response.getTestResponse().setResponse("The scene " + " has been loaded");
+                            if(request.getTestRequest().getFrame()!=-1) {
+                                response.getTestResponse().setResponse("The scene has been loaded");
+                            }
 
 
 
@@ -129,11 +133,7 @@ public class MemoryService extends AbstractNodeMain {
      objects.add( newObject);
  }*/
 
-    /*private static final List<String> pins = Arrays.asList("1", "2","3","4","5","6","7","8","9","10","11","12");
-    private static final List<Double> pinsX = Arrays.asList(-0.30, -0.05, 0.03, 0.27, 0.24, 0.24, 0.27, 0.04, -0.04, -0.28, -0.24, -0.28);
-    private static final List<Double> pinsY = Arrays.asList(-0.16, -0.17, -0.15, -0.17, -0.02, 0.05, 0.19, 0.17, 0.17, 0.20, 0.05, -0.05);
-    private static final List<String> legsType = Arrays.asList("BED", "CHAIR", "ROOF", "NOT");
-    private static int pin;*/
+
 
    public static ConnectObjectScene scene(List<SceneItem> items, List<Relations> relations, String frame) {
         if ((!items.isEmpty())&&(!relations.isEmpty())) {

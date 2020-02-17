@@ -761,7 +761,7 @@ int main(int argc, char **argv)
     	n.getParam("/file_name",file_name);
 
 	if(start_stop==false){
-		frameInstant=0;
+		frameInstant=-2;
 	}
 
 		frameInstant++;

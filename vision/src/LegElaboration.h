@@ -395,7 +395,7 @@ double setDegreeOrientation (double formula){
 //FUZZY ORIENTATION FUNCTION
 map<string, double> setFuzzyOrientation(double formula, map<string, double> &types_degreeMap, map<string,double> &configuration_Map){
    cout<<"\n";
-   cout<<"FORMULA: "<< formula <<"\n";
+  // cout<<"FORMULA: "<< formula <<"\n";
 
    //Map used to save the combination between the types and the orientations
    //map<string, double> configuration_Map;
