@@ -67,6 +67,7 @@ vector<relation> relationStructVector;
 string folder_name;
 string file_name;
 bool start_stop;
+bool service_ready;
 static long gamma_index=0;
 
 
@@ -735,8 +736,7 @@ int main(int argc, char **argv)
 
     while(n.ok()) {
 
-    //bool isThereATable=false;
-    //bool *tablePtr=&isThereATable;
+    
     
 	//DURATA ORIGINALE è 1
         ros::Duration(1.0).sleep();
@@ -759,82 +759,83 @@ int main(int argc, char **argv)
 	n.getParam("/Start_Stop", start_stop);	
 	n.getParam("/folder_name", folder_name);
     	n.getParam("/file_name",file_name);
-
+	
 	if(start_stop==false){
 		frameInstant=-2;
+	
 	}
 
 		frameInstant++;
-       
-   	cout<<"Start_Stop: " << start_stop << "\n";
-    	cout<<"File Name: " << file_name << "\n";
-    	cout<<"Folder Name: "<< folder_name << "\n";
-        cout<<"\n";
+       if(frameInstant!=-1){
+	   	cout<<"Start_Stop: " << start_stop << "\n";
+	    	cout<<"File Name: " << file_name << "\n";
+	    	cout<<"Folder Name: "<< folder_name << "\n";
+		cout<<"\n";
 
-	index_position = folder_name.rfind(sep, folder_name.length());
+		index_position = folder_name.rfind(sep, folder_name.length());
 
-    	if (index_position != string::npos) {
-      		folder_name=folder_name.substr(index_position+1, folder_name.length() - index_position);
-    	}
+	    	if (index_position != string::npos) {
+	      		folder_name=folder_name.substr(index_position+1, folder_name.length() - index_position);
+	    	}
 
-    	index_position = file_name.rfind(sep, file_name.length());
+	    	index_position = file_name.rfind(sep, file_name.length());
 
-    	if (index_position != string::npos) {
-      		file_name=file_name.substr(index_position+1, file_name.length() - index_position);
-    	}
-    		cout<<"Folder name: "<<folder_name<<"\n";
-    		cout<<"File name: "<<file_name<<"\n";
-	pos = file_name.find(toErase);
- 
-	if (pos != std::string::npos)
-	{
-		// If found then erase it from string
-		file_name.erase(pos, toErase.length());
-	}
+	    	if (index_position != string::npos) {
+	      		file_name=file_name.substr(index_position+1, file_name.length() - index_position);
+	    	}
+	    		cout<<"Folder name: "<<folder_name<<"\n";
+	    		cout<<"File name: "<<file_name<<"\n";
+		pos = file_name.find(toErase);
+	 
+		if (pos != std::string::npos)
+		{
+			// If found then erase it from string
+			file_name.erase(pos, toErase.length());
+		}
 
-	cout<<"File name AFTER DELETE .Bag : "<<file_name<<"\n";
-	//path_to_save_images="/home/fabio/java_workspace/src/vision/images/
+		cout<<"File name AFTER DELETE .Bag : "<<file_name<<"\n";
+		//path_to_save_images="/home/fabio/java_workspace/src/vision/images/
 
-	dirname=path_to_save_images+folder_name;
-        subdirname=dirname+"/"+file_name;
-	// Search for the substring in string
+		dirname=path_to_save_images+folder_name;
+		subdirname=dirname+"/"+file_name;
+		// Search for the substring in string
 	
-	//pos = dirname.find(toErase);
- 
+		//pos = dirname.find(toErase);
+	 
 	
-	cout<<"DIRNAME: "<<dirname<<"\n";
+		cout<<"DIRNAME: "<<dirname<<"\n";
 
-	// Creating a directory 
- 	if (mkdir(dirname.c_str(), S_IRWXU)== -1){
-		ROS_ERROR("Unable to create directory");
-	}
- 	else{
-        	cout << "Directory created"; 
-    	}
+		// Creating a directory 
+	 	if (mkdir(dirname.c_str(), S_IRWXU)== -1){
+			ROS_ERROR("Unable to create directory");
+		}
+	 	else{
+			cout << "Directory created"; 
+	    	}
 
-	// Creating a directory 
- 	if (mkdir(subdirname.c_str(), S_IRWXU)== -1){
-		ROS_ERROR("Unable to create subdirectory");
-	}
- 	else{
-        	cout << "Subdirectory created"; 
-    	}
+		// Creating a directory 
+	 	if (mkdir(subdirname.c_str(), S_IRWXU)== -1){
+			ROS_ERROR("Unable to create subdirectory");
+		}
+	 	else{
+			cout << "Subdirectory created"; 
+	    	}
 
    
 
 	
 
-	//cout<<inputImage;
-	if (inputImage){
-	string frame = boost::lexical_cast<string>(frameInstant);
+		//cout<<inputImage;
+		if (inputImage){
+		string frame = boost::lexical_cast<string>(frameInstant);
 	
-	string name_image= subdirname +"/" + file_name + "_" + frame + ".png";
+		string name_image= subdirname +"/" + file_name + "_" + frame + ".png";
 	
-	imwrite(name_image, inputImage->image);
-	inputImage.reset();
-	}
-	cout<<"\n";
-	ROS_INFO("\nTHE FRAME NOW IS: %d", frameInstant);
+		imwrite(name_image, inputImage->image);
+		inputImage.reset();
+		}
+		cout<<"\n";
+		ROS_INFO("\nTHE FRAME NOW IS: %d", frameInstant);
 	
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -845,355 +846,381 @@ int main(int argc, char **argv)
 
 
 
-        for (int i = 0; i<3; i++){
-            angles_100[i];
-            angles_104[i];
-            angles_108[i];
-            angles_112[i];
-        }
-        for (int j = 0; j<2; j++){
-            xy_100[j]=0;
-            xy_104[j]=0;
-            xy_108[j]=0;
-            xy_112[j]=0;
-        }
+		for (int i = 0; i<3; i++){
+		    angles_100[i];
+		    angles_104[i];
+		    angles_108[i];
+		    angles_112[i];
+		}
+		for (int j = 0; j<2; j++){
+		    xy_100[j]=0;
+		    xy_104[j]=0;
+		    xy_108[j]=0;
+		    xy_112[j]=0;
+		}
 
-        try {
-            listener0.waitForTransform("/WORLD", "/ar_marker_100", ros::Time(0), ros::Duration(0.00005));
-            listener0.lookupTransform("/WORLD", "/ar_marker_100", ros::Time(0), transform_w_100);
-                        
-            eval_config(angles_100,transform_w_100, xy_100, pins, conf_leg0, "Leg_0", leg_object, objectStructVector);
+		try {
+		    listener0.waitForTransform("/WORLD", "/ar_marker_100", ros::Time(0), ros::Duration(0.00005));
+		    listener0.lookupTransform("/WORLD", "/ar_marker_100", ros::Time(0), transform_w_100);
+		                
+		    eval_config(angles_100,transform_w_100, xy_100, pins, conf_leg0, "Leg_0", leg_object, objectStructVector);
 
-	    
-            if (conf_leg0.pin > 0 && conf_leg0.name_config.size()>0) {
-                f << conf_leg0.leg_id << std::endl << conf_leg0.name_config << std::endl << "Pin:" << conf_leg0.pin << std::endl << std::endl;
-                fypr << angles_100[2] <<" " << angles_100[1] <<" " << angles_100[0] << std::endl;
-                fxy << "leg 0 : " << xy_100[0] <<" " << xy_100[1] << std:: endl;
+		    
+		    if (conf_leg0.pin > 0 && conf_leg0.name_config.size()>0) {
+		        f << conf_leg0.leg_id << std::endl << conf_leg0.name_config << std::endl << "Pin:" << conf_leg0.pin << std::endl << std::endl;
+		        fypr << angles_100[2] <<" " << angles_100[1] <<" " << angles_100[0] << std::endl;
+		        fxy << "leg 0 : " << xy_100[0] <<" " << xy_100[1] << std:: endl;
 
 		
 
-                vision::Configuration::Ptr msg0(new vision::Configuration);
+		        vision::Configuration::Ptr msg0(new vision::Configuration);
 
-                init_original_message(ourScene, msg0, conf_leg0);
+		        init_original_message(ourScene, msg0, conf_leg0);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
                 
 		
-                /*sit_armor_injected_msgs::SceneElement::Ptr ar0(new sit_armor_injected_msgs::SceneElement);
-                sit_armor_injected_msgs::SceneElement::Ptr pin0(new sit_armor_injected_msgs::SceneElement);
-                init_msg_for_Armor(ar0, pin0, sceneForArmor, conf_leg0, xy_100, pins);*/
-            }
-        }
+		        /*sit_armor_injected_msgs::SceneElement::Ptr ar0(new sit_armor_injected_msgs::SceneElement);
+		        sit_armor_injected_msgs::SceneElement::Ptr pin0(new sit_armor_injected_msgs::SceneElement);
+		        init_msg_for_Armor(ar0, pin0, sceneForArmor, conf_leg0, xy_100, pins);*/
+		    }
+		}
 
-        catch (tf::TransformException &ex100) {
-            ROS_ERROR("%s", ex100.what());
-        }
-
-
-
-
-        try {
-            listener4.waitForTransform("/WORLD", "/ar_marker_104", ros::Time(0), ros::Duration(0.00005));
-            listener4.lookupTransform("/WORLD", "/ar_marker_104", ros::Time(0), transform_w_104);
-            eval_config(angles_104,transform_w_104, xy_104, pins, conf_leg4, "Leg_4",leg_object, objectStructVector);
-
-            if (conf_leg4.pin > 0 && conf_leg4.name_config.size()>0){
-                f << conf_leg4.leg_id << std::endl << conf_leg4.name_config << std::endl << "Pin:" << conf_leg4.pin << std::endl << std::endl;
-                fypr << angles_104[2] <<" " << angles_104[1] <<" " << angles_104[0] << std::endl;
-                fxy << "leg 4: " << xy_104[0] <<" " << xy_104[1] << std:: endl;
-
-
-                vision::Configuration::Ptr msg4(new vision::Configuration);
-
-                
-		init_original_message(ourScene, msg4, conf_leg4);
+		catch (tf::TransformException &ex100) {
+		    ROS_ERROR("%s", ex100.what());
+		}
 
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-                
-		
-                /*sit_armor_injected_msgs::SceneElement::Ptr ar4(new sit_armor_injected_msgs::SceneElement);
-                sit_armor_injected_msgs::SceneElement::Ptr pin4(new sit_armor_injected_msgs::SceneElement);
-                init_msg_for_Armor(ar4, pin4, sceneForArmor, conf_leg4, xy_104, pins);*/
-            }
-        }
 
-        catch (tf::TransformException &ex104) {
-            ROS_ERROR("%s", ex104.what());
-        }
+		try {
+		    listener4.waitForTransform("/WORLD", "/ar_marker_104", ros::Time(0), ros::Duration(0.00005));
+		    listener4.lookupTransform("/WORLD", "/ar_marker_104", ros::Time(0), transform_w_104);
+		    eval_config(angles_104,transform_w_104, xy_104, pins, conf_leg4, "Leg_4",leg_object, objectStructVector);
 
-        try {
-            listener8.waitForTransform("/WORLD", "/ar_marker_108", ros::Time(0), ros::Duration(0.00005));
-            listener8.lookupTransform("/WORLD", "/ar_marker_108", ros::Time(0), transform_w_108);
-
-            eval_config(angles_108,transform_w_108, xy_108, pins, conf_leg8, "Leg_8", leg_object, objectStructVector);
-
-            if (conf_leg8.pin > 0 && conf_leg8.name_config.size()>0){
-                f << conf_leg8.leg_id << std::endl << conf_leg8.name_config << std::endl << "Pin:" << conf_leg8.pin << std::endl << std::endl;
-                fypr << angles_108[2] <<" " << angles_108[1] <<" " << angles_108[0] << std::endl;
-                fxy << "leg 8: " << xy_108[0] <<" " << xy_108[1] << std:: endl;
-		
-		leg_counter++;
-                vision::Configuration::Ptr msg8(new vision::Configuration);
-
-                
-		init_original_message(ourScene, msg8, conf_leg8);
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-                
-
-                /*sit_armor_injected_msgs::SceneElement::Ptr ar8(new sit_armor_injected_msgs::SceneElement);
-                sit_armor_injected_msgs::SceneElement::Ptr pin8(new sit_armor_injected_msgs::SceneElement);
-                init_msg_for_Armor(ar8, pin8, sceneForArmor, conf_leg8, xy_108, pins);*/
-            }
-
-        }
-
-        catch (tf::TransformException &ex108) {
-            ROS_ERROR("%s", ex108.what());
-        }
-
-        try {
-            listener12.waitForTransform("/WORLD", "/ar_marker_112", ros::Time(0), ros::Duration(0.00005));
-            listener12.lookupTransform("/WORLD", "/ar_marker_112", ros::Time(0), transform_w_112);
-
-            eval_config(angles_112,transform_w_112, xy_112, pins, conf_leg12, "Leg_12", leg_object, objectStructVector);
-
-            if (conf_leg12.pin > 0 && conf_leg12.name_config.size()>0) {
-                f << conf_leg12.leg_id << std::endl << conf_leg12.name_config << std::endl <<"Pin:" << conf_leg12.pin << std::endl << std::endl;
-                fypr << angles_112[2] <<" " << angles_112[1] <<" " << angles_112[0] << std::endl;
-                fxy << "leg 12: " << xy_112[0] <<" " << xy_112[1] << std:: endl;
+		    if (conf_leg4.pin > 0 && conf_leg4.name_config.size()>0){
+		        f << conf_leg4.leg_id << std::endl << conf_leg4.name_config << std::endl << "Pin:" << conf_leg4.pin << std::endl << std::endl;
+		        fypr << angles_104[2] <<" " << angles_104[1] <<" " << angles_104[0] << std::endl;
+		        fxy << "leg 4: " << xy_104[0] <<" " << xy_104[1] << std:: endl;
 
 
-                vision::Configuration::Ptr msg12(new vision::Configuration);
+		        vision::Configuration::Ptr msg4(new vision::Configuration);
 
-                init_original_message(ourScene, msg12, conf_leg12);
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-                
-
-                /*sit_armor_injected_msgs::SceneElement::Ptr ar12(new sit_armor_injected_msgs::SceneElement);
-                sit_armor_injected_msgs::SceneElement::Ptr pin12(new sit_armor_injected_msgs::SceneElement);
-                init_msg_for_Armor(ar12, pin12, sceneForArmor, conf_leg12, xy_112, pins);*/
-            }
-        }
-
-        catch (tf::TransformException &ex112) {
-            ROS_ERROR("%s", ex112.what());
-        }
-	///////FUNZIONE CALCOLO DEGREE
-
-        //Scene_pub_4Armor.publish(sceneForArmor);
-        //PRINT FOR DEBUGGING
-	
-	
-	//Put the pin information in the objectVector and itemStructVectorTemp
-	for (int i = 0; i<COLUMNS; i++){ 
-		
-		std::string pin_gammaName="p_"+ boost::to_string(i+1);
-        	pin_object.name=pin_gammaName;
-		pin_object.x=pins[1][i];
-		pin_object.y=pins[2][i];
-		objectStructVector.push_back(pin_object);
-
-		itemStruct.gamma_i=pin_gammaName;
-		itemStruct.type="Pin_"+boost::to_string(i+1);
-
-		itemStruct.degree=1;
-		itemStructVectorTemp.push_back(itemStruct);
-	}
-	
-        
-
-	table_object.name="t";
-	table_object.x=0;
-	table_object.y=0;
-	objectStructVector.push_back(table_object);
-
-
-	/*for(vector<object>::iterator it = objectStructVector.begin(); it != objectStructVector.end(); ++it){
-
-		
-			cout<<"\n";
-			cout<<"FUORI NEL MAIN"<<"\n";
-			cout<<"SIZE ARRAY NOW: " << objectStructVector.size()<<"\n";
-			cout<<"NOME GAMMA NELL'ARRAY: "<<it->name<<"\n";
 		        
-			cout<<"X LEG NELL'ARRAY: "<<it->x<<"\n";
-		        cout<<"Y LEG NELL'ARRAY: "<<it->y<<"\n";
-			
-			cout<<"\n";
-	  
+			init_original_message(ourScene, msg4, conf_leg4);
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+                
 		
-	
-	}*/
+		        /*sit_armor_injected_msgs::SceneElement::Ptr ar4(new sit_armor_injected_msgs::SceneElement);
+		        sit_armor_injected_msgs::SceneElement::Ptr pin4(new sit_armor_injected_msgs::SceneElement);
+		        init_msg_for_Armor(ar4, pin4, sceneForArmor, conf_leg4, xy_104, pins);*/
+		    }
+		}
 
-	itemStruct.gamma_i="t";
-	itemStruct.type="Table";
-	itemStruct.degree=1;
-	itemStructVectorTemp.push_back(itemStruct);
+		catch (tf::TransformException &ex104) {
+		    ROS_ERROR("%s", ex104.what());
+		}
 
-	/*for(vector<item>::iterator it_temp = itemStructVectorTemp.begin(); it_temp != itemStructVectorTemp.end(); ++it_temp){
+		try {
+		    listener8.waitForTransform("/WORLD", "/ar_marker_108", ros::Time(0), ros::Duration(0.00005));
+		    listener8.lookupTransform("/WORLD", "/ar_marker_108", ros::Time(0), transform_w_108);
 
+		    eval_config(angles_108,transform_w_108, xy_108, pins, conf_leg8, "Leg_8", leg_object, objectStructVector);
+
+		    if (conf_leg8.pin > 0 && conf_leg8.name_config.size()>0){
+		        f << conf_leg8.leg_id << std::endl << conf_leg8.name_config << std::endl << "Pin:" << conf_leg8.pin << std::endl << std::endl;
+		        fypr << angles_108[2] <<" " << angles_108[1] <<" " << angles_108[0] << std::endl;
+		        fxy << "leg 8: " << xy_108[0] <<" " << xy_108[1] << std:: endl;
 		
-			cout<<"\n";
-			cout<<"\n";
-			cout<<"----------------------"<<"\n";
-			cout<<"VECTOR OF ITEMS TEMP"<<"\n";
-			cout<<"SIZE ARRAY NOW: " << itemStructVectorTemp.size()<<"\n";
-			cout<<"GAMMA NELL'ARRAY DI ITEMS: "<<it_temp->gamma_i<<"\n";		        
-			cout<<"TYPE NELL'ARRAY DI ITEMS: "<<it_temp->type<<"\n";
-		        cout<<"DEGREE NELL'ARRAY DI ITEMS: "<<it_temp->degree<<"\n";
-			
-			cout<<"\n";
-	  
-		
-	
-	}*/
+			leg_counter++;
+		        vision::Configuration::Ptr msg8(new vision::Configuration);
 
-	
-	computeAllRelations(objectStructVector);
+		        
+			init_original_message(ourScene, msg8, conf_leg8);
 
-	/*for(vector<relation>::iterator it_rel = relationStructVector.begin(); it_rel != relationStructVector.end(); ++it_rel){
+///////////////////////////////////////////////////////////////////////////////////////////////
+                
 
-		
-			cout<<"\n";
-			cout<<"\n";
-			cout<<"----------------------"<<"\n";
-			cout<<"VECTOR OF RELATIONS"<<"\n";
-			cout<<"SIZE ARRAY NOW: " << relationStructVector.size()<<"\n";			
-			cout<<"GAMMA SUBJECT: "<<it_rel->gamma_subject<<"\n";
-			cout<<"GAMMA OBJECT: "<<it_rel->gamma_object<<"\n";	
-			cout<<"NAME RELATION: "<<it_rel->nameRelation<<"\n";	        
-		        cout<<"DEGREE RELATION: "<<it_rel->degreeRelation<<"\n";
-			
-			cout<<"\n";
-	  
-		
-	
-	}*/
-
-	
-	//Loop over all relations with degree not equal to 0
-	for(vector<relation>::iterator it_rel = relationStructVector.begin(); it_rel != relationStructVector.end(); ++it_rel){
-		
-		//Loop over all the items in the temporary items vector
-		for(vector<item>::iterator it = itemStructVectorTemp.begin(); it != itemStructVectorTemp.end(); ++it){
-			
-			//Check if the name of the subject is equal to the actual element considereted in the temporary items vector
-			if( it_rel->gamma_subject == it->gamma_i ){				
-
-				
-				//Check if the items vector is empty and then put the element inside
-				if(itemStructVector.empty()){
-
-					itemStructVector.push_back(*it);
-
-				}
-
-				else{
-					//Check if the element considereted is already in the items vector
-					bool isInVector;
-					for(vector<item>::iterator it_item = itemStructVector.begin(); it_item != itemStructVector.end(); ++it_item){
-						//If the element is already in the items vector go outside the loop over the items vector and set the flag as true
-						if(it_rel->gamma_subject==it_item->gamma_i){
-							isInVector=true;
-							break;
-						}
-
-						//If the element is not equal to the actual element considereted in the items vector set the flag to false and keep going to search over the vector
-						else{
-							isInVector=false;
-						}
-					}
-
-					if(isInVector==false){
-						itemStructVector.push_back(*it);
-					}
-					
-				}
-
-			}
-
-			//Check if the name of the subject is equal to the actual element considereted in the temporary items vector
-			if(it_rel->gamma_object == it->gamma_i){
-				
-				//Check if the items vector is empty and then put the element inside
-				if(itemStructVector.empty()){
-
-					itemStructVector.push_back(*it);
-
-				}
-
-				else{
-					
-					bool isInVector;
-					for(vector<item>::iterator it_item = itemStructVector.begin(); it_item != itemStructVector.end(); ++it_item){
-						//If the element is already in the items vector go outside the loop over the items vector and set the flag as true
-						if(it_rel->gamma_object==it_item->gamma_i){
-							isInVector=true;
-							break;
-						}
-
-						//If the element is not equal to the actual element considereted in the items vector set the flag to false and keep going to search over the vector
-						else{
-							isInVector=false;
-						}
-					}
-
-					if(isInVector==false){
-						itemStructVector.push_back(*it);
-					}
-
-				}
-
-
-			}
+		        /*sit_armor_injected_msgs::SceneElement::Ptr ar8(new sit_armor_injected_msgs::SceneElement);
+		        sit_armor_injected_msgs::SceneElement::Ptr pin8(new sit_armor_injected_msgs::SceneElement);
+		        init_msg_for_Armor(ar8, pin8, sceneForArmor, conf_leg8, xy_108, pins);*/
+		    }
 
 		}
-	}
+
+		catch (tf::TransformException &ex108) {
+		    ROS_ERROR("%s", ex108.what());
+		}
+
+		try {
+		    listener12.waitForTransform("/WORLD", "/ar_marker_112", ros::Time(0), ros::Duration(0.00005));
+		    listener12.lookupTransform("/WORLD", "/ar_marker_112", ros::Time(0), transform_w_112);
+
+		    eval_config(angles_112,transform_w_112, xy_112, pins, conf_leg12, "Leg_12", leg_object, objectStructVector);
+
+		    if (conf_leg12.pin > 0 && conf_leg12.name_config.size()>0) {
+		        f << conf_leg12.leg_id << std::endl << conf_leg12.name_config << std::endl <<"Pin:" << conf_leg12.pin << std::endl << std::endl;
+		        fypr << angles_112[2] <<" " << angles_112[1] <<" " << angles_112[0] << std::endl;
+		        fxy << "leg 12: " << xy_112[0] <<" " << xy_112[1] << std:: endl;
+
+
+		        vision::Configuration::Ptr msg12(new vision::Configuration);
+
+		        init_original_message(ourScene, msg12, conf_leg12);
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+                
+
+		        /*sit_armor_injected_msgs::SceneElement::Ptr ar12(new sit_armor_injected_msgs::SceneElement);
+		        sit_armor_injected_msgs::SceneElement::Ptr pin12(new sit_armor_injected_msgs::SceneElement);
+		        init_msg_for_Armor(ar12, pin12, sceneForArmor, conf_leg12, xy_112, pins);*/
+		    }
+		}
+
+		catch (tf::TransformException &ex112) {
+		    ROS_ERROR("%s", ex112.what());
+		}
+		///////FUNZIONE CALCOLO DEGREE
+
+		//Scene_pub_4Armor.publish(sceneForArmor);
+		//PRINT FOR DEBUGGING
 	
-	/*for(vector<item>::iterator it = itemStructVector.begin(); it != itemStructVector.end(); ++it){
+	
+		//Put the pin information in the objectVector and itemStructVectorTemp
+		for (int i = 0; i<COLUMNS; i++){ 
+		
+			std::string pin_gammaName="p_"+ boost::to_string(i+1);
+			pin_object.name=pin_gammaName;
+			pin_object.x=pins[1][i];
+			pin_object.y=pins[2][i];
+			objectStructVector.push_back(pin_object);
+
+			itemStruct.gamma_i=pin_gammaName;
+			itemStruct.type="Pin_"+boost::to_string(i+1);
+
+			itemStruct.degree=1;
+			itemStructVectorTemp.push_back(itemStruct);
+		}
+	
+		
+
+		table_object.name="t";
+		table_object.x=0;
+		table_object.y=0;
+		objectStructVector.push_back(table_object);
+
+
+		/*for(vector<object>::iterator it = objectStructVector.begin(); it != objectStructVector.end(); ++it){
 
 		
-			cout<<"\n";
-			cout<<"\n";
-			cout<<"----------------------"<<"\n";
-			cout<<"VECTOR OF ITEMS"<<"\n";
-			cout<<"SIZE ARRAY NOW: " << itemStructVector.size()<<"\n";
-			cout<<"GAMMA NELL'ARRAY DI ITEMS: "<<it->gamma_i<<"\n";		        
-			cout<<"TYPE NELL'ARRAY DI ITEMS: "<<it->type<<"\n";
-		        cout<<"DEGREE NELL'ARRAY DI ITEMS: "<<it->degree<<"\n";
+				cout<<"\n";
+				cout<<"FUORI NEL MAIN"<<"\n";
+				cout<<"SIZE ARRAY NOW: " << objectStructVector.size()<<"\n";
+				cout<<"NOME GAMMA NELL'ARRAY: "<<it->name<<"\n";
+				
+				cout<<"X LEG NELL'ARRAY: "<<it->x<<"\n";
+				cout<<"Y LEG NELL'ARRAY: "<<it->y<<"\n";
 			
-			cout<<"\n";
-	  
+				cout<<"\n";
+		  
 		
 	
-	}*/
+		}*/
 
-	//Now create the scene object and the object for the items and the relations 
-	vision::SceneToSIT::Ptr ourSceneToSIT (new vision::SceneToSIT);
-	vision::Configuration_SIT::Ptr msgItemSIT(new vision::Configuration_SIT);
-	vision::Relations::Ptr msgRelationSIT(new vision::Relations);
-	init_SIT_message(ourSceneToSIT, msgItemSIT, msgRelationSIT, itemStructVector, relationStructVector);
+		itemStruct.gamma_i="t";
+		itemStruct.type="Table";
+		itemStruct.degree=1;
+		itemStructVectorTemp.push_back(itemStruct);
+
+		/*for(vector<item>::iterator it_temp = itemStructVectorTemp.begin(); it_temp != itemStructVectorTemp.end(); ++it_temp){
+
+		
+				cout<<"\n";
+				cout<<"\n";
+				cout<<"----------------------"<<"\n";
+				cout<<"VECTOR OF ITEMS TEMP"<<"\n";
+				cout<<"SIZE ARRAY NOW: " << itemStructVectorTemp.size()<<"\n";
+				cout<<"GAMMA NELL'ARRAY DI ITEMS: "<<it_temp->gamma_i<<"\n";		        
+				cout<<"TYPE NELL'ARRAY DI ITEMS: "<<it_temp->type<<"\n";
+				cout<<"DEGREE NELL'ARRAY DI ITEMS: "<<it_temp->degree<<"\n";
+			
+				cout<<"\n";
+		  
+		
+	
+		}*/
+
+	
+		computeAllRelations(objectStructVector);
+
+		/*for(vector<relation>::iterator it_rel = relationStructVector.begin(); it_rel != relationStructVector.end(); ++it_rel){
+
+		
+				cout<<"\n";
+				cout<<"\n";
+				cout<<"----------------------"<<"\n";
+				cout<<"VECTOR OF RELATIONS"<<"\n";
+				cout<<"SIZE ARRAY NOW: " << relationStructVector.size()<<"\n";			
+				cout<<"GAMMA SUBJECT: "<<it_rel->gamma_subject<<"\n";
+				cout<<"GAMMA OBJECT: "<<it_rel->gamma_object<<"\n";	
+				cout<<"NAME RELATION: "<<it_rel->nameRelation<<"\n";	        
+				cout<<"DEGREE RELATION: "<<it_rel->degreeRelation<<"\n";
+			
+				cout<<"\n";
+		  
+		
+	
+		}*/
+
+	
+		//Loop over all relations with degree not equal to 0
+		for(vector<relation>::iterator it_rel = relationStructVector.begin(); it_rel != relationStructVector.end(); ++it_rel){
+		
+			//Loop over all the items in the temporary items vector
+			for(vector<item>::iterator it = itemStructVectorTemp.begin(); it != itemStructVectorTemp.end(); ++it){
+			
+				//Check if the name of the subject is equal to the actual element considereted in the temporary items vector
+				if( it_rel->gamma_subject == it->gamma_i ){				
+
+				
+					//Check if the items vector is empty and then put the element inside
+					if(itemStructVector.empty()){
+
+						itemStructVector.push_back(*it);
+
+					}
+
+					else{
+						//Check if the element considereted is already in the items vector
+						bool isInVector;
+						for(vector<item>::iterator it_item = itemStructVector.begin(); it_item != itemStructVector.end(); ++it_item){
+							//If the element is already in the items vector go outside the loop over the items vector and set the flag as true
+							if(it_rel->gamma_subject==it_item->gamma_i){
+								isInVector=true;
+								break;
+							}
+
+							//If the element is not equal to the actual element considereted in the items vector set the flag to false and keep going to search over the vector
+							else{
+								isInVector=false;
+							}
+						}
+
+						if(isInVector==false){
+							itemStructVector.push_back(*it);
+						}
+					
+					}
+
+				}
+
+				//Check if the name of the subject is equal to the actual element considereted in the temporary items vector
+				if(it_rel->gamma_object == it->gamma_i){
+				
+					//Check if the items vector is empty and then put the element inside
+					if(itemStructVector.empty()){
+
+						itemStructVector.push_back(*it);
+
+					}
+
+					else{
+					
+						bool isInVector;
+						for(vector<item>::iterator it_item = itemStructVector.begin(); it_item != itemStructVector.end(); ++it_item){
+							//If the element is already in the items vector go outside the loop over the items vector and set the flag as true
+							if(it_rel->gamma_object==it_item->gamma_i){
+								isInVector=true;
+								break;
+							}
+
+							//If the element is not equal to the actual element considereted in the items vector set the flag to false and keep going to search over the vector
+							else{
+								isInVector=false;
+							}
+						}
+
+						if(isInVector==false){
+							itemStructVector.push_back(*it);
+						}
+
+					}
+
+
+				}
+
+			}
+		}
+	
+		/*for(vector<item>::iterator it = itemStructVector.begin(); it != itemStructVector.end(); ++it){
+
+		
+				cout<<"\n";
+				cout<<"\n";
+				cout<<"----------------------"<<"\n";
+				cout<<"VECTOR OF ITEMS"<<"\n";
+				cout<<"SIZE ARRAY NOW: " << itemStructVector.size()<<"\n";
+				cout<<"GAMMA NELL'ARRAY DI ITEMS: "<<it->gamma_i<<"\n";		        
+				cout<<"TYPE NELL'ARRAY DI ITEMS: "<<it->type<<"\n";
+				cout<<"DEGREE NELL'ARRAY DI ITEMS: "<<it->degree<<"\n";
+			
+				cout<<"\n";
+		  
+		
+	
+		}*/
+
+		//Now create the scene object and the object for the items and the relations
+		 
+		vision::SceneToSIT::Ptr ourSceneToSIT (new vision::SceneToSIT);
+		vision::Configuration_SIT::Ptr msgItemSIT(new vision::Configuration_SIT);
+		vision::Relations::Ptr msgRelationSIT(new vision::Relations);
+		init_SIT_message(ourSceneToSIT, msgItemSIT, msgRelationSIT, itemStructVector, relationStructVector);
 
 	
 	
 
-	objectStructVector.clear();
-       
+		objectStructVector.clear();
+	       
+	
+		Scene_pub.publish(ourScene);
+		SceneSIT_pub.publish(ourSceneToSIT);
+	
+		itemStructVectorTemp.clear();
+		itemStructVector.clear();
+		relationStructVector.clear();
 	
 	
-	//computeRelations(ourSceneToSIT);
-	
+	}
 
-        Scene_pub.publish(ourScene);
-	SceneSIT_pub.publish(ourSceneToSIT);
-	
-	itemStructVectorTemp.clear();
-	itemStructVector.clear();
-	relationStructVector.clear();
+	if(frameInstant==-1){
+
+		//Send an empty message and wait until service is ready
+		vision::SceneToSIT::Ptr ourSceneToSIT (new vision::SceneToSIT);
+		vision::Configuration_SIT::Ptr msgItemSIT(new vision::Configuration_SIT);
+		vision::Relations::Ptr msgRelationSIT(new vision::Relations);
+		init_SIT_message(ourSceneToSIT, msgItemSIT, msgRelationSIT, itemStructVector, relationStructVector);
+		Scene_pub.publish(ourScene);
+		SceneSIT_pub.publish(ourSceneToSIT);
+		n.getParam("/service_ready",service_ready);
+		
+		
+		//int i;
+		//If service is not ready wait
+		while(service_ready==false){
+			//i++;
+			//cout << "I: " << i << "\n";
+			n.getParam("/service_ready",service_ready);
+			cout << " Service is not ready! " << "\n";
+			
+		}
+		cout<<"Service is ready"<<"\n";
+
+	}
+        
 
         f << "-------------------"<< std::endl << k << std::endl;
         k++;

@@ -110,7 +110,7 @@ public class MemoryService extends AbstractNodeMain {
 
                             if (request.getTestRequest().getFrame()==-1) {
 
-                                //memory.getTbox().show();
+                                memory.getTbox().show();
                                 response.getTestResponse().setResponse("Ready");
                             }
 

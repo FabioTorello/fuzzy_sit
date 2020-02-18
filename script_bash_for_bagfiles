@@ -46,7 +46,11 @@ do
 	 	     rosparam set Start_Stop true
 		     rosbag play $ff
 	 	     rosparam set Start_Stop false
-
+		     val=$(rosparam get service_ready)
+		     while [[ ${val} == false ]] 
+		     do
+			val=$(rosparam get service_ready)
+		     done
 
 	    #else
 		

@@ -92,6 +92,8 @@ void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneToSIT::ConstPtr& msg)
 	      srv.request.test_request.frame=frameInstant;
 	      srv.request.test_request.scene_name=scene_name;
 
+	      nh.setParam("/service_ready",false);
+
 	      
       }
 
@@ -111,7 +113,7 @@ void SUBSCRIBE_CALLBACK_FUNCTION (const vision::SceneToSIT::ConstPtr& msg)
 		std::cout<<"THIS IS THE SERVICE RESPONSE: "<< res <<"\n";
 
 		if(res.compare("Ready")){
-			nh.setParam("service_ready",true);
+			nh.setParam("/service_ready",true);
     		}
 
 		  
