@@ -111,7 +111,7 @@ public class MemoryService extends AbstractNodeMain {
                             if (request.getTestRequest().getFrame()==-1) {
 
                                 memory.getTbox().show();
-                                response.getTestResponse().setResponse("Ready");
+                               response.getTestResponse().setResponse("Ready");
                             }
 
                             if(request.getTestRequest().getFrame()!=-1) {
@@ -339,70 +339,11 @@ public class MemoryService extends AbstractNodeMain {
         return new ConnectObjectScene();
    }
 
-   /* public static ConnectObjectScene scene(List<SceneItem> items, int frame) {
-        ConnectObjectScene scene = new ConnectObjectScene("frame"+frame);
-        //There is always the type Table object and it is the origin of my system so x=0 and y=0
-        scene.addObject(new Table("Table","T0",0.9, new Point2(0.0,0.0)));
-        int nItems=0;
-        for (SceneItem item: items){
-            for (FuzzyDegree degrees:item.getDegrees())
-            {
-                StringBuilder obj = new StringBuilder();
-                obj.append(degrees.getValueChair());
-                obj.append(nItems);
-                String object = obj.toString();
-                //if (pins.contains(degrees.getValuePin())){
-                    pin = Integer.parseInt(degrees.getValuePin());
-                    scene.addObject(new Pin("Pin", "Pin" + degrees.getValuePin(), degrees.getDegreePin(), new Point2(pinsX.get(Integer.parseInt(degrees.getValuePin())-1), pinsY.get(Integer.parseInt(degrees.getValuePin())-1))));
-
-                    //scene.getRelations().add( new SpatialRelation( "Leg1", "CONNECTED", "Pin2", .8));
-
-                //}
-                //else{
-
-                    //for (String pin: pins) {
-                        //for (FuzzyDegree deg:item.getDegrees()) {
-                            //if (degrees.getValue().contains(pin)) {
-                                for (int i = 0; i < legsType.size(); i++) {
-                                    if (degrees.getValueChair().contains(legsType.get(i))) {
-                                        String legType = legsType.get(i).toLowerCase();
-                                        scene.addObject(new Leg(legType.replace(legType.charAt(0), Character.toUpperCase(legType.charAt(0))) + "Leg", object, degrees.getDegreeChair(), new Point2(pinsX.get(pin - 1), pinsY.get(pin - 1))));
-                                        break;
-                                    }
-                                }
-                              //  break;
-                           //}
-                       // }
-                    //}
-
-
-               // }
-
-            }
-
-            nItems++;
-        }
-
-
-        return scene;
-
-    }*/
 
 
 
-/*"test_request:
-    items:
-            - gamma_i: ''
-    type: ''
-    degree: 0.0
-    relations:
-            - gamma_subject: ''
-    gamma_object: ''
-    nameRelation: ''
-    degreeRelation: 0.0
-    frame: 0"
 
- */
+
    /*
    rosservice call /memory_service "test_request:
   items:
@@ -428,33 +369,64 @@ public class MemoryService extends AbstractNodeMain {
     gamma_object: 't'
     nameRelation: 'isConnectedTo'
     degreeRelation: 0.2
-  frame: 64"
+  scene_name: '1.2_3'
+  frame: 3"
 
-   "test_request:
-   items:
-      - gamma_i: 'g_1'
-        type: 'BED_X'
+   rosservice call /memory_service "test_request:
+  items:
+  - gamma_i: 'g_2'
+    type: 'BED_MINUS_X'
     degree: 0.8
-     - gamma_i: 'p_1'
-    type: 'Pin_1'
+  - gamma_i: 'p_2'
+    type: 'Pin_2'
     degree: 1
-     - gamma_i: 't'
+  - gamma_i: 't'
     type: 'Table'
     degree: 1
-    relations:
-    - gamma_subject: 'g_1'
-    gamma_object: 'p_1'
+  relations:
+  - gamma_subject: 'g_2'
+    gamma_object: 'p_2'
     nameRelation: 'isConnectedTo'
-    degreeRelation: 0.8
-    - gamma_subject: 'g_1'
+    degreeRelation: 0.9
+  - gamma_subject: 'g_2'
     gamma_object: 't'
     nameRelation: 'isConnectedTo'
-    degreeRelation: 0.17
-     - gamma_subject: 'p_1'
+    degreeRelation: 0.5
+  - gamma_subject: 'p_2'
     gamma_object: 't'
     nameRelation: 'isConnectedTo'
     degreeRelation: 0.2
-    frame: 2"
+  scene_name: '1.2_5'
+  frame: 6"
+
+
+
+rosservice call /memory_service "test_request:
+  items:
+  - gamma_i: 'g_3'
+    type: 'BED_Y'
+    degree: 0.8
+  - gamma_i: 'p_3'
+    type: 'Pin_3'
+    degree: 1
+  - gamma_i: 't'
+    type: 'Table'
+    degree: 1
+  relations:
+  - gamma_subject: 'g_3'
+    gamma_object: 'p_3'
+    nameRelation: 'isConnectedTo'
+    degreeRelation: 0.8
+  - gamma_subject: 'g_3'
+    gamma_object: 't'
+    nameRelation: 'isConnectedTo'
+    degreeRelation: 0.7
+  - gamma_subject: 'p_3'
+    gamma_object: 't'
+    nameRelation: 'isConnectedTo'
+    degreeRelation: 0.1
+  scene_name: '1.2_8'
+  frame: 8"
 
     */
 
@@ -463,54 +435,13 @@ public class MemoryService extends AbstractNodeMain {
 
 
 
-/*rosservice call /memory_service "test_request:
-  items:
-  - gamma_i: 'g1'
-    degrees:
-    - value: 'R1'
-      degree: 0.9
-    x: -0.25sservice call
-    y: 0.75
-  - gamma_i: 'g2'
-    degrees:
-    - value: 'R2'
-      degree: 0.9
-    x: 0.75
-    y: 0.75
-  - gamma_i: 'g3'
-    degrees:
-    - value: 'R3'
-      degree: 0.9
-    x: -0.25
-    y: 0.25
-  - gamma_i: 'g4'
-    degrees:
-    - value: 'R4'
-      degree: 0.9
-    x: 0.75
-    y: 0.25
-  - gamma_i: 'g5'
-    degrees:
-    - value: 'RC'
-      degree: 0.9
-    x: 0.25
-    y: 0.5"
 
 
 
 
 
-    rosservice call /memory_service "test_request:
-  items:
-  - gamma_i: 'g1'
-    degrees:
-    - value: '1'
-      degree: 0.9
-  - gamma_i: 'g2'
-    degrees:
-    - value: 'BED_MINUS_X'
-      degree: 0.9"
-*/
+
+
 
 
 //     For testing and debugging purposes only
