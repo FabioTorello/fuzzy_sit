@@ -1205,7 +1205,7 @@ int main(int argc, char **argv)
 		init_SIT_message(ourSceneToSIT, msgItemSIT, msgRelationSIT, itemStructVector, relationStructVector);
 		Scene_pub.publish(ourScene);
 		SceneSIT_pub.publish(ourSceneToSIT);
-		n.getParam("/service_ready",service_ready);
+		/*n.getParam("/service_ready",service_ready);
 		
 		
 		//int i;
@@ -1217,7 +1217,8 @@ int main(int argc, char **argv)
 			cout << " Service is not ready! " << "\n";
 			
 		}
-		cout<<"Service is ready"<<"\n";
+		//cout<<"Service is ready"<<"\n";*/
+ros::shutdown();
 
 	}
         

@@ -272,4 +272,25 @@ public class SITABox
     public Set<SpatialRelation> getObservedRelations() {
         return objservedRelations;
     }
+
+
+/////Functions updating the past ABOX CLASS
+    public double getSimilarity(SceneHierarchyVertex recognisedScene){
+        //double fuzzyness = FuzzySITBase.ROLE_SHOULDER_BOTTOM_PERCENT * recognisedScene.getDefinition().getCardinality() /100;
+        double actualCardinality = getDefinition().getCardinality();
+        double memoryCardinality = recognisedScene.getDefinition().getCardinality();
+        double out = memoryCardinality / actualCardinality;
+        if ( out > 1)
+            System.err.println("WARNING: similarity value " + out + " for: " + getDefinition() +"="+ actualCardinality + ", and " + recognisedScene.getDefinition() +"=" + memoryCardinality);
+        return  out;
+    }
+    public double getMaxSimilarity(){
+        double max = 0;
+        for ( SceneHierarchyVertex recognized : recognitions.keySet()) {
+            double similarity = getSimilarity( recognized);
+            if ( similarity > max)
+                max = similarity;
+        }
+        return max;
+    }
 }

@@ -1,53 +1,54 @@
 package it.emarolab;
 
-import it.emarolab.fuzzySIT.memoryLike.MemoryInterface;
+
 import it.emarolab.fuzzySIT.perception.PerceptionBase;
 import it.emarolab.fuzzySIT.semantic.SITTBox;
 import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyEdge;
 import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
+import it.emarolab.fuzzySIT.memoryLike.MemoryInterface;
+//import javafx.util.Pair;
 import org.jgrapht.ListenableGraph;
-import java.io.*;
-import java.util.*;
-import java.util.stream.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.time.LocalTime;
+import it.emarolab.fuzzySIT.semantic.SITABox;
 
-public class MemoryImplementation extends MemoryInterface {
+import java.io.*;
+import java.time.LocalTime;
+import java.util.*;
+
+public class MemoryImplementationVersionUpdated extends MemoryInterface {
+
 
     //Define variables to take into account the time consumption
-    private List<Timing> timings = new ArrayList<>();
-    private Timing timing;
+    private List<MemoryImplementationVersionUpdated.Timing> timings = new ArrayList<>();
+    private MemoryImplementationVersionUpdated.Timing timing;
 
-    List<Timing> scoreForgottenScene;
-   // List<Timing> scoreScene;
+    List<MemoryImplementationVersionUpdated.Timing> scoreForgottenScene;
 
-    //graph of the memory used to find the number of memory items
-    // ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graphOfMemory;
-    /*private List<ElementsOfMemory> elements = new ArrayList<>();
-    private ElementsOfMemory element;*/
 
-    //Static variables and coefficients related to the memory functionalities
     private static String SCENE_PREFIX = "Scene";
-    private static final double LEARNED_SCORE = .5;
-    // threshold above which it consolidates
-    private static final double ENCODE_TH = .5;
-    // threshold under which it learns
-    //ORIGINALE LEARN_TH è 1
-    private static final double LEARN_TH = 1;
-    // threshold under which it forgets (0,inf] (after consolidation (0,1])
-    private static final double SCORE_WEAK = .1;
 
-    // reinforce factor for re-stored or re-retrieved experience
-    private static final double EXPERIENCE_REINFORCE = 1.5;
+    // recognition = 1, similarity = 0 => it always consolidates on recognition
+    private static final double ENCODE_RECOGNITION_TH = .9; // recognition threshold above which it consolidates [0,1]
+    private static final double ENCODE_SIMILARITY_TH = .2; // similarity threshold above which it consolidates [0,1]
 
-    // reinforce factor for min edge fuzzy degree
-    private static final double EXPERIENCE_STRUCTURE = 1;
-    //Scene Counter
+    // recognition = 1, similarity = 1 => it always learns on recognition
+    private static final double LEARN_RECOGNITION_TH = .9; // recognition threshold below which it learns [0,1]
+    private static final double LEARN_SIMILARITY_TH = .8; // similarity threshold below which it learns [0,>~1]
+
+    private static final double SCORE_WEAK = .1; // threshold under which it forgets [0,1]
+    private static final double LEARNED_SCORE = .5; // initial score, percentage of max score [0,1]
+
+    private static final double ENCODE_REINFORCE = 2;//original was 10 10; // reinforce factor for re-stored or re-retrieved experience [1,inf)
+
     private static int sceneCnt = 0;
 
     private static long id = 0;
+
+    // actually remove node if true.
+    // Otherwise the node remains but it is not consolidated (i.e., frozen).
+    // REMARK: with false, SIT performances do not benefit from forgetting,
+    //         with true the Graph would not show forgotten nodes.
+    private static boolean REMOVE_FORGET = true;
+
     /////////////////////////////////////////////////////////////////////////
     ////////////////////For Command line execution///////////////////////////
     //File containing the graph information
@@ -96,81 +97,139 @@ public class MemoryImplementation extends MemoryInterface {
     //Time instant
     private static long time_instant = 0;
 
-    //private List<Timing> timings = new ArrayList<>();
-    //private Timing timing;
-
     //Constructor
-    public MemoryImplementation(String tboxPath, String configPath) {
+    public MemoryImplementationVersionUpdated(String tboxPath, String configPath) {
         super(new SITTBox(tboxPath, configPath));
     }
 
-
-    @Override
-    public SceneHierarchyVertex store(String sceneName) {
-        //Try to understand if the current scene has already been seen and recognized
-        Map<SceneHierarchyVertex, Double> rec = recognize();
-        // if memory is empty, learn new encoded scene
-        if (rec.keySet().isEmpty()) {
-            timing.sceneName=sceneName;
-            return learn(sceneName, LEARNED_SCORE);
-        }
-
-        // if encoded scene can be recognized, update score
-        boolean shouldLearn = true;
-        for (SceneHierarchyVertex recognisedScene : rec.keySet()) {
-            double recognisedValue = rec.get(recognisedScene);
-            if (recognisedValue >= ENCODE_TH) // update score
-                updateScoreStoring(recognisedScene, recognisedValue);
-            if (similarityValue(recognisedScene) >= LEARN_TH)
-                shouldLearn = false;
-            /*if( recognizedValue >= LEARN_TH)
-                shouldLearn = false;*/
-        }
-        // if encoded scene can be recognized, learn new scene
-        if (shouldLearn) {
-            timing.sceneName=sceneName;
-            return learn(sceneName, LEARNED_SCORE);
-        }
-        return null;
-    }
 
     public SceneHierarchyVertex store() {
         return store(SCENE_PREFIX + sceneCnt++);
     }
 
-    private double similarityValue(SceneHierarchyVertex recognisedScene) {
-        //double fuzzyness = FuzzySITBase.ROLE_SHOULDER_BOTTOM_PERCENT * recognisedScene.getDefinition().getCardinality() /100;
-        //getDefinition: return the SIT scene individual definition formalised as SigmaCounters
-        //getCardinality: the total sum of the fuzzy memberships of all the counters
-        double actualCardinality = getAbox().getDefinition().getCardinality();
-        double memoryCardinality = recognisedScene.getDefinition().getCardinality();
-        double out = memoryCardinality / actualCardinality;
-        if (out > 1)
-            System.err.println("WARNING: similarity value " + out + " for: " + getAbox().getDefinition() + "=" + actualCardinality + ", and " + recognisedScene.getDefinition() + "=" + memoryCardinality);
-        return out;
-    }
+    @Override
+    public SceneHierarchyVertex store(String sceneName){
+        Map<SceneHierarchyVertex, Double> rec = recognize();
+        // if memory is empty, learn new encoded scene
+        if( rec.keySet().isEmpty()) {
+            timing.sceneName = sceneName;
+            return learn(sceneName, LEARNED_SCORE);
+        }
 
+        // if encoded scene can be recognized, update score
+        boolean shouldLearn = true;
+        double maxScore = 0;
+        for ( SceneHierarchyVertex recognisedScene : rec.keySet()){
+            double recognisedValue = rec.get( recognisedScene);
+            double similarityValue = getAbox().getSimilarity(recognisedScene);
+            if( recognisedValue >= ENCODE_RECOGNITION_TH & similarityValue >= ENCODE_SIMILARITY_TH)  // update score
+                updateScoreStoring(recognisedScene, recognisedValue);
+            if( similarityValue >= LEARN_SIMILARITY_TH & recognisedValue >= LEARN_RECOGNITION_TH) // do not learn
+                shouldLearn = false;
+            double score = recognisedScene.getMemoryScore();
+            if ( score > maxScore)
+                maxScore = score;
+        }
+        // if encoded scene can not be recognized, learn new scene
+        if ( shouldLearn) {
+            timing.sceneName = sceneName;
+            return learn(sceneName, LEARNED_SCORE * maxScore);
+        }
+        return null;
+    }
 
     protected void updateScoreStoring(SceneHierarchyVertex recognisedScene, double recognisedValue) {
-        updateScorePolicy(recognisedScene, recognisedValue);
+        updateScorePolicy( recognisedScene, recognisedValue);
     }
 
+    @Override
+    public SceneHierarchyVertex retrieve() { // TODO very minimal retrieve support, adjust and implement it better!
+        Map<SceneHierarchyVertex, Double> rec = recognize();
+        SceneHierarchyVertex out = null;
+        double bestOut = 0;
+        // if memory is empty, do not do nothing
+        if( ! rec.keySet().isEmpty()) {
+            // update score of retrieved
+            for (SceneHierarchyVertex recognisedScene : rec.keySet()) {
+                double recognisedValue = rec.get( recognisedScene);
+                if ( recognisedValue > bestOut){
+                    out = recognisedScene;
+                    bestOut = recognisedValue;
+                }
+                updateScoreRetrieve(recognisedScene, recognisedValue);
+            }
+            return out; // true if at least one score is updated
+        }
+        return out;
+    }
+    private void updateScoreRetrieve(SceneHierarchyVertex recognisedScene, double recognisedValue) {
+        updateScorePolicy( recognisedScene, recognisedValue);
+    }
 
     private void updateScorePolicy(SceneHierarchyVertex recognisedScene, double recognisedValue) {
         // TODO adjust and validate
         double score = recognisedScene.getMemoryScore();
-        if (recognisedScene.getMemoryScore() > 0) { // not froze node
-            // reinforce for re-stored or re-retrieved experiences
-            score += EXPERIENCE_REINFORCE * recognisedValue;
-        } // else score freeze (i.e., experience to remove)
-        recognisedScene.setMemoryScore(score);
+        if ( recognisedScene.getMemoryScore() > 0) // not froze node
+            score += ENCODE_REINFORCE * recognisedValue; // reinforce for re-stored or re-retrieved experiences
+        // else score freeze (i.e., experience to remove)
+        recognisedScene.setMemoryScore( score);
+    }
+
+
+    @Override
+    public void consolidate() {
+        // TODO reinforce score based on graph edges and nodes
+
+        //Set<Pair<SceneHierarchyVertex, SceneHierarchyVertex>> removed = getTbox().simplify();
+        //System.out.println( "\tsimplifying " + removed);
+
+        normalizeScoreConsolidating();
+    }
+
+
+    public void normalizeScoreConsolidating(){
+        ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> h = getTbox().getHierarchy();
+        double maxScore = 0;
+        for( SceneHierarchyVertex scene : h.vertexSet()){
+            double score = scene.getMemoryScore();
+            if ( score > maxScore)
+                maxScore = score;
+        }
+        if ( maxScore > 0)
+            for (SceneHierarchyVertex experience : h.vertexSet())
+                if (experience.getMemoryScore() >= 0)
+                    experience.setMemoryScore(experience.getMemoryScore() / maxScore);
+    }
+
+
+
+
+    @Override
+    public Set<SceneHierarchyVertex> forget(){
+        ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> h = getTbox().getHierarchy();
+        Set<SceneHierarchyVertex> forgotten = new HashSet<>();
+        // find weak score in the memory graph
+        for( SceneHierarchyVertex scene : h.vertexSet()){
+            if( scene.getMemoryScore() < SCORE_WEAK) {
+                scene.setMemoryScore(-1); // score getter will be always 0 and is not consider on consolidation
+                forgotten.add( scene);
+                timing.forgetDone = true;
+            }
+        }
+
+        timing.numberOfItemsForgotten=forgotten.size();
+
+        if( REMOVE_FORGET)
+            for( SceneHierarchyVertex scene : forgotten)
+                getTbox().removeScene( scene);
+        return forgotten;
     }
 
 
     public void experience(PerceptionBase scene, boolean storeOrRetrieve, boolean synchConsolidateForget) { // true: from store, false: from retrieve
 
 
-        timing = new Timing();
+        timing = new MemoryImplementationVersionUpdated.Timing();
         timing.learnDone = false;
         timing.forgetDone = false;
 
@@ -264,6 +323,8 @@ public class MemoryImplementation extends MemoryInterface {
 
     }
 
+
+
     public void consolidateAndForget() {
         consolidateAndForget(null);
     }
@@ -308,110 +369,6 @@ public class MemoryImplementation extends MemoryInterface {
     }
 
 
-    @Override
-    public SceneHierarchyVertex retrieve() {// TODO very minimal retrieve support, adjust and implement it better!
-        //query of classifications of a scene --> it's a graph
-        Map<SceneHierarchyVertex, Double> rec = recognize();
-        SceneHierarchyVertex out = null;
-        double bestOut = 0;
-        // if memory is empty, do not do nothing
-        if (!rec.keySet().isEmpty()) {
-            // update score of retrieved
-            for (SceneHierarchyVertex recognisedScene : rec.keySet()) {
-                double recognisedValue = rec.get(recognisedScene);
-                if (recognisedValue > bestOut) {
-                    out = recognisedScene;
-                    bestOut = recognisedValue;
-                }
-                updateScoreRetrieve(recognisedScene, recognisedValue);
-            }
-            return out; // true if at least one score is updated
-        }
-        return out;
-    }
-
-    private void updateScoreRetrieve(SceneHierarchyVertex recognisedScene, double recognisedValue) {
-        updateScorePolicy(recognisedScene, recognisedValue);
-    }
-
-    @Override
-    protected void consolidate() {
-        ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> h = getTbox().getHierarchy();
-        // TODO adjust and validate
-        // reinforce based on graph edges
-        for (SceneHierarchyVertex vertex : h.vertexSet()) {
-            if (vertex.getMemoryScore() > 0) { // not froze node
-                double edgeMin = Double.POSITIVE_INFINITY;//edgeMean = 0; int cnt = 0;
-                for (SceneHierarchyEdge edge : h.edgesOf(vertex)) {
-                    if (h.getEdgeTarget(edge).equals(vertex)) {//if the target vertex of the current edge is equal to the current vertex considered
-                        double wight = h.getEdgeWeight(edge);//Returns the weight assigned to a given edge. Unweighted graphs return 1.0
-                        if (edgeMin < wight)
-                            edgeMin = wight;
-                        //edgeMean += h.getEdgeWeight(edge); cnt++;
-                    }
-                }
-                if (edgeMin != Double.POSITIVE_INFINITY)//(edgeMean > 0 & cnt > 0)
-                    //vertex.setMemoryScore(vertex.getMemoryScore() * EXPERIENCE_STRUCTURE * edgeMean / cnt);
-                    vertex.setMemoryScore(vertex.getMemoryScore() + EXPERIENCE_STRUCTURE * edgeMin);
-            }
-        }
-
-        // find max score in the memory graph
-        double maxScore = 0;
-        for (SceneHierarchyVertex scene : h.vertexSet()) {
-            double score = scene.getMemoryScore();
-            if (score > maxScore)
-                maxScore = score;
-        }
-        if (maxScore >= 0)
-            normalizeScoreConsolidating(maxScore);
-    }
-
-
-    public void normalizeScoreConsolidating(double maxScore) {
-        ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> h = getTbox().getHierarchy();
-       // scoreScene= new ArrayList<>();
-        for (SceneHierarchyVertex experience : h.vertexSet()) {
-            if (experience.getMemoryScore() >= 0) {
-                experience.setMemoryScore(experience.getMemoryScore() / maxScore);
-            }
-
-                //Save the name and the score of the scene
-               /* timing.sceneName=experience.getScene();
-                timing.sceneScore=experience.getMemoryScore();
-                scoreScene.add(timing);*/
-        }
-    }
-
-
-    @Override
-    public Set<SceneHierarchyVertex> forget() {
-        ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> h = getTbox().getHierarchy();
-        Set<SceneHierarchyVertex> forgotten = new HashSet<>();
-        // find weak score in the memory graph
-        for (SceneHierarchyVertex scene : h.vertexSet()) {
-            if (scene.getMemoryScore() < SCORE_WEAK) {
-                //scene.setMemoryScore(-1); // score getter will be always 0 and is not consider on consolidation
-                forgotten.add(scene);
-                timing.forgetDone = true;
-            }
-        }
-
-        timing.numberOfItemsForgotten=forgotten.size();
-
-        for (SceneHierarchyVertex scene : forgotten)
-            getTbox().removeScene(scene);
-
-
-        return forgotten;
-    }
-
-    public Measure getTimings() {
-        return new Measure();
-    }
-
-
-
     private class Timing {
         long encodingTime, storingTime, retrievingTime, consolidateTime, forgetTime;
         //Number of nodes in the memory after a loop of SIT algorithm
@@ -427,8 +384,8 @@ public class MemoryImplementation extends MemoryInterface {
             return encodingTime + storingTime + retrievingTime + consolidateTime + forgetTime;
         }
 
-        public Measure getMeasure() {
-            return new Measure();
+        public MemoryImplementationVersionUpdated.Measure getMeasure() {
+            return new MemoryImplementationVersionUpdated.Measure();
         }
 
         @Override
@@ -450,7 +407,7 @@ public class MemoryImplementation extends MemoryInterface {
         long encodeAverage, storeAverage, retrieveAverage, consolidateAverage, forgetAverage, allAverage;
         long encodeVariance, storeVariance, retrieveVariance, consolidateVariance, forgetVariance, allVariance;
 
-        List<Timing> time;
+        List<MemoryImplementationVersionUpdated.Timing> time;
 
         private Measure() {
             time = timings;
@@ -460,7 +417,7 @@ public class MemoryImplementation extends MemoryInterface {
             List<Long> consolidate = new ArrayList<>();
             List<Long> forget = new ArrayList<>();
             List<Long> all = new ArrayList<>();
-            for (Timing t : timings) {
+            for (MemoryImplementationVersionUpdated.Timing t : timings) {
                 encode.add(t.encodingTime);
                 store.add(t.storingTime);
                 retrieve.add(t.retrievingTime);
@@ -525,105 +482,6 @@ public class MemoryImplementation extends MemoryInterface {
                     "forget=" + timing.convert(forgetAverage) + "±" + timing.convert(forgetVariance) + ", " +
                     "tot=" + timing.convert(allAverage) + "±" + timing.convert(allVariance) + "ms)";
         }
-    }
-
-
-
-    /*private int NumberOfElementInMemory( ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graphOfMemory ){
-        int countVertices=1;
-        //Loop on all the vertices in the graph
-        for( SceneHierarchyVertex sourceVertices : graphOfMemory.vertexSet()) {
-           // sourceVertices.getMemoryScore()
-            //Loop on all the edges touching the specified vertex
-            for (SceneHierarchyEdge edges : graphOfMemory.edgesOf(sourceVertices)) {
-                if (sourceVertices != graphOfMemory.getEdgeTarget(edges)) {
-                    countVertices++;
-                }
-            }
-        }
-                return countVertices;
-    }*/
-
-
-    //Function used to print the memory graph information in a text file
-    private void MemoryFile() {
-        ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> GraphAfterForgettingOperation = getTbox().getHierarchy();
-        time_instant++;
-        //Open the file
-        PrintWriter outpustream = null;
-        try {
-            if (!fileName.exists()) {
-                //Create the file
-                try {
-                    fileName.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            //Clear the content of the text file //TODO only for testing in the end you have to remove this line
-            //new PrintWriter(fileName).close();
-            //Now you can write on it
-            outpustream = new PrintWriter(new FileOutputStream(fileName, true));
-            //Write on the text file
-
-        } catch (FileNotFoundException e) {
-            System.err.println("Error opening the file" + "GraphInformation.txt");
-            System.exit(0);
-        }
-        outpustream.println("\n" + "/////////////////////// " + "Time Instant: " + time_instant + " /////////////////////// ");
-        //outpustream.println("\n");
-        outpustream.println("\n" + "NODES IN THE MEMORY: " + GraphAfterForgettingOperation.vertexSet());
-        //Loop on all the vertices in the graph
-        for (SceneHierarchyVertex sourceVertices : GraphAfterForgettingOperation.vertexSet()) {
-            //Loop on all the edges touching the specified vertex
-            for (SceneHierarchyEdge edges : GraphAfterForgettingOperation.edgesOf(sourceVertices)) {
-                if (sourceVertices != GraphAfterForgettingOperation.getEdgeTarget(edges)) {
-                    //SOURCE VERTEX INFORMATION
-                    outpustream.println("\n" + "---------------------------------------------------------------");
-                    //Write on the text file (PRINT CORRECTLY IN THE FILE)
-                    outpustream.println(sourceVertices.getScene() + " LINKED TO " +
-                            GraphAfterForgettingOperation.getEdgeTarget(edges).getScene() +
-                            " With FUZZY DEGREE " + GraphAfterForgettingOperation.getEdgeWeight(edges));
-                    //Source vertex Information
-                    outpustream.println(" " + sourceVertices.getScene() + " Information:");
-                    outpustream.println("   " + "N° OBJECTS: " + sourceVertices.getObjectNumber());
-                    outpustream.println("   " + "OBJECT TYPES WITH FUZZY DEGREE: " + sourceVertices.getObjectDistribution());
-                    outpustream.println("   " + "SCENE DESCRIPTION: " + sourceVertices.getDefinition());
-
-
-
-
-                    //TARGET VERTEX INFORMATION
-                    outpustream.println("\n" + " " + GraphAfterForgettingOperation.getEdgeTarget(edges).getScene() + " Information:");
-                    outpustream.println("   " + "N° OBJECTS: " + GraphAfterForgettingOperation.getEdgeTarget(edges).getObjectNumber());
-                    outpustream.println("   " + "OBJECT TYPES WITH FUZZY DEGREE: " + GraphAfterForgettingOperation.getEdgeTarget(edges).getObjectDistribution());
-                    outpustream.println("   " + "SCENE DESCRIPTION: " + GraphAfterForgettingOperation.getEdgeTarget(edges).getDefinition());
-                }/*
-
-                //Weight assigned to a given edge
-                GraphAfterForgettingOperation.getEdgeWeight(edges);
-                //TODO I have to extract also the Region relate to the scene
-
-                //Number of the objects in the scene category
-                int numberObjectsSource = sourceVertices.getObjectNumber();
-                //the object types distribution maps (Ψ)
-                Collection<Map<String, Double>>pippo=sourceVertices.getObjectDistribution();
-                sceneName + "<<" + sceneToPrint.getObjects() + ", " + sceneToPrint.getRelations() + ">>";
-                // Target vertex of an edge
-                SceneHierarchyVertex targetVertex = GraphAfterForgettingOperation.getEdgeTarget(edges);
-                //TARGET VERTEX INFORMATION
-                //Number of the objects in the scene category
-                int numberObjectsTarget = targetVertex.getObjectNumber();
-                //the object types distribution maps (Ψ)
-                Collection<Map<String, Double>>pippo2=sourceVertices.getObjectDistribution();
-                sceneName + "<<" + sceneToPrint.getObjects() + ", " + sceneToPrint.getRelations() + ">>";
-                //TODO extract the information about the relations and objects of the source vertex and target vertex
-*/
-            }
-
-        }
-        //Close the file
-        outpustream.close();
     }
 
     public void convertToCSV(long id, LocalTime timeStamp) {
@@ -748,7 +606,7 @@ public class MemoryImplementation extends MemoryInterface {
                 outpustreamCSVForgetting.close();
             }
         }
-            //i++;
+        //i++;
         //time_instant++;
     }
 
@@ -842,7 +700,7 @@ public class MemoryImplementation extends MemoryInterface {
             outpustreamScoreItemsForgotten.close();
         }
         if (timing.forgetDone==true){
-            for (Timing forgottenItem: scoreForgottenScene ){
+            for (MemoryImplementationVersionUpdated.Timing forgottenItem: scoreForgottenScene ){
                 outpustreamScoreItemsForgotten.println(id + "," + timeStamp + "," + forgottenItem.sceneName + "," + forgottenItem.sceneScore  + "," + SCORE_WEAK + "," + typeFunction);
                 outpustreamScoreItemsForgotten.close();
             }
@@ -886,5 +744,18 @@ public class MemoryImplementation extends MemoryInterface {
     }
 
 
-}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
