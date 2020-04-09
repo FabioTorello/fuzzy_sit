@@ -47,7 +47,7 @@
 //IN ORIGINE THR ERA 0.04
 # define THR 0.04
 # define NAMERELATION "isConnectedTo"
-# define CONNECTED_THRESHOLD  0.1 // meters (positive number) IN ORIGINE ERA 0.1
+# define CONNECTED_THRESHOLD 0.1 // meters (positive number) IN ORIGINE ERA 0.1
 # define NUMBER_OBJECTS 10
 
 using namespace ros;

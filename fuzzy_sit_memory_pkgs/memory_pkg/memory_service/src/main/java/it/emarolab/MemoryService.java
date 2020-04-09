@@ -84,13 +84,13 @@ public class MemoryService extends AbstractNodeMain {
 
 
        // MemoryImplementation memory = new MemoryImplementation("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/src/main/resources/fuzzyDL_CONFIG" );
-       // MemoryImplementationVersionUpdated memory = new MemoryImplementationVersionUpdated("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/src/main/resources/fuzzyDL_CONFIG" );
+        MemoryImplementationVersionUpdated memory = new MemoryImplementationVersionUpdated("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/src/main/resources/fuzzyDL_CONFIG" );
 
 
 
         //Create an object representing the memory
         //MemoryImplementation memory = new MemoryImplementation("memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
-        MemoryImplementationVersionUpdated memory = new MemoryImplementationVersionUpdated("memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
+        //MemoryImplementationVersionUpdated memory = new MemoryImplementationVersionUpdated("memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
 
         //Callback for TestServiceDirective.srv calls
         //newServiceServer(GraphName serviceName, java.lang.String serviceType, ServiceResponseBuilder<T,S> serviceResponseBuilder)

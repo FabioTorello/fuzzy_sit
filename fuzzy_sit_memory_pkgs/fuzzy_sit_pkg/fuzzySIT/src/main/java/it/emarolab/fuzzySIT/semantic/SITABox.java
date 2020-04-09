@@ -9,6 +9,11 @@ import it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
 import it.emarolab.fuzzySIT.monteCarlo.SceneParticle;
 import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
 
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.*;
 
 /**
@@ -280,10 +285,34 @@ public class SITABox
         double actualCardinality = getDefinition().getCardinality();
         double memoryCardinality = recognisedScene.getDefinition().getCardinality();
         double out = memoryCardinality / actualCardinality;
-        if ( out > 1)
-            System.err.println("WARNING: similarity value " + out + " for: " + getDefinition() +"="+ actualCardinality + ", and " + recognisedScene.getDefinition() +"=" + memoryCardinality);
+
+
+        if ( out > 1) {
+            System.err.println("WARNING: similarity value " + out + " for: " + getDefinition() + "=" + actualCardinality + ", and " + recognisedScene.getDefinition() + "=" + memoryCardinality);
+            /*PrintStream console = System.err;
+            File file = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/FileConsoleOut.txt");
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(file);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            PrintStream ps = new PrintStream(fos);
+            System.setErr(ps);
+
+            System.err.println("WARNING: similarity value " + out + " for: " + getDefinition() + "=" + actualCardinality + ", and " + recognisedScene.getDefinition() + "=" + memoryCardinality);
+            try {
+                throw new Exception("Exception goes to FileConsoleOut.txt too");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            System.setErr(console);*/
+        }
         return  out;
     }
+
     public double getMaxSimilarity(){
         double max = 0;
         for ( SceneHierarchyVertex recognized : recognitions.keySet()) {

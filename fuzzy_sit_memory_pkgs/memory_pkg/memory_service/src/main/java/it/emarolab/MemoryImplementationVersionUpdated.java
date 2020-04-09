@@ -9,6 +9,9 @@ import it.emarolab.fuzzySIT.memoryLike.MemoryInterface;
 //import javafx.util.Pair;
 import org.jgrapht.ListenableGraph;
 import it.emarolab.fuzzySIT.semantic.SITABox;
+//import java.io.File;
+//import java.io.IOException;
+//import java.io.PrintStream;
 
 import java.io.*;
 import java.time.LocalTime;
@@ -37,7 +40,7 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
     private static final double SCORE_WEAK = .1; // threshold under which it forgets [0,1]
     private static final double LEARNED_SCORE = .5; // initial score, percentage of max score [0,1]
 
-    private static final double ENCODE_REINFORCE = 2;//original was 10 10; // reinforce factor for re-stored or re-retrieved experience [1,inf)
+    private static final double ENCODE_REINFORCE = 1.5;//original was 10 10; // reinforce factor for re-stored or re-retrieved experience [1,inf)
 
     private static int sceneCnt = 0;
 
@@ -52,6 +55,9 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
     /////////////////////////////////////////////////////////////////////////
     ////////////////////For Command line execution///////////////////////////
     //File containing the graph information
+
+    private File fileConsoleOut= new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/FileConsoleOut.txt");
+
     private File fileName = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/GraphInformation.txt");
     //CSV file for encoding time
     private File fileCSVEncoding = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/EncodingTime_MemoryItems.csv");
@@ -71,6 +77,12 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
     private File fileScoreItemsForgottenConsolidatingFunction = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/Score_ItemsForgotten_ConsolidatingFunction_One.csv");
     //CSV file for the table to save the forgotten scenes with a type of consolidating function
     private File fileSceneScoreVariation = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/Score_Variation_ConsolidatingFunction_One.csv");
+
+
+
+     //   PrintStream stream = new PrintStream(fileConsoleOut);
+      //  System.setOut(stream);
+
 
     /////////////////////////////////////////////////////////////////////////
     /*//File containing the graph information
@@ -206,14 +218,28 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
 
     @Override
     public Set<SceneHierarchyVertex> forget(){
+
         ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> h = getTbox().getHierarchy();
+
         Set<SceneHierarchyVertex> forgotten = new HashSet<>();
+
+        scoreForgottenScene= new ArrayList<>();
+
+        /*for (SceneHierarchyVertex itemForgotten : forgotten) {
+            timing.sceneName = itemForgotten.getScene();
+            timing.sceneScore = itemForgotten.getMemoryScore();
+            scoreForgottenScene.add(timing);
+        }*/
         // find weak score in the memory graph
         for( SceneHierarchyVertex scene : h.vertexSet()){
             if( scene.getMemoryScore() < SCORE_WEAK) {
+                timing.sceneName = scene.getScene();
+                timing.sceneScore = scene.getMemoryScore();
                 scene.setMemoryScore(-1); // score getter will be always 0 and is not consider on consolidation
                 forgotten.add( scene);
+                scoreForgottenScene.add(timing);
                 timing.forgetDone = true;
+
             }
         }
 
@@ -233,6 +259,26 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
         timing.learnDone = false;
         timing.forgetDone = false;
 
+        PrintWriter outpustreamConsoleOut = null;
+
+        try {
+            //CREATES THE CSV FILES IF THEY DO NOT EXIST
+            if (!fileConsoleOut.exists()) {
+                //Create the file
+                try {
+                    fileConsoleOut.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            outpustreamConsoleOut = new PrintWriter(new FileOutputStream(fileConsoleOut, true));
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+
+
         //element = new ElementsOfMemory();
 
         // must always be done before to store or retrieve
@@ -242,6 +288,7 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
 
         //element.encodingElements=NumberOfElementInMemory(graphOfMemory);
         System.out.println("[ ENCODE ]\texperience: " + scene);
+        outpustreamConsoleOut.println("[ ENCODE ]\texperience: " + scene);
         // set store or retrieve cases
 
         String logs;
@@ -261,6 +308,7 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
             //If the returned graph is not empty (thus there is only the root node)
             if (learnedOrRetrievedScene != null) {
                 System.out.println("[  LEARN ]\texperience: " + learnedOrRetrievedScene);
+                outpustreamConsoleOut.println("[  LEARN ]\texperience: " + learnedOrRetrievedScene);
                 timing.learnDone = true;
             }
         } else {
@@ -271,28 +319,34 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
             //element.retrievingElements=NumberOfElementInMemory(graphOfMemory);
             logs = "retrieving";
             System.out.println("[RETRIEVE]\texperience: " + learnedOrRetrievedScene);
+            outpustreamConsoleOut.println("[RETRIEVE]\texperience: " + learnedOrRetrievedScene);
         }
         // synchronous consolidation and forgetting
         if (learnedOrRetrievedScene != null & synchConsolidateForget) {
-            consolidateAndForget(scene, logs);
+            consolidateAndForget(scene, logs, outpustreamConsoleOut);
         }
         System.out.println("[ RECOGN.]\texperience: " + recognize());
+        outpustreamConsoleOut.println("[ RECOGN.]\texperience: " + recognize());
 
         //CHECKS THE MEMORY IN ORDER TO FIND THE NUMBER OF ELEMENTS CONTAINED
         timing.elements = getTbox().getHierarchy().vertexSet().size();
 
 
         System.out.println("    Total time spent " + timing.tot());
+        outpustreamConsoleOut.println("    Total time spent " + timing.tot());
         System.out.println("    Elements in memory " + timing.elements);
+        outpustreamConsoleOut.println("    Elements in memory " + timing.elements);
         System.out.println("    Memory has learnt in this loop: " + timing.learnDone);
+        outpustreamConsoleOut.println("    Memory has learnt in this loop: " + timing.learnDone);
         System.out.println("    Memory has forgot something in this loop: " + timing.forgetDone);
+        outpustreamConsoleOut.println("    Memory has forgot something in this loop: " + timing.forgetDone);
         //timings.add(timing);
 
 
         //elements.add( element);
         System.out.println("----------------------------------------------");
-
-
+        outpustreamConsoleOut.println("----------------------------------------------");
+        outpustreamConsoleOut.close();
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //CODE FOR THE LOG FILES
 
@@ -308,17 +362,17 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
         // the type of the consolidating function
         // TODO when you change the consolidating fucntion remember to change the string which represents
         //  the name of the file at the beginning of this page
-        consolidatingTimeWithDifferentConsolidating(id, timeStamp, "Consolidating Function 1");
+        consolidatingTimeWithDifferentConsolidating(id, timeStamp, "ConsolidatingFunction1");
 
         // TODO when you change the consolidating fucntion remember to change the string which represents
         //  the name of the file at the beginning of this page
-        itemsForgottenWithDifferentConsolidating(id,timeStamp,"Consolidating Function 1");
+        itemsForgottenWithDifferentConsolidating(id,timeStamp,"ConsolidatingFunction1");
 
         // TODO when you change the consolidating fucntion remember to change the string which represents
         //  the name of the file at the beginning of this page
-        sceneForgottenFunctionWithDifferentConsolidating(id,timeStamp,"Consolidating Function 1");
+        sceneForgottenFunctionWithDifferentConsolidating(id,timeStamp,"ConsolidatingFunction1");
 
-        sceneScoreVariationFunction(id,timeStamp,"Consolidating Function 1");
+        sceneScoreVariationFunction(id,timeStamp,"ConsolidatingFunction1");
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     }
@@ -330,10 +384,10 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
     }
 
     public void consolidateAndForget(PerceptionBase scene) {
-        consolidateAndForget(scene, "external call");
+        consolidateAndForget(scene, "external call", null);
     }
 
-    private void consolidateAndForget(PerceptionBase scene, String logs) {
+    private void consolidateAndForget(PerceptionBase scene, String logs, PrintWriter outpustreamConsoleOut) {
         long initialTime = System.nanoTime();
         consolidate();
         timing.consolidateTime = System.nanoTime() - initialTime;
@@ -341,6 +395,7 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
         //graphOfMemory = getTbox().getHierarchy();
         //element.consolidateElements=NumberOfElementInMemory(graphOfMemory);
         System.out.println("[ CONSOL.]\tnew experience from " + logs + " " + scene + " -> ");
+        outpustreamConsoleOut.println("[ CONSOL.]\tnew experience from " + logs + " " + scene + " -> ");
 
         initialTime = System.nanoTime();
         Set<SceneHierarchyVertex> forgotten = forget();
@@ -350,19 +405,20 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
 
         timing.forgetTime = System.nanoTime() - initialTime;
 
-        scoreForgottenScene= new ArrayList<>();
+       /* scoreForgottenScene= new ArrayList<>();
 
         for (SceneHierarchyVertex itemForgotten : forgotten) {
             timing.sceneName = itemForgotten.getScene();
             timing.sceneScore = itemForgotten.getMemoryScore();
             scoreForgottenScene.add(timing);
-        }
+        }*/
         //CHECKS THE MEMORY IN ORDER TO FIND THE NUMBER OF ELEMENTS CONTAINED
         //graphOfMemory = getTbox().getHierarchy();
         //element.forgetElements=NumberOfElementInMemory(graphOfMemory);
 
 
         System.out.println("[ FORGET ]\tfreeze nodes: " + forgotten);
+        outpustreamConsoleOut.println("[ FORGET ]\tfreeze nodes: " + forgotten);
 
         //Print the information about the graph in a text file
         //MemoryFile();
@@ -663,7 +719,7 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
             System.out.println(e.getMessage());
         }
         if (id==1) {
-            outpustreamItemsForgotten.println("ID" + "," + "Time Stamp" + "," + "Items Forgotten"  + "," + "Consolidating Function");
+            outpustreamItemsForgotten.println("ID" + "," + "Time Stamp" + "," + "Items_Forgotten"  + "," + "Consolidating_Function");
             outpustreamItemsForgotten.println(id + "," + timeStamp + "," + timing.numberOfItemsForgotten + "," + typeFunction);
             outpustreamItemsForgotten.close();
         }
@@ -696,14 +752,14 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
             System.out.println(e.getMessage());
         }
         if (id==1) {
-            outpustreamScoreItemsForgotten.println("ID" + "," + "Time Stamp" + "," + "Scene Name" + "," + "Score"  + "," + "Score Weak Th." + "," + "Consolidating Function");
+            outpustreamScoreItemsForgotten.println("ID" + "," + "Time Stamp" + "," + "Scene_Name" + "," + "Score"  + "," + "Score_Weak_Th" + "," + "Consolidating_Function");
             outpustreamScoreItemsForgotten.close();
         }
         if (timing.forgetDone==true){
             for (MemoryImplementationVersionUpdated.Timing forgottenItem: scoreForgottenScene ){
                 outpustreamScoreItemsForgotten.println(id + "," + timeStamp + "," + forgottenItem.sceneName + "," + forgottenItem.sceneScore  + "," + SCORE_WEAK + "," + typeFunction);
-                outpustreamScoreItemsForgotten.close();
             }
+            outpustreamScoreItemsForgotten.close();
         }
     }
 
@@ -734,7 +790,7 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
         //System.out.println("NUMBER VERTEX: " + memoryGraph.vertexSet().size());
         for (SceneHierarchyVertex  graphOfMemory: memoryGraph.vertexSet() ){
             if (id==1) {
-                outpustreamScoreVariation.println("ID" + "," +  "Time Stamp" + "," + "Scene Name" + "," + "Score"  + "," + "Consolidating Function");
+                outpustreamScoreVariation.println("ID" + "," +  "Time Stamp" + "," + "Scene Name" + "," + "Score"  + "," + "Consolidating_Function");
 
             }
             outpustreamScoreVariation.println(id + "," + timeStamp + "," +  graphOfMemory.getScene()  + "," + graphOfMemory.getMemoryScore() + "," + typeFunction);
