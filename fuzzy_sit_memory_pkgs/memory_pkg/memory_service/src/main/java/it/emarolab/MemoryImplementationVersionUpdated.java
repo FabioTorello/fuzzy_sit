@@ -21,10 +21,10 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
 
 
     //Define variables to take into account the time consumption
-    private List<MemoryImplementationVersionUpdated.Timing> timings = new ArrayList<>();
-    private MemoryImplementationVersionUpdated.Timing timing;
+    private List<Timing> timings = new ArrayList<>();
+    private Timing timing;
 
-    List<MemoryImplementationVersionUpdated.Timing> scoreForgottenScene;
+    List<Timing> scoreForgottenScene;
 
 
     private static String SCENE_PREFIX = "Scene";
@@ -233,12 +233,20 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
         // find weak score in the memory graph
         for( SceneHierarchyVertex scene : h.vertexSet()){
             if( scene.getMemoryScore() < SCORE_WEAK) {
-                timing.sceneName = scene.getScene();
-                timing.sceneScore = scene.getMemoryScore();
+
+                //For .csv file/////////
+                Timing  timing_forget = new Timing();
+                timing_forget.sceneName = scene.getScene();
+                timing_forget.sceneScore = scene.getMemoryScore();
+                ///////////////////////////////
+
                 scene.setMemoryScore(-1); // score getter will be always 0 and is not consider on consolidation
                 forgotten.add( scene);
-                scoreForgottenScene.add(timing);
+
+                //For .csv file/////////
+                scoreForgottenScene.add(timing_forget);
                 timing.forgetDone = true;
+                //////////////////////////
 
             }
         }
@@ -255,7 +263,8 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
     public void experience(PerceptionBase scene, boolean storeOrRetrieve, boolean synchConsolidateForget) { // true: from store, false: from retrieve
 
 
-        timing = new MemoryImplementationVersionUpdated.Timing();
+        timing = new Timing();
+
         timing.learnDone = false;
         timing.forgetDone = false;
 
@@ -415,8 +424,7 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
         //CHECKS THE MEMORY IN ORDER TO FIND THE NUMBER OF ELEMENTS CONTAINED
         //graphOfMemory = getTbox().getHierarchy();
         //element.forgetElements=NumberOfElementInMemory(graphOfMemory);
-
-
+        
         System.out.println("[ FORGET ]\tfreeze nodes: " + forgotten);
         outpustreamConsoleOut.println("[ FORGET ]\tfreeze nodes: " + forgotten);
 
