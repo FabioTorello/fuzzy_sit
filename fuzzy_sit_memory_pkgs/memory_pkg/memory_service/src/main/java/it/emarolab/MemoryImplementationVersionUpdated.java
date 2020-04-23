@@ -424,7 +424,7 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
         //CHECKS THE MEMORY IN ORDER TO FIND THE NUMBER OF ELEMENTS CONTAINED
         //graphOfMemory = getTbox().getHierarchy();
         //element.forgetElements=NumberOfElementInMemory(graphOfMemory);
-
+        
         System.out.println("[ FORGET ]\tfreeze nodes: " + forgotten);
         outpustreamConsoleOut.println("[ FORGET ]\tfreeze nodes: " + forgotten);
 
@@ -617,8 +617,8 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
             outpustreamCSVEncoding.close();
 
             //Write in CSV Storing File
-            outpustreamCSVStoring.println("ID" + "," + "Time Stamp" + "," + "Storing Time" + "," + "Memory Items" + "," + "Item_Learnt" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
-            outpustreamCSVStoring.println(id + "," + timeStamp + "," + timing.convert(timing.storingTime) + "," + timing.elements + "," + timing.sceneName + "," + timing.learnDone + "," + timing.forgetDone);
+            outpustreamCSVStoring.println("ID" + "," + "Time Stamp" + "," + "Storing Time" + "," + "Memory Items" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
+            outpustreamCSVStoring.println(id + "," + timeStamp + "," + timing.convert(timing.storingTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
             //Close CSV Storing File
             outpustreamCSVStoring.close();
 
@@ -650,7 +650,7 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
                 outpustreamCSVEncoding.close();
             } else if (i == 1) {
                 //Write in CSV Storing File
-                outpustreamCSVStoring.println(id + "," + timeStamp + "," + timing.convert(timing.storingTime) + "," + timing.elements + "," + timing.sceneName + "," + timing.learnDone + "," + timing.forgetDone);
+                outpustreamCSVStoring.println(id + "," + timeStamp + "," + timing.convert(timing.storingTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
                 //Close CSV Storing File
                 outpustreamCSVStoring.close();
             } else if (i == 2) {
