@@ -136,8 +136,7 @@ void init_SIT_message(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr 
 	
 	}
 
-	//a->scene_name=file_name+"_"+boost::lexical_cast<string>(frameInstant);
-	a->scene_name="32."+file_name+"_"+boost::lexical_cast<string>(frameInstant);
+	a->scene_name=file_name+"_"+boost::lexical_cast<string>(frameInstant);
 	a->frame=frameInstant;
 
 }
@@ -830,10 +829,8 @@ int main(int argc, char **argv)
 		if (inputImage){
 		string frame = boost::lexical_cast<string>(frameInstant);
 	
-		//string name_image= subdirname +"/" + file_name + "_" + frame + ".png";
-
-		string name_image= subdirname +"/" + "32." + file_name + "_" + frame + ".png";
-
+		string name_image= subdirname +"/" + file_name + "_" + frame + ".png";
+	
 		imwrite(name_image, inputImage->image);
 		inputImage.reset();
 		}
