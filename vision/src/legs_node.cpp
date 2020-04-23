@@ -136,7 +136,8 @@ void init_SIT_message(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr 
 	
 	}
 
-	a->scene_name=file_name+"_"+boost::lexical_cast<string>(frameInstant);
+	//a->scene_name=file_name+"_"+boost::lexical_cast<string>(frameInstant);
+	a->scene_name="31."+file_name+"_"+boost::lexical_cast<string>(frameInstant);
 	a->frame=frameInstant;
 
 }
@@ -186,7 +187,8 @@ void computeAllRelations(vector<object> &objectVector){
 					/*cout<<"RELATION DEGREE: " << relationDegree<<"\n";
 					cout<<"\n";*/
 
-					if (relationDegree!=0){
+					//if (relationDegree!=0){
+					  if (relationDegree!=0 && relationDegree>=0.01){
 						relationStruct.degreeRelation=relationDegree;
 						//Subject is a leg
 						relationStruct.gamma_subject=objectVector[i].name;
@@ -213,7 +215,8 @@ void computeAllRelations(vector<object> &objectVector){
 					/*cout<<"RELATION DEGREE: " << relationDegree<<"\n";
 					cout<<"\n";*/
 
-					if (relationDegree!=0){
+					//if (relationDegree!=0){
+					  if (relationDegree!=0 && relationDegree>=0.01){
 						relationStruct.degreeRelation=relationDegree;
 						//Subject is a leg
 						relationStruct.gamma_subject=objectVector[i].name;
@@ -240,7 +243,8 @@ void computeAllRelations(vector<object> &objectVector){
 					/*cout<<"RELATION DEGREE: " << relationDegree<<"\n";
 					cout<<"\n";*/
 
-				        if (relationDegree!=0){
+				        //if (relationDegree!=0){
+					  if (relationDegree!=0 && relationDegree>=0.01){
 						relationStruct.degreeRelation=relationDegree;
 						//Subject is a pin
 						relationStruct.gamma_subject=objectVector[i].name;
@@ -266,7 +270,8 @@ void computeAllRelations(vector<object> &objectVector){
 					/*cout<<"RELATION DEGREE: " << relationDegree<<"\n";
 					cout<<"\n";*/
 
-					if (relationDegree!=0){
+					//if (relationDegree!=0){
+					  if (relationDegree!=0 && relationDegree>=0.01){
 						relationStruct.degreeRelation=relationDegree;
 						//Subject is a leg
 						relationStruct.gamma_subject=objectVector[i].name;
@@ -829,8 +834,10 @@ int main(int argc, char **argv)
 		if (inputImage){
 		string frame = boost::lexical_cast<string>(frameInstant);
 	
-		string name_image= subdirname +"/" + file_name + "_" + frame + ".png";
-	
+		//string name_image= subdirname +"/" + file_name + "_" + frame + ".png";
+
+		string name_image= subdirname +"/" + "31." + file_name + "_" + frame + ".png";
+
 		imwrite(name_image, inputImage->image);
 		inputImage.reset();
 		}
