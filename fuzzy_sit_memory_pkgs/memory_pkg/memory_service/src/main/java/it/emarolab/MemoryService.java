@@ -73,6 +73,7 @@ public class MemoryService extends AbstractNodeMain {
         ParameterTree params = connectedNode.getParameterTree();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
        // MemoryImplementation memory = new MemoryImplementation("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/src/main/resources/fuzzyDL_CONFIG" );
         MemoryImplementationVersionUpdated memory = new MemoryImplementationVersionUpdated("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/src/main/resources/fuzzyDL_CONFIG" );
@@ -82,6 +83,12 @@ public class MemoryService extends AbstractNodeMain {
         //Create an object representing the memory
         //MemoryImplementation memory = new MemoryImplementation("memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
         //MemoryImplementationVersionUpdated memory = new MemoryImplementationVersionUpdated("memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
+=======
+        //Create an object representing the memory
+       // MemoryImplementation memoryCreation = new MemoryImplementation("memory_service/src/main/resources/table_assembling_memory_example.fuzzydl");
+        MemoryImplementation memory = new MemoryImplementation("memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
+
+>>>>>>> parent of e5c9947... New Version for memoryImplementation (much more faster)
 =======
         //Create an object representing the memory
        // MemoryImplementation memoryCreation = new MemoryImplementation("memory_service/src/main/resources/table_assembling_memory_example.fuzzydl");
@@ -129,9 +136,15 @@ public class MemoryService extends AbstractNodeMain {
                             if(request.getTestRequest().getFrame()!=-1) {
                                 response.getTestResponse().setResponse("The scene has been loaded");
                             }
+<<<<<<< HEAD
 
 
 
+=======
+
+
+
+>>>>>>> parent of e5c9947... New Version for memoryImplementation (much more faster)
                         });
 
     }
