@@ -277,6 +277,7 @@ public class SITABox
     public Set<SpatialRelation> getObservedRelations() {
         return objservedRelations;
     }
+<<<<<<< HEAD
 
 
 /////Functions updating the past ABOX CLASS
@@ -322,4 +323,6 @@ public class SITABox
         }
         return max;
     }
+=======
+>>>>>>> parent of e5c9947... New Version for memoryImplementation (much more faster)
 }

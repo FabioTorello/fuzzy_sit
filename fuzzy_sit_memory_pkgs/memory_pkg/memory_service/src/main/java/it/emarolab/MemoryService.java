@@ -3,36 +3,26 @@ package it.emarolab;
 //import it.emarolab.amor.owlDebugger.OFGUI.GuiRunner;
 import fuzzy_sit_memory_msgs.*;
 import com.google.common.collect.Lists;
-//import it.emarolab.fuzzySIT.FuzzySITBase;
-//import it.emarolab.fuzzySIT.perception.FeaturedSpatialObject;
-//import it.emarolab.fuzzySIT.perception.PerceptionBase;
+import it.emarolab.fuzzySIT.FuzzySITBase;
+import it.emarolab.fuzzySIT.perception.FeaturedSpatialObject;
+import it.emarolab.fuzzySIT.perception.PerceptionBase;
 import it.emarolab.fuzzySIT.perception.simple2D.*;
 import it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
 import org.ros.internal.loader.CommandLineLoader;
-//import org.ros.message.MessageFactory;
+import org.ros.message.MessageFactory;
 import org.ros.namespace.GraphName;
 import org.ros.node.*;
 import org.ros.node.parameter.ParameterTree;
-//import org.ros.node.service.ServiceResponseBuilder;
+import org.ros.node.service.ServiceResponseBuilder;
 import org.ros.node.service.ServiceServer;
-
-
-
-
-//import java.util.ArrayList;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-//import it.emarolab.fuzzySIT.semantic.SITTBox;
-//import java.util.Scanner;
+import it.emarolab.fuzzySIT.semantic.SITTBox;
+import java.util.Scanner;
 
-//import it.emarolab.fuzzySIT.semantic.axioms.SpatialObject;
-//import java.lang.Object;
-//import java.util.Arrays;
-//import java.util.stream.Collectors;
-
+import it.emarolab.fuzzySIT.semantic.axioms.SpatialObject;
+import java.lang.Object;
+import java.util.Arrays;
 import it.emarolab.fuzzySIT.perception.simple2D.Table;
 import it.emarolab.fuzzySIT.perception.simple2D.BED_MINUS_X;
 import it.emarolab.fuzzySIT.perception.simple2D.BED_MINUS_Y;
@@ -82,6 +72,7 @@ public class MemoryService extends AbstractNodeMain {
         //rosjava offers full access to the ROS Parameter Server. The Parameter Server is a shared dictionary of configuration parameters 		  accessible to all the nodes at runtime. It is meant to store configuration parameters that are easy to inspect and modify.Parameters 		  are accessible via ParameterTrees
         ParameterTree params = connectedNode.getParameterTree();
 
+<<<<<<< HEAD
 
        // MemoryImplementation memory = new MemoryImplementation("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/src/main/resources/fuzzyDL_CONFIG" );
         MemoryImplementationVersionUpdated memory = new MemoryImplementationVersionUpdated("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/src/main/resources/fuzzyDL_CONFIG" );
@@ -91,6 +82,12 @@ public class MemoryService extends AbstractNodeMain {
         //Create an object representing the memory
         //MemoryImplementation memory = new MemoryImplementation("memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
         //MemoryImplementationVersionUpdated memory = new MemoryImplementationVersionUpdated("memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
+=======
+        //Create an object representing the memory
+       // MemoryImplementation memoryCreation = new MemoryImplementation("memory_service/src/main/resources/table_assembling_memory_example.fuzzydl");
+        MemoryImplementation memory = new MemoryImplementation("memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
+
+>>>>>>> parent of e5c9947... New Version for memoryImplementation (much more faster)
 
         //Callback for TestServiceDirective.srv calls
         //newServiceServer(GraphName serviceName, java.lang.String serviceType, ServiceResponseBuilder<T,S> serviceResponseBuilder)
@@ -113,41 +110,27 @@ public class MemoryService extends AbstractNodeMain {
                                 System.out.print(relation.getNameRelation() + "\n");
                                 System.out.print(relation.getDegreeRelation() + "\n");
                                 System.out.print("\n");
-                            }*/
-                            System.out.print(request.getTestRequest().getFrame() + "\n");
+                            }
+                            System.out.print(request.getTestRequest().getFrame() + "\n");*/
                             if ((!request.getTestRequest().getItems().isEmpty())&&(!request.getTestRequest().getRelations().isEmpty())&&request.getTestRequest().getFrame()!=-1) {
                                 memory.experience(scene(request.getTestRequest().getItems(), request.getTestRequest().getRelations(), request.getTestRequest().getSceneName()), true, true);
-
-
                             }
-
-                            if (request.getTestRequest().getFrame()==-1) {
-
-                                memory.getTbox().show();
-                                response.getTestResponse().setResponse("Ready");
-                            }
-
-                            if(request.getTestRequest().getFrame()!=-1) {
-                                response.getTestResponse().setResponse("The scene has been loaded");
-                            }
-                            /*if ((!request.getTestRequest().getItems().isEmpty())&&(!request.getTestRequest().getRelations().isEmpty())&&request.getTestRequest().getFrame()<51) {
-                                memory.experience(scene(request.getTestRequest().getItems(), request.getTestRequest().getRelations(), request.getTestRequest().getSceneName()), true, true);
-                            }*/
-
-
-
-
                             //Show the experience graph
 
                             //THE SCENE GRAPH SHOULD BE VISUALIZE ONLY IN THE END OF THE BAGFILE
                             // (THIS IS ONLY A TEMPTATIVE)
 
+                            if (request.getTestRequest().getFrame()==-1) {
 
-
-                            /*if(request.getTestRequest().getFrame()==51 || request.getTestRequest().getFrame()==50) {
-                                //response.getTestResponse().setResponse("The scene has been loaded");
                                 memory.getTbox().show();
-                            }*/
+                               response.getTestResponse().setResponse("Ready");
+                            }
+
+                            if(request.getTestRequest().getFrame()!=-1) {
+                                response.getTestResponse().setResponse("The scene has been loaded");
+                            }
+
+
 
                         });
 
