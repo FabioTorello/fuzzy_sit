@@ -48,7 +48,31 @@ public class MemoryImplementation extends MemoryInterface {
     private static int sceneCnt = 0;
 
     private static long id = 0;
+    /////////////////////////////////////////////////////////////////////////
+    ////////////////////For Command line execution///////////////////////////
     //File containing the graph information
+    private File fileName = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/GraphInformation.txt");
+    //CSV file for encoding time
+    private File fileCSVEncoding = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/EncodingTime_MemoryItems.csv");
+    //CSV file for storing time
+    private File fileCSVStoring = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/StoringTime_MemoryItems.csv");
+    //CSV file for retrieving time
+    private File fileCSVRetrieving = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/RetrievingTime_MemoryItems.csv");
+    //CSV file for consolidating time
+    private File fileCSVConsolidating = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/ConsolidatingTime_MemoryItems.csv");
+    //CSV file for forgetting time
+    private File fileCSVForgetting = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/ForgettingTime_MemoryItems.csv");
+    //CSV file for the table to save the variation of the consolidating time respect to the type of consolidating function
+    private File fileTimeToConsolidatingFunction = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/ConsolidatingTime_MemoryItems_Function_One.csv");
+    //CSV file for the table to save the variation of the number of memory items forgotten with a type of consolidating function
+    private File fileItemsForgottenConsolidatingFunction = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/ItemsForgotten_ConsolidatingFunction_One.csv");
+    //CSV file for the table to save the forgotten scenes with a type of consolidating function
+    private File fileScoreItemsForgottenConsolidatingFunction = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/Score_ItemsForgotten_ConsolidatingFunction_One.csv");
+    //CSV file for the table to save the forgotten scenes with a type of consolidating function
+    private File fileSceneScoreVariation = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/Score_Variation_ConsolidatingFunction_One.csv");
+
+    /////////////////////////////////////////////////////////////////////////
+    /*//File containing the graph information
     private File fileName = new File("memory_service/Logfiles/GraphInformation.txt");
     //CSV file for encoding time
     private File fileCSVEncoding = new File("memory_service/Logfiles/EncodingTime_MemoryItems.csv");
@@ -67,7 +91,7 @@ public class MemoryImplementation extends MemoryInterface {
     //CSV file for the table to save the forgotten scenes with a type of consolidating function
     private File fileScoreItemsForgottenConsolidatingFunction = new File("memory_service/Logfiles/Score_ItemsForgotten_ConsolidatingFunction_One.csv");
     //CSV file for the table to save the forgotten scenes with a type of consolidating function
-    private File fileSceneScoreVariation = new File("memory_service/Logfiles/Score_Variation_ConsolidatingFunction_One.csv");
+    private File fileSceneScoreVariation = new File("memory_service/Logfiles/Score_Variation_ConsolidatingFunction_One.csv");*/
 
     //Time instant
     private static long time_instant = 0;

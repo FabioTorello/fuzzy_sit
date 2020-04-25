@@ -18,6 +18,8 @@ import org.jgrapht.ListenableGraph;
 import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.ListenableDirectedWeightedGraph;
 
+//import javafx.util.Pair;
+
 import javax.swing.*;
 import java.io.*;
 import java.nio.file.Files;
@@ -735,7 +737,7 @@ public class SITTBox
             frame.pack();
             frame.setLocationByPlatform(true);
             frame.setVisible(true);
-
+            //frame.setVisible(false);
             /////////////////////////
             saveGraph( graphAdapter);
             ////////////////////////////
@@ -774,4 +776,34 @@ public class SITTBox
         FuzzydlToOwl2 f = new FuzzydlToOwl2( fuzzydlPath, owlPath);
         f.run();
     }
+
+    ////Functions updating SITTBOX
+    /*public Set< Pair< SceneHierarchyVertex,SceneHierarchyVertex>> simplify(double minImplicationDegree) { // remove equivalent nodes (i.e., with double high implication)
+        Set< Pair< SceneHierarchyVertex, SceneHierarchyVertex>> toRemove = new HashSet<>();
+        for ( SceneHierarchyVertex vertex1 : hierarchy.vertexSet()) {
+            if (!toRemove.contains(vertex1)){
+                for (SceneHierarchyVertex vertex2 : hierarchy.vertexSet()) {
+                    if (!toRemove.contains(vertex2) & !vertex1.equals(vertex2)) {
+                        SceneHierarchyEdge edge1 = hierarchy.getEdge(vertex1, vertex2);
+                        SceneHierarchyEdge edge2 = hierarchy.getEdge(vertex2, vertex1);
+                        if ( edge1 != null & edge2 != null) {
+                            double w1 = getHierarchy().getEdgeWeight(edge1);
+                            double w2 = getHierarchy().getEdgeWeight(edge2);
+                            if (w1 >= minImplicationDegree & w2 >= minImplicationDegree) { // todo make it constant
+                                Pair<SceneHierarchyVertex, SceneHierarchyVertex> outPair;
+                                if ( vertex1.getMemoryScore() > vertex2.getMemoryScore())
+                                    outPair = new Pair<>( vertex2, vertex1);
+                                else outPair = new Pair<>( vertex1, vertex2);
+                                toRemove.add( outPair);
+                                log( System.currentTimeMillis(), "simplify [remote,equivalent]:" + outPair );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        for ( Pair< SceneHierarchyVertex, SceneHierarchyVertex> r: toRemove)
+            removeScene( r.getKey());
+        return toRemove; // return list of classes (removed, equivalent)
+    }*/
 }
