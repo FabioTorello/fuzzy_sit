@@ -136,8 +136,8 @@ void init_SIT_message(vision::SceneToSIT::Ptr a, vision::Configuration_SIT::Ptr 
 	
 	}
 
-	//a->scene_name=file_name+"_"+boost::lexical_cast<string>(frameInstant);
-	a->scene_name="31."+file_name+"_"+boost::lexical_cast<string>(frameInstant);
+	a->scene_name=file_name+"_"+boost::lexical_cast<string>(frameInstant);
+	//a->scene_name="30."+file_name+"_"+boost::lexical_cast<string>(frameInstant);
 	a->frame=frameInstant;
 
 }
@@ -834,9 +834,9 @@ int main(int argc, char **argv)
 		if (inputImage){
 		string frame = boost::lexical_cast<string>(frameInstant);
 	
-		//string name_image= subdirname +"/" + file_name + "_" + frame + ".png";
+		string name_image= subdirname +"/" + file_name + "_" + frame + ".png";
 
-		string name_image= subdirname +"/" + "31." + file_name + "_" + frame + ".png";
+		//string name_image= subdirname +"/" + "30." + file_name + "_" + frame + ".png";
 
 		imwrite(name_image, inputImage->image);
 		inputImage.reset();
@@ -1212,7 +1212,7 @@ int main(int argc, char **argv)
 		init_SIT_message(ourSceneToSIT, msgItemSIT, msgRelationSIT, itemStructVector, relationStructVector);
 		Scene_pub.publish(ourScene);
 		SceneSIT_pub.publish(ourSceneToSIT);
-		n.getParam("/service_ready",service_ready);
+		/*n.getParam("/service_ready",service_ready);
 		
 		
 		//int i;
@@ -1224,7 +1224,8 @@ int main(int argc, char **argv)
 			cout << " Service is not ready! " << "\n";
 			
 		}
-		cout<<"Service is ready"<<"\n";
+		//cout<<"Service is ready"<<"\n";*/
+ros::shutdown();
 
 	}
         

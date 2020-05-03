@@ -334,6 +334,7 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
         if (learnedOrRetrievedScene != null & synchConsolidateForget) {
             consolidateAndForget(scene, logs, outpustreamConsoleOut);
         }
+
         System.out.println("[ RECOGN.]\texperience: " + recognize());
         outpustreamConsoleOut.println("[ RECOGN.]\texperience: " + recognize());
 

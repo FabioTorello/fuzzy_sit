@@ -562,10 +562,12 @@ map<string, double> setFuzzyOrientation(double formula, map<string, double> &typ
 		configurationLeg=(typesMap_it->first)+(orientMap_it->first);
 
 		degreeLeg=std::min(typesMap_it->second,orientMap_it->second);
-		//if (degreeLeg>=0.01){
+
+		if (degreeLeg>=0.01){
 
 			configuration_Map.insert(pair<string,double>(configurationLeg,degreeLeg));
-		//}
+		}
+
 	    }
 
 
