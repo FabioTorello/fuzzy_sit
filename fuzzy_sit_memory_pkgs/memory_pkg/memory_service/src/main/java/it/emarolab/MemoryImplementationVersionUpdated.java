@@ -52,6 +52,8 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
     //         with true the Graph would not show forgotten nodes.
     private static boolean REMOVE_FORGET = true;
 
+    private String storingName = "";
+
     /////////////////////////////////////////////////////////////////////////
     ////////////////////For Command line execution///////////////////////////
     //File containing the graph information
@@ -303,10 +305,12 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
         String logs;
         SceneHierarchyVertex learnedOrRetrievedScene;
         initialTime = System.nanoTime();
-        if (storeOrRetrieve) {
-            if (scene.getSceneName().isEmpty())
-                learnedOrRetrievedScene = store();
-            else learnedOrRetrievedScene = store(scene.getSceneName());
+        if ( storeOrRetrieve) {
+            if ( scene.getSceneName().isEmpty())
+                if ( storingName.isEmpty())
+                    learnedOrRetrievedScene =store();
+                else learnedOrRetrievedScene = store(storingName);
+            else learnedOrRetrievedScene =store( scene.getSceneName());
             timing.storingTime = System.nanoTime() - initialTime;
 
 
@@ -612,31 +616,31 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
         //of the CSV files as heading
         if (id == 1) {
             //Write in CSV Encoding File
-            outpustreamCSVEncoding.println("ID" + "," + "Time Stamp" + "," + "Encoding Time" + "," + "Memory Items" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
+            outpustreamCSVEncoding.println("ID" + "," + "Time Stamp" + "," + "Encoding Time(ms)" + "," + "Memory Items" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
             outpustreamCSVEncoding.println(id + "," + timeStamp + "," + timing.convert(timing.encodingTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
             //Close CSV Encoding File
             outpustreamCSVEncoding.close();
 
             //Write in CSV Storing File
-            outpustreamCSVStoring.println("ID" + "," + "Time Stamp" + "," + "Storing Time" + "," + "Memory Items" + "," + "Item_Learnt" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
+            outpustreamCSVStoring.println("ID" + "," + "Time Stamp" + "," + "Storing Time(ms)" + "," + "Memory Items" + "," + "Item_Learnt" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
             outpustreamCSVStoring.println(id + "," + timeStamp + "," + timing.convert(timing.storingTime) + "," + timing.elements + "," + timing.sceneName + "," + timing.learnDone + "," + timing.forgetDone);
             //Close CSV Storing File
             outpustreamCSVStoring.close();
 
             //Write in CSV Retrieving File
-            outpustreamCSVRetrieving.println("ID" + "," + "Time Stamp" + "," + "Retrieving Time" + "," + "Memory Items" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
+            outpustreamCSVRetrieving.println("ID" + "," + "Time Stamp" + "," + "Retrieving Time(ms)" + "," + "Memory Items" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
             outpustreamCSVRetrieving.println(id + "," + timeStamp + "," + timing.convert(timing.retrievingTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
             //Close CSV Retrieving File
             outpustreamCSVRetrieving.close();
 
             //Write in CSV Consolidating File
-            outpustreamCSVConsolidating.println("ID" + "," + "Time Stamp" + "," + "Consolidating Time" + "," + "Memory Items" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
+            outpustreamCSVConsolidating.println("ID" + "," + "Time Stamp" + "," + "Consolidating Time(ms)" + "," + "Memory Items" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
             outpustreamCSVConsolidating.println(id + "," + timeStamp + "," + timing.convert(timing.consolidateTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
             //Close CSV Consolidating File
             outpustreamCSVConsolidating.close();
 
             //Write in CSV Forgetting File
-            outpustreamCSVForgetting.println("ID" + "," + "Time Stamp" + "," + "Forgetting Time" + "," + "Memory Items" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
+            outpustreamCSVForgetting.println("ID" + "," + "Time Stamp" + "," + "Forgetting Time(ms)" + "," + "Memory Items" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
             outpustreamCSVForgetting.println(id + "," + timeStamp + "," + timing.convert(timing.forgetTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
             //Close CSV Forgetting File
             outpustreamCSVForgetting.close();
@@ -695,7 +699,7 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
             System.out.println(e.getMessage());
         }
         if (id==1) {
-            outpustreamDifferentConsolidating.println("ID" + "," + "Time Stamp" + "," + "Consolidating Function Type" + "," + "Consolidating Time"  + "," + "Memory Items");
+            outpustreamDifferentConsolidating.println("ID" + "," + "Time Stamp" + "," + "Consolidating Function Type" + "," + "Consolidating Time(ms)"  + "," + "Memory Items");
             outpustreamDifferentConsolidating.println(id + "," + timeStamp + "," + typeFunction + "," + timing.convert(timing.consolidateTime) + "," + timing.elements);
             outpustreamDifferentConsolidating.close();
         }

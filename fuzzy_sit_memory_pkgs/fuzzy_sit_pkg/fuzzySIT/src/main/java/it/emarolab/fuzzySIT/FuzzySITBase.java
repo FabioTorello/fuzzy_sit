@@ -38,7 +38,7 @@ public interface FuzzySITBase {
     String PATH_BASE = "fuzzySIT/src/main/resources/";
     String FILE_FUZZYDL_CONFIG = PATH_BASE + "fuzzyDL_CONFIG";
     String FILE_ONTOLOGY_LOAD = PATH_BASE + "example_SIT_kb.fuzzydl";
-
+//PRIMA FLAG_LOG_SHOW è FALSE
     boolean FLAG_LOG_SHOW = false;
     boolean FLAG_LOG_VERBOSE = false;
 

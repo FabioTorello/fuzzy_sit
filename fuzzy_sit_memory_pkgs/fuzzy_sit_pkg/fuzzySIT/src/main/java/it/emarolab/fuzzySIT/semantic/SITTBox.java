@@ -25,6 +25,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -98,6 +99,9 @@ public class SITTBox
     private String syntaxLearnedFile; // the path to the fuzzydl auxiliary syntax file, used while learning
     private JFrame frame; // used for visualising the hierarchy, debugging purposes.
     private static String toWrite  = NEW_LINE; // lines to add in the syntax to save the information about the object type distributions
+
+    private File fileCSVStructring = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/StructuringTime.csv");
+    private static long id=0;
 
     /**
      * Initialises this T-Box by using the default ontology ({@link #FILE_ONTOLOGY_LOAD}) and
@@ -433,7 +437,15 @@ public class SITTBox
             kb.solveKB();
             time = log( time, "Hierarchy updated from auxiliary file: " + hierarchy);
 
+            long initialStructuringTime = System.currentTimeMillis();
+
             updateEdges( kb);
+
+            long finalStructuringTime= System.currentTimeMillis() - initialStructuringTime;
+
+            //To save in a .csv file the structuring time related to learning operation
+            logForStructuringTime("LEARN",finalStructuringTime );
+
             log( time, "Hierarchy computed: " + hierarchy);
 
             return learnedScene;
@@ -441,6 +453,43 @@ public class SITTBox
             e.printStackTrace(); // todo throw exception (for gui)
         }
         return null;
+    }
+
+    public void logForStructuringTime(String sentence, long structuringTime){
+
+        PrintWriter outpustreamCSVStructuring = null;
+
+        LocalTime timeStamp = LocalTime.now();
+
+        //Open the files
+        try {
+            //CREATES THE CSV FILES IF THEY DO NOT EXIST
+            if (!fileCSVStructring.exists()) {
+                //Create the file
+                try {
+                    fileCSVStructring.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            outpustreamCSVStructuring = new PrintWriter(new FileOutputStream(fileCSVStructring, true));
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        if(sentence.contains("LEARN")){
+            id++;
+        }
+        if (id == 1) {
+            outpustreamCSVStructuring.println("ID" + "," + "Time Stamp" + "," + "Structuring_Time(ms)" + "," + "Related_To");
+            outpustreamCSVStructuring.println(id + "," + timeStamp + "," + structuringTime + "," + sentence);
+            //Close CSV Structuring File
+            outpustreamCSVStructuring.close();
+        }
+        else{
+            outpustreamCSVStructuring.println(id + "," + timeStamp + "," + structuringTime + "," + sentence);
+            //Close CSV Structuring File
+            outpustreamCSVStructuring.close();
+        }
     }
 
     // TODO solve issue: it does not remove axioms for fuzzydl file (store deleted scenes)
@@ -473,7 +522,15 @@ public class SITTBox
             kb.solveKB();
             time = log( time, "Hierarchy updated from auxiliary file: " + hierarchy);
 
+            long initialStructuringTime = System.currentTimeMillis();
+
             updateEdges( kb);
+
+            long finalStructuringTime= System.currentTimeMillis() - initialStructuringTime;
+
+            //To save in a .csv file the structuring time related to the forgetting operation
+            logForStructuringTime("FORGET",finalStructuringTime );
+
             log( time, "Hierarchy computed: " + hierarchy);
 
             return toRemoveConcept;
