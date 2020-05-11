@@ -8,9 +8,6 @@ import com.google.common.collect.Lists;
 //import it.emarolab.fuzzySIT.perception.PerceptionBase;
 import it.emarolab.fuzzySIT.perception.simple2D.*;
 import it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
-import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyEdge;
-import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
-import org.jgrapht.*;
 import org.ros.internal.loader.CommandLineLoader;
 //import org.ros.message.MessageFactory;
 import org.ros.namespace.GraphName;
@@ -19,14 +16,13 @@ import org.ros.node.parameter.ParameterTree;
 //import org.ros.node.service.ServiceResponseBuilder;
 import org.ros.node.service.ServiceServer;
 
-import org.jgraph.JGraph;
+
 
 
 //import java.util.ArrayList;
-import java.io.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.LocalTime;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.stream.Collectors;
 //import it.emarolab.fuzzySIT.semantic.SITTBox;
@@ -73,9 +69,6 @@ public class MemoryService extends AbstractNodeMain {
     private final static Boolean DEFAULT_FULL_ENTITY_IDENTIFIER = false;
     private final static Boolean DEFAULT_SHOW_GUI = false;
     private static int numberFrame=0;
-    private File fileComplexity= new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/FileComplexity_ShortestPath.txt");
-    private File fileDegrees=new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/Degrees_Graph.txt");
-    private File fileAdjacencyMatrix=new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/AdjacencyMatrix_Graph.txt");
 
     //The getDefaultNodeName method returns the default name of the node.
     @Override
@@ -123,28 +116,13 @@ public class MemoryService extends AbstractNodeMain {
                             }*/
                             System.out.print(request.getTestRequest().getFrame() + "\n");
                             if ((!request.getTestRequest().getItems().isEmpty())&&(!request.getTestRequest().getRelations().isEmpty())&&request.getTestRequest().getFrame()!=-1) {
+                                memory.experience(scene(request.getTestRequest().getItems(), request.getTestRequest().getRelations(), request.getTestRequest().getSceneName()), true, true);
 
-                                //Subsampling of 3 --> I take one scene every 3
-                                if(request.getTestRequest().getFrame() % 4 == 0){
-                                    //System.out.print("THE SCENE N° "+request.getTestRequest().getFrame() +" IS GIVEN TO SIT" + "\n");
-                                    memory.experience(scene(request.getTestRequest().getItems(), request.getTestRequest().getRelations(), request.getTestRequest().getSceneName()), true, true);
-                                }
 
                             }
 
                             if (request.getTestRequest().getFrame()==-1) {
 
-                                //dimension of the memory graph
-                                ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> GraphMemory=memory.getTbox().getHierarchy();
-
-                                int n_vertices = GraphMemory.vertexSet().size();
-                                int m_edges = GraphMemory.edgeSet().size();
-
-                                degrees_OfVerteces(GraphMemory);
-                                graph_adjacency_matrix(GraphMemory);
-                                computationalComplexity_ShortestPath(n_vertices,m_edges);
-
-                                //print the memory graph
                                 memory.getTbox().show();
                                 response.getTestResponse().setResponse("Ready");
                             }
@@ -185,197 +163,6 @@ public class MemoryService extends AbstractNodeMain {
  }*/
 
 
-
-
-    public void degrees_OfVerteces(ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graph_memory){
-
-        PrintWriter outpustreamdegrees= null;
-
-        try {
-            //CREATES THE CSV FILES IF THEY DO NOT EXIST
-            if (!fileDegrees.exists()) {
-                //Create the file
-                try {
-                    fileDegrees.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            outpustreamdegrees = new PrintWriter(new FileOutputStream(fileDegrees, true));
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
-
-        outpustreamdegrees.println("Vertex_Name" + "," +  "inDegree" + "," + "outDegree" );
-        //Loop on all the vertices in the graph
-        for (SceneHierarchyVertex sourceVertices : graph_memory.vertexSet()) {
-            int inDegreeOfVertex=0;
-            int outDegreeOfVertex=0;
-            //Loop on all the edges touching the specified vertex
-            for (SceneHierarchyEdge edges : graph_memory.edgesOf(sourceVertices)) {
-
-                if (sourceVertices==graph_memory.getEdgeSource(edges)){
-                    outDegreeOfVertex++;
-                }
-                else if(sourceVertices==graph_memory.getEdgeTarget(edges)){
-                    inDegreeOfVertex++;
-                }
-
-            }
-            outpustreamdegrees.println(sourceVertices.getScene() + "," +  inDegreeOfVertex + "," + outDegreeOfVertex);
-
-        }
-        outpustreamdegrees.close();
-
-    }
-
-
-
-
-
-
-
-    public void graph_adjacency_matrix(ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graph_memory) {
-
-        PrintWriter outpustream_adjacency_matrix= null;
-
-        String first_row="";
-
-
-
-        int i=0;
-
-        try {
-            //CREATES THE CSV FILES IF THEY DO NOT EXIST
-            if (!fileAdjacencyMatrix.exists()) {
-                //Create the file
-                try {
-                    fileAdjacencyMatrix.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            outpustream_adjacency_matrix = new PrintWriter(new FileOutputStream(fileAdjacencyMatrix, true));
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
-
-        for (SceneHierarchyVertex sourceVertices : graph_memory.vertexSet()) {
-
-            i++;
-
-            first_row = first_row.concat(sourceVertices.getScene());
-
-            if(i!=graph_memory.vertexSet().size()){
-
-                first_row = first_row.concat(",");
-
-            }
-        }
-
-        outpustream_adjacency_matrix.println(" " + "," + first_row);
-
-        //Loop on all the vertices in the graph
-        for (SceneHierarchyVertex Vertices_external : graph_memory.vertexSet()) {
-
-            int j=0;
-
-            String other_row="";
-            other_row = other_row.concat(Vertices_external.getScene());
-            other_row = other_row.concat(",");
-
-            //Loop on all the edges touching the specified vertex
-            for (SceneHierarchyVertex Vertices_internal : graph_memory.vertexSet()) {
-
-                j++;
-
-                if(Vertices_external.equals(Vertices_internal)){
-
-                    other_row = other_row.concat("0");
-
-                    other_row = other_row.concat(",");
-
-                }
-
-                if((graph_memory.containsEdge(Vertices_external,Vertices_internal)) || (graph_memory.containsEdge(Vertices_internal,Vertices_external))){
-                    other_row = other_row.concat("1");
-                }
-               /* else if(!(graph_memory.containsEdge(Vertices_external,Vertices_internal)) || !(graph_memory.containsEdge(Vertices_internal,Vertices_external))){
-                    other_row = other_row.concat("0");
-                }*/
-
-                /*for (SceneHierarchyEdge edges : graph_memory.edgesOf(Vertices_internal)){
-
-                    if ((Vertices_external==graph_memory.getEdgeTarget(edges))||(Vertices_external==graph_memory.getEdgeSource(edges))){
-                        other_row = other_row.concat("1");
-                    }
-                   /* else{
-                        other_row = other_row.concat("0");
-                    }
-                }*/
-
-
-
-                if(j!=graph_memory.vertexSet().size()){
-
-                    other_row = other_row.concat(",");
-
-                }
-
-            }
-
-            outpustream_adjacency_matrix.println(other_row);
-
-        }
-        outpustream_adjacency_matrix.close();
-    }
-
-
-
-
-
-
-    public void computationalComplexity_ShortestPath(int number_vertices, int number_edges){
-
-        PrintWriter outpustreamComplexity = null;
-
-        try {
-            //CREATES THE CSV FILES IF THEY DO NOT EXIST
-            if (!fileComplexity.exists()) {
-                //Create the file
-                try {
-                    fileComplexity.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            outpustreamComplexity = new PrintWriter(new FileOutputStream(fileComplexity, true));
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
-
-        int sum_between_edges_vertices=number_edges+number_vertices;
-
-        String Dijk_1= "O" + "(" + number_vertices*number_vertices + ")";
-
-        String Dijk_2= "O" + "(" + sum_between_edges_vertices+ " log " + number_vertices + ")";
-
-        String Bellman_Ford= "O" + "(" + number_edges*number_vertices + ")" ;
-
-        double graph_density_double=(double)number_edges/(number_vertices*(number_vertices-1));
-        System.out.print("DENSITY GRAPH DOUBLE WITHOUT ROUND: " + graph_density_double);
-        BigDecimal bd = new BigDecimal(graph_density_double).setScale(2, RoundingMode.HALF_UP);
-
-        double graph_density = bd.doubleValue();
-        System.out.print("DENSITY GRAPH DOUBLE WITH ROUND: " + graph_density);
-
-        outpustreamComplexity.println("vertices(n)" + "," +  "edges(m)" + "," + "Graph_Density" + "," + "Dijkstra_Algorithm[ O(n^2) ]" + "," + "Dijkstra_Algorithm[ O((m+n)log n) ]"  + "," + "Bellman-Ford_Algorithm[ O(m*n) ]");
-
-        outpustreamComplexity.println(number_vertices + "," + number_edges + "," + graph_density + "," + Dijk_1 + "," + Dijk_2 + "," + Bellman_Ford);
-
-
-        outpustreamComplexity.close();
-    }
 
    public static ConnectObjectScene scene(List<SceneItem> items, List<Relations> relations, String frame) {
         if ((!items.isEmpty())&&(!relations.isEmpty())) {

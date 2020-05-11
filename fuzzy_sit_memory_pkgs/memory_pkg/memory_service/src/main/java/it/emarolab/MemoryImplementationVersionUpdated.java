@@ -308,9 +308,9 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
         if ( storeOrRetrieve) {
             if ( scene.getSceneName().isEmpty())
                 if ( storingName.isEmpty())
-                    learnedOrRetrievedScene = store();
+                    learnedOrRetrievedScene =store();
                 else learnedOrRetrievedScene = store(storingName);
-            else learnedOrRetrievedScene = store( scene.getSceneName());
+            else learnedOrRetrievedScene =store( scene.getSceneName());
             timing.storingTime = System.nanoTime() - initialTime;
 
 
