@@ -73,9 +73,12 @@ public class MemoryService extends AbstractNodeMain {
     private final static Boolean DEFAULT_FULL_ENTITY_IDENTIFIER = false;
     private final static Boolean DEFAULT_SHOW_GUI = false;
     private static int numberFrame=0;
-    private File fileComplexity= new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/FileComplexity_ShortestPath.csv");
-    private File fileDegrees=new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/Degrees_Graph.csv");
-    private File fileAdjacencyMatrix=new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/AdjacencyMatrix_Graph.csv");
+
+    private File fileComplexity = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/FileComplexity_ShortestPath.csv");
+    private File fileDegrees = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/Degrees_Graph.csv");
+    private File fileAdjacencyMatrix = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/AdjacencyMatrix_Graph.csv");
+    private File fileEdgeDescription = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/EdgeDescription_Graph.txt");
+    private File fileIncidenceMatrix = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/IncidenceMatrix_Graph.csv");
 
     //The getDefaultNodeName method returns the default name of the node.
     @Override
@@ -138,8 +141,10 @@ public class MemoryService extends AbstractNodeMain {
                                 int n_vertices = GraphMemory.vertexSet().size();
                                 int m_edges = GraphMemory.edgeSet().size();
 
+                                edge_Description(GraphMemory);
                                 degrees_OfVerteces(GraphMemory);
                                 graph_adjacency_matrix(GraphMemory);
+                                graph_incidence_matrix(GraphMemory);
                                 computationalComplexity_ShortestPath(n_vertices,m_edges);
 
                                 //print the memory graph
@@ -182,7 +187,67 @@ public class MemoryService extends AbstractNodeMain {
      objects.add( newObject);
  }*/
 
+    public void edge_Description(ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graph_memory){
 
+        PrintWriter outpustream_edge_description= null;
+
+
+        int i=0;
+
+        try {
+            //CREATES THE CSV FILES IF THEY DO NOT EXIST
+            if (!fileEdgeDescription.exists()) {
+                //Create the file
+                try {
+                    fileEdgeDescription.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            outpustream_edge_description = new PrintWriter(new FileOutputStream(fileEdgeDescription, true));
+
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+
+        for (SceneHierarchyEdge edge : graph_memory.edgeSet()) {
+
+            String first_row = "";
+            SceneHierarchyVertex vertex_source;
+            SceneHierarchyVertex vertex_target;
+
+            i++;
+
+            first_row = first_row.concat("Edge_" + i + ": ");
+
+            vertex_source = graph_memory.getEdgeSource(edge);
+
+            vertex_target = graph_memory.getEdgeTarget(edge);
+
+            first_row = first_row.concat("[ "+ vertex_source.getScene() + "-->" + vertex_target.getScene());
+
+            first_row = first_row.concat(", "+ "Weight: " + graph_memory.getEdgeWeight(edge) +" ]");
+
+            outpustream_edge_description.println(first_row);
+        }
+
+        outpustream_edge_description.println("\n");
+
+        for (SceneHierarchyVertex vertex : graph_memory.vertexSet()) {
+
+            String other_row="";
+
+
+            other_row = other_row.concat("Vertex " + vertex.getScene() + ": ");
+
+            other_row = other_row.concat("[ " + "Score: " + vertex.getMemoryScore() + " ]");
+
+            outpustream_edge_description.println(other_row);
+
+        }
+        outpustream_edge_description.close();
+    }
 
 
     public void degrees_OfVerteces(ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graph_memory){
@@ -297,7 +362,7 @@ public class MemoryService extends AbstractNodeMain {
                 if((graph_memory.containsEdge(Vertices_external,Vertices_internal)) || (graph_memory.containsEdge(Vertices_internal,Vertices_external))){
                     other_row = other_row.concat("1");
                 }
-                else if((!(graph_memory.containsEdge(Vertices_external,Vertices_internal)) || !(graph_memory.containsEdge(Vertices_internal,Vertices_external)))&&(!Vertices_external.equals(Vertices_internal))){
+                else if(((!(graph_memory.containsEdge(Vertices_external,Vertices_internal))) || (!(graph_memory.containsEdge(Vertices_internal,Vertices_external))))&&(!Vertices_external.equals(Vertices_internal))){
                     other_row = other_row.concat("0");
                 }
 
@@ -319,7 +384,87 @@ public class MemoryService extends AbstractNodeMain {
         outpustream_adjacency_matrix.close();
     }
 
+    public void graph_incidence_matrix(ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graph_memory) {
 
+        PrintWriter outpustream_incidence_matrix= null;
+
+        String first_row="";
+
+        int i=0;
+
+        try {
+            //CREATES THE CSV FILES IF THEY DO NOT EXIST
+            if (!fileIncidenceMatrix.exists()) {
+                //Create the file
+                try {
+                    fileIncidenceMatrix.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            outpustream_incidence_matrix = new PrintWriter(new FileOutputStream(fileIncidenceMatrix, true));
+
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //Loop on all the edges touching the specified vertex
+        for (SceneHierarchyEdge edge : graph_memory.edgeSet()) {
+
+            i++;
+
+            first_row = first_row.concat("Edge_"+i);
+
+            if(i!=graph_memory.edgeSet().size()){
+
+                first_row = first_row.concat(",");
+
+            }
+        }
+
+        outpustream_incidence_matrix.println(" " + "," + first_row);
+
+        for (SceneHierarchyVertex vertex : graph_memory.vertexSet()) {
+
+            int j=0;
+            String other_row="";
+
+            other_row = other_row.concat(vertex.getScene()+",");
+
+            for (SceneHierarchyEdge edge : graph_memory.edgeSet()) {
+
+                j++;
+
+                //if edge enters in the vertex
+                if(vertex==graph_memory.getEdgeSource(edge)){
+
+                    other_row = other_row.concat("1");
+
+                }
+                //if edge exits in the vertex
+                else if (vertex==graph_memory.getEdgeTarget(edge)){
+
+                    other_row = other_row.concat("-1");
+
+                }
+                else{
+
+                    other_row = other_row.concat("0");
+
+                }
+
+                if(j!=graph_memory.edgeSet().size()){
+
+                    other_row = other_row.concat(",");
+
+                }
+            }
+            outpustream_incidence_matrix.println(other_row);
+        }
+
+        outpustream_incidence_matrix.close();
+    }
 
 
 
@@ -356,7 +501,7 @@ public class MemoryService extends AbstractNodeMain {
         BigDecimal bd = new BigDecimal(graph_density_double).setScale(2, RoundingMode.HALF_UP);
 
         double graph_density = bd.doubleValue();
-        System.out.print("DENSITY GRAPH DOUBLE WITH ROUND: " + graph_density);
+        System.out.print("\nDENSITY GRAPH DOUBLE WITH ROUND: " + graph_density);
 
         outpustreamComplexity.println("vertices(n)" + "," +  "edges(m)" + "," + "Graph_Density" + "," + "Dijkstra_Algorithm[ O(n^2) ]" + "," + "Dijkstra_Algorithm[ O((m+n)log n) ]"  + "," + "Bellman-Ford_Algorithm[ O(m*n) ]");
 
