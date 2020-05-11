@@ -82,8 +82,8 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
 
 
 
-     //   PrintStream stream = new PrintStream(fileConsoleOut);
-      //  System.setOut(stream);
+    //   PrintStream stream = new PrintStream(fileConsoleOut);
+    //  System.setOut(stream);
 
 
     /////////////////////////////////////////////////////////////////////////
@@ -420,7 +420,6 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
         timing.forgetTime = System.nanoTime() - initialTime;
 
        /* scoreForgottenScene= new ArrayList<>();
-
         for (SceneHierarchyVertex itemForgotten : forgotten) {
             timing.sceneName = itemForgotten.getScene();
             timing.sceneScore = itemForgotten.getMemoryScore();

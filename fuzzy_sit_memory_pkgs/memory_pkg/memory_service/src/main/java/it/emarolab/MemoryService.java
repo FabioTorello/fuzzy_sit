@@ -73,9 +73,9 @@ public class MemoryService extends AbstractNodeMain {
     private final static Boolean DEFAULT_FULL_ENTITY_IDENTIFIER = false;
     private final static Boolean DEFAULT_SHOW_GUI = false;
     private static int numberFrame=0;
-    private File fileComplexity= new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/FileComplexity_ShortestPath.txt");
-    private File fileDegrees=new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/Degrees_Graph.txt");
-    private File fileAdjacencyMatrix=new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/AdjacencyMatrix_Graph.txt");
+    private File fileComplexity= new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/FileComplexity_ShortestPath.csv");
+    private File fileDegrees=new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/Degrees_Graph.csv");
+    private File fileAdjacencyMatrix=new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/AdjacencyMatrix_Graph.csv");
 
     //The getDefaultNodeName method returns the default name of the node.
     @Override
@@ -90,14 +90,14 @@ public class MemoryService extends AbstractNodeMain {
         ParameterTree params = connectedNode.getParameterTree();
 
 
-       // MemoryImplementation memory = new MemoryImplementation("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/src/main/resources/fuzzyDL_CONFIG" );
+        // MemoryImplementation memory = new MemoryImplementation("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/src/main/resources/fuzzyDL_CONFIG" );
         MemoryImplementationVersionUpdated memory = new MemoryImplementationVersionUpdated("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/src/main/resources/fuzzyDL_CONFIG");
 
 
 
         //Create an object representing the memory
         //MemoryImplementation memory = new MemoryImplementation("memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
-       // MemoryImplementationVersionUpdated memory = new MemoryImplementationVersionUpdated("memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
+        // MemoryImplementationVersionUpdated memory = new MemoryImplementationVersionUpdated("memory_service/src/main/resources/table_assembling_data_set_memory_example.fuzzydl", "memory_service/src/main/resources/fuzzyDL_CONFIG" );
 
         //Callback for TestServiceDirective.srv calls
         //newServiceServer(GraphName serviceName, java.lang.String serviceType, ServiceResponseBuilder<T,S> serviceResponseBuilder)
@@ -111,9 +111,7 @@ public class MemoryService extends AbstractNodeMain {
                                 System.out.print(item.getType() + "\n");
                                 System.out.print(item.getDegree() + "\n");
                                 System.out.print("\n");
-
                             }
-
                             for (Relations relation: request.getTestRequest().getRelations()){
                                 System.out.print(relation.getGammaSubject() + "\n");
                                 System.out.print(relation.getGammaObject() + "\n");
@@ -174,7 +172,7 @@ public class MemoryService extends AbstractNodeMain {
                         });
 
     }
- //THIS IS THE VERSION OF "ADD" FUNCTION I HAVE TO USE
+    //THIS IS THE VERSION OF "ADD" FUNCTION I HAVE TO USE
  /*public void addObject( FeaturedSpatialObject<F> newObject){
      for ( FeaturedSpatialObject<F> obj : getObjects()) {
          SpatialRelation rel = computeRelation(obj, newObject);
@@ -293,26 +291,17 @@ public class MemoryService extends AbstractNodeMain {
 
                     other_row = other_row.concat("0");
 
-                    other_row = other_row.concat(",");
 
                 }
 
                 if((graph_memory.containsEdge(Vertices_external,Vertices_internal)) || (graph_memory.containsEdge(Vertices_internal,Vertices_external))){
                     other_row = other_row.concat("1");
                 }
-               /* else if(!(graph_memory.containsEdge(Vertices_external,Vertices_internal)) || !(graph_memory.containsEdge(Vertices_internal,Vertices_external))){
+                else if((!(graph_memory.containsEdge(Vertices_external,Vertices_internal)) || !(graph_memory.containsEdge(Vertices_internal,Vertices_external)))&&(!Vertices_external.equals(Vertices_internal))){
                     other_row = other_row.concat("0");
-                }*/
+                }
 
-                /*for (SceneHierarchyEdge edges : graph_memory.edgesOf(Vertices_internal)){
 
-                    if ((Vertices_external==graph_memory.getEdgeTarget(edges))||(Vertices_external==graph_memory.getEdgeSource(edges))){
-                        other_row = other_row.concat("1");
-                    }
-                   /* else{
-                        other_row = other_row.concat("0");
-                    }
-                }*/
 
 
 
@@ -377,7 +366,7 @@ public class MemoryService extends AbstractNodeMain {
         outpustreamComplexity.close();
     }
 
-   public static ConnectObjectScene scene(List<SceneItem> items, List<Relations> relations, String frame) {
+    public static ConnectObjectScene scene(List<SceneItem> items, List<Relations> relations, String frame) {
         if ((!items.isEmpty())&&(!relations.isEmpty())) {
             //Define the scene
             ConnectObjectScene scene = new ConnectObjectScene(frame);
@@ -578,10 +567,10 @@ public class MemoryService extends AbstractNodeMain {
             }
 
             return scene;
-            }
+        }
 
         return new ConnectObjectScene();
-   }
+    }
 
 
 
@@ -615,7 +604,6 @@ public class MemoryService extends AbstractNodeMain {
     degreeRelation: 0.2
   scene_name: '1.2_3'
   frame: 3"
-
    rosservice call /memory_service "test_request:
   items:
   - gamma_i: 'g_2'
@@ -642,9 +630,6 @@ public class MemoryService extends AbstractNodeMain {
     degreeRelation: 0.2
   scene_name: '1.2_5'
   frame: 6"
-
-
-
 rosservice call /memory_service "test_request:
   items:
   - gamma_i: 'g_3'
@@ -671,7 +656,6 @@ rosservice call /memory_service "test_request:
     degreeRelation: 0.1
   scene_name: '1.2_8'
   frame: 8"
-
     */
 
 
@@ -691,22 +675,21 @@ rosservice call /memory_service "test_request:
 //     For testing and debugging purposes only
 //     You can use this main as entry point in an IDE (e.g., IDEA) to run a debugger
 
-        public static void main (String argv[]) throws java.io.IOException {
+    public static void main (String argv[]) throws java.io.IOException {
 
-            java.lang.String[] args = {"it.emarolab.MemoryService"};
-            CommandLineLoader loader = new CommandLineLoader(Lists.newArrayList(args));
-            NodeConfiguration nodeConfiguration = loader.build();
-            MemoryService service = new MemoryService();
-            
-            NodeMainExecutor nodeMainExecutor = DefaultNodeMainExecutor.newDefault();
-            nodeMainExecutor.execute(service, nodeConfiguration);
+        java.lang.String[] args = {"it.emarolab.MemoryService"};
+        CommandLineLoader loader = new CommandLineLoader(Lists.newArrayList(args));
+        NodeConfiguration nodeConfiguration = loader.build();
+        MemoryService service = new MemoryService();
 
-            //CommandLineLoader loader = new CommandLineLoader(Lists.newArrayList(args));
-            // NodeConfiguration nodeConfiguration = loader.build();
-            //ARMORMainService service = new ARMORMainService();
+        NodeMainExecutor nodeMainExecutor = DefaultNodeMainExecutor.newDefault();
+        nodeMainExecutor.execute(service, nodeConfiguration);
 
-            //NodeMainExecutor nodeMainExecutor = DefaultNodeMainExecutor.newDefault();
-            //nodeMainExecutor.execute(service, nodeConfiguration);
-        }
+        //CommandLineLoader loader = new CommandLineLoader(Lists.newArrayList(args));
+        // NodeConfiguration nodeConfiguration = loader.build();
+        //ARMORMainService service = new ARMORMainService();
+
+        //NodeMainExecutor nodeMainExecutor = DefaultNodeMainExecutor.newDefault();
+        //nodeMainExecutor.execute(service, nodeConfiguration);
+    }
 }
-
