@@ -140,12 +140,36 @@ public class MemoryService extends AbstractNodeMain {
 
                                 int n_vertices = GraphMemory.vertexSet().size();
                                 int m_edges = GraphMemory.edgeSet().size();
+                                int [][] adjacency_matrix= new int[n_vertices][n_vertices];
+                                int [][] incidence_matrix= new int[n_vertices][m_edges];
+                                int number_OfLoops=0;
 
                                 edge_Description(GraphMemory);
                                 degrees_OfVerteces(GraphMemory);
-                                graph_adjacency_matrix(GraphMemory);
-                                graph_incidence_matrix(GraphMemory);
-                                computationalComplexity_ShortestPath(n_vertices,m_edges);
+                                adjacency_matrix=graph_adjacency_matrix(GraphMemory);
+                                System.out.print("\n");
+                                /*for (int i=0; i<n_vertices;i++){
+                                    for (int j=0; j<n_vertices;j++){
+                                        System.out.print(adjacency_matrix[i][j]);
+                                    }
+                                    System.out.print("\n");
+                                }
+                                System.out.print("\n");*/
+
+                                incidence_matrix=graph_incidence_matrix(GraphMemory);
+                                /*for (int i=0; i<n_vertices;i++){
+                                    for (int j=0; j<m_edges;j++){
+                                        System.out.print(incidence_matrix[i][j]);
+                                    }
+                                    System.out.print("\n");
+                                }
+                                System.out.print("\n");*/
+
+                                number_OfLoops=compute_numberOfLoops(adjacency_matrix,incidence_matrix,n_vertices,m_edges);
+                                System.out.print("NUMBER OF LOOPS DETECTED: " + number_OfLoops + "\n");
+
+
+                                computationalComplexity_ShortestPath(n_vertices,m_edges,number_OfLoops);
 
                                 //print the memory graph
                                 memory.getTbox().show();
@@ -186,6 +210,79 @@ public class MemoryService extends AbstractNodeMain {
      }
      objects.add( newObject);
  }*/
+
+    public int compute_numberOfLoops(int [][] adjacency_Matrix, int [][] incidence_Matrix, int numb_vertices, int numb_edges){
+
+
+
+        int number_loops=0;
+        int [][] minor_Of_matrix= new int [2][2];
+
+        //Loop on adjacency matrix row
+        for (int i=0; i<numb_vertices;i++){
+            //Loop on adjacency matrix row
+            for (int j=i; j<numb_vertices;j++){
+
+                //If two vertices are linked
+                if(adjacency_Matrix[i][j]==1){
+
+                    int [] row1 = new int [numb_edges];
+                    int [] row2 = new int [numb_edges];
+                    int [] row3 = new int [numb_edges];
+                    int column_index1=0;
+                    int column_index2=0;
+                    int count_number2=0;
+                    boolean first_number2_found=false;
+                    boolean second_number2_found=false;
+
+                    for(int k=0; k<numb_edges;k++) {
+
+                        row1[k]=Math.abs(incidence_Matrix[i][k]);
+
+                        row2[k]=Math.abs(incidence_Matrix[j][k]);
+
+                        row3[k]=row1[k]+row2[k];
+                    }
+
+                    for (int q=0; q<numb_edges;q++){
+
+                        if(row3[q]==2){
+                            count_number2++;
+                        }
+
+                        if((count_number2==1) && (first_number2_found==false)){
+                            column_index1=q;
+                            first_number2_found=true;
+                        }
+                        else if(count_number2==2){
+                            column_index2=q;
+                            second_number2_found=true;
+                            break;
+                        }
+                    }
+                    if(second_number2_found==true) {
+                        minor_Of_matrix[0][0] = incidence_Matrix[i][column_index1];
+                        minor_Of_matrix[0][1] = incidence_Matrix[i][column_index2];
+                        minor_Of_matrix[1][0] = incidence_Matrix[j][column_index1];
+                        minor_Of_matrix[1][1] = incidence_Matrix[j][column_index2];
+
+                        if ((minor_Of_matrix[0][1] == minor_Of_matrix[1][0]) && (minor_Of_matrix[0][0] == minor_Of_matrix[1][1])){
+                            number_loops++;
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+        return number_loops;
+
+    }
+
+
+
+
 
     public void edge_Description(ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graph_memory){
 
@@ -298,15 +395,17 @@ public class MemoryService extends AbstractNodeMain {
 
 
 
-    public void graph_adjacency_matrix(ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graph_memory) {
+    public int [][] graph_adjacency_matrix(ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graph_memory) {
 
         PrintWriter outpustream_adjacency_matrix= null;
 
         String first_row="";
 
-
+        int num_vertices = graph_memory.vertexSet().size();
+        int [][] ajacencyMatrix = new int[num_vertices][num_vertices];
 
         int i=0;
+        int k=0;
 
         try {
             //CREATES THE CSV FILES IF THEY DO NOT EXIST
@@ -355,15 +454,17 @@ public class MemoryService extends AbstractNodeMain {
                 if(Vertices_external.equals(Vertices_internal)){
 
                     other_row = other_row.concat("0");
-
+                    ajacencyMatrix[k][j-1]=0;
 
                 }
 
                 if((graph_memory.containsEdge(Vertices_external,Vertices_internal)) || (graph_memory.containsEdge(Vertices_internal,Vertices_external))){
                     other_row = other_row.concat("1");
+                    ajacencyMatrix[k][j-1]=1;
                 }
                 else if(((!(graph_memory.containsEdge(Vertices_external,Vertices_internal))) || (!(graph_memory.containsEdge(Vertices_internal,Vertices_external))))&&(!Vertices_external.equals(Vertices_internal))){
                     other_row = other_row.concat("0");
+                    ajacencyMatrix[k][j-1]=0;
                 }
 
 
@@ -380,17 +481,25 @@ public class MemoryService extends AbstractNodeMain {
 
             outpustream_adjacency_matrix.println(other_row);
 
+            k++;
         }
         outpustream_adjacency_matrix.close();
+
+        return ajacencyMatrix;
     }
 
-    public void graph_incidence_matrix(ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graph_memory) {
+    public int [][] graph_incidence_matrix(ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> graph_memory) {
 
         PrintWriter outpustream_incidence_matrix= null;
 
         String first_row="";
 
+        int number_vertices = graph_memory.vertexSet().size();
+        int number_edges = graph_memory.edgeSet().size();
+        int [][] incidenceMatrix = new int[number_vertices][number_edges];
+
         int i=0;
+        int k=0;
 
         try {
             //CREATES THE CSV FILES IF THEY DO NOT EXIST
@@ -441,16 +550,22 @@ public class MemoryService extends AbstractNodeMain {
 
                     other_row = other_row.concat("1");
 
+                    incidenceMatrix[k][j-1]=1;
+
                 }
                 //if edge exits in the vertex
                 else if (vertex==graph_memory.getEdgeTarget(edge)){
 
                     other_row = other_row.concat("-1");
 
+                    incidenceMatrix[k][j-1]=-1;
+
                 }
                 else{
 
                     other_row = other_row.concat("0");
+
+                    incidenceMatrix[k][j-1]=0;
 
                 }
 
@@ -460,16 +575,21 @@ public class MemoryService extends AbstractNodeMain {
 
                 }
             }
+
             outpustream_incidence_matrix.println(other_row);
+
+            k++;
         }
 
         outpustream_incidence_matrix.close();
+
+        return incidenceMatrix;
     }
 
 
 
 
-    public void computationalComplexity_ShortestPath(int number_vertices, int number_edges){
+    public void computationalComplexity_ShortestPath(int number_vertices, int number_edges, int numberLoops){
 
         PrintWriter outpustreamComplexity = null;
 
@@ -503,9 +623,9 @@ public class MemoryService extends AbstractNodeMain {
         double graph_density = bd.doubleValue();
         System.out.print("\nDENSITY GRAPH DOUBLE WITH ROUND: " + graph_density);
 
-        outpustreamComplexity.println("vertices(n)" + "," +  "edges(m)" + "," + "Graph_Density" + "," + "Dijkstra_Algorithm[ O(n^2) ]" + "," + "Dijkstra_Algorithm[ O((m+n)log n) ]"  + "," + "Bellman-Ford_Algorithm[ O(m*n) ]");
+        outpustreamComplexity.println("vertices(n)" + "," +  "edges(m)" + "," + "Number_Loops" + "," +"Graph_Density" + "," + "Dijkstra_Algorithm[ O(n^2) ]" + "," + "Dijkstra_Algorithm[ O((m+n)log n) ]"  + "," + "Bellman-Ford_Algorithm[ O(m*n) ]");
 
-        outpustreamComplexity.println(number_vertices + "," + number_edges + "," + graph_density + "," + Dijk_1 + "," + Dijk_2 + "," + Bellman_Ford);
+        outpustreamComplexity.println(number_vertices + "," + number_edges + "," + numberLoops +","+ graph_density + "," + Dijk_1 + "," + Dijk_2 + "," + Bellman_Ford);
 
 
         outpustreamComplexity.close();
