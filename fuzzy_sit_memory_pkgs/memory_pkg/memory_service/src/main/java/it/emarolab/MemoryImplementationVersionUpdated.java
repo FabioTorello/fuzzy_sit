@@ -46,6 +46,8 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
 
     private static long id = 0;
 
+    private static long totalTimeForATest=0;
+
     // actually remove node if true.
     // Otherwise the node remains but it is not consolidated (i.e., frozen).
     // REMARK: with false, SIT performances do not benefit from forgetting,
@@ -71,15 +73,16 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
     private File fileCSVConsolidating = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/ConsolidatingTime_MemoryItems.csv");
     //CSV file for forgetting time
     private File fileCSVForgetting = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/ForgettingTime_MemoryItems.csv");
-    //CSV file for the table to save the variation of the consolidating time respect to the type of consolidating function
+    //CSV file to save the variation of the consolidating time respect to the type of consolidating function
     private File fileTimeToConsolidatingFunction = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/ConsolidatingTime_MemoryItems_Function_One.csv");
-    //CSV file for the table to save the variation of the number of memory items forgotten with a type of consolidating function
+    //CSV file to save the variation of the number of memory items forgotten with a type of consolidating function
     private File fileItemsForgottenConsolidatingFunction = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/ItemsForgotten_ConsolidatingFunction_One.csv");
-    //CSV file for the table to save the forgotten scenes with a type of consolidating function
+    //CSV file to save the forgotten scenes with a type of consolidating function
     private File fileScoreItemsForgottenConsolidatingFunction = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/Score_ItemsForgotten_ConsolidatingFunction_One.csv");
-    //CSV file for the table to save the forgotten scenes with a type of consolidating function
+    //CSV file to save the score variation of each scenes with a type of consolidating function
     private File fileSceneScoreVariation = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/Score_Variation_ConsolidatingFunction_One.csv");
-
+    //CSV file to save the total time per SIT loop and the total time for the test
+    private File fileTotalTimeSpent = new File("/home/fabio/java_workspace/src/fuzzy_sit_memory_pkgs/memory_pkg/memory_service/Logfiles/Total_Time_Spent.csv");
 
 
     //   PrintStream stream = new PrintStream(fileConsoleOut);
@@ -293,8 +296,10 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
         //element = new ElementsOfMemory();
 
         // must always be done before to store or retrieve
+        //long initialTime = System.currentTimeMillis();
         long initialTime = System.nanoTime();
         encode(scene);
+        //timing.encodingTime = System.currentTimeMillis() - initialTime;
         timing.encodingTime = System.nanoTime() - initialTime;
 
         //element.encodingElements=NumberOfElementInMemory(graphOfMemory);
@@ -304,13 +309,16 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
 
         String logs;
         SceneHierarchyVertex learnedOrRetrievedScene;
-        initialTime = System.nanoTime();
+        //initialTime = System.currentTimeMillis();
+         initialTime = System.nanoTime();
+
         if ( storeOrRetrieve) {
             if ( scene.getSceneName().isEmpty())
                 if ( storingName.isEmpty())
                     learnedOrRetrievedScene = store();
                 else learnedOrRetrievedScene = store(storingName);
             else learnedOrRetrievedScene = store( scene.getSceneName());
+            //timing.storingTime = System.currentTimeMillis() - initialTime;
             timing.storingTime = System.nanoTime() - initialTime;
 
 
@@ -326,10 +334,11 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
             }
         } else {
             learnedOrRetrievedScene = retrieve();
+            //timing.retrievingTime = System.currentTimeMillis() - initialTime;
             timing.retrievingTime = System.nanoTime() - initialTime;
-            //CHECKS THE MEMORY IN ORDER TO FIND THE NUMBER OF ELEMENTS CONTAINED
-            // graphOfMemory = getTbox().getHierarchy();
-            //element.retrievingElements=NumberOfElementInMemory(graphOfMemory);
+
+
+
             logs = "retrieving";
             System.out.println("[RETRIEVE]\texperience: " + learnedOrRetrievedScene);
             outpustreamConsoleOut.println("[RETRIEVE]\texperience: " + learnedOrRetrievedScene);
@@ -346,7 +355,7 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
         timing.elements = getTbox().getHierarchy().vertexSet().size();
 
 
-        System.out.println("    Total time spent " + timing.tot());
+        System.out.println("    Total time spent (ns) " + timing.tot());
         outpustreamConsoleOut.println("    Total time spent " + timing.tot());
         System.out.println("    Elements in memory " + timing.elements);
         outpustreamConsoleOut.println("    Elements in memory " + timing.elements);
@@ -370,7 +379,8 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
 
         //Print the information of the different times and the memory items in different moments
         convertToCSV(id, timeStamp);
-
+        //Print the information of the total time spent for a single SIT loop and to analyse all the scenes of a test
+        totalTimeSpentCSV(id, timeStamp, timing.tot());
 
         //Table which save the variation of the consolidating time respect to the number of memory items and
         // the type of the consolidating function
@@ -402,22 +412,28 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
     }
 
     private void consolidateAndForget(PerceptionBase scene, String logs, PrintWriter outpustreamConsoleOut) {
+
+        //long initialTime = System.currentTimeMillis();
         long initialTime = System.nanoTime();
+
         consolidate();
+        //timing.consolidateTime = System.currentTimeMillis() - initialTime;
         timing.consolidateTime = System.nanoTime() - initialTime;
-        //CHECKS THE MEMORY IN ORDER TO FIND THE NUMBER OF ELEMENTS CONTAINED
-        //graphOfMemory = getTbox().getHierarchy();
-        //element.consolidateElements=NumberOfElementInMemory(graphOfMemory);
+
+
         System.out.println("[ CONSOL.]\tnew experience from " + logs + " " + scene + " -> ");
         outpustreamConsoleOut.println("[ CONSOL.]\tnew experience from " + logs + " " + scene + " -> ");
 
+        //initialTime = System.currentTimeMillis();
         initialTime = System.nanoTime();
         Set<SceneHierarchyVertex> forgotten = forget();
 
 
 
 
+        //timing.forgetTime = System.currentTimeMillis() - initialTime;
         timing.forgetTime = System.nanoTime() - initialTime;
+
 
        /* scoreForgottenScene= new ArrayList<>();
         for (SceneHierarchyVertex itemForgotten : forgotten) {
@@ -425,9 +441,7 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
             timing.sceneScore = itemForgotten.getMemoryScore();
             scoreForgottenScene.add(timing);
         }*/
-        //CHECKS THE MEMORY IN ORDER TO FIND THE NUMBER OF ELEMENTS CONTAINED
-        //graphOfMemory = getTbox().getHierarchy();
-        //element.forgetElements=NumberOfElementInMemory(graphOfMemory);
+        
 
         System.out.println("[ FORGET ]\tfreeze nodes: " + forgotten);
         outpustreamConsoleOut.println("[ FORGET ]\tfreeze nodes: " + forgotten);
@@ -617,30 +631,35 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
             //Write in CSV Encoding File
             outpustreamCSVEncoding.println("ID" + "," + "Time Stamp" + "," + "Encoding Time(ms)" + "," + "Memory Items" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
             outpustreamCSVEncoding.println(id + "," + timeStamp + "," + timing.convert(timing.encodingTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
+            //outpustreamCSVEncoding.println(id + "," + timeStamp + "," + timing.encodingTime + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
             //Close CSV Encoding File
             outpustreamCSVEncoding.close();
 
             //Write in CSV Storing File
             outpustreamCSVStoring.println("ID" + "," + "Time Stamp" + "," + "Storing Time(ms)" + "," + "Memory Items" + "," + "Item_Learnt" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
             outpustreamCSVStoring.println(id + "," + timeStamp + "," + timing.convert(timing.storingTime) + "," + timing.elements + "," + timing.sceneName + "," + timing.learnDone + "," + timing.forgetDone);
+            //outpustreamCSVStoring.println(id + "," + timeStamp + "," + timing.storingTime + "," + timing.elements + "," + timing.sceneName + "," + timing.learnDone + "," + timing.forgetDone);
             //Close CSV Storing File
             outpustreamCSVStoring.close();
 
             //Write in CSV Retrieving File
             outpustreamCSVRetrieving.println("ID" + "," + "Time Stamp" + "," + "Retrieving Time(ms)" + "," + "Memory Items" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
             outpustreamCSVRetrieving.println(id + "," + timeStamp + "," + timing.convert(timing.retrievingTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
+            //outpustreamCSVRetrieving.println(id + "," + timeStamp + "," + timing.retrievingTime + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
             //Close CSV Retrieving File
             outpustreamCSVRetrieving.close();
 
             //Write in CSV Consolidating File
             outpustreamCSVConsolidating.println("ID" + "," + "Time Stamp" + "," + "Consolidating Time(ms)" + "," + "Memory Items" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
             outpustreamCSVConsolidating.println(id + "," + timeStamp + "," + timing.convert(timing.consolidateTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
+            //outpustreamCSVConsolidating.println(id + "," + timeStamp + "," + timing.consolidateTime + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
             //Close CSV Consolidating File
             outpustreamCSVConsolidating.close();
 
             //Write in CSV Forgetting File
             outpustreamCSVForgetting.println("ID" + "," + "Time Stamp" + "," + "Forgetting Time(ms)" + "," + "Memory Items" + "," + "Learning Loop?" + "," + "Forgetting Loop?");
             outpustreamCSVForgetting.println(id + "," + timeStamp + "," + timing.convert(timing.forgetTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
+            //outpustreamCSVForgetting.println(id + "," + timeStamp + "," + timing.forgetTime + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
             //Close CSV Forgetting File
             outpustreamCSVForgetting.close();
 
@@ -650,26 +669,31 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
             if (i == 0) {
                 //Write in CSV Encoding File
                 outpustreamCSVEncoding.println(id + "," + timeStamp + "," + timing.convert(timing.encodingTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
+                //outpustreamCSVEncoding.println(id + "," + timeStamp + "," + timing.encodingTime + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
                 //Close CSV Encoding File
                 outpustreamCSVEncoding.close();
             } else if (i == 1) {
                 //Write in CSV Storing File
                 outpustreamCSVStoring.println(id + "," + timeStamp + "," + timing.convert(timing.storingTime) + "," + timing.elements + "," + timing.sceneName + "," + timing.learnDone + "," + timing.forgetDone);
+                //outpustreamCSVStoring.println(id + "," + timeStamp + "," + timing.storingTime + "," + timing.elements + "," + timing.sceneName + "," + timing.learnDone + "," + timing.forgetDone);
                 //Close CSV Storing File
                 outpustreamCSVStoring.close();
             } else if (i == 2) {
                 //Write in CSV Retrieving File
                 outpustreamCSVRetrieving.println(id + "," + timeStamp + "," + timing.convert(timing.retrievingTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
+                //outpustreamCSVRetrieving.println(id + "," + timeStamp + "," +timing.retrievingTime + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
                 //Close CSV Retrieving File
                 outpustreamCSVRetrieving.close();
             } else if (i == 3) {
                 //Write in CSV Consolidating File
                 outpustreamCSVConsolidating.println(id + "," + timeStamp + "," + timing.convert(timing.consolidateTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
+                //outpustreamCSVConsolidating.println(id + "," + timeStamp + "," + timing.consolidateTime + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
                 //Close CSV Consolidating File
                 outpustreamCSVConsolidating.close();
             } else if (i == 4) {
                 //Write in CSV Forgetting File
                 outpustreamCSVForgetting.println(id + "," + timeStamp + "," + timing.convert(timing.forgetTime) + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
+                //outpustreamCSVForgetting.println(id + "," + timeStamp + "," + timing.forgetTime + "," + timing.elements + "," + timing.learnDone + "," + timing.forgetDone);
                 //Close CSV Forgetting File
                 outpustreamCSVForgetting.close();
             }
@@ -700,9 +724,11 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
         if (id==1) {
             outpustreamDifferentConsolidating.println("ID" + "," + "Time Stamp" + "," + "Consolidating Function Type" + "," + "Consolidating Time(ms)"  + "," + "Memory Items");
             outpustreamDifferentConsolidating.println(id + "," + timeStamp + "," + typeFunction + "," + timing.convert(timing.consolidateTime) + "," + timing.elements);
+            //outpustreamDifferentConsolidating.println(id + "," + timeStamp + "," + typeFunction + "," + timing.consolidateTime + "," + timing.elements);
             outpustreamDifferentConsolidating.close();
         }
         outpustreamDifferentConsolidating.println(id + "," + timeStamp + "," + typeFunction + "," + timing.convert(timing.consolidateTime) + "," + timing.elements);
+        //outpustreamDifferentConsolidating.println(id + "," + timeStamp + "," + typeFunction + "," + timing.consolidateTime + "," + timing.elements);
         outpustreamDifferentConsolidating.close();
     }
 
@@ -812,7 +838,42 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
     }
 
 
+    public void totalTimeSpentCSV( long id, LocalTime timeStamp, long totalTimeSpent_SingleSITLoop){
 
+        PrintWriter outpustreamTimeSpent = null;
+
+        double totalTimeForATestIn_ms=0;
+
+        try {
+            //CREATES THE CSV FILES IF THEY DO NOT EXIST
+            if (!fileTotalTimeSpent.exists()) {
+                //Create the file
+                try {
+                    fileTotalTimeSpent.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            outpustreamTimeSpent = new PrintWriter(new FileOutputStream(fileTotalTimeSpent, true));
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //Total time spent to analyse data for a test (ns)
+        totalTimeForATest=totalTimeForATest+totalTimeSpent_SingleSITLoop;
+
+        //Total time spent to analyse data for a test (ms)
+        totalTimeForATestIn_ms=(double) totalTimeForATest / 1000000;
+
+
+            if (id==1) {
+                outpustreamTimeSpent.println("ID" + "," +  "Time Stamp" + "," + "Time_Spent_In_This_SITLoop(ns)" + "," + "Total_Time_Spent(ns)"  + "," + "Total_Time_Spent(ms)");
+
+            }
+
+            outpustreamTimeSpent.println(id + "," + timeStamp + "," +  totalTimeSpent_SingleSITLoop  + "," + totalTimeForATest + "," + totalTimeForATestIn_ms);
+            outpustreamTimeSpent.close();
+    }
 
 
 

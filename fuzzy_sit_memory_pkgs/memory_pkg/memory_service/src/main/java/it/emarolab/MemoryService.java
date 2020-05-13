@@ -126,7 +126,7 @@ public class MemoryService extends AbstractNodeMain {
                             if ((!request.getTestRequest().getItems().isEmpty())&&(!request.getTestRequest().getRelations().isEmpty())&&request.getTestRequest().getFrame()!=-1) {
 
                                 //Subsampling of 3 --> I take one scene every 3
-                                if(request.getTestRequest().getFrame() % 4 == 0){
+                                if(request.getTestRequest().getFrame() % 3 == 0){
                                     //System.out.print("THE SCENE N° "+request.getTestRequest().getFrame() +" IS GIVEN TO SIT" + "\n");
                                     memory.experience(scene(request.getTestRequest().getItems(), request.getTestRequest().getRelations(), request.getTestRequest().getSceneName()), true, true);
                                 }
