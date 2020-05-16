@@ -126,7 +126,7 @@ public class MemoryService extends AbstractNodeMain {
                             if ((!request.getTestRequest().getItems().isEmpty())&&(!request.getTestRequest().getRelations().isEmpty())&&request.getTestRequest().getFrame()!=-1) {
 
                                 //Subsampling of 3 --> I take one scene every 3
-                                if(request.getTestRequest().getFrame() % 3 == 0){
+                                if(request.getTestRequest().getFrame() % 2 == 0){
                                     //System.out.print("THE SCENE N° "+request.getTestRequest().getFrame() +" IS GIVEN TO SIT" + "\n");
                                     memory.experience(scene(request.getTestRequest().getItems(), request.getTestRequest().getRelations(), request.getTestRequest().getSceneName()), true, true);
                                 }
@@ -614,7 +614,9 @@ public class MemoryService extends AbstractNodeMain {
 
         String Dijk_2= "O" + "(" + sum_between_edges_vertices+ " log " + number_vertices + ")";
 
-        String Bellman_Ford= "O" + "(" + number_edges*number_vertices + ")" ;
+        String Bellman_Ford= "O" + "(" + number_edges*number_vertices + ")";
+        String memory_space_for_adjacency_list= "O" + "(" + sum_between_edges_vertices + ")";
+
 
         double graph_density_double=(double)number_edges/(number_vertices*(number_vertices-1));
         System.out.print("DENSITY GRAPH DOUBLE WITHOUT ROUND: " + graph_density_double);
@@ -623,9 +625,9 @@ public class MemoryService extends AbstractNodeMain {
         double graph_density = bd.doubleValue();
         System.out.print("\nDENSITY GRAPH DOUBLE WITH ROUND: " + graph_density);
 
-        outpustreamComplexity.println("vertices(n)" + "," +  "edges(m)" + "," + "Number_Loops" + "," +"Graph_Density" + "," + "Dijkstra_Algorithm[ O(n^2) ]" + "," + "Dijkstra_Algorithm[ O((m+n)log n) ]"  + "," + "Bellman-Ford_Algorithm[ O(m*n) ]");
+        outpustreamComplexity.println("vertices(n)" + "," +  "edges(m)" + "," + "Number_Loops" + "," +"Graph_Density" + "," + "Memory_Space_Requested_For_Adjacency_Matrix[O(n^2)]"+ "," + "Memory_Space_Requested_For_Adjacency_List[O(n+m)]"+ "," + "Dijkstra_Algorithm[ O(n^2) ]" + "," + "Dijkstra_Algorithm[ O((m+n)log n) ]"  + "," + "Bellman-Ford_Algorithm[ O(m*n) ]");
 
-        outpustreamComplexity.println(number_vertices + "," + number_edges + "," + numberLoops +","+ graph_density + "," + Dijk_1 + "," + Dijk_2 + "," + Bellman_Ford);
+        outpustreamComplexity.println(number_vertices + "," + number_edges + "," + numberLoops +","+ graph_density + "," + Dijk_1 + ","+memory_space_for_adjacency_list+ ","+ Dijk_1 + "," + Dijk_2 + "," + Bellman_Ford);
 
 
         outpustreamComplexity.close();
