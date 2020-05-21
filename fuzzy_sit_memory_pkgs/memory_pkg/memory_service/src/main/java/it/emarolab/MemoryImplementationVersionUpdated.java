@@ -41,7 +41,7 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
     private static final double SCORE_WEAK = .1; // threshold under which it forgets [0,1]
     private static final double LEARNED_SCORE = .5; // initial score, percentage of max score [0,1]
 
-    private static final double ENCODE_REINFORCE = 1.5;//original was 10 10; // reinforce factor for re-stored or re-retrieved experience [1,inf)
+    private static final double ENCODE_REINFORCE = 4;//original was 10 10; // reinforce factor for re-stored or re-retrieved experience [1,inf)
 
     private static int sceneCnt = 0;
 

@@ -609,6 +609,7 @@ public class MemoryService extends AbstractNodeMain {
         }
 
         int sum_between_edges_vertices=number_edges+number_vertices;
+        long linear_complexity_for_connected_graph=(2*number_edges)-number_vertices;
 
         String Dijk_1= "O" + "(" + number_vertices*number_vertices + ")";
 
@@ -618,6 +619,7 @@ public class MemoryService extends AbstractNodeMain {
         String memory_space_for_adjacency_list= "O" + "(" + sum_between_edges_vertices + ")";
 
 
+
         double graph_density_double=(double)number_edges/(number_vertices*(number_vertices-1));
         System.out.print("DENSITY GRAPH DOUBLE WITHOUT ROUND: " + graph_density_double);
         BigDecimal bd = new BigDecimal(graph_density_double).setScale(2, RoundingMode.HALF_UP);
@@ -625,9 +627,9 @@ public class MemoryService extends AbstractNodeMain {
         double graph_density = bd.doubleValue();
         System.out.print("\nDENSITY GRAPH DOUBLE WITH ROUND: " + graph_density);
 
-        outpustreamComplexity.println("vertices(n)" + "," +  "edges(m)" + "," + "Number_Loops" + "," +"Graph_Density" + "," + "Memory_Space_Requested_For_Adjacency_Matrix[O(n^2)]"+ "," + "Memory_Space_Requested_For_Adjacency_List[O(n+m)]"+ "," + "Dijkstra_Algorithm[ O(n^2) ]" + "," + "Dijkstra_Algorithm[ O((m+n)log n) ]"  + "," + "Bellman-Ford_Algorithm[ O(m*n) ]");
+        outpustreamComplexity.println("vertices(n)" + "," +  "edges(m)" + "," + "Number_Loops" + "," +"Linear_Complexity" +","+"Graph_Density" + "," + "Memory_Space_Requested_For_Adjacency_Matrix[O(n^2)]"+ "," + "Memory_Space_Requested_For_Adjacency_List[O(n+m)]"+ "," + "Dijkstra_Algorithm[ O(n^2) ]" + "," + "Dijkstra_Algorithm[ O((m+n)log n) ]"  + "," + "Bellman-Ford_Algorithm[ O(m*n) ]");
 
-        outpustreamComplexity.println(number_vertices + "," + number_edges + "," + numberLoops +","+ graph_density + "," + Dijk_1 + ","+memory_space_for_adjacency_list+ ","+ Dijk_1 + "," + Dijk_2 + "," + Bellman_Ford);
+        outpustreamComplexity.println(number_vertices + "," + number_edges + "," + numberLoops +","+linear_complexity_for_connected_graph +","+graph_density + "," + Dijk_1 + ","+memory_space_for_adjacency_list+ ","+ Dijk_1 + "," + Dijk_2 + "," + Bellman_Ford);
 
 
         outpustreamComplexity.close();
