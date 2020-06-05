@@ -53,15 +53,15 @@ public class SceneHierarchyVertex
 
     // TODO work around of a bad definition
     private double memoryScore; // set memory score to a negative number to freeze it to 0
-    //private long counterTimesASceneIsSeen=0; //counter to count number of times a scene is seen (i.e. recognized)
+    private long counterTimesASceneIsSeen; //counter to count number of times a scene is seen (i.e. recognized)
 
-    /*public long getCounterTimesASceneIsSeen(){
+    public long getCounterTimesASceneIsSeen(){
         return counterTimesASceneIsSeen;
-    }*/
+    }
 
-    /*public void setCounterTimesASceneIsSeen(long counter){
+    public void setCounterTimesASceneIsSeen(long counter){
         this.counterTimesASceneIsSeen=counter;
-    }*/
+    }
 
     public double getMemoryScore() {
         if ( memoryScore < 0)

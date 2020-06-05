@@ -45,9 +45,9 @@ public abstract class MemoryInterface {
         }
         SceneHierarchyVertex learnedScene = tbox.learn(sceneName, abox);
         //For version without normalization
-        //learnedScene.setCounterTimesASceneIsSeen(1);
+        learnedScene.setCounterTimesASceneIsSeen(1);
         //For version with normalization
-        learnedScene.setMemoryScore( initialScore);
+        //learnedScene.setMemoryScore( initialScore);
         return learnedScene;
     }
     // RECOGNIZE: QUERY classified memory items from encoded data

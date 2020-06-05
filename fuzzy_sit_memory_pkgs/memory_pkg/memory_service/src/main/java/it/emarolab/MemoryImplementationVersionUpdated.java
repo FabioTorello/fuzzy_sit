@@ -18,6 +18,8 @@ import java.time.LocalTime;
 import java.util.*;
 import com.google.common.collect.Sets;
 
+import java.lang.*;
+
 public class MemoryImplementationVersionUpdated extends MemoryInterface {
 
 
@@ -131,20 +133,22 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
         Map<SceneHierarchyVertex, Double> rec = recognize();
 
         //Set of all scenes in memory
-       // Set<SceneHierarchyVertex> allScenesInMemorySet = getTbox().getHierarchy().vertexSet();
+        Set<SceneHierarchyVertex> allScenesInMemorySet = getTbox().getHierarchy().vertexSet();
 
         //Set of the scenes don't recognised obtained from the difference between the total scenes in memory and
         //the scenes recognised
-       //Set<SceneHierarchyVertex> differenceSet=Sets.difference(allScenesInMemorySet,rec.keySet());
+       Set<SceneHierarchyVertex> differenceSet=Sets.difference(allScenesInMemorySet,rec.keySet());
 
         // if memory is empty, learn new encoded scene
         if( rec.keySet().isEmpty()) {
             timing.sceneName = sceneName;
             return learn(sceneName, LEARNED_SCORE);
         }
+
         /*for ( SceneHierarchyVertex recognisedScene : rec.keySet()){
             System.out.print("Scene " + recognisedScene.getScene() + "is recognised\n");
         }*/
+
         // if encoded scene can be recognized, update score
         boolean shouldLearn = true;
         double maxScore = 0;
@@ -153,27 +157,35 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
             double similarityValue = getAbox().getSimilarity(recognisedScene);
             if( recognisedValue >= ENCODE_RECOGNITION_TH & similarityValue >= ENCODE_SIMILARITY_TH){  // update score
                 //Version of function for version of SIT without the normalization
-                //updateScoreStoring(recognisedScene, true);
+                updateScoreStoring(recognisedScene, true);
                 //Version of function for version of SIT with the normalization
-                updateScoreStoring(recognisedScene, recognisedValue);
+                //updateScoreStoring(recognisedScene, recognisedValue);
             }
-            if( similarityValue >= LEARN_SIMILARITY_TH & recognisedValue >= LEARN_RECOGNITION_TH) // do not learn
+            else{
+                updateScoreStoring(recognisedScene, false);
+            }
+            if( similarityValue >= LEARN_SIMILARITY_TH & recognisedValue >= LEARN_RECOGNITION_TH) { // do not learn
+               /* System.out.print("ENTRA NELLA SHOULDLEARN = FALSE CON\n");
+                System.out.print(recognisedScene + "CHE HA:\n");
+                System.out.print("RECOGNISED VALUE: " + recognisedValue + "\n");
+                System.out.print("E SIMILARITY VALUE: " + similarityValue + "\n");*/
                 shouldLearn = false;
-            double score = recognisedScene.getMemoryScore();
+            }
+            /*double score = recognisedScene.getMemoryScore();
             if ( score > maxScore)
-                maxScore = score;
+                maxScore = score;*/
         }
 
         /*for ( SceneHierarchyVertex notrecognisedScene : differenceSet){
             System.out.print("Scene " + notrecognisedScene.getScene() + "is not recognised\n");
         }*/
 
-        /*if(!differenceSet.isEmpty()){
+        if(!differenceSet.isEmpty()){
             for ( SceneHierarchyVertex notRecognisedScene : differenceSet) {
                 //Decrease the counter for scenes not recognised
                 updateScoreStoring(notRecognisedScene, false);
             }
-        }*/
+        }
 
         // if encoded scene can not be recognized, learn new scene
         if ( shouldLearn) {
@@ -184,14 +196,14 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
     }
 
     //Version of function for version of SIT without the normalization
-    /*protected void updateScoreStoring(SceneHierarchyVertex recognisedScene, boolean isRecognised) {
+    protected void updateScoreStoring(SceneHierarchyVertex recognisedScene, boolean isRecognised) {
         updateScorePolicy( recognisedScene, isRecognised);
-    }*/
+    }
 
     //Version of function for version of SIT with the normalization
-    protected void updateScoreStoring(SceneHierarchyVertex recognisedScene, double recognisedValue) {
+    /*protected void updateScoreStoring(SceneHierarchyVertex recognisedScene, double recognisedValue) {
         updateScorePolicy( recognisedScene, recognisedValue);
-    }
+    }*/
 
     @Override
     public SceneHierarchyVertex retrieve() { // TODO very minimal retrieve support, adjust and implement it better!
@@ -208,9 +220,9 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
                     bestOut = recognisedValue;
                 }
                 //Version of function for version of SIT with the normalization
-                updateScoreRetrieve(recognisedScene, recognisedValue);
+                //updateScoreRetrieve(recognisedScene, recognisedValue);
                 //Version of function for version of SIT without the normalization
-                //updateScoreRetrieve(recognisedScene, true);
+                updateScoreRetrieve(recognisedScene, true);
             }
             return out; // true if at least one score is updated
         }
@@ -218,43 +230,43 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
     }
 
     //Version of function for version of SIT without the normalization
-    /*private void updateScoreRetrieve(SceneHierarchyVertex recognisedScene, boolean isRecognised) {
+    private void updateScoreRetrieve(SceneHierarchyVertex recognisedScene, boolean isRecognised) {
         updateScorePolicy( recognisedScene, isRecognised);
-    }*/
-
-    //Version of function for version of SIT with the normalization
-    private void updateScoreRetrieve(SceneHierarchyVertex recognisedScene, double recognisedValue) {
-        updateScorePolicy( recognisedScene, recognisedValue);
     }
 
+    //Version of function for version of SIT with the normalization
+    /*private void updateScoreRetrieve(SceneHierarchyVertex recognisedScene, double recognisedValue) {
+        updateScorePolicy( recognisedScene, recognisedValue);
+    }*/
+
     //Version of function for version of SIT without the normalization
-  /* private void updateScorePolicy(SceneHierarchyVertex recognisedScene, boolean isRecognised) {
+   private void updateScorePolicy(SceneHierarchyVertex recognisedScene, boolean isRecognised) {
         long counterOfAScene=0;
         if(isRecognised==true){
 
           counterOfAScene =  recognisedScene.getCounterTimesASceneIsSeen();
-          System.out.print("Scene " + recognisedScene.getScene() + "(before +1)is seen: " +recognisedScene.getCounterTimesASceneIsSeen() +"\n");
+          //System.out.print("Scene " + recognisedScene.getScene() + "(before +1)is seen: " +recognisedScene.getCounterTimesASceneIsSeen() +"\n");
           recognisedScene.setCounterTimesASceneIsSeen(counterOfAScene+1);
-            System.out.print("Scene " + recognisedScene.getScene() + "(after +1)is seen: " +recognisedScene.getCounterTimesASceneIsSeen()+"\n");
+          //System.out.print("Scene " + recognisedScene.getScene() + "(after +1)is seen: " +recognisedScene.getCounterTimesASceneIsSeen()+"\n");
 
         }
         else{
             counterOfAScene =  recognisedScene.getCounterTimesASceneIsSeen();
-            System.out.print("Scene " + recognisedScene.getScene() + "(before -1)is seen: " +recognisedScene.getCounterTimesASceneIsSeen()+"\n");
+            //System.out.print("Scene " + recognisedScene.getScene() + "(before -1)is seen: " +recognisedScene.getCounterTimesASceneIsSeen()+"\n");
             recognisedScene.setCounterTimesASceneIsSeen(counterOfAScene-1);
-            System.out.print("Scene " + recognisedScene.getScene() + "(before -1)is seen: " +recognisedScene.getCounterTimesASceneIsSeen()+"\n");
+            //System.out.print("Scene " + recognisedScene.getScene() + "(before -1)is seen: " +recognisedScene.getCounterTimesASceneIsSeen()+"\n");
         }
-    }*/
+    }
 
     //Version of function for version of SIT with the normalization
-    private void updateScorePolicy(SceneHierarchyVertex recognisedScene, double recognisedValue) {
+   /* private void updateScorePolicy(SceneHierarchyVertex recognisedScene, double recognisedValue) {
         // TODO adjust and validate
         double score = recognisedScene.getMemoryScore();
         if ( recognisedScene.getMemoryScore() > 0) // not froze node
             score += ENCODE_REINFORCE * recognisedValue; // reinforce for re-stored or re-retrieved experiences
         // else score freeze (i.e., experience to remove)
         recognisedScene.setMemoryScore( score);
-    }
+    }*/
 
 
     @Override
@@ -265,18 +277,24 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
         //System.out.println( "\tsimplifying " + removed);
 
         //For version without normalization
-        /*int w=3; //parameter to changethe range of the sigmoid
+        int w=3; //parameter to change the range of the sigmoid
 
         ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> h = getTbox().getHierarchy();
 
         for( SceneHierarchyVertex scene : h.vertexSet()){
-            double scoreForAScene=0;
-            scoreForAScene=Math.tanh(scene.getCounterTimesASceneIsSeen()/w);
+            double scoreForAScene;
+            long counterScene=scene.getCounterTimesASceneIsSeen();
+            double x = (double)counterScene/w;
+            //System.out.print("Valore di X: "+x+"\n");
+            scoreForAScene=Math.tanh(x);
+            //System.out.print(scene+"has counter before setting the score: " + scene.getCounterTimesASceneIsSeen() +"\n");
+            //System.out.print("Value of score calculated: "+scoreForAScene+"\n");
             scene.setMemoryScore(scoreForAScene);
-        }*/
+            //System.out.print(scene+"has score after setting the score: " + scene.getMemoryScore() +"\n");
+        }
 
         //For version with normalization
-       normalizeScoreConsolidating();
+      // normalizeScoreConsolidating();
     }
 
 
@@ -421,7 +439,7 @@ public class MemoryImplementationVersionUpdated extends MemoryInterface {
         }
         // synchronous consolidation and forgetting
         //C?ERA SOLO UN & PER CASO CON NORMALIZZAZIONE
-        if (learnedOrRetrievedScene != null & synchConsolidateForget) {
+        if (learnedOrRetrievedScene != null || synchConsolidateForget) {
             consolidateAndForget(scene, logs, outpustreamConsoleOut);
         }
 
